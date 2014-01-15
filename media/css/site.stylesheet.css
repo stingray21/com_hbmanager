@@ -1,0 +1,95 @@
+div#map-canvas {
+    width:400px; 
+    height: 300px;
+    }
+
+
+table.hallenvz {
+	border: 0; 
+	clear: both;
+	}	
+
+table tr,
+table tr.even,
+table tr.odd {
+	background: transparent;
+	border: 0;
+	}	
+
+table tr th {
+	border: 0;
+	padding: 5px 5px;
+	}	
+
+table tr td {
+	border: 0;
+	padding: 5px 5px;
+	}
+	
+table tr .link {
+	border: 0;
+	padding-right: 0px;
+	}	
+
+table tr .map {
+	border: 0;
+	padding-left: 0px;
+	}	
+
+table tr.odd td {
+	background: #EEE;
+	border: 0;
+	}	
+	
+table tr.even td {
+	background: transparent;
+	border: 0;
+	}	
+
+
+select#hbteams_teamauswahl {
+    padding:3px;
+    margin: 0;
+/*
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+*/
+/*
+    -webkit-box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    -moz-box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+*/
+    background: #f8f8f8;
+    color:#222;
+    border: 1px solid #ddd;
+    outline:none;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+}
+
+/* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    select#hbteams_teamauswahl {padding-right:18px}
+}
+
+div#hallenMannschaft li.hallenButton {
+	background: #04C;
+	padding: 0em 0.5em;
+	margin: 2px;
+	display: block;
+	list-style: none;
+	text-decoration: none;
+	color: white;
+	cursor: pointer;
+}
+
+.google-map-icon {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url(../images/maps32.png);
+}

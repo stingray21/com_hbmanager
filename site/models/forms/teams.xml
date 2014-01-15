@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="hbteams">
+		<fieldset name="hbteam">
+
+			<field 
+				name="teamauswahl" 
+				type="teams" 
+				default="" 
+				class="" 
+				label="Mannschaften:"
+			/> 
+		</fieldset>
+	</fields>
+</form>
