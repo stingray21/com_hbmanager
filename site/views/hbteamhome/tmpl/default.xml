@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+        <layout title="COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_TITLE">
+                <message>COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_DESC</message>
+        </layout>
+        <fields
+                name="request"
+                addfieldpath="/administrator/components/com_hbteamhome/models/fields"
+        >
+                <fieldset name="request">
+                        <field
+                                name="id"
+                                type="hbteamhome"
+                                label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_GREETING_LABEL"
+                                description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_GREETING_DESC"
+                        />
+                </fieldset>
+        </fields>
+</metadata>
