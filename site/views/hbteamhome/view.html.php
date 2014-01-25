@@ -6,23 +6,24 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * HTML View class for the hbteamhome Component
+ * HTML View class for the HB Team Overview Component
  */
-class hbteamhomeViewhbteamhome extends JView
+class HBteamHomeViewHBteamHome extends JView
 {
-        // Overwriting JView display method
-        function display($tpl = null) 
-        {
-                // Assign data to the view
-                $this->item = $this->get('Item');
- 
-                // Check for errors.
-                if (count($errors = $this->get('Errors'))) 
-                {
-                        JError::raiseError(500, implode('<br />', $errors));
-                        return false;
-                }
-                // Display the view
-                parent::display($tpl);
-        }
+	// Overwriting JView display method
+	function display($tpl = null)
+	{
+		// Assign data to the view
+		$this->msg = $this->get('Msg');
+/*
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+			return false;
+		}
+*/
+		// Display the view
+		parent::display($tpl);
+	}
 }

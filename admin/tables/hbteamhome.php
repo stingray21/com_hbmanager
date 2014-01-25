@@ -17,6 +17,6 @@ class HBteamHomeTableHBteamHome extends JTable
          */
         function __construct(&$db) 
         {
-                parent::__construct('hb_teams', 'teamkey', $db);
+                parent::__construct('hb_mannschaft', 'kuerzel', $db);
         }
 }

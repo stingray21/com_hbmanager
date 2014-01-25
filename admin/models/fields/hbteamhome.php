@@ -27,16 +27,16 @@ class JFormFieldHBteamHome extends JFormFieldList
         {
                 $db = JFactory::getDBO();
                 $query = $db->getQuery(true);
-                $query->select('teamkey, team');
-                $query->from('hb_teams');
+                $query->select('kuerzel, mannschaft');
+                $query->from('hb_mannschaft');
                 $db->setQuery((string)$query);
-                $messages = $db->loadObjectList();
+                $mannschaften = $db->loadObjectList();
                 $options = array();
-                if ($messages)
+                if ($mannschaften)
                 {
-                        foreach($messages as $message) 
+                        foreach($mannschaften as $mannschaft) 
                         {
-                                $options[] = JHtml::_('select.option', $message->teamkey, $message->team);
+                                $options[] = JHtml::_('select.option', $mannschaft->kuerzel, $mannschaft->mannschaft);
                         }
                 }
                 $options = array_merge(parent::getOptions(), $options);

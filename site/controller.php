@@ -6,8 +6,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
  
 /**
- * hbteamhome Component Controller
+ * HB Team Overview Component Controller
  */
-class hbteamhomeController extends JController
+class HBteamHomeController extends JController
 {
 }

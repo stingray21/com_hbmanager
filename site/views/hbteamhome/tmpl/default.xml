@@ -1,19 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-        <layout title="COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_TITLE">
-                <message>COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_DESC</message>
-        </layout>
-        <fields
-                name="request"
-                addfieldpath="/administrator/components/com_hbteamhome/models/fields"
-        >
-                <fieldset name="request">
-                        <field
-                                name="id"
-                                type="hbteamhome"
-                                label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_GREETING_LABEL"
-                                description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_GREETING_DESC"
-                        />
-                </fieldset>
-        </fields>
+	<layout title="COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_TITLE">
+		<message>COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_DESC</message>
+	</layout>
+
+
+	<fields
+		name="request"
+		addfieldpath="/administrator/components/com_hbteamhome/models/fields"
+		>
+		<fieldset name="request">
+			<field
+				name="show_team"
+				type="list"
+				label="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_LABEL"
+				description="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_DESC">
+				<option	value="">JGLOBAL_USE_GLOBAL</option>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAM_SETTINGS_LABEL">
+			<field
+				name="teamkey"
+				type="hbteamhome"
+				size="1"
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_LABEL"
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_DESC"
+				/>
+			<field
+				name="trainer"
+				type="text"
+				size="30"
+				label="Trainer"
+				description="Trainer eingeben"
+				/>
+			<field 
+				name="teamImage" 
+				type="imagelist" 
+				default="" 
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_LABEL" 
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_DESC" 
+				directory="/images/team_images/klein" 
+				exclude="" 
+				stripext="" 
+				/>
+		</fieldset>
+	</fields>
+  
 </metadata>
