@@ -48,7 +48,7 @@
 				default="" 
 				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_LABEL" 
 				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_DESC" 
-				directory="/images/team_images/klein" 
+				directory="hbdata/images/teams" 
 				exclude="" 
 				stripext="" 
 				/>

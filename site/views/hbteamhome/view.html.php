@@ -13,6 +13,10 @@ class HBteamHomeViewHBteamHome extends JView
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
+		$model = $this->getModel('hbteamhome');
+		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
+		$this->assignRef('model', $model);
+		
 		// Assign data to the view
 		$this->msg = $this->get('Msg');
 /*
@@ -22,7 +26,13 @@ class HBteamHomeViewHBteamHome extends JView
 			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
 			return false;
 		}
-*/
+*/		
+		$picture = $model->getPicture();
+		//echo '=> view->picture<br><pre>'; print_r($picture); echo '</pre>';
+		$this->assignRef('picture', $picture);
+		
+		JHtml::stylesheet('com_hbteamhome/site.stylesheet.css', array(), true);
+		
 		// Display the view
 		parent::display($tpl);
 	}
