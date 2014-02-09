@@ -8,37 +8,33 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Hallenverzeichnis Component
  */
-class HBhallenvzViewHBhallenvz extends JView
+class HBGymsViewHBGyms extends JView
 {
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
 		$document = JFactory::getDocument();
 		$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false');
-		$document->addScript(JURI::Root().'jquery-2.0.3.js');
-		$document->addScript(JURI::Root().'components/com_hbhallenvz/maps_halle.js');
+		$document->addScript(JURI::Root().'media/com_hbgyms/js/jquery-2.0.3.js');
+		$document->addScript(JURI::Root().'media/com_hbgyms/js/maps_gyms.js');
 		
 		
-		$model = $this->getModel('hbhallenvz');
+		$model = $this->getModel('hbgyms');
 		//$this->assignRef('model', $model);
 		
-		// Mannschaften
-		$mannschaften = $model->getMannschaften();
-		$this->assignRef('mannschaften', $mannschaften);
-		//echo "<pre>"; print_r($mannschaften); echo "</pre>";
+		$tems = $model->getTeams();
+		$this->assignRef('teams', $teams);
+		//echo "<pre>"; print_r($teams); echo "</pre>";
 
-		// Hallen
-		$hallen = $model->getHallen('all');
-		$this->assignRef('hallen', $hallen);
-		//echo "<pre>"; print_r($hallen); echo "</pre>";
-		
+		$gyms = $model->getGyms('all');
+		$this->assignRef('gyms', $gyms);
+		//echo "<pre>"; print_r($gyms); echo "</pre>";
 		
 		//$post = JRequest::get('post');
 		//echo "<pre>"; print_r($post); echo "</pre>";
 		//$this->assignRef('post', $post);
 		
-
-		JHtml::stylesheet('com_hbhallenvz/site.stylesheet.css', array(), true);
+		JHtml::stylesheet('com_hbgyms/site.stylesheet.css', array(), true);
 		
 		
 		// Check for errors.

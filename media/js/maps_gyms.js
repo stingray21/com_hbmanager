@@ -1,33 +1,36 @@
-
 jQuery(document).ready(function($){
 	
     $("select").change(function(){
         var teamkey = $(this).val();
-        console.log(teamkey);
+        //console.log(teamkey);
 		
 		// Send a http request with AJAX http://api.jquery.com/jQuery.ajax/ 
 		$.ajax({
-			url: './components/com_hbhallenvz/helpers/updatehallen.php',		//the script to call to get data
+			url: '../components/com_hbgyms/helpers/updateGyms.php',		//the script to call to get data
 			data: "teamkey=" + teamkey,				//you can insert url argumnets here to pass to api.php
 																//for example "id=5&parent=6"
 			dataType: 'json',									//data format
-			success: function(hallen) {							//on recieve of reply
+			success: function(gyms) {							//on recieve of reply
 				//  Update html content
 				//$('#output').html("<b>id: </b>"+id+"<b> name: </b>"+vname); //Set output element html
 				//recommend reading up on jquery selectors they are awesome 
 				// http://api.jquery.com/category/selectors/ 
-				
-				//console.log(hallen);
-				
-				displayResult(hallen);
-			} 
+				//console.log(gyms);
+				displayResult(gyms);
+			}			,
+			error:function(xhr,err){
+				// code for error
+				console.log(document.URL);
+				console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+				console.log("responseText: "+xhr.responseText);
+			}
 		});
 
         $("#hallenAuswahl").html("Alle Hallen, in denen die " + $("select option:selected").html() + " diese Saison spielt");
 	});
 });
 
-function displayResult(hallen) {
+function displayResult(gyms) {
 	var table=document.getElementById("hallenvztbl");
 	
 	// deleting data in table
@@ -86,7 +89,7 @@ function displayResult(hallen) {
 	
 	
 	var rowlabel = 'even';
-	hallen.forEach(function addHallen(element, index, array) {
+	gyms.forEach(function addHallen(element, index, array) {
 		if (rowlabel == 'even') rowlabel = 'odd';
 		else rowlabel = 'even';
 		

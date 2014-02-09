@@ -6,9 +6,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modelitem');
  
 /**
- * HB HallenVZ Model
+ * HB Gyms Model
  */
-class HBhallenvzModelHBhallenvz extends JModelItem
+class HBgymsModelHBgyms extends JModelItem
 {
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -24,12 +24,12 @@ class HBhallenvzModelHBhallenvz extends JModelItem
 		return JTable::getInstance($type, $prefix, $config);
 	}
 
-	function getMannschaften($category = '')
+	function getTeams($category = '')
 	{
-		$db = $this->getDbo();
+		$db = $this->getDbo();		
 		$query = $db->getQuery(true);
 		$query->select('*');
-		$query->from('aaa_mannschaft');
+		$query->from('hb_mannschaft');
 		switch ($category) {
 			case 'Aktiv':
 				$query->where($db->qn('jugend').' = 0');
@@ -46,14 +46,12 @@ class HBhallenvzModelHBhallenvz extends JModelItem
 			default:
 				break;
 		}
-		// Zur Kontrolle
 		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
 		$db->setQuery($query);
-		$mannschaften = $db->loadObjectList();
-		return $mannschaften;
+		return $teams = $db->loadObjectList();
 	}
 	
-	function getHallen($teamkey = 'allGyms')
+	function getGyms($teamkey = 'allGyms')
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -61,17 +59,15 @@ class HBhallenvzModelHBhallenvz extends JModelItem
 				$db->qn('kurzname').', '.$db->qn('name').', '.
 				$db->qn('plz').', '.$db->qn('stadt').', '.$db->qn('strasse').', '.
 				$db->qn('telefon').', '.$db->qn('haftmittel'));
-		if ($teamkey == 'allGyms') $query->from('aaa_halle') ;
+		if ($teamkey == 'allGyms') $query->from('hb_halle') ;
 		else {
-			$query->from('aaa_spiel');
+			$query->from('hb_spiel');
 			if ($teamkey != 'all') $query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
-			$query->join('INNER',$db->qn('aaa_halle').' USING ('.$db->qn('hallenNummer').')');
+			$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNummer').')');
 		}
 		$query->order($db->qn('hallenNummer'));
 		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
 		$db->setQuery($query);
-		$hallen = $db->loadObjectList();
-		
-		return $hallen;
+		return $gyms = $db->loadObjectList();
 	}
 }

@@ -8,6 +8,6 @@ jimport('joomla.application.component.controller');
 /**
  * HB Hallenverzeichnis Component Controller
  */
-class HBhallenvzController extends JController
+class HBGymsController extends JController
 {
 }
