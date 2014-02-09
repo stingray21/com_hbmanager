@@ -215,3 +215,26 @@ form#addTeam fieldset select {
 form#updateTeams label {
 	min-width: 0;
 }
+
+
+div.teampic h4.teampic {
+
+}
+
+div.teampic img.teampic {
+	width: 300px;
+
+}
+
+div.teampic td  {
+	vertical-align: top;
+}
+
+div.teampic div.caption label {
+	float: none;
+
+}
+
+div.teampic div.caption .toggle-editor {
+	display: none;
+}

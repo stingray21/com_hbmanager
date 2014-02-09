@@ -273,4 +273,30 @@ class hbmanagerController extends JController
 		hbhelper::addSubmenu('hbjournal');
 	}
 	
+	function showPictures()
+	{
+//		$jinput = JFactory::getApplication()->input;
+//		$teamkey = $jinput->get('teamkey', 'kein');
+	
+		$model = $this->getModel('hbpictures');
+		
+		$post = JRequest::get('post');
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+		
+		if (isset($post['hbpictures'])) $pics = $post['hbpictures'];
+		else $pics = null;
+		
+		if (isset($post['update_button'])) {
+			//echo "=> update button<br>";
+			$model->updateDB($pics);
+		}
+		
+		$view = $this->getView('hbpictures','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbpictures');
+	}
 } 

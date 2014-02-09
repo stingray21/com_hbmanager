@@ -35,8 +35,9 @@ class hbmanagerModelHbteams extends JModel
 			$query->select('*');
 		}
 		$query->from('hb_mannschaft');
-		$query->order('ISNULL('.$db->qn('reihenfolge').') ASC');
-		//echo '=> model->$query <br><pre>".$query."</pre>';
+		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
+					$db->qn('reihenfolge').' ASC');
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		return $teams = $db->loadObjectList();
 	}

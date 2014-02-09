@@ -136,7 +136,7 @@ class hbmanagerModelHbdata extends JModel
 			$rankingsArray = self::getRankingsArrayFromHvw($team->hvwLink);
 			//echo '=> model->rankingsArray <br><pre>';print_r($rankingsArray);echo'</pre>';
 			$updated = self::updateRankingsInDB(
-					'hb_data_'.$team->kuerzel.'_tabelle', 
+					'hbdata_'.$team->kuerzel.'_tabelle', 
 					$rankingsArray, $message = true);
 		}
 		return $updated;
@@ -266,7 +266,7 @@ class hbmanagerModelHbdata extends JModel
 			print_r($scheduleArray);echo "</pre>";//*/
 			
 			$updated = self::updateScheduleInDB(
-						'hb_data_'.$team->kuerzel.'_spielplan', 
+						'hbdata_'.$team->kuerzel.'_spielplan', 
 						$scheduleArray, $message = true );
 		}
 		return $updated;
@@ -439,7 +439,7 @@ class hbmanagerModelHbdata extends JModel
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
 			$query->select('*');
-			$query->from('hb_data_'.$team->kuerzel.'_spielplan');
+			$query->from('hbdata_'.$team->kuerzel.'_spielplan');
 			$query->where($db->qn('Heim').' = '.$db->q($team->name).' OR '.
 					$db->qn('Gast').' = '.$db->q($team->name));
 			$db->setQuery($query);
@@ -557,7 +557,7 @@ class hbmanagerModelHbdata extends JModel
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
 			$query->select('*');
-			$query->from('hb_data_'.$team->kuerzel.'_tabelle');
+			$query->from('hbdata_'.$team->kuerzel.'_tabelle');
 			$db->setQuery($query);
 			$teamRankings= $db->loadObjectList();
 			// echo '=> model->$query <br><pre>'.$query.'</pre>';

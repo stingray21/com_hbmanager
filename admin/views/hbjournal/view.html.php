@@ -46,7 +46,7 @@ class HbmanagerViewHbjournal extends JView
 		$this->assignRef('post', $post);
 		
 		$dates = $model->getDates();
-		//echo '=> view->$dates <br><pre>"; print_r($dates); echo "</pre>';
+		//echo '=> view->$dates <br><pre>'; print_r($dates); echo '</pre>';
 		$this->assignRef('dates', $dates);
 		
 		JToolBarHelper::title(JTEXT::_('COM_HBMANAGER_JOURNAL_TITLE'),'hblogo');

@@ -14,6 +14,8 @@ class HbmanagerViewHbteams extends JView
 	function display($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		// local jquery
+		JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/'.
 								'1.10.2/jquery.min.js');
 		//$document->addScript(JURI::Root().'/media/com_hbmanager/'.

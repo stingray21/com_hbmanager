@@ -31,19 +31,19 @@ class hbmanagerModelHbdatabase extends JModel
 		$dbTables = $this->dbTables;
 		foreach ($teams as $team)
 		{
-			$keyStandings = array_search('hb_data_'.strtolower($team->kuerzel).
+			$keyStandings = array_search('hbdata_'.strtolower($team->kuerzel).
 					'_tabelle', $dbTables);
 			if(false !== $keyStandings)
 			{
-				$team->tabelleDB = 'hb_data_'.strtolower($team->kuerzel).'_tabelle';
+				$team->tabelleDB = 'hbdata_'.strtolower($team->kuerzel).'_tabelle';
 				unset($dbTables[$keyStandings]);
 			}
 			
-			$keySchedule = array_search('hb_data_'.strtolower($team->kuerzel).
+			$keySchedule = array_search('hbdata_'.strtolower($team->kuerzel).
 					'_spielplan', $dbTables);
 			if(false !== $keySchedule)
 			{
-				$team->spielplanDB = 'hb_data_'.strtolower($team->kuerzel).'_spielplan';
+				$team->spielplanDB = 'hbdata_'.strtolower($team->kuerzel).'_spielplan';
 				unset($dbTables[$keySchedule]);
 			}
 		}
@@ -75,7 +75,7 @@ class hbmanagerModelHbdatabase extends JModel
 		{
 			case 'tabelle':
 				$query_tmpl = "CREATE TABLE IF NOT EXISTS \n
-					`hb_data_%dbTableKey%_tabelle` \n (
+					`hbdata_%dbTableKey%_tabelle` \n (
 					`ID` int(2) unsigned NOT NULL AUTO_INCREMENT, \n
 					`Platz` tinyint(2) DEFAULT NULL, \n
 					`Verein` varchar(60) CHARACTER SET utf8 
@@ -94,7 +94,7 @@ class hbmanagerModelHbdatabase extends JModel
 				break;
 			case 'spielplan':
 				$query_tmpl = "CREATE TABLE IF NOT EXISTS \n 
-					`hb_data_%dbTableKey%_spielplan` \n (
+					`hbdata_%dbTableKey%_spielplan` \n (
 					`ID` int(2) unsigned NOT NULL AUTO_INCREMENT, \n
 					`Klasse` varchar(12) CHARACTER SET utf8 
 						COLLATE utf8_unicode_ci DEFAULT NULL, \n

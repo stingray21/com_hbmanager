@@ -16,19 +16,27 @@ echo '<tr>
 foreach ($this->teams as $team)
 {
 	echo '<tr>';
+		
 		echo '<td><b>'.$team->mannschaft.' </b>('.$team->kuerzel.') </td>';
-		
+
 		echo '<td>';
-		echo '<a href="'.$this->model->getDbPmaTableLink($team->tabelleDB).
+		if(isset($team->tabelleDB))
+		{
+			echo '<a href="'.$this->model->getDbPmaTableLink($team->tabelleDB).
 				'" target="_BLANK" >'.$team->tabelleDB.'</a>';
+		}
 		echo '</td>';
-		
+
 		echo '<td>';
-		echo '<a href="'.$this->model->getDbPmaTableLink($team->spielplanDB).
+		if(isset($team->spielplanDB)) 
+		{
+			echo '<a href="'.$this->model->getDbPmaTableLink($team->spielplanDB).
 				'" target="_BLANK" >'.$team->spielplanDB.'</a>';
+		}
 		echo '</td>';
-		
+
 	echo '</tr>';
+
 }
 echo '</table>';
 

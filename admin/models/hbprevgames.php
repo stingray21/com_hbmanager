@@ -185,11 +185,11 @@ class hbmanagerModelHbprevgames extends JModel
 					if (empty($game['bericht'])) $query .= 'NULL, ';
 						else $query .= $db->q($game['bericht']).", ";
 					if (empty($game['spielerliste'])) $query .= 'NULL, ';
-						else $query .= $db->q($game['spielerliste']);
+						else $query .= $db->q($game['spielerliste']).', ';
 					if (empty($game['zusatz'])) $query .= 'NULL, ';
-						else $query .= $db->q($game['zusatz']);
+						else $query .= $db->q($game['zusatz']).', ';
 					if (empty($game['spielverlauf'])) $query .= 'NULL, ';
-						else $query .= $db->q($game['spielverlauf']);
+						else $query .= $db->q($game['spielverlauf']).', ';
 					if (empty($game['halbzeitstand'])) $query .= 'NULL ';
 						else $query .= $db->q($game['halbzeitstand']);
 					$query .= ");";

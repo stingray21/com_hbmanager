@@ -30,9 +30,11 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
 				<?php echo $form->getLabel('date', 'hbDates'); ?>
 				</dt>
 				<dd>
-				<?php echo $form->getInput('date', 'hbDates', 
-						strftime("%d.%m.%Y", strtotime(
-								$this->dates['date']))); 
+				<?php 
+				if (isset($this->dates['date'])) $date = $this->dates['date'];
+				else $date = null;
+				echo $form->getInput('date', 'hbDates', 
+						strftime("%d.%m.%Y", strtotime($date))); 
 				?>
 				</dd>
 			</dl>
@@ -121,7 +123,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
 					$style_font.'"';
 	// <pre>
 	$style_pre = ' class="AmtsblattText" '.
-					'style="margin: 0; tab-size: 8; width: 100%; word-wrap: '.
+					'style="margin: 0; tab-size: 8; width: 100%;  text-align: justify; word-wrap: '.
 					'break-word; '.$style_font.'"';
 	
 	$styles = array('style_h2' => $style_h2, 
@@ -159,9 +161,9 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		
 		if (isset($anfang['link']))
 		{
-			echo "<p{$styles['style_p']}>";
+			echo "<pre{$styles['style_pre']}>";
 			echo nl2br($anfang['link']);
-			echo "</p>";
+			echo "</pre>";
 		}
 		echo '</div>';
 		?>
@@ -173,9 +175,8 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		if (!empty($letzteSpiele))
 		{
 			echo "<h2{$styles['style_h2']}>{$letzteSpiele['ueberschrift']}</h2>";
-			echo "<p{$styles['style_p']}>{$letzteSpiele['dates']}</p>";
+			echo "<pre{$styles['style_pre']}>{$letzteSpiele['dates']}<br/>";
 				
-			echo "<pre{$styles['style_pre']}>";
 			echo $letzteSpiele['spiele'];
 			echo "</pre>";
 			echo '</div>';
@@ -198,10 +199,10 @@ echo JHtml::_('icon.msword', $this->item, $params);
 				echo "<pre{$styles['style_pre']}>";
 				echo "{$bericht['ergebnis']}\n";
 				echo "</pre>";
-				echo "<p{$styles['style_p']}>";
+				echo "<pte{$styles['style_pre']}>";
 				echo nl2br($bericht['text']);
 				if (isset($bericht['spieler'])) echo "<br />".nl2br($bericht['spieler']);
-				echo "</p>";
+				echo "</pre>";
 			}
 			echo '</div>';
 		}
