@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 	
 	$("#addcustomteam").click(function(){
-		
+		console.log('test');
 		var table = document.getElementById("teamstable");
 		var row = table.insertRow(-1);
 		//<tr><td><input type="text" name="hbmannschaft[13][reihenfolge]" id="hbmannschaft_13_reihenfolge" value="14" size="2"/></td>
@@ -30,12 +30,11 @@ jQuery(document).ready(function($){
 		
 		
 		$.ajax({
-			url:'./components/com_hbmanager/helpers/addRow.php',
-			datatype:"html",
-			type:'get',
+			url:'index.php?option=com_hbmanager&task=getajax&format=raw',
+			type:'POST',
 			data: 'rowNr='+newRowNr, 
 			success:function(data){
-				//console.log(data);
+				console.log(data);
 				row.innerHTML = data;
 			},
 			error:function(xhr,err){

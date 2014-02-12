@@ -4,7 +4,6 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::preferences('com_hbmanager');
 
-//setlocale(LC_TIME, "de_DE");
 
 // Button
 echo '<a id="hvwupdateall" class="hbbutton" href="'.
@@ -14,7 +13,7 @@ echo '<a id="hvwupdateall" class="hbbutton" href="'.
 
 
 echo '<table id="hvwupdate">';
-echo '<tr><th>Mannschaft</th><th></th><th>Tabelle</th><th>Spielplan</th><th></th></tr>';
+echo '<tr><th>Mannschaft</th><th>letztes Update: Tabelle</th><th>letztes Update: Spielplan</th><th></th></tr>'."\n";
 
 //$datePattern = "%A, %d.%m.%Y &nbsp;&nbsp;%H:%M:%S Uhr";
 $datePattern = 'D, d.m.Y - H:i:s \U\h\r';
@@ -23,13 +22,13 @@ foreach ($this->teams as $team)
 {
 	echo '<tr>';
 	echo '<td><b>'.$team->mannschaft.' </b>('.$team->kuerzel.') </td>';
-	if(!empty($team->hvwLink)) echo '<td>letztes Update: </td>';
-	else echo '<td>kein HVW Daten</td>';
+	
 	
 	echo '<td';
 	if(in_array($team->kuerzel, $this->updated['rankings'])) 
 			echo ' class="updated"';
 	echo '>';
+	if(empty($team->hvwLink)) echo 'keine HVW Daten';
 	if (!empty($team->updateTabelle)) 
 		//echo strftime($datePattern, strtotime($team->updateTabelle));
 		echo JHTML::_('date', $team->updateTabelle , $datePattern);
@@ -49,7 +48,7 @@ foreach ($this->teams as $team)
 			JRoute::_('index.php?option=com_hbmanager&task=updateData&teamkey='.
 			$team->kuerzel).'"> UPDATE </a></td>';
 	}
-	echo '</tr>';
+	echo '</tr>'."\n";
 }
 
 echo '</table>';

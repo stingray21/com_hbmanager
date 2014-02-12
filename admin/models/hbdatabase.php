@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
 
-class hbmanagerModelHbdatabase extends JModel
+class hbmanagerModelHbdatabase extends JModelLegacy
 {	
 	private $teams = array();
 	private $dbTables = array();

@@ -8,7 +8,7 @@ jimport('joomla.application.component.modeladmin');
 setlocale(LC_TIME, "de_DE.UTF-8");
 
 
-class HBmanagerModelHbjournal extends JModel
+class HBmanagerModelHbjournal extends JModelLegacy
 {	
 	private $prevGames = array();
 	private $nextGames = array();
@@ -238,7 +238,7 @@ class HBmanagerModelHbjournal extends JModel
 		$query->leftJoin($db->quoteName('hb_mannschaft').' USING ('.$db->quoteName('kuerzel').')');
 		$query->where($db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartPrev).' AND '.$db->quote($this->dateEndPrev));
 		$query->where($db->quoteName('toreHeim').' IS NOT NULL');
-		$query->order($db->quoteName('reihenfolge').' ASC');
+		$query->order($db->quoteName('datum').', '.$db->quoteName('reihenfolge').' ASC');
 		//echo $query;echo "<br />";
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
@@ -263,14 +263,18 @@ class HBmanagerModelHbjournal extends JModel
 		$dates = $db->loadObjectList();
 		//echo "<pre>"; print_r($dates); echo "</pre>";
 		
+		return self::formatGameDates($dates);
+	}
+	
+	function formatGameDates($dates) 
+	{
 		for ($i = 0; $i < count($dates); $i++)
 		{
 			$currDate = strtotime($dates[$i]->datum);
-			if (strftime("%u", $currDate) == 6 AND isset($dates[$i+1]))
+			if (isset($dates[$i+1]))
 			{
 				$nextDate = strtotime($dates[$i+1]->datum);
-				if (strftime("%u", $nextDate) == 7
-					AND strftime("%m", $currDate)+1 == strftime("%m", $nextDate))
+				if (strftime("%w", $currDate) == 6 AND strftime("%w", $nextDate) == 0)
 				{
 					if (strftime("%m", $currDate) == strftime("%m", $nextDate))
 					{
@@ -285,14 +289,15 @@ class HBmanagerModelHbjournal extends JModel
 							ltrim($dates[$i+1]->tag,'0').'.'.
 							strftime("%b.",strtotime($dates[$i+1]->datum));
 					}
-					$i++;
+				$i++;
+				}
+				else {
+					$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', false);
 				}
 			}
 			else 
 			{
-				$gameDates[] = $dates[$i]->nametag.' '.
-					ltrim($dates[$i]->tag,'0').
-					strftime(".%b.",strtotime($dates[$i]->datum));
+				$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', false);
 			}
 		}
 			//echo "<pre>"; print_r($gameDates); echo "</pre>";
@@ -303,19 +308,33 @@ class HBmanagerModelHbjournal extends JModel
 	
 	function getAbschnittLetzteSpiele($styles = array())
 	{
-		$data = '';
-		$formerMannschaft = '';
+		$data = null;
+		$formerMannschaft = null;
+		$formerDate = null;
 		if (!empty($this->prevGames))
-		{
-			if (count(self::getGameDates()) == 1) $data['ueberschrift'] = 'Alle Spiele vom letzten Spieltag';
-			else $data['ueberschrift'] = 'Alle Spiele von den letzten Spieltagen';
-				
-			$data['dates'] = implode(self::getGameDates(), ', ');
+		{	
+			$gameDates = self::getGameDates();
+			$multipleDays = count($gameDates);
 			
 			$data['spiele'] = null;
 			
+			if ($multipleDays == 1) {
+				$data['ueberschrift'] = 'Alle Spiele vom letzten Spieltag';
+				//$data['spiele'] .= $gameDates[0]."\n";
+			}
+			else {
+				$data['ueberschrift'] = 'Alle Spiele von den letzten Spieltagen';
+				//$data['spiele'] .= implode($gameDates, ', ')."\n";
+			}
+			
 			foreach ($this->prevGames as $game)
-			{
+			{	
+				//if ($multipleDays > 1) {
+					if ($formerDate != $game->datum) {
+						$data['spiele'] .= JHtml::_('date', $game->datum, 'D, d.m.y', false)."\n";
+					}
+					$formerDate = $game->datum;
+				//}
 				If ($formerMannschaft != $game->mannschaft) $data['spiele'] .= $game->mannschaft." ({$game->ligaKuerzel})\n";
 				$formerMannschaft = $game->mannschaft;
 				$data['spiele'] .= "{$game->heim} - {$game->gast}";
@@ -351,8 +370,8 @@ class HBmanagerModelHbjournal extends JModel
 	{
 		//echo "getAbschnittKommendeSpiele";
 		$data = array();
-		$formerMannschaft = '';
-		$formerDate = '';
+		$formerMannschaft = null;
+		$formerDate = null;
 		//echo "<pre>"; print_r($this->nextGames); echo "</pre>";
 		if (!empty($this->nextGames))
 		{
@@ -361,7 +380,9 @@ class HBmanagerModelHbjournal extends JModel
 			$data['ueberschrift'] = 'Alle Spiele vom nächsten Spieltag (chronologisch)';
 			foreach ($this->nextGames as $game)
 			{
-				if ($formerDate != $game->datum) $data['spiele'] .= "\n".strftime("%A, %d.%m.%y",strtotime($game->datum))."\n";
+				if ($formerDate != $game->datum) {
+					$data['spiele'] .= JHtml::_('date', $game->datum, 'D, d.m.y', false)."\n";
+				}
 				$formerDate = $game->datum;
 				if ($formerMannschaft != $game->mannschaft) $data['spiele'] .= $game->mannschaft. " ({$game->ligaKuerzel})\n";
 				$formerMannschaft = $game->mannschaft;

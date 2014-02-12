@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
 
-class hbmanagerModelHbdata extends JModel
+class hbmanagerModelHbdata extends JModelLegacy
 {	
 	private $updatedRankings = array();
 	private $updatedSchedules = array();
@@ -35,7 +35,8 @@ class hbmanagerModelHbdata extends JModel
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('hb_mannschaft');
-		$query->order('reihenfolge');
+		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
+					$db->qn('reihenfolge').' ASC');
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
@@ -72,6 +73,7 @@ class hbmanagerModelHbdata extends JModel
 			}
 			$db->setQuery($query);
 			$teams = $db->loadObjectList();
+			//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
 			
 			foreach ($teams as $team)
 			{

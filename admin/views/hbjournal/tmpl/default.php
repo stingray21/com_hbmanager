@@ -4,20 +4,20 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::preferences('com_hbmanager');
 
-setlocale(LC_TIME, "de_DE.UTF-8");
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'icon.php';
+
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/icon.php';
 
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
-				'models'.DS.'forms'.DS.'hbdates.xml');
+$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
+				'/models/forms/hbdates.xml');
 ?>
 
-<form class="form-validate" action="<?php 
+<form class="hbmanager form-validate" action="<?php 
 	JRoute::_('index.php?option=com_hbmanager&task=showJournal') 
 	?>" method="post" id="datesForm" name="datesForm">
 
-	<div class="width-100 fltlft">
+	<div class="fltlft">
 	
 		<fieldset class="adminform">
 			<legend>
@@ -115,20 +115,15 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
 	
 	// <h2>
 	$style_h2 = ' class="AmtsblattUeberschrift" '.
-					'style="padding: 0px; margin: 6pt 0 0; '.
+					'style="padding: 0px; margin: 0; '.
 					$style_font.' font-weight: bold;"';
 	// <p>
 	$style_p = ' class="AmtsblattText" '.
-					'style=\"padding: 0px; margin: 0; text-align: justify; '.
+					'style="padding: 0px; margin: 0; text-align: justify; '.
 					$style_font.'"';
-	// <pre>
-	$style_pre = ' class="AmtsblattText" '.
-					'style="margin: 0; tab-size: 8; width: 100%;  text-align: justify; word-wrap: '.
-					'break-word; '.$style_font.'"';
 	
 	$styles = array('style_h2' => $style_h2, 
-					'style_p' => $style_p, 
-					'style_pre' => $style_pre);
+					'style_p' => $style_p);
 
 ?>
 
@@ -157,13 +152,14 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		$anfang = $this->model->getAbschnittAnfang();
 		
 		echo '<div>';
+		echo "<p{$styles['style_p']}>&nbsp;</p>";
 		echo "<h2{$styles['style_h2']}>{$anfang['ueberschrift']}</h2>";
 		
 		if (isset($anfang['link']))
 		{
-			echo "<pre{$styles['style_pre']}>";
+			echo "<p{$styles['style_p']}>";
 			echo nl2br($anfang['link']);
-			echo "</pre>";
+			echo "</p>";
 		}
 		echo '</div>';
 		?>
@@ -174,11 +170,12 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		
 		if (!empty($letzteSpiele))
 		{
+			echo '<div>';
+			echo "<p{$styles['style_p']}>&nbsp;</p>";
 			echo "<h2{$styles['style_h2']}>{$letzteSpiele['ueberschrift']}</h2>";
-			echo "<pre{$styles['style_pre']}>{$letzteSpiele['dates']}<br/>";
-				
-			echo $letzteSpiele['spiele'];
-			echo "</pre>";
+			echo "<p{$styles['style_p']}>";
+			echo nl2br($letzteSpiele['spiele']);
+			echo "</p>";
 			echo '</div>';
 		}
 		?>
@@ -190,19 +187,20 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		if (!empty($berichte))
 		{
 			echo '<div>';
+			echo "<p{$styles['style_p']}>&nbsp;</p>";
 			echo '<h2'.$styles['style_h2'].'>Berichte</h2>';
 				
 			foreach ($berichte as $bericht)
 			{
 				
 				echo "<h2{$styles['style_h2']}>{$bericht['ueberschrift']}</h2>";
-				echo "<pre{$styles['style_pre']}>";
-				echo "{$bericht['ergebnis']}\n";
+				echo "<p{$styles['style_p']}>";
+				echo $bericht['ergebnis']."\n";
 				echo "</pre>";
-				echo "<pte{$styles['style_pre']}>";
+				echo "<p{$styles['style_p']}>";
 				echo nl2br($bericht['text']);
 				if (isset($bericht['spieler'])) echo "<br />".nl2br($bericht['spieler']);
-				echo "</pre>";
+				echo "</p>";
 			}
 			echo '</div>';
 		}
@@ -219,10 +217,11 @@ echo JHtml::_('icon.msword', $this->item, $params);
 			if (true)
 			{
 				echo '<div>';
+				echo "<p{$styles['style_p']}>&nbsp;</p>";
 				echo '<h2'.$styles['style_h2'].'>'.$kommendeSpiele['ueberschrift'].'</h2>';
-				echo "<pre{$styles['style_pre']}>";
-				echo $kommendeSpiele['spiele'];
-				echo "</pre>";
+				echo "<p{$styles['style_p']}>";
+				echo nl2br($kommendeSpiele['spiele']);
+				echo "</p>";
 				echo '</div>';
 			}
 		}
@@ -235,12 +234,13 @@ echo JHtml::_('icon.msword', $this->item, $params);
 		if (!empty($vorberichte))
 		{
 			echo '<div>';
+			echo "<p{$styles['style_p']}>&nbsp;</p>";
 			echo '<h2'.$styles['style_h2'].'>Vorschau</h2>';
 				
 			foreach ($vorberichte as $bericht)
 			{
 				echo "<h2{$styles['style_h2']}>{$bericht['ueberschrift']}</h2>";
-				echo "<pre{$styles['style_pre']}>";
+				echo "<p{$styles['style_p']}>";
 				echo $bericht['spiel']."\n";
 				if (!empty($bericht['treff']))
 				{

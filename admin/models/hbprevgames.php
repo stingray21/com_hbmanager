@@ -7,7 +7,7 @@ jimport('joomla.application.component.modeladmin');
 
 setlocale(LC_TIME, "de_DE");
 
-class hbmanagerModelHbprevgames extends JModel
+class hbmanagerModelHbprevgames extends JModelLegacy
 {	
 	private $prevGames = array();
 	private $dateStart = "";

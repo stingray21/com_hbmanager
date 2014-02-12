@@ -17,17 +17,17 @@ setlocale(LC_TIME, "de_DE");
 
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
-		'models'.DS.'forms'.DS.'hbdates.xml');
+$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
+		'/models/forms/hbdates.xml');
 
 
 //echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';		
 ?>
-<form class="form-validate" action="<?php 
+<form class="hbmanager form-validate" action="<?php 
 		echo JRoute::_('index.php?option=com_hbmanager&task=showPrevGames')
 		?>" method="post" id="datesForm" name="datesForm">
  
-	<div class="width-100 fltlft">
+	<div class="fltlft">
 
 		<fieldset class="adminform">		
 			<legend>
@@ -62,11 +62,11 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
  
 
 <?php
-$form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'forms'.DS.'hbprevgames.xml');
+$form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models/forms/hbprevgames.xml');
 ?>
-<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=showPrevGames') ?>" method="post" id="gamesForm" name="gamesForm">
+<form class="hbmanager form-validate" action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=showPrevGames') ?>" method="post" id="gamesForm" name="gamesForm">
 
-<div class="width-100 fltlft spiele">
+<div class="fltlft spiele">
 
 		<fieldset class="adminform">		
 			<legend>

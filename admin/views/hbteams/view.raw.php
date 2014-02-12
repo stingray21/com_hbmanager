@@ -6,18 +6,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * HTML View class for the HB Manager Component
+ * HTML View class for the HB HVW Manager Component
  */
-class HBmanagerViewHBmanager extends JViewLegacy
+class HBmanagerViewHbteams extends JViewLegacy
 {
-	// Overwriting JView display method
 	function display($tpl = null)
 	{
-		$model = $this->getModel();
-		
-
-		
-		// Display the view
 		parent::display($tpl);
 	}
 }

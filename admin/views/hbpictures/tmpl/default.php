@@ -10,13 +10,13 @@ $document->addStyleSheet(JURI::base(true).
 
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-$form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.DS.
-		'models'.DS.'forms'.DS.'hbpictures.xml');
+$form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
+		'/models/forms/hbpictures.xml');
 ?>
 
-<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=showPictures') ?>" method="post" id="picturesForm" name="picturesForm">
+<form class="hbmanager form-validate" action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=showPictures') ?>" method="post" id="picturesForm" name="picturesForm">
 
-<div class="width-100 fltlft pictures_form">
+<div class="fltlft pictures_form">
 
 		<fieldset class="adminform">		
 			<legend>
@@ -36,7 +36,7 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.DS.
 				<table class="teampic">
 				
 				<tr>
-					<td>
+					<td class="picture">
 						<img src="../hbdata/images/teams/<?php 
 						echo $value->dateiname;
 						?>" id="teampic_<?php

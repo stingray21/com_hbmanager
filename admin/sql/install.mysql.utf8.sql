@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `hb_mannschaft` (
   `updateSpielplan` datetime DEFAULT NULL,
   PRIMARY KEY (`mannschaftID`),
   UNIQUE KEY `kuerzel` (`kuerzel`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=630 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `hb_spiel` (
   `bemerkung` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`spielID`),
   UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=189 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `hb_spielbericht` (
   `spielverlauf` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`spielberichtID`),
   UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=83 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `hb_spielvorschau` (
   `treffZeit` time DEFAULT NULL,
   PRIMARY KEY (`spielvorschauID`),
   UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=80 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `hb_staffel` (
   `scheduleTeams` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`staffelID`),
   UNIQUE KEY `staffel` (`staffel`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `hb_tabelle` (
   `pluspunkte` tinyint(2) DEFAULT NULL,
   `minuspunkte` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=236 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -142,4 +142,27 @@ CREATE TABLE IF NOT EXISTS `hb_halle` (
   `haftmittel` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `letzteAenderung` datetime DEFAULT NULL,
   PRIMARY KEY (`halleID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hb_mannschaftsfoto`
+--
+
+CREATE TABLE IF NOT EXISTS `hb_mannschaftsfoto` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `kuerzel` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dateiname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `saison` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `untertitel_dt1` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dd1` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dt2` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dd2` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dt3` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dd3` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dt4` longtext COLLATE utf8_unicode_ci,
+  `untertitel_dd4` longtext COLLATE utf8_unicode_ci,
+  `kommentar` longtext COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

@@ -56,6 +56,15 @@ input.submit:active {
 	top:1px;
 }
 
+.clr {
+	clear: both;
+}
+
+form.hbmanager input,
+form.hbmanager select,
+form.hbmanager textarea {
+	width: auto;
+}
 
 div#amtsblatt {
 	background: white;
@@ -100,6 +109,7 @@ div.spiele div.spieleInfos p {
 
 div.spiele div.spieleInfos table th{
 	width: 10em;
+	text-align: left;
 }
 
 div.spiele div.spieleSpiel dl {
@@ -192,6 +202,7 @@ table#hvwupdate td {
 
 form#datesForm label {
 	min-width: 0;
+	line-height: 2;
 }
 
 form#addTeam label {
@@ -226,15 +237,34 @@ div.teampic img.teampic {
 
 }
 
-div.teampic td  {
-	vertical-align: top;
+div.teampic td.picture {
+	min-width: 300px;
 }
 
-div.teampic div.caption label {
-	float: none;
+div.teampic td  {
+	vertical-align: top;
+	padding-right: 10px;
+}
 
+div.teampic label {
+	float: left;
+	clear: both;
+	min-width: 5em;
+}
+
+div.teampic input,
+div.teampic textarea{
+	float: left;
+	margin-left: 5px;
 }
 
 div.teampic div.caption .toggle-editor {
 	display: none;
+}
+
+table.db-tables th,
+table.db-tables td
+{
+	padding: 0.5em;
+	text-align: left;
 }

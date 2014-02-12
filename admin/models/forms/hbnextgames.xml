@@ -20,7 +20,7 @@
 				label="Vorschau-Text" 
 				description="Ausblick auf das nächste Spiel"
 				default=""
-				cols="30"
+				cols="50"
 				rows="8"
 			/>
 			<field

@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB HVW Manager Component
  */
-class HBmanagerViewHbcalendar extends JView
+class HBmanagerViewHbcalendar extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)

@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
 
 
-class hbmanagerModelHbpictures extends JModel
+class hbmanagerModelHbpictures extends JModelLegacy
 {	
 	
 	function __construct() 

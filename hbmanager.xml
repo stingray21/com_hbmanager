@@ -80,8 +80,8 @@
 		</files>
 		
 		<languages folder="admin">
-			<language tag="de-DE">language/de-DE/de-DE.com_hbmanager.ini</language>
-			<language tag="de-DE">language/de-DE/de-DE.com_hbmanager.sys.ini</language>
+			<language tag="de-DE">language/de-DE.com_hbmanager.ini</language>
+			<language tag="de-DE">language/de-DE.com_hbmanager.sys.ini</language>
 		</languages>
 	</administration>
 

@@ -25,15 +25,15 @@ echo '<a id="deleteteams" class="hbbutton" href="'.
 
 
 // get the JForm object
-$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.DS.
-		'models'.DS.'forms'.DS.'hbteams.xml');
+$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
+		'/models/forms/hbteams.xml');
 ?>
 		
-<form class="form-validate" action="<?php 
+<form class="hbmanager form-validate" action="<?php 
 		echo JRoute::_('index.php?option=com_hbmanager&task=showTeams') 
 		?>" method="post" id="updateTeams" name="updateTeams">
 
-	<div class="width-100 fltlft">
+	<div class="fltlft">
 	
 		<fieldset class="adminform">
 			<legend>

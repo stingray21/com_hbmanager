@@ -8,19 +8,19 @@ setlocale(LC_TIME, "de_DE.UTF-8");
 
 
 // Include the PHPWord.php, all other classes were loaded by an autoloader
-require_once JPATH_SITE.DS.'libraries'.DS.'PHPWord'.DS.'PHPWord.php';
+require_once JPATH_SITE.'/libraries/PHPWord/PHPWord.php';
 
 // Create a new PHPWord Object
 $PHPWord = new PHPWord();
 
-$document = $PHPWord->loadTemplate(JPATH_SITE.DS.'media'.DS.'com_hbmanager'.DS.'template_Bericht-Handball.docx');
+$document = $PHPWord->loadTemplate(JPATH_SITE.'/media/com_hbmanager/template_Bericht-Handball.docx');
 
 //The search-pattern spelling is: ${YOUR_SEARCH_PATTERN}
 $document->setValue('Datum', strftime('%A, %d.%m.%Y'));
 $document->setValue('KW', strftime('%V'));
 
 $filename = strftime('%Y%m%d').'_Bericht-Handball_KW'.strftime('%V').'.docx';
-$path = JPATH_SITE.DS.'Amtsblattartikel'.DS;
+$path = JPATH_SITE.'/Amtsblattartikel/';
 $document->save($path.$filename);
 
 /*
@@ -104,7 +104,7 @@ if (!empty($this->vorberichte))
 // At last write the document to webspace:
 $objWriter = PHPWord_IOFactory::createWriter($PHPWord, 'Word2007');
 $filename = strftime('%Y%m%d').'_Bericht-Handball_KW'.strftime('%V').'.docx';
-$path = JURI::Root().'Amtsblattartikel'.DS;
+$path = JURI::Root().'Amtsblattartikel/';
 $objWriter->save($path.$filename);
 */
 
@@ -113,7 +113,7 @@ $objWriter->save($path.$filename);
 
 // include the PHPdocx library
 //require_once JPATH_SITE.'/libraries/phpdocx/classes/CreateDocx.inc';
-require_once DS.'www'.DS.'htdocs'.DS.'w00f0a0a'.DS.'hb'.DS.'libraries'.DS.'phpdocx'.DS.'classes'.DS.'CreateDocx.inc';
+require_once '/www/htdocs/w00f0a0a/hb/libraries/phpdocx/classes/CreateDocx.inc';
 
 $docx = new CreateDocx();
 
@@ -128,7 +128,7 @@ foreach ($this->berichte as $bericht)
 }
 
 // Generate the document
-$docx->createDocx(DS.'www'.DS.'htdocs'.DS.'w00f0a0a'.DS.'hb'.DS.'test/testtemp');
+$docx->createDocx('/www/htdocs/w00f0a0a/hb/test/testtemp');
 */
 
 
@@ -137,5 +137,5 @@ $docx->createDocx(DS.'www'.DS.'htdocs'.DS.'w00f0a0a'.DS.'hb'.DS.'test/testtemp')
 
 // Force the document to the browser
 $app = JFactory::getApplication();
-$app->redirect(JURI::Root().'Amtsblattartikel'.DS.$filename);
+$app->redirect(JURI::Root().'Amtsblattartikel/'.$filename);
 

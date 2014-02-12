@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
 
-class HBmanagerModelHbcalendar extends JModel
+class HBmanagerModelHbcalendar extends JModelLegacy
 {
 	
 
@@ -116,7 +116,7 @@ class HBmanagerModelHbcalendar extends JModel
 		$calData .= 'END:VCALENDAR';
 		
 		$file = 'calGames.ics';
-		$fileName = JPATH_ROOT . DS . "cal" . DS . $file;
+		$fileName = JPATH_ROOT . '/cal/' . $file;
 		
 		if( JFile::write($fileName, $calData) )
 		{

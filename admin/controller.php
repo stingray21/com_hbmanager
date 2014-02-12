@@ -9,7 +9,7 @@ jimport('joomla.application.component.controller');
 /**
  * HB Manager Component Controller
  */
-class hbmanagerController extends JController
+class hbmanagerController extends JControllerAdmin
 {
 
 	function display($cachable=false, $urlparams = false)
@@ -298,5 +298,15 @@ class hbmanagerController extends JController
 		
 		// Set the submenu
 		hbhelper::addSubmenu('hbpictures');
+	}
+	
+	function getajax()
+	{
+		// Set view
+		//JRequest::setVar('view', 'ajax');
+		//parent::display();
+		$view = $this->getView('hbteams','raw');
+		$view->setLayout('addRow');
+		$view->display();
 	}
 } 

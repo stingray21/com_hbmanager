@@ -16,14 +16,14 @@ setlocale(LC_TIME, "de_DE");
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 $form = JForm::getInstance('myform', 
-		JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'forms'.DS.'hbdates.xml');
+		JPATH_COMPONENT_ADMINISTRATOR.'/models/forms/hbdates.xml');
 ?>
 
-<form class="form-validate" action="<?php 
+<form class="hbmanager form-validate" action="<?php 
 	echo JRoute::_('index.php?option=com_hbmanager&task=showNextGames')
 	?>" method="post" id="datesForm" name="datesForm">
  
-	<div class="width-100 fltlft">
+	<div class="fltlft">
 
 		<fieldset class="adminform">
 			<legend>
@@ -64,14 +64,14 @@ $form = JForm::getInstance('myform',
 <div class="clr"></div>
 
 <?php
-$form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.DS.
-		'models'.DS.'forms'.DS.'hbnextgames.xml');
+$form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.
+		'/models/forms/hbnextgames.xml');
 ?>
-<form class="form-validate" action="<?php
+<form class="hbmanager form-validate" action="<?php
 	echo JRoute::_('index.php?option=com_hbmanager&task=showNextGames') 
 	?>" method="post" id="gamesForm" name="gamesForm">
 
-<div class="width-100 fltlft spiele">
+<div class="fltlft spiele">
 
 		<fieldset class="adminform">
 			<legend>

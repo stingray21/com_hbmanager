@@ -10,7 +10,7 @@ setlocale(LC_TIME, "de_DE.UTF-8");
 /**
  * HTML View class for the HB Manager Component
  */
-class HBmanagerViewHBAmtsblattartikel extends JView
+class HBmanagerViewHBAmtsblattartikel extends JViewLegacy
 {
 	
 	// ?option=com_hbmanager&view=HBAmtsblattartikel&format=docx

@@ -8,22 +8,20 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Manager Component
  */
-class HbmanagerViewHbteams extends JView
+class HbmanagerViewHbteams extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
 		$document = JFactory::getDocument();
 		// local jquery
-		JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
-		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/'.
-								'1.10.2/jquery.min.js');
-		//$document->addScript(JURI::Root().'/media/com_hbmanager/'.
-		//					'js/hbteams.js');
-		JHTML::script('hbteams.js', 'media/com_hbmanager/js/');
-		//$document->addScript('http://ajax.aspnetcdn.com/ajax/'.
-		//'jquery.validate/1.11.1/jquery.validate.js');
+		//JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
+		JHtml::_('jquery.framework');
+		////$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+		$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbteams.js');
+		//JHTML::script('hbteams.js', 'media/com_hbmanager/js/');
 		
+			
 		$model = $this->getModel('hbteams');
 		$this->assignRef('model', $model);
 		

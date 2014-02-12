@@ -8,7 +8,7 @@ JToolBarHelper::preferences('com_hbmanager');
 echo '<h4>'.JTEXT::_('COM_HBMANAGER_DATABASE_TITLE').'</h4>';
 
 
-echo '<table>';
+echo '<table class="db-tables">';
 echo '<tr>
 		<th>Mannschaft</th><th>DB Tabelle</th><th>DB Spielplan</th><th></th>
 	</tr>';
@@ -44,6 +44,7 @@ echo '</table>';
 echo '<a><b>für alle Mannschaften:</b></a>';
 
 // Buttons
+echo '<div>';
 echo '<a class="hbbutton" href="'.
 		JRoute::_('index.php?option=com_hbmanager'.
 				'&task=createDBtables&dbOption=rankings').
@@ -52,6 +53,7 @@ echo '<a class="hbbutton" href="'.
 		JRoute::_('index.php?option=com_hbmanager'.
 				'&task=createDBtables&dbOption=schedules').
 		'">'.JTEXT::_('COM_HBMANAGER_DATABASE_SCHEDULES_BUTTON').'</a>';
+echo '</div>';
 
 echo '<h4>Weitere DB Tabellen (keiner Mannschaft zugeorndet)</h4>';
 

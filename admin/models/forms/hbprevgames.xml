@@ -20,7 +20,7 @@
 				label="Spielbericht" 
 				description="Spielbericht"
 				default=""
-				cols="30"
+				cols="52"
 				rows="8"
 			/>
 			<field
@@ -29,7 +29,7 @@
 				label="Spielerliste" 
 				description="Liste aller Spieler, die in diesem Spiel gespielt haben"
 				default=""
-				cols="30"
+				cols="44"
 				rows="2"
 			/>
 			<field
@@ -38,7 +38,7 @@
 				label="Zusätzliche Informationen" 
 				description="Zusätzliche Informationen wie Bedankung bei Fans, kurze Vorschau auf nächstes Spiel"
 				default=""
-				cols="30"
+				cols="44"
 				rows="2"
 			/>
 			<field
@@ -47,14 +47,14 @@
 				label="Halbzeitstand" 
 				description="Torfilm des Spiels"
 				default=""
-				size="6"
+				size="3"
 			/>
 			<field
 				name="spielverlauf"
 				type="text"
 				label="Spielverlauf" 
 				description="Torfilm des Spiels"
-				size="30"
+				size="15"
 			/>
 		</fieldset>
 	</fields>
