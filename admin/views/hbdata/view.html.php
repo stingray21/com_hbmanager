@@ -13,7 +13,11 @@ class HbManagerViewHbData extends JViewLegacy
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
-		setlocale(LC_TIME, "de_DE");
+		$document = JFactory::getDocument();
+		// local jquery
+		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);
+		JHtml::_('jquery.framework');
+		$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbdata.js');
 		
 		$model = $this->getModel('HBdata');
 		

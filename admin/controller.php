@@ -309,4 +309,20 @@ class hbmanagerController extends JControllerAdmin
 		$view->setLayout('addRow');
 		$view->display();
 	}
+	
+	function updateTeamData()
+	{
+		// Set view
+		//JRequest::setVar('view', 'ajax');
+		//parent::display();
+		$model = $this->getModel('hbdata');
+		
+		
+		$view = $this->getView('hbdata','raw');
+		$view->setLayout('updateTeam');
+		
+		$view->setModel($model, true);
+		
+		$view->display();
+	}
 } 

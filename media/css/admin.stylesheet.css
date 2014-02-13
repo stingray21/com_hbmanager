@@ -29,7 +29,7 @@ input.submit {
 	text-indent:0;
 	border:1px solid #cccccc;
 	display:inline-block;
-	/*color:#777777;*/
+	//color:#777777;
 	color: #025A8D;
 	font-weight:bold;
 	font-style:normal;
@@ -39,6 +39,7 @@ input.submit {
 	text-decoration:none;
 	text-align:center;
 	text-shadow:1px 1px 0px #ffffff;
+	cursor: pointer;
 }
 
 a.hbbutton:hover,

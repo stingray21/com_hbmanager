@@ -32,6 +32,35 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $teams;
 	}
 	
+	function get1Team($teamkey)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey)); 
+		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
+		$db->setQuery($query);
+		$team = $db->loadObject();
+		return $team;
+	}
+	
+	function getUpdateDate($teamkey)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('kuerzel, updateTabelle, updateSpielplan');
+		$query->from('hb_mannschaft');
+		if ($teamkey != 'all') {
+			// request only one team of DB
+			$query->where($db->qn('kuerzel').' = '.$db->q($teamkey)); 
+		}
+		$db->setQuery($query);
+		$teams = $db->loadObjectList();
+		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
+		return $teams;
+	}
+	
 	function getUpdateStatus()
 	{
 		$updated['rankings'] = $this->updatedRankings;
@@ -73,40 +102,54 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $teams;
 	}
 	
-	protected function updateTeam($team) 
+	protected function getHvwLink ($teamkey)
 	{
-		self::updateTeamRanking($team);
-		self::updateTeamSchedule($team);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->qn('hvwLink'));
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey)); 
+		$db->setQuery($query);
+		$result = $db->loadObject();
+		//echo '=> model->$query <br><pre>'; echo $query ; echo '</pre>';
+		//echo '=> model->$updated <br><pre>'; print_r($result); echo '</pre>';
+		return $result->hvwLink;
+	}
+	
+	function updateTeam($teamkey) 
+	{
+		self::updateTeamRanking($teamkey);
+		self::updateTeamSchedule($teamkey);
 	}
 	
 	// update rankings
-	protected function updateTeamRanking($team) 
+	function updateTeamRanking($teamkey) 
 	{
-		$source = self::getSourceFromHVW($team->hvwLink);
+		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		$rankingData = self::getRankingData($source['ranking']);
 		//echo '=> model->$updated <br><pre>'; print_r($rankingData); echo '</pre>';
-		$tableName = 'hbdata_'.$team->kuerzel.'_tabelle';
+		$tableName = 'hbdata_'.$teamkey.'_tabelle';
 		self::addDbRankingTable($tableName);
 		if (self::updateRankingsInDB($tableName, $rankingData) AND
-			self::updateDbTableAllRankings($team->kuerzel)) 
+			self::updateDbTableAllRankings($teamkey)) 
 		{
-			self::updateRankingTimestamp ($team->kuerzel);
-			$this->updatedRankings[] = $team->kuerzel;
+			self::updateRankingTimestamp ($teamkey);
+			$this->updatedRankings[] = $teamkey;
 		}
 	}
 	
-	protected function updateTeamSchedule($team) 
+	function updateTeamSchedule($teamkey) 
 	{
-		$source = self::getSourceFromHVW($team->hvwLink);
+		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		$scheduleData = self::getScheduleData($source['schedule']);
 		//echo '=> model->$updated <br><pre>'; print_r($scheduleData); echo '</pre>';
-		$tableName = 'hbdata_'.$team->kuerzel.'_spielplan';
+		$tableName = 'hbdata_'.$teamkey.'_spielplan';
 		self::addDbScheduleTable($tableName);
-		if (self::updateSchedulesInDB($tableName, $scheduleData) )//AND
-			//self::updateDbTableAllSchedules($team->kuerzel)) 
+		if (self::updateSchedulesInDB($tableName, $scheduleData) AND
+			self::updateDbTableAllSchedules($teamkey)) 
 		{
-			self::updateScheduleTimestamp ($team->kuerzel);
-			$this->updatedSchedules[] = $team->kuerzel;
+			self::updateScheduleTimestamp ($teamkey);
+			$this->updatedSchedules[] = $teamkey;
 		}
 	}
 		
@@ -387,7 +430,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$result = $db->query();
 		} catch (Exception $e) {
 			// catch any database errors.
+			return false;
 		}
+		return true;
 	}
 	
 		protected function updateScheduleTimestamp ($teamkey)
@@ -405,7 +450,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$result = $db->query();
 		} catch (Exception $e) {
 			// catch any database errors.
+			return false;
 		}
+		return true;
 	}
 	
 	protected function updateDbTableAllRankings($teamkey)
@@ -515,6 +562,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 	
 	protected function updateDbTableAllSchedules($teamkey)
 	{
+		$team = self::get1Team($teamkey);
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*');
