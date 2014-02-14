@@ -1,48 +1,27 @@
 jQuery(document).ready(function($){
 	
-	$(".hbbutton").click(function(){
-		console.log('schedule_' + this.id);
+	$(".updatebutton").click(function(){
+		//console.log(this.id);
 		var row = $(this).parent().parent();
-		row.css('background', '#FEDA46');
-		var cellschedule = document.getElementById("schedule_"+this.id);
-		//cellschedule.innerHTML="updated";
-//		var table = document.getElementById("teamstable");
-//		var row = table.insertRow(-1);
-//		//<tr><td><input type="text" name="hbmannschaft[13][reihenfolge]" id="hbmannschaft_13_reihenfolge" value="14" size="2"/></td>
-//		var newRowNr = table.rows.length - 2;
-//		console.log(newRowNr);
-		
-//		var cellRF = row.insertCell(0);
-//		var cellKuerzel = row.insertCell(1);
-//		var cellMannschaft = row.insertCell(2);
-//		var cellName = row.insertCell(3);
-//		var cellLiga = row.insertCell(4);
-//		var cellKuerzelLiga = row.insertCell(5);
-//		var cellGeschlecht = row.insertCell(6);
-//		var cellJugend = row.insertCell(7);
-//		var cellLink = row.insertCell(8);
-//		
-//		cellRF.innerHTML="New";
-//		cellKuerzel.innerHTML="New";
-//		cellMannschaft.innerHTML="New";
-//		cellName.innerHTML="New";
-//		cellLiga.innerHTML="New";
-//		cellKuerzelLiga.innerHTML="New";
-//		cellGeschlecht.innerHTML="New";
-//		cellJugend.innerHTML="New";
-//		cellLink.innerHTML="New";
+		row.css('background', 'yellow');
+		var cellRanking = document.getElementById("ranking_"+this.id);
+		var cellSchedule = document.getElementById("schedule_"+this.id);
 		
 		
 		$.ajax({
 			url:'index.php?option=com_hbmanager&task=updateTeamData&format=raw',
-			type:'POST',
+			type: "POST",
+			dataType:"json",
 			data: 'teamkey='+this.id, 
 			success:function(data){
-				console.log(data);
-				cellschedule.innerHTML=data;
+				//console.log(data);
+				row.css('background', 'transparent');
+				cellRanking.innerHTML=data.ranking;
+				cellSchedule.innerHTML=data.schedule;
 			},
 			error:function(xhr,err){
 				// code for error
+				row.css('background', 'red');
 				console.log(document.URL);
 				console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
 				console.log("responseText: "+xhr.responseText);
@@ -51,18 +30,62 @@ jQuery(document).ready(function($){
 		
 	});
 	
-//	$('#updateTeams').validate({ // initialize the plugin
-//        rules: {
-//        	"hbmannschaft[0][kuerzel]": {
-//                required: true
-//            }
-//        },
-//        messages :{
-//            "hbmannschaft[0][kuerzel]" : {
-//                required : 'benötigt'
-//            }
-//        }
-//    });
-	
+	$("#hvwupdateall").click(function(){
+		console.log('test');
+		
+		
+		$.ajax({
+			url:'index.php?option=com_hbmanager&task=getHvwTeams&format=raw',
+			type: "POST",
+			dataType:"json",
+			success:function(data){
+				//console.log(data);
+				
+				var index;
+				var cellRanking = new Array();
+				var cellSchedule = new Array();
+				var row = new Array();
+				var teamkey = new Array();
+				//var a = ["a", "b", "c"];
+				for (index = 0; index < data.length; ++index) {
+					teamkey[index] = data[index];
+					console.log(teamkey[index]);
+					cellRanking[index] = document.getElementById("ranking_"+teamkey[index]);
+					cellSchedule[index] = document.getElementById("schedule_"+teamkey[index]);
+					row[index] = cellSchedule.parentElement;
+					row.bgColor="yellow";
+				
+					$.ajax({
+						url:'index.php?option=com_hbmanager&task=updateTeamData&format=raw',
+						type: "POST",
+						dataType:"json",
+						data: 'teamkey='+teamkey[index], 
+						success:function(data){
+							//console.log(data);
+							row[index].bgColor="transparent";
+							cellRanking[index].innerHTML=data.ranking;
+							cellSchedule[index].innerHTML=data.schedule;
+						},
+						error:function(xhr,err){
+							// code for error
+							row[index].bgColor="red";
+							console.log(document.URL);
+							console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+							console.log("responseText: "+xhr.responseText);
+						}
+					});
+				}
+			},
+			error:function(xhr,err){
+				// code for error
+				
+				console.log(document.URL);
+				console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+				console.log("responseText: "+xhr.responseText);
+			}
+		});
+		
+	});
+
 });
 

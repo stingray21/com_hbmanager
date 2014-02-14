@@ -51,14 +51,16 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('kuerzel, updateTabelle, updateSpielplan');
 		$query->from('hb_mannschaft');
-		if ($teamkey != 'all') {
-			// request only one team of DB
-			$query->where($db->qn('kuerzel').' = '.$db->q($teamkey)); 
-		}
+		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey)); 
 		$db->setQuery($query);
-		$teams = $db->loadObjectList();
+		$team = $db->loadObject();
 		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
-		return $teams;
+		
+		$format = 'D, d.m.Y - H:i:s \U\h\r';
+		$team->ranking = JHtml::_('date', $team->updateTabelle, $format, false);
+		$team->schedule = JHtml::_('date', $team->updateSpielplan, $format, false);
+		
+		return $team;
 	}
 	
 	function getUpdateStatus()
@@ -98,6 +100,20 @@ class hbmanagerModelHbdata extends JModelLegacy
 		}
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
+		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
+		return $teams;
+	}
+	
+	function getHvwTeamArray ()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('kuerzel');
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('hvwLink').' IS NOT NULL');
+		$db->setQuery($query);
+		$teams = $db->loadColumn();
+		//echo '=> model->$updated <br><pre>'; echo $query; echo '</pre>';
 		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
 		return $teams;
 	}

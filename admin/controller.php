@@ -312,17 +312,75 @@ class hbmanagerController extends JControllerAdmin
 	
 	function updateTeamData()
 	{
-		// Set view
-		//JRequest::setVar('view', 'ajax');
-		//parent::display();
+		// Set up the data to be sent in the response.
 		$model = $this->getModel('hbdata');
 		
+		//$teamkey = 'M1';
+		$jinput = JFactory::getApplication()->input;
+		$teamkey = $jinput->get('teamkey');
+
+		$model->updateTeam($teamkey);
+
+		$response = $model->getUpdateDate($teamkey);
+		//$response = array("success" => true);
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
+
+		// Output the JSON data.
+		echo json_encode($response);
 		
-		$view = $this->getView('hbdata','raw');
-		$view->setLayout('updateTeam');
+//		try
+//		{
+//			$anyParam = JFactory::getApplication()->input->get('anyparam');
+//
+//			$response = array("success" => true);
+//
+//			echo new JResponseJson($response);
+//		}
+//		catch(Exception $e)
+//		{
+//		  echo new JResponseJson($e);
+//		}
+	}
+	
+	function getHvwTeams()
+	{
+		// Set up the data to be sent in the response.
+		$model = $this->getModel('hbdata');
 		
-		$view->setModel($model, true);
+		$response = $model->getHvwTeamArray();;
+		//$response = array("success" => true);
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
+
+		// Output the JSON data.
+		echo json_encode($response);
 		
-		$view->display();
+//		try
+//		{
+//			$anyParam = JFactory::getApplication()->input->get('anyparam');
+//
+//			$response = array("success" => true);
+//
+//			echo new JResponseJson($response);
+//		}
+//		catch(Exception $e)
+//		{
+//		  echo new JResponseJson($e);
+//		}
 	}
 } 

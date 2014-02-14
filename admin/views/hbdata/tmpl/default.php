@@ -24,7 +24,7 @@ foreach ($this->teams as $team)
 	echo '<td><b>'.$team->mannschaft.' </b>('.$team->kuerzel.') </td>';
 	
 	
-	echo '<td class="ranking';
+	echo '<td id="ranking_'.$team->kuerzel.'" class="ranking';
 	if(in_array($team->kuerzel, $this->updated['rankings'])) 
 			echo ' updated';
 	echo '">';
@@ -44,7 +44,7 @@ foreach ($this->teams as $team)
 	echo '</td>';
 	
 	if (!empty($team->hvwLink)) {
-		echo '<td><a id="'.$team->kuerzel.'" class="hbbutton" './/href="'.
+		echo '<td><a id="'.$team->kuerzel.'" class="hbbutton updatebutton" './/href="'.
 			//JRoute::_('index.php?option=com_hbmanager&task=updateData&teamkey='.
 			//$team->kuerzel).
 			'"> UPDATE </a></td>';
