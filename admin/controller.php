@@ -94,6 +94,7 @@ class hbmanagerController extends JControllerAdmin
 		
 		$view = $this->getView('hbdata','html');
 		$view->setModel($model);
+		$view->setLayout('default_js');
 		
 		$view->display();
 		
@@ -107,6 +108,7 @@ class hbmanagerController extends JControllerAdmin
 		$teamkey = $jinput->get('teamkey', 'none');
 		
 		$model = $this->getModel('hbdata');
+		//echo '=> controller <br><pre>'; print_r($teamkey); echo '</pre>';
 		$model->updateDb($teamkey);
 		
 		$view = $this->getView('hbdata','html');

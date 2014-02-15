@@ -79,7 +79,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$teams = self::getHvwTeams ($key);
 			foreach ($teams as $team)
 			{
-				self::updateTeam($team);
+				self::updateTeam($team->kuerzel);
 			}
 		}
 		echo $duration = (time() - $start). ' sec';	
@@ -120,6 +120,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 	
 	protected function getHvwLink ($teamkey)
 	{
+		//echo '=> model->$updated <br><pre>'; print_r($teamkey); echo '</pre>';
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->qn('hvwLink'));
@@ -583,8 +584,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('hbdata_'.$team->kuerzel.'_spielplan');
-		$query->where($db->qn('Heim').' = '.$db->q($team->name).' OR '.
-				$db->qn('Gast').' = '.$db->q($team->name));
+		$query->where($db->qn('Heim').' = '.$db->q($team->nameKurz).' OR '.
+				$db->qn('Gast').' = '.$db->q($team->nameKurz));
 		$db->setQuery($query);
 		$games= $db->loadObjectList();
 

@@ -23,7 +23,7 @@ class HbManagerViewHbData extends JViewLegacy
 		
 		$teams = $model->getTeams();
 		$this->assignRef('teams', $teams);
-		//echo '=> view->$teams <br><pre>"; print_r($teams); echo "</pre>';
+		//echo '=> view->$teams <br><pre>'; print_r($teams); echo '</pre>';
 		$updated = $model->getUpdateStatus();
 		$this->assignRef('updated', $updated);
 		

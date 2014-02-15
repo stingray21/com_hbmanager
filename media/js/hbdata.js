@@ -2,37 +2,13 @@ jQuery(document).ready(function($){
 	
 	$(".updatebutton").click(function(){
 		//console.log(this.id);
-		var row = $(this).parent().parent();
-		row.css('background', 'yellow');
-		var cellRanking = document.getElementById("ranking_"+this.id);
-		var cellSchedule = document.getElementById("schedule_"+this.id);
+		var teamkey = this.id;
 		
-		
-		$.ajax({
-			url:'index.php?option=com_hbmanager&task=updateTeamData&format=raw',
-			type: "POST",
-			dataType:"json",
-			data: 'teamkey='+this.id, 
-			success:function(data){
-				//console.log(data);
-				row.css('background', 'transparent');
-				cellRanking.innerHTML=data.ranking;
-				cellSchedule.innerHTML=data.schedule;
-			},
-			error:function(xhr,err){
-				// code for error
-				row.css('background', 'red');
-				console.log(document.URL);
-				console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-				console.log("responseText: "+xhr.responseText);
-			}
-		});
-		
+		updateTeamData($, teamkey);
 	});
 	
 	$("#hvwupdateall").click(function(){
-		console.log('test');
-		
+		console.log('Update all teams');
 		
 		$.ajax({
 			url:'index.php?option=com_hbmanager&task=getHvwTeams&format=raw',
@@ -40,40 +16,13 @@ jQuery(document).ready(function($){
 			dataType:"json",
 			success:function(data){
 				//console.log(data);
+				var index, teamkey;
 				
-				var index;
-				var cellRanking = new Array();
-				var cellSchedule = new Array();
-				var row = new Array();
-				var teamkey = new Array();
-				//var a = ["a", "b", "c"];
 				for (index = 0; index < data.length; ++index) {
-					teamkey[index] = data[index];
-					console.log(teamkey[index]);
-					cellRanking[index] = document.getElementById("ranking_"+teamkey[index]);
-					cellSchedule[index] = document.getElementById("schedule_"+teamkey[index]);
-					row[index] = cellSchedule.parentElement;
-					row.bgColor="yellow";
-				
-					$.ajax({
-						url:'index.php?option=com_hbmanager&task=updateTeamData&format=raw',
-						type: "POST",
-						dataType:"json",
-						data: 'teamkey='+teamkey[index], 
-						success:function(data){
-							//console.log(data);
-							row[index].bgColor="transparent";
-							cellRanking[index].innerHTML=data.ranking;
-							cellSchedule[index].innerHTML=data.schedule;
-						},
-						error:function(xhr,err){
-							// code for error
-							row[index].bgColor="red";
-							console.log(document.URL);
-							console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-							console.log("responseText: "+xhr.responseText);
-						}
-					});
+					teamkey = data[index];
+					console.log(teamkey);
+					
+					updateTeamData($, teamkey);
 				}
 			},
 			error:function(xhr,err){
@@ -89,3 +38,35 @@ jQuery(document).ready(function($){
 
 });
 
+function updateTeamData($, teamkey)
+{
+	console.log('test in function');
+	
+	var cellRanking = new Array();
+	var cellSchedule = new Array();
+	var row = new Array();
+	cellRanking[teamkey] = document.getElementById("ranking_"+teamkey);
+	cellSchedule[teamkey] = document.getElementById("schedule_"+teamkey);
+	row[teamkey] = cellSchedule[teamkey].parentElement;
+	row[teamkey].bgColor="yellow";
+	
+	$.ajax({
+		url:'index.php?option=com_hbmanager&task=updateTeamData&format=raw',
+		type: "POST",
+		dataType:"json",
+		data: 'teamkey='+teamkey, 
+		success:function(data){
+			//console.log(data);
+			row[teamkey].bgColor="transparent";
+			cellRanking[teamkey].innerHTML=data.ranking;
+			cellSchedule[teamkey].innerHTML=data.schedule;
+		},
+		error:function(xhr,err){
+			// code for error
+			row[teamkey].bgColor="red";
+			console.log(document.URL);
+			console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			console.log("responseText: "+xhr.responseText);
+		}
+	});
+}
