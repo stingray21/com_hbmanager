@@ -2,19 +2,25 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 $pic = $this->picture;
-
+$picPath = './hbdata/images/teams/';
 ?>
-<h1><?php echo $this->msg; ?></h1>
+<div class="hbteamhome">
+<h1><?php echo $this->team->mannschaft; ?>
+<span><?php echo $this->team->liga; ?></span></h1>
+<?php
 
+if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
+{
+?>
 <div class="teampic">
-	<a href="<?php echo './hbdata/images/teams/'.$pic->filename ?>">
-	<img src="<?php echo './hbdata/images/teams/'.$pic->filename?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
+	<a href="<?php echo $picPath.$pic->filename ?>">
+	<img src="<?php echo $picPath.$pic->filename?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
 	</a>
 	
 	<?php echo $pic->caption ?>
 </div>
 <?php
-
+}
 
 
 	$modules =& JModuleHelper::getModules('HBtrainingInComponent');
@@ -37,3 +43,4 @@ $pic = $this->picture;
 	}
 	
 ?>
+</div>

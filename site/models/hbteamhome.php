@@ -9,7 +9,7 @@ jimport('joomla.application.component.modelitem');
 /**
  * HB Team Home Model
  */
-class HBteamHomeModelHBteamHome extends JModelItem
+class HBteamHomeModelHBteamHome extends JModelLegacy
 {
 	/**
 	 * @var array messages
@@ -80,6 +80,22 @@ class HBteamHomeModelHBteamHome extends JModelItem
 		return $this->messages[$teamkey];
 	}
 	
+	function getTeam($teamkey = "non")
+	{
+		if ($teamkey === "non"){
+			$teamkey = $this->teamkey;
+		}
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
+		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
+		$db->setQuery($query);
+		$team = $db->loadObject();
+		return $team;
+	}
+	
 	function getPictureInfo()
 	{
 		$db = $this->getDbo();
@@ -97,6 +113,7 @@ class HBteamHomeModelHBteamHome extends JModelItem
 	function getPicture()
 	{
 		$pictureInfo = self::getPictureInfo();
+		if (empty($pictureInfo)) return null;
 		//echo '=> model->pictureInfo<br><pre>'; print_r($pictureInfo); echo '</pre>';
 		$pic = new stdClass();
 		$pic->filename = $pictureInfo->dateiname;
@@ -111,7 +128,8 @@ class HBteamHomeModelHBteamHome extends JModelItem
 		$pic = (array) $pic;
 		$caption = '';
 		for ($i = 1; $i <= 4; $i++) { 
-			if (!empty($pic['untertitel_dt'.$i])) {
+			if (!empty($pic['untertitel_dt'.$i]) AND 
+					!empty($pic['untertitel_dd'.$i])) {
 				$caption .= '<dt>'.$pic['untertitel_dt'.$i].'</dt>'."\n";
 			}
 			if (!empty($pic['untertitel_dd'.$i])) {

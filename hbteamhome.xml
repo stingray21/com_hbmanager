@@ -46,7 +46,12 @@
 		<!-- language files section -->
 		<folder>language</folder>
 	</files>
-
+	
+	<media destination="com_hbteamhome" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+	</media>
+	
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu>HB Team Home</menu>

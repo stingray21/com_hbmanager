@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Team Overview Component
  */
-class HBteamHomeViewHBteamHome extends JView
+class HBteamHomeViewHBteamHome extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)
@@ -19,6 +19,10 @@ class HBteamHomeViewHBteamHome extends JView
 		
 		// Assign data to the view
 		$this->msg = $this->get('Msg');
+		
+		$team = $model->getTeam();
+		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
+		$this->assignRef('team', $team);
 /*
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -31,7 +35,8 @@ class HBteamHomeViewHBteamHome extends JView
 		//echo '=> view->picture<br><pre>'; print_r($picture); echo '</pre>';
 		$this->assignRef('picture', $picture);
 		
-		JHtml::stylesheet('com_hbteamhome/site.stylesheet.css', array(), true);
+		$document = JFactory::getDocument();
+		$document->addStyleSheet(JURI::base() . 'media/com_hbteamhome/css/site.stylesheet.css');
 		
 		// Display the view
 		parent::display($tpl);

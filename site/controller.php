@@ -8,6 +8,6 @@ jimport('joomla.application.component.controller');
 /**
  * HB Team Overview Component Controller
  */
-class HBteamHomeController extends JController
+class HBteamHomeController extends JControllerLegacy
 {
 }
