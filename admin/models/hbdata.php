@@ -108,11 +108,12 @@ class hbmanagerModelHbdata extends JModelLegacy
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('kuerzel');
+		$query->select('kuerzel, '.$db->q('false').' AS updated ');
 		$query->from('hb_mannschaft');
 		$query->where($db->qn('hvwLink').' IS NOT NULL');
 		$db->setQuery($query);
-		$teams = $db->loadColumn();
+		//$teams = $db->loadColumn();
+		$teams = $db->loadObjectList();
 		//echo '=> model->$updated <br><pre>'; echo $query; echo '</pre>';
 		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
 		return $teams;
@@ -152,7 +153,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 		{
 			self::updateRankingTimestamp ($teamkey);
 			$this->updatedRankings[] = $teamkey;
+			return true;
 		}
+		return false;
 	}
 	
 	function updateTeamSchedule($teamkey) 
@@ -167,7 +170,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 		{
 			self::updateScheduleTimestamp ($teamkey);
 			$this->updatedSchedules[] = $teamkey;
+			return true;
 		}
+		return false;
 	}
 		
 	protected function getSourceFromHVW($address)
@@ -357,8 +362,10 @@ class hbmanagerModelHbdata extends JModelLegacy
 	
 	protected function updateSchedulesInDB($tableName, $dataArray)
 	{
+		//echo '=> model->$dataArray <br><pre>';print_r($dataArray);echo'</pre>';
+		
 		$db = $this->getDbo();
-// delete existing data
+		// delete existing data
 		$db->truncateTable ($tableName);
 		
 		
@@ -406,11 +413,11 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$game .= ",'".addslashes($data[7])."'";
 			
 			// ToreHeim
-			if ($data[8] != "") $game .= ",".(int)$data[8]."";
+			if (trim($data[8]) != '') $game .= ",".(int)$data[8]."";
 			else $game .= ",NULL";
 			
 			// ToreGast
-			if ($data[9] != "") $game .= ", ".(int)$data[9]."";
+			if (trim($data[9]) != '') $game .= ", ".(int)$data[9]."";
 			else $game .= ",NULL";
 			
 			// Bemerkung
@@ -481,31 +488,21 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$query->from('hbdata_'.$teamkey.'_tabelle');
 		$db->setQuery($query);
 		$teamRankings= $db->loadObjectList();
-		// echo '=> model->$query <br><pre>'.$query.'</pre>';
-		// echo '=> model->$teamRankings <br><pre>'; 
-			// print_r($teamRankings);echo "</pre>";
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		//echo '=> model->$teamRankings <br><pre>'; print_r($teamRankings);echo "</pre>";
 
 		$query = $db->getQuery(true);
-		$query->select('Verein');
-		$query->from('hb_tabelle');
+		$query->delete('hb_tabelle');
 		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
 		$db->setQuery($query);
-		$clubs= $db->loadObjectList();
-		// echo '=> model->$query <br><pre>'.$query.'</pre>';
-		// echo '=> model->$clubs <br><pre>'; print_r($clubs);echo '</pre>';
-
-		$update = false;
-		if (count($teamRankings) == count($clubs)) $update = true;
-
-		if ($update) 
-		{
-			$query = $db->getQuery(true);
-			$query->delete('hb_tabelle');
-			$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
-			$db->setQuery($query);
-			$db->query();
-		}
-
+		$db->query();
+		
+		$query = $db->getQuery(true);
+		$query->insert('hb_tabelle');
+		$query->columns($db->qn(array('kuerzel','platz','verein','spiele',
+				'siege','unentschieden','niederlagen','plustore','minustore',
+				'torDifferenz','pluspunkte','minuspunkte')));
+		
 		foreach ($teamRankings as $row)
 		{
 			// use ranking from previous row in case of empty ranking
@@ -514,67 +511,37 @@ class hbmanagerModelHbdata extends JModelLegacy
 
 			$diff = $row->Plustore - $row->Minustore;
 
-			$query = $db->getQuery(true);
-			if ($update) $query->update('hb_tabelle');
-			else $query->insert('hb_tabelle');
-
-			$query->set(
-					$db->qn('kuerzel').' = '.
-						$db->q($teamkey).', '.
-					$db->qn('platz').' = '.
+			$query->values($db->q($teamkey).', '.
 						$db->q($curRanking).', '.
-					$db->qn('verein').' = '.
 						$db->q($row->Verein).', '.
-					$db->qn('spiele').' = '.
 						$db->q($row->Spiele).', '.
-					$db->qn('siege').' = '.
 						$db->q($row->Siege).', '.
-					$db->qn('unentschieden').' = '.
 						$db->q($row->Unentschieden).', '.
-					$db->qn('niederlagen').' = '.
 						$db->q($row->Niederlagen).', '.
-					$db->qn('plustore').' = '.
 						$db->q($row->Plustore).', '.
-					$db->qn('minustore').' = '.
 						$db->q($row->Minustore).', '.
-					$db->qn('torDifferenz').' = '.
 						$db->q($diff).', '.
-					$db->qn('pluspunkte').' = '.
 						$db->q($row->Pluspunkte).', '.
-					$db->qn('minuspunkte').' = '.
 						$db->q($row->Minuspunkte));
-			if ($update) 
-			{
-				$query->where(
-						$db->qn('kuerzel').' = '.
-							$db->q($teamkey).' AND '.
-						$db->qn('verein').' = '.
-							$db->q($row->Verein));
-			}
-			//echo '=> model->$query <br><pre>".$query."</pre>';
-			$db->setQuery($query);
-			try {
-				// Execute the query in Joomla 2.5.
-				$result[] = $db->query();
-			} catch (Exception $e) {
-				// catch any database errors.
-			}
-
-			// display and convert to HTML when SQL error
-			if ($db->getErrorMsg() != '')
-			{
-				$jAp->enqueueMessage(nl2br($db->getErrorMsg()."\n\n"),
-						'error');
-			}
+			//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		}
-
-		if (!in_array(false, $result)) {
-			//return time();
-			return true;
+		
+		$db->setQuery($query);
+		try {
+			// Execute the query in Joomla 2.5.
+			$result = $db->query();
+		} catch (Exception $e) {
+			// catch any database errors.
 		}
-		else {
-			return FALSE;
+		
+		// display and convert to HTML when SQL error
+		if ($db->getErrorMsg() != '')
+		{
+			$jAp->enqueueMessage(nl2br($db->getErrorMsg()."\n\n"),
+					'error');
 		}
+		
+		return $result;
 	}
 	
 	protected function updateDbTableAllSchedules($teamkey)

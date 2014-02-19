@@ -10,7 +10,9 @@ echo '<a id="hvwupdateall" class="hbbutton" './/'href="'.
 		//JRoute::_('index.php?option=com_hbmanager&task=updateData&teamkey=all').
 		'">'.JText::_('COM_HBMANAGER_DATA_UPDATE_ALL_BUTTON').'</a>';
 
+echo '<div id="eggtimer"><img src="../media/com_hbmanager/images/eggtimer.gif" /></div>';
 
+echo '<div class="clr"></div>';
 
 echo '<table id="hvwupdate">';
 echo '<tr><th>Mannschaft</th><th>letztes Update: Tabelle</th><th>letztes Update: Spielplan</th><th></th></tr>'."\n";

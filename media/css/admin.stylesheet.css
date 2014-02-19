@@ -269,3 +269,15 @@ table.db-tables td
 	padding: 0.5em;
 	text-align: left;
 }
+
+div#eggtimer {
+	float: left;
+	margin-left: 1em; 
+	visibility: hidden;
+}
+
+a#hvwupdateall {
+	float: left;
+	margin-top: 4px;
+}
+
