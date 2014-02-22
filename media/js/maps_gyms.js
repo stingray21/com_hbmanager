@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
 		
 		// Send a http request with AJAX http://api.jquery.com/jQuery.ajax/ 
 		$.ajax({
-			url: '../components/com_hbgyms/helpers/updateGyms.php',		//the script to call to get data
+			url: 'index.php?option=com_hbgyms&task=updateGyms&format=raw',		//the script to call to get data
 			data: "teamkey=" + teamkey,				//you can insert url argumnets here to pass to api.php
 																//for example "id=5&parent=6"
 			dataType: 'json',									//data format

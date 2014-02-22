@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Hallenverzeichnis Component
  */
-class HBGymsViewHBGyms extends JView
+class HBGymsViewHBGyms extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)

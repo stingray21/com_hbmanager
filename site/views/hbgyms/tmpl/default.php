@@ -14,7 +14,7 @@ echo '<h1>Hallenverzeichnis</h1>'."\n\n";
 // }
 // echo "</ul>\n";
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-$form = JForm::getInstance('myform', JPATH_COMPONENT.DS.'models'.DS.'forms'.DS.'teams.xml');
+$form = JForm::getInstance('myform', JPATH_COMPONENT.'/models/forms/teams.xml');
 ?>
 		
 <form class="form-validate" action="" method="post" id="updateGyms" name="updateGyms">
