@@ -6,9 +6,9 @@
 			<field 
 				name="teamauswahl" 
 				type="teams" 
-				default="" 
+				default="allGyms" 
 				class="" 
-				label="Mannschaften:"
+				label="Hallenliste auswählen für"
 			/> 
 		</fieldset>
 	</fields>

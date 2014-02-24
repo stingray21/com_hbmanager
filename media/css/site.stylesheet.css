@@ -1,8 +1,23 @@
 div#map-canvas {
 	width:400px; 
 	height: 300px;
-	}
+	border: 10px solid #fafafa;
+	box-shadow: 2px 2px 5px #aaa;
+	padding: 0px;
+	margin: 0 3% 2em 1%;
+	background: #fafafa;
+	float: left;
+}
 
+h2#hallenAuswahl 
+{
+	clear: both;
+}
+
+select#hbteams_teamauswahl
+{
+	width: auto;
+}
 
 table.hallenvz {
 	border: 0; 
@@ -19,8 +34,39 @@ table tr.odd {
 table tr th {
 	border: 0;
 	padding: 5px 5px;
-	}	
+	}
+	
+table.hallenvz th.colNr 
+	{
+	width: 6%;	
+	}
 
+table.hallenvz th.colName 
+	{
+	width: 20%;	
+	}
+	
+table.hallenvz th.colLink 
+	{
+	width: 23%;	
+	}
+	
+table.hallenvz th.colMap 
+	{
+	width: 6%;	
+	}
+
+table.hallenvz th.colPhone
+	{
+	width: 15%;	
+	}
+
+table.hallenvz th.colGlue 
+	{
+	width: 30%;	
+	}
+
+	
 table tr td {
 	border: 0;
 	padding: 5px 5px;
@@ -49,7 +95,7 @@ table tr.even td {
 
 select#hbteams_teamauswahl {
 	padding:3px;
-	margin: 0;
+	margin: 0 0 0 1em;
 /*
 	-webkit-border-radius:4px;
 	-moz-border-radius:4px;

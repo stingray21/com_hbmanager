@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
  
 // Get an instance of the controller
-$controller = JController::getInstance('HBgyms');
+$controller = JControllerLegacy::getInstance('HBgyms');
  
 // Perform the Request task
 $input = JFactory::getApplication()->input;

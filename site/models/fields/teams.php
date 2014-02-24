@@ -51,7 +51,7 @@ class JFormFieldTeams extends JFormFieldList
 			}
 			else
 			{
-				$options[] = JHtml::_('select.option', 'allGyms', 'alle');
+				$options[] = JHtml::_('select.option', 'allGyms', 'alle im Bezirk');
 			}
 
 			foreach ($items as $item)

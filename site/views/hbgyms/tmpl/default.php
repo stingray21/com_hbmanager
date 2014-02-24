@@ -6,6 +6,10 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<h1>Hallenverzeichnis</h1>'."\n\n";
 
+if ($this->showMap == true) {
+	echo '<div id="map-canvas"></div>'."\n";
+}
+
 // echo "<ul>\n";
 // foreach ($this->mannschaften as $mannschaft) {
 // 	echo '<li id="button'.$mannschaft->kuerzel.'" class="hallenButton">'.$mannschaft->mannschaft;
@@ -20,6 +24,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT.'/models/forms/teams.xml');
 <form class="form-validate" action="" method="post" id="updateGyms" name="updateGyms">
 	<fieldset class="adminform">
 		<?php
+		echo $form->getLabel('teamauswahl', 'hbteams');	
 		$input = $form->getInput('teamauswahl', 'hbteams');	
 		echo $input;								
 		//echo '<input class="submit" type="submit" name="submit" value="Mannschaften auswählen" />';
@@ -30,14 +35,11 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT.'/models/forms/teams.xml');
 <h2 name="hallenAuswahl" id="hallenAuswahl">Alle Hallen im Bezirk</h2>
 <?php 
 echo '<table id="hallenvztbl" class="hallenvz">'."\n";
-echo '<tr><th>Nr</th><th>Name</th><th class="link">Adresse</th><th class="map"></th><th>Telefon</th><th>Haftmittel</th></tr>'."\n";
+echo '<tr><th class="colNr">Nr</th><th class="colName">Name</th><th class="colLink">Adresse</th><th class="colMap"></th><th class="colPhone">Telefon</th><th class="colGlue">Haftmittel</th></tr>'."\n";
 $rowlabel = 'even';
 
 foreach ($this->gyms as $gym)
 {
-	$klammer = explode(' ', $gym->kurzname);
-	$klammer = $klammer[0];
-	
 	if ($rowlabel == 'even') $rowlabel = 'odd';
 	else $rowlabel = 'even'; 
 	
@@ -45,7 +47,7 @@ foreach ($this->gyms as $gym)
 	$destination = implode(' ',array($gym->plz, $gym->stadt, $gym->strasse));
 	$link = 'https://maps.google.com/maps?saddr='.urlencode($start).'&daddr='.urlencode($destination).'&ie=UTF8';
 	
-	echo '<tr class="'.$rowlabel.'"><td>'.$gym->hallenNummer.'</td><td>'.$gym->name.' ('.$klammer.')</td>';
+	echo '<tr class="'.$rowlabel.'"><td>'.$gym->hallenNummer.'</td><td>'.$gym->name.' <br />('.$gym->kurzname.')</td>';
 	echo '<td class="link"><a href="'.$link.'" />';
 	echo $gym->plz.' '.$gym->stadt;
 	if (!empty($gym->strasse)) echo '<br />'.$gym->strasse;

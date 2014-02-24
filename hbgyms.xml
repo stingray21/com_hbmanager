@@ -43,13 +43,11 @@
 		<filename>controller.php</filename>
 		<folder>views</folder>
 		<folder>models</folder>
-		<!-- language files section -->
-		<folder>language</folder>
 	</files>
 	
 	<languages folder="site">
-			<language tag="de-DE">language/de-DE/de-DE.com_hbgyms.ini</language>
-		</languages>
+		<language tag="de-DE">language/de-DE/de-DE.com_hbgyms.ini</language>
+	</languages>
 	
 	<media destination="com_hbgyms" folder="media">
 		<filename>index.html</filename>

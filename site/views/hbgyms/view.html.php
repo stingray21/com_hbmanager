@@ -14,15 +14,24 @@ class HBGymsViewHBGyms extends JViewLegacy
 	function display($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		// local jquery
+		//$document->addScript(JURI::Root().'media/com_hbgyms/js/jquery-2.0.3.js);
 		$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false');
-		$document->addScript(JURI::Root().'media/com_hbgyms/js/jquery-2.0.3.js');
-		$document->addScript(JURI::Root().'media/com_hbgyms/js/maps_gyms.js');
+		JHtml::_('jquery.framework');
 		
+		$document->addScript(JURI::Root().'media/com_hbgyms/js/maps_gyms.js');
+		if(strpos(JURI::Root(), 'localhost') !== false) {
+			$document->addScript('./media/com_hbgyms/js/maps_gyms.js');
+		}
 		
 		$model = $this->getModel('hbgyms');
 		//$this->assignRef('model', $model);
 		
-		$tems = $model->getTeams();
+		$showMap = true;
+		$this->assignRef('showMap', $showMap);
+		//echo "<pre>"; print_r($showMap); echo "</pre>";
+		
+		$teams = $model->getTeams();
 		$this->assignRef('teams', $teams);
 		//echo "<pre>"; print_r($teams); echo "</pre>";
 

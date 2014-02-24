@@ -11,15 +11,23 @@ jimport('joomla.application.component.controller');
 class HBGymsController extends JControllerLegacy
 {
 	
+	function display($cachable=false, $urlparams = false)
+	{
+		// set default view if not set
+		JRequest::setVar('view', JRequest::getCmd('view', 'hbgyms'));
+
+		parent::display($cachable);
+	}
+	
 	function updateGyms()
 	{
 		// Set up the data to be sent in the response.
-		$model = $this->getModel('hbdata');
+		$model = $this->getModel('hbgyms');
 		
 		$jinput = JFactory::getApplication()->input;
 		$teamkey = $jinput->get('teamkey', 'all');
 
-		$response = $model->updateGyms();;
+		$response = $model->updateGyms($teamkey);
 		//$response = array("success" => true);
 
 		// Get the document object.

@@ -92,6 +92,6 @@ class HBgymsModelHBgyms extends JModelLegacy
 		$gyms = $db->loadObjectList();
 
 		//echo "<pre>"; print_r($gyms); echo "</pre>";
-		echo json_encode($gyms);
+		return $gyms;
 	}
 }
