@@ -202,10 +202,7 @@ CREATE TABLE IF NOT EXISTS `hb_tabelle` (
 
 CREATE TABLE IF NOT EXISTS `hb_trainer` (
   `trainerID` int(3) NOT NULL AUTO_INCREMENT,
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `emailSichtbar` tinyint(1) DEFAULT '0',
-  `telefonSichtbar` tinyint(1) DEFAULT '0',
-  `handySichtbar` tinyint(1) DEFAULT '0',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
   PRIMARY KEY (`trainerID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -225,3 +222,40 @@ CREATE TABLE IF NOT EXISTS `hb_training` (
   `sichtbar` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`trainingID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+--
+-- Table structure for table `hb_mannschaft_spieler`
+--
+
+CREATE TABLE IF NOT EXISTS `hb_mannschaft_spieler` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `kuerzel` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `saison` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `trikotNr` int(3) DEFAULT NULL,
+  `trainer` tinyint(1) DEFAULT '0',
+  `TW` tinyint(1) DEFAULT '0',
+  `LA` tinyint(1) DEFAULT '0',
+  `RL` tinyint(1) DEFAULT '0',
+  `RM` tinyint(1) DEFAULT '0',
+  `RR` tinyint(1) DEFAULT '0',
+  `RA` tinyint(1) DEFAULT '0',
+  `KM` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
+--
+-- Table structure for table `hb_spieler`
+--
+
+CREATE TABLE IF NOT EXISTS `hb_spieler` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `groesse` int(5) DEFAULT NULL,
+  `geburtstag` date DEFAULT NULL,
+  `vereine` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
