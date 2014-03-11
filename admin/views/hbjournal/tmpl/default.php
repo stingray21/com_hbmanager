@@ -199,7 +199,8 @@ echo JHtml::_('icon.msword', $this->item, $params);
 				echo "</pre>";
 				echo "<p{$styles['style_p']}>";
 				echo nl2br($bericht['text']);
-				if (isset($bericht['spieler'])) echo "<br />".nl2br($bericht['spieler']);
+				if (isset($bericht['spieler'])) echo "<br />Es spielten:<br />".nl2br($bericht['spieler']);
+				if (isset($bericht['zusatz'])) echo "<br />".nl2br($bericht['zusatz']);
 				echo "</p>";
 			}
 			echo '</div>';

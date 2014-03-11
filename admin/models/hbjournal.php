@@ -427,8 +427,9 @@ class HBmanagerModelHbjournal extends JModelLegacy
 						."\t{$bericht->toreHeim}:{$bericht->toreGast}";
 				$text = $bericht->bericht;
 				if (!empty($bericht->spielerliste)) $spieler = $bericht->spielerliste;
+				if (!empty($bericht->zusatz)) $zusatz = $bericht->zusatz;
 				
-				$data[] = array('ueberschrift' => $ueberschrift, 'ergebnis' => $ergebnis, 'text' => $text, 'spieler' => $spieler);
+				$data[] = array('ueberschrift' => $ueberschrift, 'ergebnis' => $ergebnis, 'text' => $text, 'spieler' => $spieler, 'zusatz' => $zusatz);
 			}
 			//echo "<pre>"; print_r($data); echo "</pre>";
 		}

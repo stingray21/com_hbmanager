@@ -154,9 +154,165 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 		foreach ($games as $game){
 			$sortedGames[$game->datum][] = $game;
 		}
-		//echo '=> model->$sortedGames <br><pre>".$sortedGames."</pre>';
+		//echo '=> model->$sortedGames <br><pre>';print_r($sortedGames);echo'</pre>';
+		
+		$multiGames = true;
+		if ($multiGames) {
+			$sortedGames = self::combineMultiGames($sortedGames);
+		}
+		//echo '=> model->$sortedGames <br><pre>';print_r($sortedGames);echo'</pre>';
 		
 		return $this->prevGames = $sortedGames;
+	}
+	
+	function combineMultiGames($games) 
+	{
+		//echo '=> model->$sortedGames <br><pre>';print_r($games);echo'</pre>';
+		$combinedGames = null;
+		foreach ($games as $date => $gameday)
+		{
+			$criteria = new stdClass();
+			$criteria->kuerzel = null;
+			$criteria->heim = null;
+			$criteria->gast = null;
+			$combinedGamesNo = -1;
+			foreach ($gameday as $key => $value)
+			{
+				if (preg_match('/..(e|E)\d?/', $value->kuerzel)) {
+					if ($criteria->kuerzel === $value->kuerzel AND
+						$criteria->heim === $value->heim AND
+						$criteria->gast === $value->gast) 
+					{
+						$combinedGames[$date][$combinedGamesNo]->indices[] = $key;
+					}
+					else
+					{
+						$criteria->kuerzel = $value->kuerzel;
+						$criteria->heim = $value->heim;
+						$criteria->gast = $value->gast;
+						$combinedGames[$date][++$combinedGamesNo] = new stdClass();
+						$combinedGames[$date][$combinedGamesNo]->indices[] = $key;
+					}
+					if ($value->toreHeim > $value->toreGast) {
+						$combinedGames[$date][$combinedGamesNo]->toreHeim += 2;
+						$combinedGames[$date][$combinedGamesNo]->toreGast += 0;
+					}
+					elseif ($value->toreHeim < $value->toreGast) {
+						$combinedGames[$date][$combinedGamesNo]->toreHeim += 0;
+						$combinedGames[$date][$combinedGamesNo]->toreGast += 2;
+					}
+					elseif ($value->toreHeim == $value->toreGast AND
+						$value->toreHeim !== null ) {
+						$combinedGames[$date][$combinedGamesNo]->toreHeim += 1;
+						$combinedGames[$date][$combinedGamesNo]->toreGast += 1;
+					}
+					else {
+						$combinedGames[$date][$combinedGamesNo]->toreHeim = null;
+						$combinedGames[$date][$combinedGamesNo]->toreGast = null;
+					}
+					
+				}
+			}
+		}
+		//echo '=> model->$combinedGames <br><pre>';print_r($combinedGames);echo'</pre>';
+		
+		foreach ($combinedGames as $date => $gamedate) 
+		{
+			foreach ($gamedate as $game) 
+			{
+				$copy = null;
+				foreach ($game->indices as $index)
+				{	
+					if ($copy === null) {
+						$copy = $games[$date][$index]->spielIDhvw;
+					}
+					else {
+						$games[$date][$index]->copy = $copy;
+					}
+					$games[$date][$index]->toreHeim = $game->toreHeim;
+					$games[$date][$index]->toreGast = $game->toreGast;
+					
+					// delete "other" games
+					if (isset($games[$date][$index]->copy)) {
+						unset($games[$date][$index]);
+					}
+				}
+			}
+		}
+		return $games;
+	}
+	
+	function combineMultiGames4News($games) 
+	{
+		//echo '=> model->$sortedGames <br><pre>';print_r($games);echo'</pre>';
+		$combinedGames = null;
+		$criteria = new stdClass();
+		$criteria->kuerzel = null;
+		$criteria->heim = null;
+		$criteria->gast = null;
+		$combinedGamesNo = -1;
+		foreach ($games as $key => $value)
+		{
+			if (preg_match('/..(e|E)\d?/', $value->kuerzel)) {
+				if ($criteria->kuerzel === $value->kuerzel AND
+					$criteria->heim === $value->heim AND
+					$criteria->gast === $value->gast) 
+				{
+					$combinedGames[$combinedGamesNo]->indices[] = $key;
+				}
+				else
+				{
+					$criteria->kuerzel = $value->kuerzel;
+					$criteria->heim = $value->heim;
+					$criteria->gast = $value->gast;
+					$combinedGames[++$combinedGamesNo] = new stdClass();
+					$combinedGames[$combinedGamesNo]->indices[] = $key;
+				}
+				if ($value->toreHeim > $value->toreGast) {
+					$combinedGames[$combinedGamesNo]->toreHeim += 2;
+					$combinedGames[$combinedGamesNo]->toreGast += 0;
+				}
+				elseif ($value->toreHeim < $value->toreGast) {
+					$combinedGames[$combinedGamesNo]->toreHeim += 0;
+					$combinedGames[$combinedGamesNo]->toreGast += 2;
+				}
+				elseif ($value->toreHeim == $value->toreGast AND
+					$value->toreHeim !== null ) {
+					$combinedGames[$combinedGamesNo]->toreHeim += 1;
+					$combinedGames[$combinedGamesNo]->toreGast += 1;
+				}
+				else {
+					$combinedGames[$combinedGamesNo]->toreHeim = null;
+					$combinedGames[$combinedGamesNo]->toreGast = null;
+				}
+
+
+			}
+		}
+		//echo '=> model->$combinedGames <br><pre>';print_r($combinedGames);echo'</pre>';
+		
+		foreach ($combinedGames  as $game) 
+		{
+			$copy = null;
+			foreach ($game->indices as $index)
+			{	
+				if ($copy === null) {
+					$copy = $games[$index]->spielIDhvw;
+				}
+				else {
+					$games[$index]->copy = $copy;
+				}
+				$games[$index]->toreHeim = $game->toreHeim;
+				$games[$index]->toreGast = $game->toreGast;
+
+				// delete "other" games
+				if (isset($games[$index]->copy)) {
+					unset($games[$index]);
+				}
+			}
+		}
+		
+		return $games;
 	}
 	
 	function updateDB($previousGames = array())
@@ -225,7 +381,11 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
-		//echo '=> model->$games <br><pre>".$games."</pre>';
+		//echo '=> model->$games <br><pre>';print_r($games);echo'</pre>';
+		
+		$games = self::combineMultiGames4News($games);
+		
+		//echo '=> model->$games <br><pre>';print_r($games);echo'</pre>';
 		
 		if (!empty($games))
 		{
@@ -244,52 +404,44 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 			//echo '=> model->$dateframe <br><pre>".$dateframe."</pre>';
 
 
-						// format date
+			// format date
 			$minDate = strtotime($dateframe->min);
 			$maxDate = strtotime($dateframe->max);
 			if ($minDate === $maxDate)
 			{
-				$titledate = strftime("%A, ", $minDate).
-						ltrim(strftime("%d. %b %Y", $minDate),'0');
-				$titledateKW = 'KW'.ltrim(strftime("%V", $minDate),'0');
+				$titledate = JHtml::_('date', $minDate, 'D, d. F Y', false);
+				$titledateKW = 'KW'.JHtml::_('date', $minDate, 'W', false);
+			}
+			elseif (strftime("%m", $minDate) === strftime("%m", $maxDate) AND
+				strftime("%w", $minDate) == 6 AND 
+				strftime("%w", $maxDate) == 0 AND
+				strftime("%j", $minDate)+1 == strftime("%j", $maxDate)) 
+			{
+				$titledate = 'Wochenende';
+				$titledate .= JHtml::_('date', $minDate, 'd.', false);
+				$titledate .= '/';
+				$titledate .= JHtml::_('date', $maxDate, 'd. F. Y', false);
+				
+				$titledateKW = 'KW'.JHtml::_('date', $maxDate, 'W', false);
 			}
 			else
 			{
-				if (strftime("%u", $minDate) == 6 AND 
-						strftime("%u", $maxDate) == 7)
-				{
-					if (strftime("%m", $minDate) == strftime("%m", $maxDate))
-					{
-						$titledate = 'Wochenende '.
-							ltrim(strftime("%d/", $minDate),'0').
-							ltrim(strftime("%d. %b %Y", $maxDate),'0');
-					}
-					else
-					{
-						$titledate = 'Wochenende '.
-							ltrim(strftime("%d. %b / ", $minDate),'0').
-							ltrim(strftime("%d. %b %Y", $maxDate),'0');
-					}
+				$titledate = JHtml::_('date', $minDate, 'D d. ', false);
+				if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
+					$titledate .= JHtml::_('date', $minDate, 'F. ', false);
 				}
-				else
-				{
-					$titledate = ltrim(strftime("%d. %b %Y", $minDate),'0').
-							' bis '.ltrim(strftime("%d. %b %Y", $maxDate),'0');
+				if (strftime("%Y", $minDate) !== strftime("%Y", $maxDate)) {
+					$titledate .= JHtml::_('date', $minDate, 'Y ', false);
 				}
-
-				if (strftime("%V", $minDate) == strftime("%V", $maxDate))
-				{
-
-					$titledateKW = 'KW'.ltrim(strftime("%V", $minDate),'0');
-				}
-				else
-				{
-					$titledateKW = 'KW'.ltrim(strftime("%V", $minDate),'0').
-							' bis KW'.ltrim(strftime("%V", $maxDate),'0');
-				}
+				$titledate .= 'bis ';
+				$titledate .= JHtml::_('date', $maxDate, 'D d. F. Y', false);
+				
+				$titledateKW = 'KW'.JHtml::_('date', $minDate, 'W', false).'-'.
+							JHtml::_('date', $maxDate, 'W', false);
 			}
 
 			$prevTeam = NULL;
+			$content = null;
 			$content .= '<div class="newsspieltag">';
 			foreach ($games as $game)
 			{	
@@ -298,8 +450,8 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 					$content .= '<h4>'.
 							'<a href="'.JURI::Root().'index.php/'.
 							strtolower($game->kuerzel).'-home">'.
-							$game->mannschaft.' - '.$game->liga
-							.' ('.$game->ligaKuerzel.')</a>'.
+							$game->mannschaft.' <span class="liga">'.$game->liga
+							.' ('.$game->ligaKuerzel.')</span></a>'.
 							'</h4>';
 				}
 				$prevTeam = $game->mannschaft;
@@ -309,10 +461,10 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 								'<tbody>'.
 									'<tr>'.
 										'<td class="text">'.$game->heim.'</td>'.
-										'<td>-</td>'.
+										'<td class="symbol">-</td>'.
 										'<td class="text">'.$game->gast.'</td>'.
-										'<td class="figure">'.$game->toreHeim.
-										'</td><td>:</td>'.
+										'<td class="figure">'.$game->toreHeim.'</td>'.
+										'<td class="symbol">:</td>'.
 										'<td class="figure">'.$game->toreGast.
 										'</td>'.
 									'</tr>'.
@@ -324,6 +476,9 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 					$content .= '<p class="spielerliste">'.
 						'<span>Es spielten:</span><br />'.
 						$game->spielerliste.'</p>';
+				if (!empty($game->zusatz))
+					$content .= '<p class="zusatz">'.
+						$game->zusatz.'</p>';
 				$content .= '</div>';
 			}
 			$content .= '</div>';
@@ -342,7 +497,8 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 					//'fulltext' => '',
 					'state' => 1,
 					'catid' => 8,
-					'featured' => 1
+					'featured' => 1,
+					'language' => '*'
 			);
 
 			// Bind data

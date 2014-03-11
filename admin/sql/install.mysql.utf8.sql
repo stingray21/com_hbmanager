@@ -23,6 +23,26 @@ CREATE TABLE IF NOT EXISTS `hb_mannschaft` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hb_staffel`
+--
+
+CREATE TABLE IF NOT EXISTS `hb_staffel` (
+  `staffelID` int(3) NOT NULL AUTO_INCREMENT,
+  `staffel` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `staffelName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `staffelLink` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `geschlecht` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `jugend` tinyint(1) DEFAULT NULL,
+  `saison` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rankingTeams` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `scheduleTeams` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`staffelID`),
+  UNIQUE KEY `staffel` (`staffel`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hb_spiel`
 --
 
