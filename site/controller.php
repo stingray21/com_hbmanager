@@ -10,4 +10,32 @@ jimport('joomla.application.component.controller');
  */
 class HBteamHomeController extends JControllerLegacy
 {
+	function getGoals()
+	{
+		
+		$model = $this->getModel('hbteamgoals');
+		
+		// Set view
+		//JRequest::setVar('view', 'ajax');
+		//parent::display();
+		$view = $this->getView('hbteamgoals','raw');
+ 		$view->setModel($model);
+		$view->setLayout('getGoals');
+		$view->display();
+	}
+	
+	function getGoals4Chart()
+	{
+		$jinput = JFactory::getApplication()->input;
+		
+		$teamkey = $jinput->get('teamkey');
+		$teamkey = 'm1';
+		$season = $jinput->get('season');
+		$season = 2013;
+		
+		$model = $this->getModel('hbteamgoals');
+		
+		$data = $model->getChartData($teamkey);
+		echo json_encode($data);
+	}
 }

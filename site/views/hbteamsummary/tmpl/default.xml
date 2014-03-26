@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_HBTEAMHOME_HBTEAMHOME_VIEW_SUMMARY_TITLE">
+		<message>COM_HBTEAMHOME_HBTEAMHOME_VIEW_SUMMARY_DESC</message>
+	</layout>
+
+
+	<fields
+		name="request"
+		addfieldpath="/administrator/components/com_hbteamhome/models/fields"
+		>
+		<fieldset name="request">
+			<field
+				name="show_team"
+				type="list"
+				label="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_LABEL"
+				description="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_DESC">
+				<option	value="">JGLOBAL_USE_GLOBAL</option>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAM_SETTINGS_LABEL">
+			<field
+				name="teamkey"
+				type="hbteamhome"
+				size="1"
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_LABEL"
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_DESC"
+				/>
+			<field 
+				name="saison" 
+				type="list" 
+				default="" 
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_SAISON_LABEL" 
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_SAISON_DESC">
+				<option value="2012">2012/2013</option>
+				<option value="2013">2013/2014</option>
+				<option value="2014">2014/2015</option>
+			</field>
+			<field 
+				name="youth" 
+				type="radio" 
+				default="0" 
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_YOUTH_LABEL" 
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_YOUTH_DESC">
+					<option value="0">Aktiv</option>
+					<option value="1">Jugend</option>
+			</field>
+			<field 
+				name="showhomegym" 
+				type="radio" 
+				default="0" 
+				label="LABEL_MODHBTRAINING_SHOWHOMEGYM" 
+				description="DESC_MODHBTRAINING_SHOWHOMEGYM">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			<field 
+				name="teamImage" 
+				type="imagelist" 
+				default="" 
+				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_LABEL" 
+				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_DESC" 
+				directory="hbdata/images/teams" 
+				exclude="" 
+				stripext="" 
+				/>
+		</fieldset>
+	</fields>
+  
+</metadata>

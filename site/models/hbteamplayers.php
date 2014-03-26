@@ -78,45 +78,19 @@ class HBteamHomeModelHBteamPlayers extends JModelLegacy
 		{
 			$positions = array();
 			$positionskurz = array();
-			if ($player->trainer == true) 
+			
+			$positionKeys = array('trainer', 'TW', 'LA', 'RL', 'RM', 'RR', 'RA', 'KM');
+			$positionNames = array('Trainer', 'Torwart', 'Linksaußen', 'Rückraum-Links',
+				'Rückraum-Mitte', 'Rückraum-Rechts', 'Rechtsaußen', 'Kreis');
+			$positionAbrv = array('TR', 'TW', 'LA', 'RL', 'RM', 'RR', 'RA', 'KM');
+			
+			foreach ($positionKeys as $i => $key)
 			{
-				$positions[] = 'Trainer';
-				$positionskurz[] = 'TR';
-			}
-			if ($player->TW == true) 
-			{
-				$positions[] = 'Torwart';
-				$positionskurz[] = 'TW';
-			}
-			if ($player->LA == true) 
-			{
-				$positions[] = 'Linksaußen';
-				$positionskurz[] = 'LA';
-			}
-			if ($player->RL == true) 
-			{
-				$positions[] = 'Rückraum-Links';
-				$positionskurz[] = 'RL';
-			}
-			if ($player->RM == true) 
-			{
-				$positions[] = 'Rückraum-Mitte';
-				$positionskurz[] = 'RM';
-			}
-			if ($player->RR == true) 
-			{
-				$positions[] = 'Rückraum-Rechts';
-				$positionskurz[] = 'RR';
-			}
-			if ($player->RA == true) 
-			{
-				$positions[] = 'Rechtsaußen';
-				$positionskurz[] = 'RA';
-			}
-			if ($player->KM == true) 
-			{
-				$positions[] = 'Kreis';
-				$positionskurz[] = 'KM';
+				if ($player->{$key} == true) 
+				{
+					$positions[] = $positionNames[$i];
+					$positionskurz[] = $positionAbrv[$i];
+				}
 			}
 			$player->positions = implode(', ', $positions);
 			$player->positionskurz = $positionskurz;
