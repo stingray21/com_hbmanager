@@ -93,6 +93,18 @@ class HBteamHomeModelHBteamGoals extends JModelLegacy
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
 		//echo '=> model->games<br><pre>'; print_r($games); echo '</pre>';
+		
+		foreach ($games as $game)
+		{
+			$gameName = $game->heim.'&'.$game->gast;
+			$pattern = '/(.*)&(TSV Geislingen)/';
+			$replacement = '${1} (A)';
+			$gameName = preg_replace($pattern, $replacement, $gameName);
+			$pattern = '/(TSV Geislingen)&(.*)/';
+			$replacement = '${2} (H)';
+			$gameName = preg_replace($pattern, $replacement, $gameName);
+			$game->gameName = $gameName;
+		}
 		return $games;
 	}
 	
@@ -232,6 +244,7 @@ class HBteamHomeModelHBteamGoals extends JModelLegacy
 			$query->where('hb_spiel.'.$db->qn('spielIDhvw').' = '.$db->q($game->spielIDhvw));
 			$query->where($db->qn('tore').' IS NOT NULL');
 			$query->group('hb_spiel_spieler.alias');
+			$query->order('name');
 			//echo '=> model->$query <br><pre>'.$query.'</pre>';
 			$db->setQuery($query);
 			$players = $db->loadObjectList();
@@ -245,7 +258,7 @@ class HBteamHomeModelHBteamGoals extends JModelLegacy
 			$gameName = preg_replace($pattern, $replacement, $gameName);
 			
 			//$gameName = $game->spielIDhvw; 
-			$data['game'][]= $gameName; 
+			$gameIdList[]= $gameName; 
 			foreach ($players as $player) {
 				$player->tore = (int) $player->tore;
 				//$data[str_replace('-','_',$player->alias)][] = 
@@ -266,6 +279,8 @@ class HBteamHomeModelHBteamGoals extends JModelLegacy
 				}
 			} 
 		}
+		krsort($data);
+		$data['game'] = $gameIdList; 
 		//echo '=> model->data<br><pre>'; print_r($data); echo '</pre>';
 		return $data;
 	}

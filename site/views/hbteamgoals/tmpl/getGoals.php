@@ -13,8 +13,9 @@
 	
 	<table class="goals">
 
-<tr><th class="name">Name</th><th>Tore</th><th>Spiele</th><th>gesamt</th><th>Quote</th></tr>
-<?php
+<thead><tr><th class="name">Name</th><th>T</th><th>S</th><th>G</th><th>T/S</th></tr></thead>
+		<tbody>
+			<?php
 //print_r($this->gameId);
 foreach ($this->players as $player) 
 {
@@ -38,4 +39,5 @@ foreach ($this->players as $player)
 	echo '</td></tr>';
 }
 ?>
+		</tbody>
 </table>

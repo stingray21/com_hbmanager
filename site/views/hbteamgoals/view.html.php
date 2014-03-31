@@ -31,6 +31,7 @@ class HBteamHomeViewHBteamGoals extends JViewLegacy
 		
 		$this->assignRef('teamkey', $model->teamkey);
 		$this->assignRef('season', $model->season);
+		$this->assignRef('gameId', $model->gameId);
 
 		$games = $model->getGames();
 		//echo '=> view->games<br><pre>'; print_r($games); echo '</pre>';

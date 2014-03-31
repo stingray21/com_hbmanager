@@ -24,6 +24,22 @@ class HBteamHomeController extends JControllerLegacy
 		$view->display();
 	}
 	
+	function getGoals2()
+	{
+		
+		$model = $this->getModel('hbteamgoals');
+		
+		$jinput = JFactory::getApplication()->input;
+		$gameId = $jinput->get('gameId');
+		$teamkey = $jinput->get('teamkey');
+		$season = $jinput->get('season');
+		
+		$players = $model->getPlayers($gameId, $teamkey, $season);
+		
+		$data = array('gameId' => $gameId, 'player' =>  $players);
+		echo json_encode($data);
+	}
+	
 	function getGoals4Chart()
 	{
 		$jinput = JFactory::getApplication()->input;

@@ -8,29 +8,22 @@ defined('_JEXEC') or die('Restricted access');
 <h1><?php echo $this->team->mannschaft; ?>
 <span><?php echo $this->team->liga; ?></span></h1>
 
-	<h3>Torschützen</h3>	
-
-
+<div id="scorerTable" data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">
+	<div class="goalsgame">Tore im Spiel 
+		<span class="goalsgame"><?php 
+		echo $this->players[0]->heim;
+		echo ' - ';
+		echo $this->players[0]->gast;
+		?></span>
+		<span class="goalsgameresult"><?php 
+		echo $this->players[0]->toreHeim;
+		echo ':';
+		echo $this->players[0]->toreGast;
+		?></span>
+	</div>
 	
-<div id="scorerTable" data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">	
 	<table class="goals">
-		<thead><tr>
-				<th class="name">Name</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Tore im ausgewählten Spiel', 'Tore', '', 'T');?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Anzahl der gespielten Spiele (bis zum ausgewählten Spiel)', 'Spiele', '', 'S');?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Anzahl der insgesamt erzielten Tore (bis zum ausgewählten Spiel)', 'Gesamt-Tore', '', 'G');?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Durchschnittliche Anzahl der Tore pro Spiel (bis zum ausgewählten Spiel)', 'Tore/Spiel', '', 'T/S');?>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
+		<tr><th class="name">Name</th><th>Tore</th><th>Spiele</th><th>gesamt</th><th>Quote</th></tr>
 <?php
 
 foreach ($this->players as $player) 
@@ -41,7 +34,7 @@ foreach ($this->players as $player)
 	if ($player->tw == true) {
 		echo ' (TW)';
 	}
-	echo '</td><td class="goals">';
+	echo '</td><td>';
 	echo $player->tore;
 	if ($player->davon7m != null) {
 		echo '/'.$player->davon7m;
@@ -55,7 +48,6 @@ foreach ($this->players as $player)
 	echo '</td></tr>';
 }
 ?>
-	</tbody>
 	</table>
 </div>
 
@@ -64,22 +56,23 @@ foreach ($this->players as $player)
 	<div data-teamkey="<?php echo $this->teamkey;?>" style="display: hidden"></div>
 	<div class="dataSaison" id="<?php echo $this->season;?>" style="display: hidden"></div>
 	
-	<table id="moreGames">
+	<span>Spiel auswählen
+	<table class="moreGames">
 <?php
 foreach ($this->games as $game) 
 {
 	?>
 	<tr class="<?php
-	if ($game->spielIDhvw === $this->gameId) echo 'selected';
-	elseif ($game->tore !== null) echo 'gamebutton';
+	if ($game->tore !== null) echo 'gamebutton';
 		?>" id="<?php echo $game->spielIDhvw;?>">
 		<td class="date"><?php 
-		echo JHtml::_('date', $game->datum, 'd. M.', false);
-		//echo JHtml::_('date', $game->datum, 'd.m.y', false);
+		echo JHtml::_('date', $game->datum, 'd.m.y', false);
 		?></td>
 		<td class="moreGamesTeams"><?php 
-		echo $game->gameName;
-		?></td>
+		echo $game->heim;
+		echo '</td><td class="moreGamesTeams">- </td><td class="moreGamesTeams">';
+		echo $game->gast;
+		?></span></td>
 		<td><span class="moreGamesResult"><?php 
 		echo $game->toreHeim;
 		echo ':';
@@ -91,7 +84,6 @@ foreach ($this->games as $game)
 ?>
 	</table>
 </div>
-	
 	
 	<div id="chartgoals">
 

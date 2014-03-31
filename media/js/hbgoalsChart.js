@@ -77,7 +77,7 @@ jQuery(document).ready(function($){
 			.ticks(10);
 	}
 	
-	var color = d3.scale.category20();
+	var color = d3.scale.category20c();
 	
 //	// Define the line
 //	var	valueline = d3.svg.line()								// set 'valueline' to be a line
@@ -192,10 +192,10 @@ jQuery(document).ready(function($){
 			  .enter().append("svg:circle")
 				 .attr("stroke-width", 2)
 				 .attr("stroke", color(k))
-				 .attr("fill", "white")
+				 .attr("fill", color(k))
 				 .attr("cx", function(d, i) { return x(d.x) })
 				 .attr("cy", function(d, i) { return y(d.y) })
-				 .attr("r", function(d, i) { return 3 });
+				 .attr("r", function(d, i) { return 2 });
 			
 			i++;
 		});
@@ -226,7 +226,7 @@ jQuery(document).ready(function($){
 		.orient("left");
 	
 	
-	var color = d3.scale.category20();
+	var color = d3.scale.category20c();
 
 	var svg2 = d3.select("#chartgoalstotal").append("svg")
 		.attr("width", width2 + margin2.left + margin2.right)
@@ -336,15 +336,14 @@ jQuery(document).ready(function($){
 			  .enter().append("svg:circle")
 				 .attr("stroke-width", 2)
 				 .attr("stroke", color(k))
-				 .attr("fill", "white")
+				 .attr("fill", color(k))
 				 .attr("cx", function(d, i) { return x2(d.x) })
 				 .attr("cy", function(d, i) { return y2(d.y2) })
-				 .attr("r", function(d, i) { return 3 });
+				 .attr("r", function(d, i) { return 2 });
 			
 			i++;
 		});
 		
-	
-		
+
 	});
 });
