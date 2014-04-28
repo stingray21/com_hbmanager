@@ -1,48 +1,4 @@
 jQuery(document).ready(function($){
-	
-	
-//	$(".gamebutton").click(function(){
-//		//console.log(this.id);
-//		var gameId = this.id;
-//		var table = document.getElementById("scorerTable");
-//		
-//		var season = table.getAttribute('data-season');
-//		var teamkey = table.getAttribute('data-teamkey');
-//		
-//		$.ajax({
-//			url:'index.php?option=com_hbteam&task=getGoals&format=raw',
-//			type:'POST',
-//			data: { gameId: gameId, season: season, teamkey: teamkey }, 
-//			success:function(data){
-//				//console.log(data);
-//				table.innerHTML = data;
-//			},
-//			error:function(xhr,err){
-//				// code for error
-//				console.log(document.URL);
-//				console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-//				console.log("responseText: "+xhr.responseText);
-//			}
-//		});
-//		
-//	});
-	
-//	$.ajax({
-//		url:'index.php?option=com_hbteam&task=getGoals4Chart',
-//		type:'POST',
-//		data: { season: season, teamkey: teamkey }, 
-//		success:function(data){
-//			//console.log(data);
-//			table.innerHTML = data;
-//		},
-//		error:function(xhr,err){
-//			// code for error
-//			console.log(document.URL);
-//			console.log("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-//			console.log("responseText: "+xhr.responseText);
-//		}
-//	});
-	
 
 	
 	d3.selection.prototype.moveToFront = function() {
@@ -53,7 +9,7 @@ jQuery(document).ready(function($){
 
 	var margin = {top: 20, right: 150, bottom: 120, left: 50},
 		width = 600 - margin.left - margin.right,
-		height = 300 - margin.top - margin.bottom;
+		height = 400 - margin.top - margin.bottom;
 
 	var x = d3.scale.ordinal()
 		.rangePoints([0, width]);
@@ -68,21 +24,22 @@ jQuery(document).ready(function($){
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left");
-	
-	function make_x_axis(x) {
-		return d3.svg.axis()
-			.scale(x)
-			.orient("bottom")
-			.ticks(5);
-	}
 
-	function make_y_axis(y) {
-		return d3.svg.axis()
-			.scale(y)
-			.orient("left")
-			.ticks(10);
-	}
+	var xGrid = d3.svg.axis()
+		.scale(x)
+		.orient("bottom")
+		.tickSize(-height, 0, 0)
+		.tickFormat("")
+		.ticks(10);
 	
+	var yGrid = d3.svg.axis()
+		.scale(y)
+		.orient("left")
+		.tickSize(-width, 0, 0)
+		.tickFormat("")
+		.ticks(10);
+	
+
 	var color = d3.scale.category20c();
 
 	var div = d3.select("#chartgoals").append("div")   
@@ -100,7 +57,12 @@ jQuery(document).ready(function($){
 		//.defined(function(d) { return (d[k] !== null); })
 		.x(function(d) { return x(d.game); })
 		.y(function(d) { return y(d.goals); });
-
+	
+	var valuelineTotal = d3.svg.line()
+		//.defined(function(d) { return (d[k] !== null); })
+		.x(function(d) { return x(d.game); })
+		.y(function(d) { return y(d.goalsTotal); });
+	
 	d3.json("index.php?option=com_hbteam&task=getGoals4Chart&format=raw", function(error, data) {
 		//console.log(data);
 		
@@ -113,19 +75,25 @@ jQuery(document).ready(function($){
 		color.domain(keys);
 		//console.log(keys);
 		
-		var max = [];
-		keys.forEach(function(k) {
-			var arr = data[k];
-			max.push( Math.max.apply(null, arr.map(function(item){
-				return item["goals"];
-			})));
-		});
-		//console.log(max);
-		//console.log(d3.max(max));
+		
+		function getMax(y) {
+			var max = [];
+			keys.forEach(function(k) {
+				var arr = data[k];
+				max.push( Math.max.apply(null, arr.map(function(item){
+					return item[y];
+				})));
+			});
+			return d3.max(max);
+		}
+		var maxSingle = getMax("goals"); 
+		//console.log(maxSingle);
+		var maxTotal = getMax("goalsTotal"); 
+		
 		
 		
 		x.domain(data.game);
-		y.domain([0, d3.max(max)]);
+		y.domain([0, maxSingle]);
 		// hardcoded for now, use d3.max(data, function(d) { return Math.max(d.alpha.yvalue, d.beta.yvalue, ...); })
 		
 		var legend = svg.append("g")
@@ -157,7 +125,7 @@ jQuery(document).ready(function($){
 				d3.selectAll(".dot."+d).transition()
 				  .duration(100)
 				  .attr("r", 4);
-				d3.selectAll(".dottextbox."+d).transition()
+				d3.selectAll(".dot.textbox."+d).transition()
 				  .duration(0)
 				  .attr("transform", "translate(0," + height + ")")
 				  .each("end",function() { 
@@ -165,7 +133,7 @@ jQuery(document).ready(function($){
 						.style("opacity", 0.9)
 						.duration(200);
 					});
-				d3.selectAll(".dottext."+d).transition()
+				d3.selectAll(".dot.text."+d).transition()
 				  .duration(0)
 				  .attr("transform", "translate(0," + height + ")")
 				  .each("end",function() { 
@@ -183,7 +151,7 @@ jQuery(document).ready(function($){
 				d3.selectAll(".dot."+d).transition()
 				  .duration(100)
 				  .attr("r", 2);
-				d3.selectAll(".dottextbox."+d).transition()
+				d3.selectAll(".dot.textbox."+d).transition()
 				  .duration(200)
 				  .style("opacity", 0)
 				  .each("end",function() { 
@@ -191,7 +159,7 @@ jQuery(document).ready(function($){
 						.attr("transform", "translate(0,-" + height + ")")
 						.duration(0);
 					});
-				d3.selectAll(".dottext."+d).transition()
+				d3.selectAll(".dot.text."+d).transition()
 				  .duration(200)
 				  .style("opacity", 0)
 				  .each("end",function() { 
@@ -202,19 +170,13 @@ jQuery(document).ready(function($){
 			});
 
 		svg.append("g")
-			.attr("class", "grid")
+			.attr("class", "x grid")
 			.attr("transform", "translate(0," + height + ")")
-			.call(make_x_axis(x)
-				.tickSize(-height, 0, 0)
-				.tickFormat("")
-			);
+			.call(xGrid);
 
 		svg.append("g")
-			.attr("class", "grid")
-			.call(make_y_axis(y)
-				.tickSize(-width, 0, 0)
-				.tickFormat("")
-			);
+			.attr("class", "y grid")
+			.call(yGrid);
 		
 		// Add the X Axis
 		svg.append("g")											// append the x axis to the 'g' (grouping) element
@@ -233,20 +195,23 @@ jQuery(document).ready(function($){
 		// Add the Y Axis
 		svg.append("g")											// append the y axis to the 'g' (grouping) element
 			.attr("class", "y axis")							// apply the 'axis' CSS styles to this path
-			.attr("transform", "translate(0,0)")	// move the drawing point to 0,height
+			.attr("transform", "translate(0,0)")				// move the drawing point to 0,height
 			.call(yAxis);										// call the yAxis function to draw the axis
 	
 		
 		var i = 0;
 		keys.forEach(function(k) {
 			// Add the valueline path.
+			//console.log("data to path",data[k]);
+			
 			svg.append("path")
-		.attr("id","pathid-"+k)										// append the valueline line to the 'path' element
-				.attr("class", "line "+k)								// apply the 'line' CSS styles to this path
-				.attr("d", valueline(data[k]))						// call the 'valueline' finction to draw the line
+				//.data(data[k])
+				.attr("id","pathid-"+k)							// append the valueline line to the 'path' element
+				.attr("class", "line "+k)						// apply the 'line' CSS styles to this path
+				.attr("d", valueline(data[k]))					// call the 'valueline' finction to draw the line
 				.attr("stroke", color(k))
 				.append("svg:title")
-		.text(k);
+				.text(k);
 			//console.log(data[k]);
 			
 			svg.selectAll(".point").data(data[k])
@@ -301,7 +266,7 @@ jQuery(document).ready(function($){
 
 			  svg.selectAll(".pointtextbox").data(data[k])
 				.enter().append("svg:rect")
-				  .attr("class","dottextbox "+k)
+				  .attr("class","dot textbox "+k)
 				  .attr("stroke", color(k))
 				  .attr("fill", color(k))
 				  .attr("x", function(d, i) { return x(d.game) - 7})
@@ -315,7 +280,7 @@ jQuery(document).ready(function($){
 
 			  svg.selectAll(".pointtext").data(data[k])
 				.enter().append("svg:text")
-				  .attr("class","dottext "+k)
+				  .attr("class","dot text "+k)
 				  .attr("fill", "#222")
 				  .attr("x", function(d, i) { return x(d.game) })
 				  .attr("y", function(d, i) { return y(d.goals) - 10 - height })
@@ -326,146 +291,97 @@ jQuery(document).ready(function($){
 
 			i++;
 		});
-
-	});
-	
-	var margin2 = {top: 20, right: 150, bottom: 120, left: 50},
-		width2 = 600 - margin2.left - margin2.right,
-		height2 = 350 - margin2.top - margin2.bottom;
-
-	var x2 = d3.scale.ordinal()
-		.rangePoints([0, width2]);
-
-	var y2 = d3.scale.linear()
-		.range([height2, 0]);
-
-	var xAxis2 = d3.svg.axis()
-		.scale(x2)
-		.orient("bottom");
-
-	var yAxis2= d3.svg.axis()
-		.scale(y2)
-		.orient("left");
-	
-	
-	var color = d3.scale.category20c();
-
-	var svg2 = d3.select("#chartgoalstotal").append("svg")
-		.attr("width", width2 + margin2.left + margin2.right)
-		.attr("height", height2 + margin2.top + margin2.bottom)
-	  .append("g")											// Append 'g' to the html 'body' of the web page
-		.attr("transform", "translate(" + margin2.left + "," + margin2.top + ")"); // in a place that is the actual area for the graph
-
-	d3.json("index.php?option=com_hbteam&task=getGoals4Chart&format=raw", function(error, data) {
-		//console.log(data);
 		
-		var keys = [];
-		for (var key in data){
-			if (data.hasOwnProperty(key) && key !== 'game') {
-				keys.push(key);
-			}
+		
+		
+		
+		d3.selectAll("input").on("change", change);
+
+
+		function change() {
+		  if (this.value === "single") transitionSingle();
+		  else transitionTotal();
+		}	
+
+		function transitionSingle() {
+			y.domain([0, maxSingle]);
+			
+			svg.selectAll("circle.dot").transition()
+				.duration(500)
+				.attr("cy", function(d) {
+					//console.log(y(d.goalsTotal));
+					return y(d.goals); 
+				});
+			svg.selectAll("rect.dot").transition()
+				.duration(500)
+				.attr("y", function(d) {
+					//console.log(y(d.goalsTotal));
+					return y(d.goals) - 21 - height; 
+				});
+			svg.selectAll("text.dot").transition()
+				.duration(500)
+				.attr("y", function(d) {
+					//console.log("text.dot",d);
+					//console.log(y(d.goalsTotal));
+					return y(d.goals) - 10 - height; 
+				});
+			
+			//valueline.y(function(d) { return y(d.goalsTotal); });
+			svg.selectAll(".line").transition()
+				.attr("d", function() {
+					//console.log(".line",this.textContent);
+					return valueline(data[this.textContent]); 
+				});
+			
+			svg.selectAll(".y.axis").transition()
+				.duration(500)
+				//.attr("fill", "red")
+				.call(yAxis);
+			svg.selectAll(".y.grid").transition()
+				.duration(500)
+				//.attr("fill", "red")
+				.call(yGrid);
 		}
-		color.domain(keys);
-		//console.log(keys);
-		
-		var max = [];
-		keys.forEach(function(k) {
-			var arr = data[k];
-			max.push( Math.max.apply(null, arr.map(function(item){
-				return item["goalsTotal"];
-			})));
-		});
-		//console.log(max);
-		//console.log(d3.max(max));
-		
-		
-		x2.domain(data.game);
-		y2.domain([0, Math.ceil(d3.max(max) / 10) * 10]);
-		// hardcoded for now, use d3.max(data, function(d) { return Math.max(d.alpha.yvalue, d.beta.yvalue, ...); })
-		
-		svg2.append("g")
-			.attr("class", "grid")
-			.attr("transform", "translate(0," + height2 + ")")
-			.call(make_x_axis(x2)
-				.tickSize(-height2, 0, 0)
-				.tickFormat("")
-			)
 
-		svg2.append("g")
-			.attr("class", "grid")
-			.call(make_y_axis(y2)
-				.tickSize(-width2, 0, 0)
-				.tickFormat("")
-			)
-		
-		var legend = svg2.append("g")
-			.attr("class", "legend")
-			.attr("width", 50)
-			.attr("height", 50)
-		  .selectAll("g")
-			.data(color.domain().slice().reverse())
-		  .enter().append("g")
-			.attr("transform", function(d, i) { return "translate(" + (width + 20) + "," + i * 15 + ")"; });
-
-		legend.append("rect")
-			.attr("width", 8)
-			.attr("height", 8)
-			.style("fill", color);
-
-		legend.append("text")
-			.attr("x", 14)
-			.attr("y", 9)
-			.attr("dy", "-.25em")
-			.text(function(d) { return d; });
-		
-		
-		// Add the X Axis
-		svg2.append("g")											// append the x axis to the 'g' (grouping) element
-			.attr("class", "x axis")							// apply the 'axis' CSS styles to this path
-			.attr("transform", "translate(0," + (height2) + ")")	// move the drawing point to 0,height
-			.call(xAxis2)										// call the xAxis function to draw the axis
-				.selectAll("text")  
-				.style("text-anchor", "end")
-				.attr("dx", "-0.8em")
-				.attr("dy", "-0.5em")
-				.attr("transform", function(d) {
-					return "rotate(-90)" 
-					});										// call the xAxis function to draw the axis
-
-		// Add the Y Axis
-		svg2.append("g")											// append the y axis to the 'g' (grouping) element
-			.attr("class", "y axis")							// apply the 'axis' CSS styles to this path
-			.attr("transform", "translate(0,0)")	// move the drawing point to 0,height
-			.call(yAxis2);										// call the yAxis function to draw the axis
-		
-		var valueline = d3.svg.line()
-			//.defined(function(d) { return (d[k] !== null); })
-			.x(function(d) { return x2(d.game); })
-			.y(function(d) { return y2(d.goalsTotal); });
-	
-		
-		 
-		var i = 0;
-		keys.forEach(function(k) {
-			// Add the valueline path.
-			svg2.append("path")										// append the valueline line to the 'path' element
-				.attr("class", "line")								// apply the 'line' CSS styles to this path
-				.attr("d", valueline(data[k]))						// call the 'valueline' finction to draw the line
-				.attr("stroke", color(k));
-			//console.log(data[k]);
+		function transitionTotal() {
+			y.domain([0, Math.ceil(maxTotal / 10) * 10]);
 			
-			svg2.selectAll(".point").data(data[k])
-			  .enter().append("svg:circle")
-				 .attr("stroke-width", 2)
-				 .attr("stroke", color(k))
-				 .attr("fill", color(k))
-				 .attr("cx", function(d, i) { return x2(d.game) })
-				 .attr("cy", function(d, i) { return y2(d.goalsTotal) })
-				 .attr("r", function(d, i) { return 2 });
+			svg.selectAll("circle.dot").transition()
+				.duration(500)
+				.attr("cy", function(d) {
+					//console.log(y(d.goalsTotal));
+					return y(d.goalsTotal); 
+				});
+			svg.selectAll("rect.dot").transition()
+				.duration(500)
+				.attr("y", function(d) {
+					//console.log(y(d.goalsTotal));
+					return y(d.goalsTotal) - 21 - height; 
+				});
+			svg.selectAll("text.dot").transition()
+				.duration(500)
+				.attr("y", function(d) {
+					//console.log("text.dot",d);
+					//console.log(y(d.goalsTotal));
+					return y(d.goalsTotal) - 10 - height; 
+				});
 			
-			i++;
-		});
-		
-
+			//valueline.y(function(d) { return y(d.goalsTotal); });
+			svg.selectAll(".line").transition()
+				.attr("d", function() {
+					//console.log(".line",this.textContent);
+					return valuelineTotal(data[this.textContent]); 
+				});
+			
+			svg.selectAll(".y.axis").transition()
+				.duration(500)
+				//.attr("fill", "red")
+				.call(yAxis);
+			svg.selectAll(".y.grid").transition()
+				.duration(500)
+				//.attr("fill", "red")
+				.call(yGrid);
+		}
 	});
+	
 });

@@ -294,12 +294,28 @@ div.moreGames table#moreGames tr.selected span.moreGamesResult
 
 /* CHART */
 
+form.goalchart 
+{   
+    float: right;
+    margin: 0px;
+ }
 
+form.goalchart label{   
+    padding: 0;
+    margin: 0;
+ }
+
+form.goalchart input[type='radio']
+{   
+	margin: 0.2em 0.5em 0 2em;
+	vertical-align: baseline;
+}
 
 div#chartgoals {
 	position: relative;
 	//border: 1px solid red;
 }
+
 
 path {
 	//stroke: steelblue;
