@@ -1,14 +1,14 @@
-div.hbteamhome h1 {
+div.hbteam h1 {
 	margin-bottom: 1em;
 }
 
-div.hbteamhome h1 span {
+div.hbteam h1 span {
 	color: #999999;
 	font-size: 0.7em;
 	padding: 0 0 0 1em;
 }
 
-div.hbteamhome h3 {
+div.hbteam h3 {
 	margin-bottom: 1em;
 }
 
@@ -109,20 +109,20 @@ dl.player dd {
 
 
 
-div.hbteamhome h3 {
+div.hbteam h3 {
 	padding: 1em 0 0 0;
 	color: #0044CC;
 	font-weight: bold;
 }
 
-div.hbteamhome h3 span {
+div.hbteam h3 span {
 	color: #999999;
 	font-weight: normal;
 	//font-size: 0.7em;
 	padding: 0;
 }
 
-div.hbteamhome h3 span:before {
+div.hbteam h3 span:before {
 	//content: "-\00a0";
 	 content:"\A";
   white-space: pre;
@@ -166,6 +166,11 @@ table.goals
 {
 	width: auto;
 	margin: 0px;
+}
+
+table.goals tr.notPlayed
+{
+	color: #bbb;
 }
 
 table.goals th,
@@ -213,12 +218,7 @@ div.moreGames table#moreGames tr.gamebutton
 	cursor: pointer;
 }
 
-div.moreGames table#moreGames tr.selected
-{
-	background: #04c;
-	color: #fff;
-	border: none;
-}
+
 
 div.moreGames table#moreGames td
 {
@@ -278,21 +278,33 @@ div.moreGames tr.gamebutton span.moreGamesResult
 	//font-weight: bold;
 }
 
+div.moreGames table#moreGames tr.selected
+{
+	background: #04c;
+	color: #fff;
+	border: none;
+	cursor: default;
+}
+
+div.moreGames table#moreGames tr.selected td.moreGamesTeams,
+div.moreGames table#moreGames tr.selected span.moreGamesResult
+{
+	color: #fff;
+}
+
 /* CHART */
 
-/*#chartgoals div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-}*/
+
+
+div#chartgoals {
+	position: relative;
+	//border: 1px solid red;
+}
 
 path {
-    //stroke: steelblue;
-    stroke-width: 1.5;
-    fill: none;
+	//stroke: steelblue;
+	stroke-width: 1.5;
+	fill: none;
 }
  
 line {
@@ -336,5 +348,23 @@ text {
 
 .legend text {
   font: 10px sans-serif;
+  cursor: pointer;//default;
 }
 
+text.dottext {
+  cursor: default;
+}
+
+div.d3tooltip {   
+  position: absolute;           
+  text-align: center;           
+  //width: 60px;                  
+  //height: 28px;                 
+  padding: 3px;             
+  font: 12px sans-serif;   
+  color: #555;
+  background: lightgrey;   
+  border: 0px;      
+  border-radius: 5px !important;           
+  pointer-events: none;         
+}

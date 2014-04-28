@@ -7,16 +7,16 @@ jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
  
 /**
- * HBteamHome Form Field class for the HBteamHome component
+ * hbteam Form Field class for the hbteam component
  */
-class JFormFieldHBteamHome extends JFormFieldList
+class JFormFieldhbteam extends JFormFieldList
 {
         /**
          * The field type.
          *
          * @var         string
          */
-        protected $type = 'HBteamHome';
+        protected $type = 'hbteam';
  
         /**
          * Method to get a list of options for a list input.

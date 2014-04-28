@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_TITLE">
-		<message>COM_HBTEAMHOME_HBTEAMHOME_VIEW_DEFAULT_DESC</message>
+	<layout title="COM_HBTEAM_HBTEAM_VIEW_DEFAULT_TITLE">
+		<message>COM_HBTEAM_HBTEAM_VIEW_DEFAULT_DESC</message>
 	</layout>
 
 
 	<fields
 		name="request"
-		addfieldpath="/administrator/components/com_hbteamhome/models/fields"
+		addfieldpath="/administrator/components/com_hbteam/models/fields"
 		>
 		<fieldset name="request">
 			<field
 				name="show_team"
 				type="list"
-				label="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_LABEL"
-				description="COM_HBTEAMHOME_HBTEAMHOME_SHOW_TEAM_DESC">
+				label="COM_HBTEAM_HBTEAM_SHOW_TEAM_LABEL"
+				description="COM_HBTEAM_HBTEAM_SHOW_TEAM_DESC">
 				<option	value="">JGLOBAL_USE_GLOBAL</option>
 				<option	value="0">JHIDE</option>
 				<option	value="1">JSHOW</option>
@@ -27,13 +27,13 @@
 
 		<!-- Basic options. -->
 		<fieldset name="basic"
-			label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAM_SETTINGS_LABEL">
+			label="COM_HBTEAM_HBTEAM_FIELD_TEAM_SETTINGS_LABEL">
 			<field
 				name="teamkey"
-				type="hbteamhome"
+				type="hbteam"
 				size="1"
-				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_LABEL"
-				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMKEY_DESC"
+				label="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_LABEL"
+				description="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_DESC"
 				/>
 			<field
 				name="trainer"
@@ -46,8 +46,8 @@
 				name="teamImage" 
 				type="imagelist" 
 				default="" 
-				label="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_LABEL" 
-				description="COM_HBTEAMHOME_HBTEAMHOME_FIELD_TEAMIMAGE_DESC" 
+				label="COM_HBTEAM_HBTEAM_FIELD_TEAMIMAGE_LABEL" 
+				description="COM_HBTEAM_HBTEAM_FIELD_TEAMIMAGE_DESC" 
 				directory="hbdata/images/teams" 
 				exclude="" 
 				stripext="" 

@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Team Overview Component
  */
-class HBteamHomeViewHBteamSummary extends JViewLegacy
+class hbteamViewHBteamSummary extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)
@@ -23,7 +23,7 @@ class HBteamHomeViewHBteamSummary extends JViewLegacy
 
 		
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbteamhome/css/site.stylesheet.css');
+		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');
 		
 		// Display the view
 		parent::display($tpl);

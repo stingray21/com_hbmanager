@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB Team Overview Component
  */
-class HBteamHomeViewHBteamGoals extends JViewLegacy
+class hbteamViewHBteamGoals extends JViewLegacy
 {
 	// Overwriting JView display method
 	function display($tpl = null)
@@ -17,9 +17,9 @@ class HBteamHomeViewHBteamGoals extends JViewLegacy
 		// local jquery
 		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);
 		JHtml::_('jquery.framework');
-		$document->addScript(JURI::Root().'/media/com_hbteamhome/js/hbgoals.js');
-		$document->addScript(JURI::Root().'/media/com_hbteamhome/js/d3.js');
-		$document->addScript(JURI::Root().'/media/com_hbteamhome/js/hbgoalsChart.js');
+		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoals.js');
+		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
+		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');
 		
 		$model = $this->getModel('hbteamgoals');
 		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
@@ -42,7 +42,7 @@ class HBteamHomeViewHBteamGoals extends JViewLegacy
 		$this->assignRef('players', $players);
 		
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbteamhome/css/site.stylesheet.css');
+		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');
 		
 		// Display the view
 		parent::display($tpl);

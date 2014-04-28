@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 $pic = $this->picture;
 $picPath = './hbdata/images/teams/';
 ?>
-<div class="hbteamhome">
+<div class="hbteam">
 <h1><?php echo $this->team->mannschaft; ?>
 <span><?php echo $this->team->liga; ?></span></h1>
 <?php

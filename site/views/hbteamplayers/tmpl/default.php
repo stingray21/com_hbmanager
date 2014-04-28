@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 $picPath = JURI::Root().'hbdata/images/player/'.strtolower($this->team->kuerzel).'/';
 ?>
 
-<div class="hbteamhome">
+<div class="hbteam">
 <h1><?php echo $this->team->mannschaft; ?>
 <span><?php echo $this->team->liga; ?></span></h1>
 <?php

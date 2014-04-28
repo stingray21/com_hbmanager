@@ -8,7 +8,7 @@ jimport('joomla.database.table');
 /**
  * Team Table class
  */
-class HBteamHomeTableHBteamHome extends JTable
+class hbteamTablehbteam extends JTable
 {
         /**
          * Constructor

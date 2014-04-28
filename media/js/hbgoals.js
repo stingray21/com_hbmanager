@@ -2,8 +2,11 @@ jQuery(document).ready(function($){
 	
 	
 	$(".gamebutton").click(function(){
-		//console.log(this.id);
+		console.log(this.id);
 		var gameId = this.id;
+		
+		// TODO: only if class is not 'selected'
+		
 		var table = document.getElementById("scorerTable");
 		var tbody = table.getElementsByTagName('tbody')[0];
 		
@@ -13,7 +16,7 @@ jQuery(document).ready(function($){
 		var tableGames = document.getElementById("moreGames");
 		
 		$.ajax({
-			url:'index.php?option=com_hbteamhome&task=getGoals2&format=raw',
+			url:'index.php?option=com_hbteam&task=getGoals2&format=raw',
 			dataType: "json",
 			data: { gameId: gameId, season: season, teamkey: teamkey }, 
 			success:function(data){
@@ -23,14 +26,11 @@ jQuery(document).ready(function($){
 				//console.log(tableGames.rows);
 				for (var i=0;i<tableGames.rows.length;i++)
 				{ 
-					if (tableGames.rows[i].className !== '')
-					{
-						if (tableGames.rows[i].id === gameId) {
-							tableGames.rows[i].className = 'selected';
-						}
-						else {
-							tableGames.rows[i].className = 'gamebutton';
-						}
+					if (tableGames.rows[i].id === gameId) {
+						tableGames.rows[i].className = 'gamebutton selected';
+					}
+					else {
+						tableGames.rows[i].className = 'gamebutton';
 					}
 				}
 				
@@ -45,7 +45,7 @@ jQuery(document).ready(function($){
 				{
 					newRow = tbody.insertRow();
 					
-					if (player.tw == 1) {
+					if (player.tw == 1 | player.twposition == 1) {
 						goalie = ' (TW)';
 					}
 					else {
@@ -59,22 +59,47 @@ jQuery(document).ready(function($){
 
 					cellGoals = newRow.insertCell(1);
 					cellGoals.className = 'goals';
-					textGoals = document.createTextNode(player.tore);
+					if (player.tore !== null) {
+						goals = player.tore;
+					}
+					else {
+						goals = '';
+						newRow.className = 'notPlayed';
+					}
+					textGoals = document.createTextNode(goals);
 					cellGoals.appendChild(textGoals);
 
 					cellGames = newRow.insertCell(2);
 					//cellGames.className = '';
-					textGames = document.createTextNode(player.spiele);
+					if (player.spiele !== null) {
+						games = player.spiele;
+					}
+					else {
+						games = '0';
+					}
+					textGames = document.createTextNode(games);
 					cellGames.appendChild(textGames);
 
 					cellTotal = newRow.insertCell(3);
 					//cellTotal.className = '';
-					textTotal = document.createTextNode(player.toregesamt);
+					if (player.toregesamt !== null) {
+						goalstotal = player.toregesamt;
+					}
+					else {
+						goalstotal = '0';
+					}
+					textTotal = document.createTextNode(goalstotal);
 					cellTotal.appendChild(textTotal);
 
 					cellRatio = newRow.insertCell(4);
 					//cellRatio.className = '';
-					textRatio = document.createTextNode(player.quote);
+					if (player.quote !== null) {
+						ratio = player.quote;
+					}
+					else {
+						ratio = '0.0';
+					}					
+					textRatio = document.createTextNode(ratio);
 					cellRatio.appendChild(textRatio);
 				});
 			},

@@ -8,7 +8,7 @@ jimport('joomla.application.component.controller');
 /**
  * HB Team Overview Component Controller
  */
-class HBteamHomeController extends JControllerLegacy
+class hbteamController extends JControllerLegacy
 {
 	function getGoals()
 	{

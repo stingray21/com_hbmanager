@@ -9,7 +9,7 @@ jimport('joomla.application.component.modelitem');
 /**
  * HB Team Home Model
  */
-class HBteamHomeModelHBteamHome extends JModelLegacy
+class hbteamModelhbteam extends JModelLegacy
 {
 	/**
 	 * @var array messages
@@ -40,7 +40,7 @@ class HBteamHomeModelHBteamHome extends JModelLegacy
 	 * @return      JTable  A database object
 	 * @since       2.5
 	 */
-	public function getTable($type = 'HBteamHome', $prefix = 'HBteamHomeTable', $config = array())
+	public function getTable($type = 'hbteam', $prefix = 'hbteamTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -67,7 +67,7 @@ class HBteamHomeModelHBteamHome extends JModelLegacy
 			}
 			$teamkey = $menuparams->get('teamkey');
 			
-			// Get a TableHBteamHome instance
+			// Get a Tablehbteam instance
 			$table = $this->getTable();
 
 			// Load the message

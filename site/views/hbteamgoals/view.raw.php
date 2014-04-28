@@ -8,7 +8,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HB HVW Manager Component
  */
-class HBteamhomeViewHbTeamGoals extends JViewLegacy
+class hbteamViewHbTeamGoals extends JViewLegacy
 {
 	function display($tpl = null)
 	{

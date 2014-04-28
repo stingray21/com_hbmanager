@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div class="hbteamhome">
+<div class="hbteam">
 <h1><?php echo $this->team->mannschaft; ?>
 <span><?php echo $this->team->liga; ?></span></h1>
 
@@ -36,9 +36,11 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->players as $player) 
 {
 	//echo '=> view->players<br><pre>'; print_r($player); echo '</pre>';
-	echo '<tr><td class="name">';
+	echo '<tr';
+	if ($player->tore === null)echo ' class="notPlayed"';
+	echo '><td class="name">';
 	echo $player->name;
-	if ($player->tw == true) {
+	if ($player->tw == true or $player->twposition) {
 		echo ' (TW)';
 	}
 	echo '</td><td class="goals">';
@@ -69,9 +71,8 @@ foreach ($this->players as $player)
 foreach ($this->games as $game) 
 {
 	?>
-	<tr class="<?php
-	if ($game->spielIDhvw === $this->gameId) echo 'selected';
-	elseif ($game->tore !== null) echo 'gamebutton';
+	<tr class="gamebutton<?php
+	if ($game->spielIDhvw === $this->gameId) echo ' selected';
 		?>" id="<?php echo $game->spielIDhvw;?>">
 		<td class="date"><?php 
 		echo JHtml::_('date', $game->datum, 'd. M.', false);
@@ -91,7 +92,7 @@ foreach ($this->games as $game)
 ?>
 	</table>
 </div>
-	
+	<div class="clr"></div>
 	
 	<div id="chartgoals">
 

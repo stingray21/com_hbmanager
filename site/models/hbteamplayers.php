@@ -9,7 +9,7 @@ jimport('joomla.application.component.modelitem');
 /**
  * HB Team Home Model
  */
-class HBteamHomeModelHBteamPlayers extends JModelLegacy
+class hbteamModelHBteamPlayers extends JModelLegacy
 {
 	/**
 	 * @var array messages

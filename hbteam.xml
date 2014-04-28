@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: hbteamhome.xml 51 2013-02-10 18:14:21Z stingray21 $ -->
+<!-- $Id: hbteam.xml 51 2013-02-10 18:14:21Z stingray21 $ -->
 <extension type="component" version="2.5.0" method="upgrade">
 
-	<name>HB Team Home</name>
+	<name>HB Team</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
 	<creationDate>February 10 2013</creationDate>
 	<author>Jochen Stehle</author>
@@ -39,7 +39,7 @@
 		in this section are copied from /site/ in the package -->
 	<files folder="site">
 		<filename>index.html</filename>
-		<filename>hbteamhome.php</filename>
+		<filename>hbteam.php</filename>
 		<filename>controller.php</filename>
 		<folder>views</folder>
 		<folder>models</folder>
@@ -47,14 +47,15 @@
 		<folder>language</folder>
 	</files>
 	
-	<media destination="com_hbteamhome" folder="media">
+	<media destination="com_hbteam" folder="media">
 		<filename>index.html</filename>
 		<folder>css</folder>
+		<folder>js</folder>
 	</media>
 	
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu>HB Team Home</menu>
+		<menu>HB Team</menu>
 		<!-- Administration Main File Copy Section -->
 		<!-- Note the folder attribute: This attribute describes the folder
 			to copy FROM in the package to install therefore files copied
@@ -62,7 +63,7 @@
 		<files folder="admin">
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
-			<filename>hbteamhome.php</filename>
+			<filename>hbteam.php</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
 			<!-- tables files section -->
