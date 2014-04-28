@@ -93,12 +93,12 @@ foreach ($this->games as $game)
 	</table>
 </div>
 	<div class="clr"></div>
-	
+	<form>
+		<label><input type="radio" name="mode" value="single" checked> Tore pro Spiel</label>
+		<label><input type="radio" name="mode" value="total"> Tore aller Spiele</label>
+	</form>
 	<div id="chartgoals">
 
 	</div>
 	
-	<div id="chartgoalstotal">
-
-	</div>
 </div>
