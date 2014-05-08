@@ -5,12 +5,12 @@ div.funkblock
 
 div.funkblock address
 {
-	margin: 0em;
+	margin: 0 0 0 2em;
 }
 
 div.funkblock p
 {
-	margin: 0;
+	margin: 0 0 0 2em;
 }
 
 div.funkblock p.name

@@ -12,7 +12,8 @@ foreach ($this->officials as $item)
 	echo '<h3>'.$item->amt.'</h3>'."\n";
 	echo '<p class="name">'.$item->name;
 	echo '</p>'."\n";
-	if ($item->address.$item->postcode.$item->suburb != '') {
+	//if ($item->address.$item->postcode.$item->suburb != '') {
+	if ($item->address != '') {
 		echo '<address>';
 		echo $item->address;
 		echo '<br />';
