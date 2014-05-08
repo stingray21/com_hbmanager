@@ -1,0 +1,19 @@
+div.funkblock
+{
+	margin: 2em 1em 1em;
+}
+
+div.funkblock address
+{
+	margin: 0em;
+}
+
+div.funkblock p
+{
+	margin: 0;
+}
+
+div.funkblock p.name
+{
+	font-weight: bold;
+}
