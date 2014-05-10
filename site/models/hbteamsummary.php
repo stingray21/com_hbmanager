@@ -27,7 +27,10 @@ class hbteamModelHBteamSummary extends JModelLegacy
 			$this->youth = $menuparams->get('youth');
 			$this->saison = $menuparams->get('saison');
 			$this->showHomeGym = $menuparams->get('showhomegym');
-
+			
+			if ($this->youth) $this->link = 'jugend';
+			else $this->link = 'aktive';
+			
 			$this->items = array('email','mobile','telephone');
 			$this->global_show = self::getGlobalContactSettings();
 	}

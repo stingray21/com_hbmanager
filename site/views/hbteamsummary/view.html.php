@@ -21,6 +21,9 @@ class hbteamViewHBteamSummary extends JViewLegacy
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
 		$this->assignRef('teams', $teams);
 
+		$link = $model->link;
+		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
+		$this->assignRef('link', $link);
 		
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');

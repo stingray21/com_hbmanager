@@ -16,7 +16,7 @@ foreach ($this->teams as $team)
 	?>
 	<div class="teamsummary">
 		<div class="teamsummarypic">
-		<a href="<?php echo JURI::Root().'index.php/'.strtolower($team->kuerzel)?>">
+		<a href="<?php echo JURI::Root().'index.php/'.$this->link.'/'.strtolower($team->kuerzel)?>">
 			<img src="<?php 
 			echo $picPath.$team->dateiname?>" id="<?php
 			echo 'pic_'.$team->kuerzel?>" alt="Bild <?php 

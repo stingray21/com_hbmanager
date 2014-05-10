@@ -235,7 +235,7 @@ jQuery(document).ready(function($){
 						  if (d.goalie === "TW") tttext += " (TW)";
 						  tttext += "<br/>" + d.goals;
 						  if (d.penalty !== null) tttext += "/" + d.penalty;
-						  if (d.goals == 1) tttext += " Tor";
+						  if (d.goals == 1) tttext += " Tor gegen";
 						  else tttext += " Tore gegen";
 						  tttext += "<br/>" + d.game;
 						  return tttext ; } )  
@@ -305,21 +305,35 @@ jQuery(document).ready(function($){
 
 		function transitionSingle() {
 			y.domain([0, maxSingle]);
-			
+			curNameCirc = '';
+			iPlusCirc = 0;
 			svg.selectAll("circle.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					if (curNameCirc !== d.name) {
+						curNameCirc = d.name;
+						iPlusCirc += 200;
+					}
+					//console.log(".circle",(iPlusCirc), d.name);
+					//return 500;
+					return (iPlusCirc); 
+				})
 				.attr("cy", function(d) {
 					//console.log(y(d.goalsTotal));
 					return y(d.goals); 
 				});
 			svg.selectAll("rect.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					return (200); 
+				})
 				.attr("y", function(d) {
 					//console.log(y(d.goalsTotal));
 					return y(d.goals) - 21 - height; 
 				});
 			svg.selectAll("text.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					//console.log(".line",(500+i*100));
+					return (200); 
+				})
 				.attr("y", function(d) {
 					//console.log("text.dot",d);
 					//console.log(y(d.goalsTotal));
@@ -328,6 +342,11 @@ jQuery(document).ready(function($){
 			
 			//valueline.y(function(d) { return y(d.goalsTotal); });
 			svg.selectAll(".line").transition()
+				.duration(function(d,i) {
+					//console.log(".line",(200+i*200));
+					//return 500;
+					return (200+i*200); 
+				})
 				.attr("d", function() {
 					//console.log(".line",this.textContent);
 					return valueline(data[this.textContent]); 
@@ -346,20 +365,36 @@ jQuery(document).ready(function($){
 		function transitionTotal() {
 			y.domain([0, Math.ceil(maxTotal / 10) * 10]);
 			
+			curNameCirc = '';
+			iPlusCirc = 0;
 			svg.selectAll("circle.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					if (curNameCirc !== d.name) {
+						curNameCirc = d.name;
+						iPlusCirc += 200;
+					}
+					//console.log(".circle",(iPlusCirc), d.name);
+					//return 500;
+					return (iPlusCirc); 
+				})
 				.attr("cy", function(d) {
 					//console.log(y(d.goalsTotal));
 					return y(d.goalsTotal); 
 				});
 			svg.selectAll("rect.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					//console.log(".line",(500+i*100));
+					return (200); 
+				})
 				.attr("y", function(d) {
 					//console.log(y(d.goalsTotal));
 					return y(d.goalsTotal) - 21 - height; 
 				});
 			svg.selectAll("text.dot").transition()
-				.duration(500)
+				.duration(function(d,i) {
+					//console.log(".line",(500+i*100));
+					return (200); 
+				})
 				.attr("y", function(d) {
 					//console.log("text.dot",d);
 					//console.log(y(d.goalsTotal));
@@ -368,6 +403,11 @@ jQuery(document).ready(function($){
 			
 			//valueline.y(function(d) { return y(d.goalsTotal); });
 			svg.selectAll(".line").transition()
+				.duration(function(d,i) {
+					//console.log(".line",(200+i*200));
+					//return 500;
+					return (200+i*200); 
+				})
 				.attr("d", function() {
 					//console.log(".line",this.textContent);
 					return valuelineTotal(data[this.textContent]); 
