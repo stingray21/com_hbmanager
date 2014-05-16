@@ -96,11 +96,14 @@ foreach ($officials as $cur)
 		elseif($cur->email != null) $contact[] = JHtml::_('email.cloak', $cur->email);
 	
 		if($cur->mobile != null) {
-			$cur->mobile = preg_replace('/(\+49)(1\d\d)(\d{6,9})/', '$1 $2 / $3', $cur->mobile);
+			//$cur->mobile = preg_replace('/(\+49)(1\d\d)(\d{6,9})/', '$1 $2 / $3', $cur->mobile);
+			//$cur->mobile = preg_replace('/(\+49)(1\d\d)(\d{6,9})/', '0$2 / $3', $cur->mobile);
+			$cur->mobile = preg_replace('/(\+49)(1\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?/', '$1 $2 / $3 $4 $5 $6', $cur->mobile);
+			$cur->mobile = preg_replace('/ (\d)$/', '$1', $cur->mobile);
 			$contact[] = $cur->mobile;
 		}
 		if($cur->telephone != null) {
-			$cur->telephone = preg_replace('/(\+49)(\d{4})(\d{3,9})/', '$1 $2 / $3', $cur->telephone);
+			$cur->telephone = preg_replace('/(\+49)(\d{2})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?/', '$1 $2 $3 / $4 $5 $6 $7', $cur->telephone);
 			$contact[] = $cur->telephone;
 		}
 	if(count($contact) > 0) {

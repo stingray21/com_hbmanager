@@ -6,6 +6,10 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<h1>Funktionäre</h1>'."\n\n";
 
+echo '<p>Folgende Vertreter wurden am 21.3.2014 gewählt</>';
+
+echo '<p>Wir möchten uns für ihr Engagement bedanken</p>';
+
 foreach ($this->officials as $item)
 {
 	echo '<div class="funkblock">'."\n";
