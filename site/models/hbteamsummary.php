@@ -42,7 +42,10 @@ class hbteamModelHBteamSummary extends JModelLegacy
 		$query->select('*');
 		$query->from('hb_mannschaft');
 		$query->where($db->qn('jugend').' = '.$db->q($this->youth));
-		$query->leftJoin($db->qn('hb_mannschaftsfoto').' USING ('.$db->qn('kuerzel').')');
+		$query->leftJoin($db->qn('hb_mannschaftsfoto').' USING ('.
+			$db->qn('kuerzel').')');
+		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
+			$db->qn('reihenfolge').' ASC');
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
