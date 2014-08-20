@@ -56,7 +56,7 @@ class hbmanagerController extends JControllerAdmin
 		if ($updateHvw)
 		{
 			$year = strftime('%Y');
-			if (strftime('%m') < 9) $year = $year-1;
+			if (strftime('%m') < 8) $year = $year-1;
 			$leagueArray = $model->getLeagueArrayFromHVW(
 					'http://www.hvw-online.org/index.php'.
 					'?id=39&orgID=11&A=g_org&nm=0&do='.

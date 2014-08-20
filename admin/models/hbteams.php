@@ -66,15 +66,12 @@ class hbmanagerModelHbteams extends JModelLegacy
 		
 		$teamkeyArray = array();
 		foreach ($results as $value) {
-			$element = preg_replace ( "/^(M|F)(32)/" , "$1AH" , 
+			if (!preg_match("/^(minis|(M|F)(32))/", $value['kuerzel'])) {
+				$element = preg_replace ( "/(^.{1,6})([1-9])?$/" , "$1&&$2" , 
 					$value['kuerzel']);
-			$element = preg_replace ( "/(^.{1,6})([1-9])?$/" , "$1&&$2" , 
-					$element);
-			$element = preg_replace ( "/^(M|F)(AH)/" , "$1".'32' , 
-					$element);
-			//echo __FILE__.'('.__LINE__.'):<pre>';print_r($element);echo'</pre>';
-			list($element, $number)  = explode('&&', $element);
-			
+				//echo __FILE__.'('.__LINE__.'):<pre>';print_r($element);echo'</pre>';
+				list($element, $number)  = explode('&&', $element);
+			}
 			$teamkeyArray[strtolower($element)][] = $number;
 		}
 		
@@ -93,6 +90,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		set_time_limit(90);
 		
 		// returns sourcecode of a website with the address $address as string
+		//echo '=> model->$address <br><pre>'.$address.'</pre>';
 		$source = file_get_contents($address);
 		
 		// shortens strings to relevant part
@@ -316,6 +314,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		$query = rtrim($query, ", \n");
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
+		$result = '';
 		try {
 			// Execute the query in Joomla 2.5.
 			$result = $db->query();
