@@ -119,6 +119,47 @@ class hbmanagerController extends JControllerAdmin
 		hbhelper::addSubmenu('hbdata');
 	}
 	
+	function showOverview()
+	{
+		$model = $this->getModel('hboverview');
+	
+		$view = $this->getView('hboverview','html');
+		$view->setModel($model);	
+		
+		$view->display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hboverview');
+	}
+	
+	function showAllGames()
+	{
+		$model = $this->getModel('hboverview');
+	
+		$view = $this->getView('hboverview','html');
+		$view->setModel($model);	
+		$view->setLayout('allgames');	
+	
+		$view->display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hboverview');
+	}
+	
+	function showHomeGames()
+	{
+		$model = $this->getModel('hboverview');
+	
+		$view = $this->getView('hboverview','html');
+		$view->setModel($model);	
+		$view->setLayout('homegames');	
+	
+		$view->display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hboverview');
+	}
+	
 	function showPrevGames()
 	{
 		$model = $this->getModel('hbprevgames');

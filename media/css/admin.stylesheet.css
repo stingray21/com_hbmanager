@@ -281,3 +281,16 @@ a#hvwupdateall {
 	margin-top: 4px;
 }
 
+/* Overview  */
+
+table.HBschedule tr.odd {
+	background: #eee;
+	}
+
+table.HBschedule td{
+	padding: 0.1em 0.5em;
+	}
+
+table.HBschedule td.heim {
+	font-weight: bold;
+	}
