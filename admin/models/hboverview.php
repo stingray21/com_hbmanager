@@ -98,9 +98,20 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		// getting schedule of the team from the DB
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*');
+		$query->select('`hallenNummer`, `kuerzel`, `spielID`, `spielIDhvw`, '
+			. '`datum`, `uhrzeit`, `heim`, `gast`, `toreHeim`, `toreGast`, '
+			. '`bemerkung`, '
+			. '`mannschaftID`, `reihenfolge`, `mannschaft`, '
+			. 'hb_mannschaft.`name` as `name`, `nameKurz`, '
+			. '`ligaKuerzel`, `liga`, `geschlecht`, `jugend`, `hvwLink`, '
+			. '`updateTabelle`, `updateSpielplan`, '
+			. '`halleID`,  hb_halle.`name` as `hallenName`, `kurzname`, '
+			. '`land`, `plz`, `stadt`, `strasse`, `telefon`, `bezirkNummer`, '
+			. '`bezirk`, `freigabeVerband`, `freigabeBezirk`, '
+			. '`haftmittel`, `letzteAenderung`');
 		$query->from($db->qn('hb_spiel'));
 		$query->where($db->qn('Heim').' IN '.self::getTeamNames());
+		$query->join('INNER',$db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
 		$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNummer').')');
 		$query->order($db->qn(array('datum', 'uhrzeit')));
 		//echo nl2br($query);//die; //see resulting query
