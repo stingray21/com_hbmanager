@@ -46,7 +46,12 @@ foreach ($this->teams as $team)
 		$background = false;
 		echo "\n\t<table class=\"HBschedule HBhighlight\">\n";
 		echo "\t\t<thead>\n";
-		echo "\t\t<tr><th colspan=\"3\">Wann</th><th>Halle</th><th class=\"rightalign\">Heim</th><th></th><th class=\"leftalign\">Gast</th><th colspan=\"3\">Ergebnis</th><th>Bemerkung</th>";
+		echo "\t\t<tr><th>Datum</th><th>Uhrzeit</th>".
+			//"<th>Halle</th>".
+			"<th class=\"rightalign\">Heim</th><th></th>".
+			"<th class=\"leftalign\">Gast</th>";
+		//echo "<th colspan=\"3\">Ergebnis</th>";
+		//echo "<th>Bemerkung</th>";
 		echo "</tr>\n";
 		echo "\t\t</thead>\n\n";
 	
@@ -63,28 +68,28 @@ foreach ($this->teams as $team)
 		
 			// row in HBschedule table
 			echo "\t\t\t<tr class=\"{$backgroundColor}\">";
-			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->datum, 'D', false);
-			echo "</td>";
+			//echo "<td class=\"wann leftalign\">";
+			//echo JHtml::_('date', $row->datum, 'D', false);
+			//echo "</td>";
 			echo "<td class=\"wann leftalign\">";
 			echo JHtml::_('date', $row->datum, 'd.m.y', false);
 			echo "</td>";
-			echo "<td class=\"wann leftalign\">".substr($row->uhrzeit,0,5)." Uhr</td>";
-			echo "<td>{$row->hallenNummer}</td>";
+			echo "<td class=\"wann leftalign\">".substr($row->uhrzeit,0,5)."</td>";
+			//echo "<td>{$row->hallenNummer}</td>";
 			echo "<td class=\"rightalign";
 			if ($row->mark === 1) echo ' heim';
 			echo "\">{$row->heim}</td><td>-</td>";
 			echo "<td class=\"leftalign";
 			if ($row->mark === 2) echo ' heim';
 			echo "\">{$row->gast}</td>";
-			echo "<td class=\"rightalign";
-			if ($row->mark === 1) echo ' heim';
-			echo "\">{$row->toreHeim}</td><td>:</td>";
-			echo "<td class=\"leftalign";
-			if ($row->mark === 2) echo ' heim';
-			echo "\">{$row->toreGast}</td>";
-			echo "<td>{$row->bemerkung}</td>";
-			echo "</td></tr>\n";
+			//echo "<td class=\"rightalign";
+			//if ($row->mark === 1) echo ' heim';
+			//echo "\">{$row->toreHeim}</td><td>:</td>";
+			//echo "<td class=\"leftalign";
+			//if ($row->mark === 2) echo ' heim';
+			//echo "\">{$row->toreGast}</td>";
+			//echo "<td>{$row->bemerkung}</td>";
+			echo "</tr>\n";
 		}
 		echo "\t\t</tbody>\n\n";
 		echo "\t</table>\n\n";

@@ -66,7 +66,6 @@ foreach ($this->homegames as $dayKey => $day)
 			//echo "<td class=\"leftalign";
 			//echo "\">{$row->toreGast}</td>";
 			//echo "<td>{$row->bemerkung}</td>";
-			//echo "</td>";
 			echo"</tr>\n";
 		}
 		echo "\t\t</table>\n";

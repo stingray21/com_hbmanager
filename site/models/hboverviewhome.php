@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
 
-class hbmanagerModelHbOverview extends JModelLegacy
+class hbmanagerModelHbOverviewHome extends JModelLegacy
 {	
 	private $updatedRankings = array();
 	private $updatedSchedules = array();
@@ -16,38 +16,6 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		
 	}
 	
-	function getTeams()
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('hb_mannschaft');
-		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
-					$db->qn('reihenfolge').' ASC');
-		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
-		$db->setQuery($query);
-		$teams = $db->loadObjectList();
-		return $teams;
-	}
-	
-	function getSchedule($team)
-	{
-		// getting schedule of the team from the DB
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from($db->quoteName('hb_spiel'));
-		$query->where($db->quoteName('Kuerzel').' = '.$db->Quote($team->kuerzel));
-		$query->order($db->quoteName(array('datum', 'uhrzeit')));
-		//echo nl2br($query);//die; //see resulting query
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-		//echo "<pre>"; print_r($rows); echo "</pre>";
-		
-		$rows = self::markHomeInSchedule($rows, $team->nameKurz);
-		
-		return $rows;
-	}
 
 	function getTeamArray()
 	{

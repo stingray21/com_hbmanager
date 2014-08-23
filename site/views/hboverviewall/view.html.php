@@ -13,20 +13,14 @@ class HbManagerViewHbOverviewAll extends JViewLegacy
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
-		$document = JFactory::getDocument();
 		
-		$model = $this->getModel('HBoverview');
+		$model = $this->getModel('HBoverviewAll');
 		
 		$teams = $model->getTeamArray();
 		$this->assignRef('teams', $teams);
 		//echo '=> view->$teams <br><pre>'; print_r($teams); echo '</pre>';
 		
-		//JToolBarHelper::title(JText::_('COM_HBMANAGER_DATA_TITLE'),'hblogo');
-		
-		
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbmanager/css/site.stylesheet.css');
-		
+		JHtml::stylesheet('com_hbmanager/site.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);
