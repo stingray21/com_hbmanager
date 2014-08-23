@@ -2,9 +2,15 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-require_once( JPATH_COMPONENT.'/controller.php');
-
-//Execute the task
-$controller = JController::getInstance('HBmanager');
-$controller->execute(JRequest::getCmd('task'));
+// import joomla controller library
+jimport('joomla.application.component.controller');
+ 
+// Get an instance of the controller
+$controller = JControllerLegacy::getInstance('HBmanager');
+ 
+// Perform the Request task
+$input = JFactory::getApplication()->input;
+$controller->execute($input->getCmd('task'));
+ 
+// Redirect if set by the controller
 $controller->redirect();

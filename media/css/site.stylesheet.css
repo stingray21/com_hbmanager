@@ -1,0 +1,28 @@
+
+/* Overview  */
+
+
+div#hboverview,
+div#hboverview h4,
+div#hboverview p,
+div#hboverview table,
+{
+	padding: 0;
+	margin: 0;
+}
+
+div#hboverview table.HBschedule tr.odd {
+	background: #eee;
+	}
+
+div#hboverview table.HBschedule td{
+	padding: 0.1em 0.5em;
+	}
+
+div#hboverview table.HBschedule td.heim {
+	font-weight: bold;
+	}
+
+div#hboverview table.HBhomeSchedule td{
+	padding: 0.1em 0.5em;
+	}
