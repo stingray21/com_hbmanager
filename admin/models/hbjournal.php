@@ -76,7 +76,7 @@ class HBmanagerModelHbjournal extends JModelLegacy
 			$todaydate = strftime("%Y-%m-%d", time());
 			
 			// previous games dates
-			//echo $todaydate = "2012-12-11";
+			//echo $todaydate = "2014-09-16";
 			
 			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
 				$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
@@ -96,7 +96,15 @@ class HBmanagerModelHbjournal extends JModelLegacy
 						" ORDER BY `datum` DESC LIMIT 1";
 				//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 				$db->setQuery($query);
-				$dates['startdatePrev'] = $db->loadResult();
+				$result = $db->loadResult();
+			}
+			if (!empty($result)) {
+				$dates['startdatePrev'] = $result;
+			}
+			else {
+				$dates['startdatePrev'] = 
+					strftime("%Y-%m-%d",strtotime('last Monday', 
+					strtotime('last friday', strtotime($todaydate))));
 			}
 			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
 					$dates['startdatePrev']. " AND " . $db->q($todaydate) . 
