@@ -12,17 +12,14 @@
 			/>
 			<field 
 				name="dateiname" 
-				type="hidden"
-			/>
-			<field 
-				name="foto" 
 				type="imagelist" 
 				default="" 
-				label="Foto auswählen" 
+				label="Foto" 
 				description="" 
-				directory="../hbdata/images/teams/" 
+				directory="../hbdata/images/teams/2014-2015/250px/" 
 				exclude="" 
 				stripext="" 
+				hide_default="true"
 			/>
 			<field
 				name="untertitel"

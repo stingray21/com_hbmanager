@@ -109,37 +109,37 @@ class hbmanagerModelHbpictures extends JModelLegacy
 					', '.$db->qn('dateiname').' = '.$db->q($pic->dateiname).
 					', '.$db->qn('saison').' = '.$db->q($pic->saison);
 				
-				$query .= ', '.$db->qn('untertitel_dt1').' = ';
-				if (empty($pic->untertitel_dt1)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dt1);
-				$query .= ', '.$db->qn('untertitel_dd1').' = ';
-				if (empty($pic->untertitel_dd1)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dd1);
-				
-				$query .= ', '.$db->qn('untertitel_dt2').' = ';
-				if (empty($pic->untertitel_dt2)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dt2);
-				$query .= ', '.$db->qn('untertitel_dd2').' = ';
-				if (empty($pic->untertitel_dd2)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dd2);
-				
-				$query .= ', '.$db->qn('untertitel_dt3').' = ';
-				if (empty($pic->untertitel_dt3)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dt3);
-				$query .= ', '.$db->qn('untertitel_dd3').' = ';
-				if (empty($pic->untertitel_dd3)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dd3);
-				
-				$query .= ', '.$db->qn('untertitel_dt4').' = ';
-				if (empty($pic->untertitel_dt4)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dt4);
-				$query .= ', '.$db->qn('untertitel_dd4').' = ';
-				if (empty($pic->untertitel_dd4)) $query .= 'NULL';
-				else $query .= $db->q($pic->untertitel_dd4);
-				
-				$query .= ', '.$db->qn('kommentar').' = '.$db->q($pic->kommentar);
-				$query .= 'WHERE ';
-				$query .= $db->qn('id').' = '.$db->q($pic->id)."\n";
+					$query .= ', '.$db->qn('untertitel_dt1').' = ';
+					if (empty($pic->untertitel_dt1)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dt1);
+					$query .= ', '.$db->qn('untertitel_dd1').' = ';
+					if (empty($pic->untertitel_dd1)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dd1);
+
+					$query .= ', '.$db->qn('untertitel_dt2').' = ';
+					if (empty($pic->untertitel_dt2)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dt2);
+					$query .= ', '.$db->qn('untertitel_dd2').' = ';
+					if (empty($pic->untertitel_dd2)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dd2);
+
+					$query .= ', '.$db->qn('untertitel_dt3').' = ';
+					if (empty($pic->untertitel_dt3)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dt3);
+					$query .= ', '.$db->qn('untertitel_dd3').' = ';
+					if (empty($pic->untertitel_dd3)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dd3);
+
+					$query .= ', '.$db->qn('untertitel_dt4').' = ';
+					if (empty($pic->untertitel_dt4)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dt4);
+					$query .= ', '.$db->qn('untertitel_dd4').' = ';
+					if (empty($pic->untertitel_dd4)) $query .= 'NULL';
+					else $query .= $db->q($pic->untertitel_dd4);
+
+					$query .= ', '.$db->qn('kommentar').' = '.$db->q($pic->kommentar);
+					$query .= 'WHERE ';
+					$query .= $db->qn('id').' = '.$db->q($pic->id)."\n";
 				}
 				
 				//echo '=> model->$query <br><pre>'.$query.'</pre>';

@@ -37,7 +37,7 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				
 				<tr>
 					<td class="picture">
-						<img src="../hbdata/images/teams/<?php 
+						<img src="../hbdata/images/teams/2014-2015/250px/<?php 
 						echo $value->dateiname;
 						?>" id="teampic_<?php
 						echo $value->kuerzel;
@@ -47,11 +47,11 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 					</td>
 					<td>
 				<?php	
-//				echo $form->getLabel('foto', 'hbpictures');
-//				echo hbhelper::formatInput($form->getInput('foto', 'hbpictures', $value->dateiname), $i);
 				
 				echo hbhelper::formatInput($form->getInput('id', 'hbpictures', $value->id), $i);
 				echo hbhelper::formatInput($form->getInput('kuerzel', 'hbpictures', $value->kuerzel), $i);
+				
+				echo $form->getLabel('dateiname', 'hbpictures');
 				echo hbhelper::formatInput($form->getInput('dateiname', 'hbpictures', $value->dateiname), $i);
 				
 				echo $form->getLabel('saison', 'hbpictures');

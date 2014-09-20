@@ -254,6 +254,7 @@ div.teampic label {
 }
 
 div.teampic input,
+div.teampic select,
 div.teampic textarea{
 	float: left;
 	margin-left: 5px;
