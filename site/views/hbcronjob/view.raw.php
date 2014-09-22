@@ -16,16 +16,30 @@ class HBmanagerViewHbCronJob extends JViewLegacy
 		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
 		
-		if (date('N') === '7' && $model->getDailyUpdateStatus()) {
-			echo '<p>Alle Mannschaften</p>';
-			$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbcronjob_all.js');
-		}
-		else {
-			echo '<p>Aktuell</p>';
+		
+		if ($this->javaScript) {
+			echo '<p>JavaScript</p>';
 			$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbcronjob.js');
 		}
+		else {
+			echo '<p>without JavaScript</p>';
+			
+			// continue the script execution after disconnection (cron-job.org)
+			// ignore_user_abort(true);
+			
+			$start = microtime(true);
+			
+			$result = $model->updateHvwDataCronjob();
+			//echo '<pre> ->$result ';print_r($result); echo '</pre>';
+			$this->assignRef('result', $result);
+			
+			$time_elapsed = microtime(true) - $start;
+			$this->assignRef('time_elapsed', $time_elapsed);
+			//echo '<p>'.$time_elapsed_us.' µs</p>';
+		}
 
-
+		
+		
 		//echo '<p>raw view</p>';
 		parent::display($tpl);
 	}

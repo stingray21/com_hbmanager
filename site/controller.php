@@ -72,16 +72,19 @@ class HBmanagerController extends JControllerLegacy
 		// Set up the data to be sent in the response.
 		$model = $this->getModel('hbcronjob');
 		
-//		$teamkey = 'M1';
-//		$jinput = JFactory::getApplication()->input;
-//		$teamkey = $jinput->get('teamkey');
-
-//		$model->updateTeam($teamkey);
+		
+		$jinput = JFactory::getApplication()->input;
+		$javascript = $jinput->get('js');
+		
 		JRequest::setVar('tmpl','component');
 		
 		$view = $this->getView('hbcronjob','raw');
 		$view->setModel($model, true);
-		//$view->setLayout('addRow');
+		$view->javaScript = $javascript;
+		if ($view->javaScript) {
+			$view->setLayout('default_js');
+		}
+		
 		$view->display();
 	}
 	

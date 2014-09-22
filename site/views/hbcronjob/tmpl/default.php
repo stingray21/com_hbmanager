@@ -2,7 +2,18 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+//$datePattern = "%A, %d.%m.%Y &nbsp;&nbsp;%H:%M:%S Uhr";
+$datePattern = 'D, d.m.Y - H:i:s \U\h\r';
 
-echo '<div id="eggtimer"><img src="./media/com_hbmanager/images/eggtimer.gif" /></div>';
-echo '<div id="hvwupdate">';
-echo '</div>';
+if (is_array($this->result)) {
+	foreach ($this->result as $team)
+	{
+		echo "\n";
+		echo '<p><b>'.$team->kuerzel.'</b><br/>';
+		echo 'Tabelle: '.$team->ranking.'<br/>';
+		echo 'Spielplan: '.$team->ranking.'</p>';
+	}
+}
+
+
+//echo '<p>'.$this->time_elapsed.' µs</p>';
