@@ -95,6 +95,7 @@ class hbmanagerController extends JControllerAdmin
 		$view = $this->getView('hbdata','html');
 		$view->setModel($model);
 		$view->setLayout('default_js');
+		//$view->setLayout('default');
 		
 		$view->display();
 		
@@ -393,12 +394,13 @@ class hbmanagerController extends JControllerAdmin
 //		}
 	}
 	
+	
 	function getHvwTeams()
 	{
 		// Set up the data to be sent in the response.
 		$model = $this->getModel('hbdata');
 		
-		$response = $model->getHvwTeamArray();;
+		$response = $model->getHvwTeamArray();
 		//$response = array("success" => true);
 
 		// Get the document object.
@@ -426,4 +428,6 @@ class hbmanagerController extends JControllerAdmin
 //		  echo new JResponseJson($e);
 //		}
 	}
+	
+	
 } 

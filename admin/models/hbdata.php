@@ -153,6 +153,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		{
 			self::updateRankingTimestamp ($teamkey);
 			$this->updatedRankings[] = $teamkey;
+			self::updateLog('ranking', $teamkey);
 			return true;
 		}
 		return false;
@@ -170,6 +171,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		{
 			self::updateScheduleTimestamp ($teamkey);
 			$this->updatedSchedules[] = $teamkey;
+			self::updateLog('schedule', $teamkey);
 			return true;
 		}
 		return false;
@@ -620,6 +622,23 @@ class hbmanagerModelHbdata extends JModelLegacy
 		else {
 			return FALSE;
 		}
-	return ;
+		return ;
+	}
+	
+
+	
+	protected function updateLog($type, $teamkey)
+	{	
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->insert($db->qn('hb_updatelog'));
+		$query->columns($db->qn(array('typ','kuerzel','datum')));
+		$query->values($db->q($type).', '.$db->q($teamkey).', NOW()');
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		
+		$db->setQuery($query);
+		$result = $db->query();
+				
+		return $result;
 	}
 }
