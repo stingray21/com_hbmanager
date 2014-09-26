@@ -17,12 +17,12 @@ class HBmanagerViewHbCronJob extends JViewLegacy
 		$document = JFactory::getDocument();
 		
 		
-		if ($this->javaScript) {
-			echo '<p>JavaScript</p>';
+		if (isset($this->javaScript) && $this->javaScript) {
+			//echo '<p>JavaScript</p>';
 			$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbcronjob.js');
 		}
 		else {
-			echo '<p>without JavaScript</p>';
+			//echo '<p>without JavaScript</p>';
 			
 			// continue the script execution after disconnection (cron-job.org)
 			// ignore_user_abort(true);

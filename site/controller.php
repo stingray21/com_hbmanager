@@ -74,15 +74,19 @@ class HBmanagerController extends JControllerLegacy
 		
 		
 		$jinput = JFactory::getApplication()->input;
-		$javascript = $jinput->get('js');
+		$option = $jinput->get('viewoption');
 		
 		JRequest::setVar('tmpl','component');
 		
 		$view = $this->getView('hbcronjob','raw');
 		$view->setModel($model, true);
-		$view->javaScript = $javascript;
-		if ($view->javaScript) {
+		
+		if ($option === 'js') {
+			$view->javaScript = true;
 			$view->setLayout('default_js');
+		}
+		elseif ($option === 'plain') {
+			$view->setLayout('plain');
 		}
 		
 		$view->display();

@@ -9,14 +9,13 @@ if (is_array($this->result)) {
 	foreach ($this->result as $team)
 	{
 		echo "\n";
-		echo '<p><b>'.$team->kuerzel.'</b><br/>';
-		echo 'Tabelle: '.$team->ranking.'<br/>';
-		echo 'Spielplan: '.$team->ranking.'</p>';
+		echo $team->kuerzel."\n";
+		echo 'T: '.$team->ranking."\n";
+		echo 'S: '.$team->ranking."\n";
 	}
 }
 elseif ($this->result === "no update") {
-	echo '<p><b>Kein Update</b><br/>';
+	echo 'Kein Update';
 }
-
 
 //echo '<p>'.$this->time_elapsed.' µs</p>';
