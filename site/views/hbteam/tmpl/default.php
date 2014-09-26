@@ -2,7 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 $pic = $this->picture;
-$picPath = './hbdata/images/teams/';
+$picPath = './hbdata/images/teams/2014-2015/600px/';
+$picPathFull = './hbdata/images/teams/2014-2015/3000px/';
 ?>
 <div class="hbteam">
 <h1><?php echo $this->team->mannschaft; ?>
@@ -13,7 +14,7 @@ if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
 {
 ?>
 <div class="teampic">
-	<a href="<?php echo $picPath.$pic->filename ?>">
+	<a href="<?php echo $picPathFull.$pic->filename ?>" target="_BLANK">
 	<img src="<?php echo $picPath.$pic->filename?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
 	</a>
 	

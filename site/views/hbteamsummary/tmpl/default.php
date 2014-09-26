@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-$picPath = JURI::Root().'hbdata/images/teams/';
+$picPath = JURI::Root().'hbdata/images/teams/2014-2015/250px/';
 ?>
 
 <div class="hbteam">
@@ -25,9 +25,11 @@ foreach ($this->teams as $team)
 	</div>
 	
 	<div class="teamsummaryinfo">
-	<h3><?php echo $team->mannschaft; ?>
-	<span><?php echo $team->liga; ?></span></h3>
-	
+	<a href="<?php echo JURI::Root().'index.php/'.$this->link.'/'.strtolower($team->kuerzel)?>">
+		<h3><?php echo $team->mannschaft; ?>
+		<span><?php echo $team->liga; ?></span></h3>
+	</a>
+		
 	<dl class="training">
 
 	<dt>Trainer</dt>
