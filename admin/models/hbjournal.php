@@ -428,16 +428,20 @@ class HBmanagerModelHbjournal extends JModelLegacy
 		
 		if (!empty($this->berichte))
 		{	
+			$i = 0;
 			foreach ($this->berichte as $bericht)
-			{
-				$ueberschrift = "{$bericht->mannschaft} - {$bericht->liga} ({$bericht->ligaKuerzel})";
-				$ergebnis = "{$bericht->heim} - {$bericht->gast}"
+			{	
+				$data[$i]['ueberschrift'] = "{$bericht->mannschaft} - {$bericht->liga} ({$bericht->ligaKuerzel})";
+				$data[$i]['ergebnis'] = "{$bericht->heim} - {$bericht->gast}"
 						."\t{$bericht->toreHeim}:{$bericht->toreGast}";
-				$text = $bericht->bericht;
-				if (!empty($bericht->spielerliste)) $spieler = $bericht->spielerliste;
-				if (!empty($bericht->zusatz)) $zusatz = $bericht->zusatz;
-				
-				$data[] = array('ueberschrift' => $ueberschrift, 'ergebnis' => $ergebnis, 'text' => $text, 'spieler' => $spieler, 'zusatz' => $zusatz);
+				$data[$i]['text'] = $bericht->bericht;
+				if (!empty($bericht->spielerliste)) {
+					$data[$i]['spieler'] = $bericht->spielerliste;
+				}
+				if (!empty($bericht->zusatz)) {
+					$data[$i]['zusatz'] = $bericht->zusatz;
+				}
+				$i++;
 			}
 			//echo "<pre>"; print_r($data); echo "</pre>";
 		}

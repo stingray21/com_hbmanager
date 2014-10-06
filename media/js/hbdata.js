@@ -68,12 +68,10 @@ function updateTeamData($, teamkey, teams, callback)
 {
 	console.log('update ' + teamkey);
 	
-	var cellRanking = new Array();
-	var cellSchedule = new Array();
+	var cellUpdate = new Array();
 	var row = new Array();
-	cellRanking[teamkey] = document.getElementById("ranking_"+teamkey);
-	cellSchedule[teamkey] = document.getElementById("schedule_"+teamkey);
-	row[teamkey] = cellSchedule[teamkey].parentElement;
+	cellUpdate[teamkey] = document.getElementById("update_"+teamkey);
+	row[teamkey] = cellUpdate[teamkey].parentElement;
 	row[teamkey].bgColor="yellow";
 	
 	$.ajax({
@@ -84,8 +82,7 @@ function updateTeamData($, teamkey, teams, callback)
 		success:function(data){
 			//console.log(data);
 			row[teamkey].bgColor="transparent";
-			cellRanking[teamkey].innerHTML=data.ranking;
-			cellSchedule[teamkey].innerHTML=data.schedule;
+			cellUpdate[teamkey].innerHTML=data;
 			callback(teams, teamkey);
 		},
 		error:function(xhr,err){

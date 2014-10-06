@@ -15,7 +15,7 @@ echo '<div class="clr"></div>';
 echo '<p>no JavaScript</p>';
 
 echo '<table id="hvwupdate">';
-echo '<tr><th>Mannschaft</th><th>letztes Update: Tabelle</th><th>letztes Update: Spielplan</th><th></th></tr>'."\n";
+echo '<tr><th>Mannschaft</th><th>letztes Update</th><th></th></tr>'."\n";
 
 //$datePattern = "%A, %d.%m.%Y &nbsp;&nbsp;%H:%M:%S Uhr";
 $datePattern = 'D, d.m.Y - H:i:s \U\h\r';
@@ -27,22 +27,12 @@ foreach ($this->teams as $team)
 	
 	
 	echo '<td';
-	if(in_array($team->kuerzel, $this->updated['rankings'])) 
+	if(in_array($team->kuerzel, $this->updated)) 
 			echo ' class="updated"';
 	echo '>';
 	if(empty($team->hvwLink)) echo 'keine HVW Daten';
-	if (!empty($team->updateTabelle)) 
-		//echo strftime($datePattern, strtotime($team->updateTabelle));
-		echo JHTML::_('date', $team->updateTabelle , $datePattern);
-	echo '</td>';
-	
-	echo '<td';
-	if(in_array($team->kuerzel, $this->updated['schedules'])) 
-			echo ' class="updated"';
-	echo '>';
-	if (!empty($team->updateSpielplan)) 
-		//echo strftime($datePattern, strtotime($team->updateSpielplan));
-		echo JHTML::_('date', $team->updateSpielplan , $datePattern);
+	if (!empty($team->update)) 
+		echo JHTML::_('date', $team->update , $datePattern);
 	echo '</td>';
 	
 	if (!empty($team->hvwLink)) {

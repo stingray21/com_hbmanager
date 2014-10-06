@@ -215,26 +215,28 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 			}
 		}
 		//echo '=> model->$combinedGames <br><pre>';print_r($combinedGames);echo'</pre>';
-		
-		foreach ($combinedGames as $date => $gamedate) 
+		if (!empty($combinedGames))
 		{
-			foreach ($gamedate as $game) 
+			foreach ($combinedGames as $date => $gamedate) 
 			{
-				$copy = null;
-				foreach ($game->indices as $index)
-				{	
-					if ($copy === null) {
-						$copy = $games[$date][$index]->spielIDhvw;
-					}
-					else {
-						$games[$date][$index]->copy = $copy;
-					}
-					$games[$date][$index]->toreHeim = $game->toreHeim;
-					$games[$date][$index]->toreGast = $game->toreGast;
-					
-					// delete "other" games
-					if (isset($games[$date][$index]->copy)) {
-						unset($games[$date][$index]);
+				foreach ($gamedate as $game) 
+				{
+					$copy = null;
+					foreach ($game->indices as $index)
+					{	
+						if ($copy === null) {
+							$copy = $games[$date][$index]->spielIDhvw;
+						}
+						else {
+							$games[$date][$index]->copy = $copy;
+						}
+						$games[$date][$index]->toreHeim = $game->toreHeim;
+						$games[$date][$index]->toreGast = $game->toreGast;
+
+						// delete "other" games
+						if (isset($games[$date][$index]->copy)) {
+							unset($games[$date][$index]);
+						}
 					}
 				}
 			}
@@ -290,28 +292,29 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 			}
 		}
 		//echo '=> model->$combinedGames <br><pre>';print_r($combinedGames);echo'</pre>';
-		
-		foreach ($combinedGames  as $game) 
+		if (!empty($combinedGames))
 		{
-			$copy = null;
-			foreach ($game->indices as $index)
-			{	
-				if ($copy === null) {
-					$copy = $games[$index]->spielIDhvw;
-				}
-				else {
-					$games[$index]->copy = $copy;
-				}
-				$games[$index]->toreHeim = $game->toreHeim;
-				$games[$index]->toreGast = $game->toreGast;
+			foreach ($combinedGames  as $game) 
+			{
+				$copy = null;
+				foreach ($game->indices as $index)
+				{	
+					if ($copy === null) {
+						$copy = $games[$index]->spielIDhvw;
+					}
+					else {
+						$games[$index]->copy = $copy;
+					}
+					$games[$index]->toreHeim = $game->toreHeim;
+					$games[$index]->toreGast = $game->toreGast;
 
-				// delete "other" games
-				if (isset($games[$index]->copy)) {
-					unset($games[$index]);
+					// delete "other" games
+					if (isset($games[$index]->copy)) {
+						unset($games[$index]);
+					}
 				}
 			}
 		}
-		
 		return $games;
 	}
 	
@@ -409,7 +412,7 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 			$maxDate = strtotime($dateframe->max);
 			if ($minDate === $maxDate)
 			{
-				$titledate = JHtml::_('date', $minDate, 'D, d. F Y', false);
+				$titledate = JHtml::_('date', $minDate, 'D, d. M.', false);
 				$titledateKW = 'KW'.JHtml::_('date', $minDate, 'W', false);
 			}
 			elseif (strftime("%m", $minDate) === strftime("%m", $maxDate) AND
@@ -417,10 +420,11 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 				strftime("%w", $maxDate) == 0 AND
 				strftime("%j", $minDate)+1 == strftime("%j", $maxDate)) 
 			{
-				$titledate = 'Wochenende';
+				$titledate = 'Wochenende ';
 				$titledate .= JHtml::_('date', $minDate, 'd.', false);
 				$titledate .= '/';
-				$titledate .= JHtml::_('date', $maxDate, 'd. F. Y', false);
+				//$titledate .= JHtml::_('date', $maxDate, 'd. M.  Y', false);
+				$titledate .= JHtml::_('date', $maxDate, 'd. F', false);
 				
 				$titledateKW = 'KW'.JHtml::_('date', $maxDate, 'W', false);
 			}
@@ -428,7 +432,7 @@ class hbmanagerModelHbprevgames extends JModelLegacy
 			{
 				$titledate = JHtml::_('date', $minDate, 'D d. ', false);
 				if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
-					$titledate .= JHtml::_('date', $minDate, 'F. ', false);
+					$titledate .= JHtml::_('date', $minDate, 'F ', false);
 				}
 				if (strftime("%Y", $minDate) !== strftime("%Y", $maxDate)) {
 					$titledate .= JHtml::_('date', $minDate, 'Y ', false);
