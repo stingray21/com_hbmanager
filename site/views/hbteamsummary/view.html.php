@@ -18,7 +18,7 @@ class hbteamViewHBteamSummary extends JViewLegacy
 		$this->assignRef('model', $model);
 				
 		$teams = $model->getTeams();
-		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
+		//echo '=> view->team<br><pre>'; print_r($teams); echo '</pre>';
 		$this->assignRef('teams', $teams);
 
 		$link = $model->link;

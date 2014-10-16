@@ -75,6 +75,10 @@ class hbteamModelHBteamSummary extends JModelLegacy
 		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->leftJoin('hb_training USING ('.$db->qn('trainingID').')');
 		$query->leftJoin('hb_halle USING (hallenNummer)');
+		$query->order('FIELD('.$db->qn('tag').','.$db->q('Mo').','.
+			$db->q('Di').','.$db->q('Mi').','.$db->q('Do').','.
+			$db->q('Fr').','.$db->q('Sa').','.$db->q('So').')');
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$trainings = $db->loadObjectList ();
 		//echo "Trainings<pre>"; print_r($trainings); echo "</pre>";
@@ -187,7 +191,8 @@ class hbteamModelHBteamSummary extends JModelLegacy
 					$trainerContact[] = $curTrainer->telephone;
 				}
 			if(count($trainerContact) > 0) {
-				$curTrainer->contact = implode(', ', $trainerContact);
+				$curTrainer->contact = $trainerContact;
+				//$curTrainer->contact = implode(', ', $trainerContact);
 			}
 		}
 		return $trainer;

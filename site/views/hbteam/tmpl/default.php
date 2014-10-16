@@ -45,3 +45,11 @@ if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
 	
 ?>
 </div>
+
+<div id="test">
+<?php
+	$result = $this->model->getRanking();
+	$result = $this->model->getHead2Head('TSV Geislingen', 'SG Tail/Trucht','hbdata_m1_spielplan');
+	
+?>
+</div>

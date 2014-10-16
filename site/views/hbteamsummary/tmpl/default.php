@@ -38,22 +38,38 @@ foreach ($this->teams as $team)
 	foreach ($team->trainer as $curTrainer)
 	{
 		echo "<dd>";
-		if(isset($curTrainer->name)) echo '<span class="trainerName">'.$curTrainer->name.'</span>';
-		if(isset($curTrainer->contact)) echo " <br />(&nbsp;".$curTrainer->contact."&nbsp;)";
+		if(isset($curTrainer->name)) echo '<span class="trainerName">'.$curTrainer->name.' </span>';
+		if(isset($curTrainer->contact)) {
+			echo '<span class="trainerContact">';
+			$newline = '';
+			foreach ($curTrainer->contact as $contact)
+			{
+				echo $newline.$contact;
+				$newline = '<br/>';
+			}
+			echo '</span>';
+		}
 		echo "</dd>";
 	}
 	?>
 	<dt class="times">Trainingszeiten</dt>
+	<dd>
+	<table>
 	<?php
 	foreach ($team->trainings as $training) 
 	{
-		echo '<dd><span class="weekday">'.$training->tag.'</span> ';
-		echo $training->beginn." - ".$training->ende." Uhr";
+		echo '<tr><td class="weekday">'.$training->tag.' </td>';
+		echo '<td class="begin">'.$training->beginn." </td>";
+		echo '<td class="end">- '.$training->ende." Uhr</td>";
+		echo '<td>';
 		if ($training->bemerkung != "") echo " (".$training->bemerkung.")";
 		if (!empty($training->halleAnzeige)) echo " (".$training->halleAnzeige.")";
-		echo "</dd>";
+		echo '</td>';
+		echo "</tr>\n";
 	}
 	?>
+	</table>
+	</dd>
 	</dl>
 	</div>
 	

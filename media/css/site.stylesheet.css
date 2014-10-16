@@ -158,6 +158,48 @@ div.teamsummary dl.training dt {
 	font-weight: bold;
 }
 
+div.teamsummary span.trainerName {
+	
+}
+
+div.teamsummary span.trainerContact {
+	margin-left: 1em;
+	display: block;
+	color: #999;
+	//font-size: 0.9em;
+}
+
+div.teamsummary span.trainerContact:hover {
+	color: #444;
+}
+
+div.teamsummary dt.times {
+	color: #444;
+}
+
+div.teamsummary dl.training table {
+	border: 0;
+	margin-left: 1em;
+}
+
+div.teamsummary dl.training table td {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+div.teamsummary dl.training table td.weekday {
+	width: 2em;
+}
+
+div.teamsummary dl.training table td.begin {
+	width: 3em;
+}
+
+div.teamsummary dl.training table td.end {
+	width: 6em;
+}
+
 div#scorerTable
 {
 	margin: 2px 20px 10px 0px;
