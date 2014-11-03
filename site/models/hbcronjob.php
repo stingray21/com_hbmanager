@@ -12,21 +12,37 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 	{
 		
 		$teams = self::getOutdatedTeams();
-		//echo '<pre>';print_r($teams); echo '</pre>';
+		echo '<pre>';print_r($teams); echo '</pre>';
 		
 		if (is_array($teams)) {
 			foreach ($teams as $team)
 			{
 				self::updateTeam($team->kuerzel);
-				$updateDates = self::getUpdateDate($team->kuerzel);
+				$updateDate = self::getUpdateDate($team->kuerzel, false);
 				//echo '<pre>';print_r($updateDates); echo '</pre>';
+				$team->updated = $updateDate;
 			}
-			$result[] = $updateDates;
+			$result = $teams;
 		}
 		else {
 			$result = 'no update'; 	
 		}
+		//echo '<pre>';print_r($result); echo '</pre>';
 		return $result;
+	}
+	
+	protected function getHvwTeamArray ()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('kuerzel');
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('hvwLink').' IS NOT NULL');
+		$db->setQuery($query);
+		$teams = $db->loadColumn();
+		//echo '=> model->$updated <br><pre>'; echo $query; echo '</pre>';
+		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
+		return $teams;
 	}
 	
 	function getOutdatedTeams()
@@ -34,27 +50,22 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 		$allTeams = self::getHvwTeamArray();
 		//echo '<pre>';print_r($allTeams); echo '</pre>';
 		$teams = null;
-		foreach ($allTeams as $team)
+		foreach ($allTeams as $teamkey)
 		{
 			
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
-			
 			$query->select('DISTINCT('.$db->qn('kuerzel').')' );
 			$query->from($db->qn('hb_mannschaft'));
-			$query->innerJoin($db->qn('hbdata_'.$team->kuerzel.'_spielplan').
-				' ON '.$db->qn('klasse').'='.$db->qn('ligakuerzel') );
-			$query->where('( CONCAT('.$db->qn('datum').", ' ', ".$db->qn('zeit').') < NOW()'
-				. ' AND ('.$db->qn('updateSpielplan').' < CONCAT('.$db->qn('datum').", ' ', ".$db->qn('zeit').')'
-					. ' OR '.$db->qn('updateTabelle').' < CONCAT('.$db->qn('datum').", ' ', ".$db->qn('zeit').'))'
-				. ' AND ('.$db->qn('updateSpielplan').' < NOW() - INTERVAL 5 HOUR'
-					. ' OR '.$db->qn('updateTabelle').' < NOW() - INTERVAL 5 HOUR) )', 'OR');
-			$query->where('( '.$db->qn('kuerzel').' = '.$db->q($team->kuerzel).''
-				. ' AND CONCAT('.$db->qn('datum').", ' ', ".$db->qn('zeit').') < NOW() - INTERVAL 2 HOUR'
-				. ' AND '.$db->qn('ToreHeim').' = NULL )', 'OR');
-			$query->where('( DAYOFWEEK(NOW()) = 1 '
-				. 'AND (DAYOFWEEK('.$db->qn('updateSpielplan').') != 1'
-					. ' OR DAYOFWEEK('.$db->qn('updateTabelle').') != 1) )');
+			$query->innerJoin($db->qn('hb_spiel').
+				' USING ('.$db->qn('kuerzel').')' );
+			$query->where($db->qn('kuerzel').' = '.$db->q($teamkey),'AND');
+			$query->where('( ('.$db->qn('ToreHeim').' IS NULL'
+				. ' AND '.$db->qn('bemerkung').' IS NULL'
+				. ' AND '.$db->qn('datumZeit').' + INTERVAL 2 HOUR < NOW() )'
+				. ' OR '
+				. '( DAYOFWEEK(NOW()) = 2 '
+				. 'AND DAYOFWEEK('.$db->qn('update').') != 2 ) )');
 			
 			//echo '=> model->$query <br><pre>'.$query.'</pre>';
 			$db->setQuery($query);
@@ -68,26 +79,6 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 		
 		return $teams;
 	}
-	
-	function getDailyUpdateStatus()
-	{
-		
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->q('true').' AS '.$db->qn('outdated'));
-		$query->from($db->qn('hb_mannschaft'));
-		$query->where('DATE('.$db->qn('updateSpielplan').') < DATE(NOW())'
-					.' OR '
-					.'DATE('.$db->qn('updateTabelle').') < DATE(NOW())'
-					);
-		//echo '=> model->$query <br><pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$result = $db->loadResult();
-		//echo '<pre>';print_r($result); echo '</pre>';
-				
-		return $result;
-	}
-	
 	
 	
 }

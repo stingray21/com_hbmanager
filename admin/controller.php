@@ -95,7 +95,7 @@ class hbmanagerController extends JControllerAdmin
 		$view = $this->getView('hbdata','html');
 		$view->setModel($model);
 		$view->setLayout('default_js');
-		//$view->setLayout('default');
+		$view->setLayout('default');
 		
 		$view->display();
 		

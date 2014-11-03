@@ -14,6 +14,10 @@ echo '<div id="eggtimer"><img src="../media/com_hbmanager/images/eggtimer.gif" /
 
 echo '<div class="clr"></div>';
 
+//$user = JFactory::getUser();
+//$timeZone = $user->getParam('timezone', 'UTC');
+//echo 'time zone: '.$timeZone;
+
 echo '<table id="hvwupdate">';
 echo '<tr><th>Mannschaft</th><th>letztes Update</th><th></th></tr>'."\n";
 
