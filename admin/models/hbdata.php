@@ -415,8 +415,8 @@ class hbmanagerModelHbdata extends JModelLegacy
     {
 		$table = 'hb_tabelle';
 		$columns = array('saison','kuerzel','platz','mannschaft','spiele',
-				'siege','unentschieden','niederlagen','tore','gegenTore',
-				'torDifferenz','punkte','minuspunkte');
+				's','u','n','tore','gegenTore',
+				'torDiff','punkte','minuspunkte');
 		$standingsData = self::getStandingsData($source);
 		//echo '=> model<br><pre>'; print_r($standingsData);echo '</pre>';
 		
@@ -451,14 +451,14 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$value['mannschaft'] = $db->q($data[1]);
 		
 		$value['spiele'] = $data[2];
-		$value['siege'] = $data[3];
-		$value['unentschieden'] = $data[4];
-		$value['niederlagen'] = $data[5];
-		$value['plustore'] = $data[6];
-		$value['minustore'] = $data[7];
-		$value['torDifferenz'] = $data[6]-$data[7];
-		$value['pluspunkte'] = $data[8];
-		$value['minuspunkte'] = $data[9];
+		$value['s'] = $data[3];
+		$value['u'] = $data[4];
+		$value['n'] = $data[5];
+		$value['tore'] = $data[6];
+		$value['gegenTore'] = $data[7];
+		$value['torDiff'] = $data[6]-$data[7];
+		$value['punkte'] = $data[8];
+		$value['minusPunkte'] = $data[9];
 		
 		//echo '=> model<br><pre>'; print_r($value);echo '</pre>';
 		return $value;
@@ -469,12 +469,12 @@ class hbmanagerModelHbdata extends JModelLegacy
     {
 		$table = 'hb_tabelle_details';
 		$columns = array('saison','kuerzel','platz','mannschaft','spiele',
-			'siege','siegeH','siegeA',
-			'unentschieden','unentschiedenH','unentschiedenA',
-			'niederlagen','niederlagenH','niederlagenA',
+			's','sH','sA',
+			'u','uH','uA',
+			'n','nH','nA',
 			'tore','toreH','toreA',
 			'gegenTore','gegenToreH','gegenToreA',
-			'torDifferenz','torDifferenzH','torDifferenzA',
+			'torDiff','torDiffH','torDiffA',
 			'punkte','punkteH','punkteA',
 			'minusPunkte','minusPunkteH','minusPunkteA');
 		//echo '<pre>';print_r($detailedStandingsData);echo'</pre>';
@@ -503,24 +503,24 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$value['platz'] = $data->platz;
 		$value['mannschaft'] = $db->q($data->mannschaft);
 		$value['spiele'] = $data->spiele;
-		$value['siege'] = $data->siege;
-		$value['siegeH'] = $data->siegeH;
-		$value['siegeA'] = $data->siegeA;
-		$value['unentschieden'] = $data->unentschieden;
-		$value['unentschiedenH'] = $data->unentschiedenH;
-		$value['unentschiedenA'] = $data->unentschiedenA;
-		$value['niederlagen'] = $data->niederlagen;
-		$value['niederlagenH'] = $data->niederlagenH;
-		$value['niederlagenA'] = $data->niederlagenA;
+		$value['s'] = $data->siege;
+		$value['sH'] = $data->siegeH;
+		$value['sA'] = $data->siegeA;
+		$value['u'] = $data->unentschieden;
+		$value['uH'] = $data->unentschiedenH;
+		$value['uA'] = $data->unentschiedenA;
+		$value['n'] = $data->niederlagen;
+		$value['nH'] = $data->niederlagenH;
+		$value['nA'] = $data->niederlagenA;
 		$value['tore'] = $data->tore;
 		$value['toreH'] = $data->toreH;
 		$value['toreA'] = $data->toreA;
 		$value['gegenTore'] = $data->gegenTore;
 		$value['gegenToreH'] = $data->gegenToreH;
 		$value['gegenToreA'] = $data->gegenToreA;
-		$value['torDifferenz'] = $data->torDifferenz;
-		$value['torDifferenzH'] = $data->torDifferenzH;
-		$value['torDifferenzA'] = $data->torDifferenzA;
+		$value['torDiff'] = $data->torDifferenz;
+		$value['torDiffH'] = $data->torDifferenzH;
+		$value['torDiffA'] = $data->torDifferenzA;
 		$value['punkte'] = $data->punkte;
 		$value['punkteH'] = $data->punkteH;
 		$value['punkteA'] = $data->punkteA;
