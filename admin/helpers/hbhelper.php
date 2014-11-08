@@ -28,9 +28,6 @@ abstract class HbHelper
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_JOURNAL_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showJournal',
 				$submenu == 'hbjournal');
-		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_DATABASE_SUBMENU'), 
-				'index.php?option=com_hbmanager&task=showDatabase',
-				$submenu == 'hbdatabase');
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_CALENDAR_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showCalendar',
 				$submenu == 'hbcalendar');

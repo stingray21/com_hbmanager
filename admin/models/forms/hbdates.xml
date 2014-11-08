@@ -15,29 +15,29 @@
 				default="NOW"
 			/>
 			<field 
-				name="startdatePrev" 
-				type="gamedays" 
+				name="prevStart" 
+				type="gamedaysPrev" 
 				default="" 
 				class="articleselectbox" 
 				label="von Spieltag"
 			/>
 			<field 
-				name="enddatePrev" 
-				type="gamedays" 
+				name="prevEnd" 
+				type="gamedaysPrev" 
 				default="" 
 				class="articleselectbox" 
 				label="bis Spieltag"
 			/> 
 			<field 
-				name="startdateNext"
-				type="gamedays" 
+				name="nextStart"
+				type="gamedaysNext" 
 				default="" 
 				class="articleselectbox" 
 				label="von Spieltag"
 			/> 
 			<field 
-				name="enddateNext"  
-				type="gamedays" 
+				name="nextEnd"  
+				type="gamedaysNext" 
 				default="" 
 				class="articleselectbox" 
 				label="bis Spieltag"

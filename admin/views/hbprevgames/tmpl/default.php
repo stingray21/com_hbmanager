@@ -11,51 +11,73 @@ $config = new JConfig();
 $user = JFactory::getUser();
 $userid = $user->id;
 
-
-
-setlocale(LC_TIME, "de_DE");
-
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
-		'/models/forms/hbdates.xml');
+				'/models/forms/hbdates.xml');
 
-
-//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';		
 ?>
 <form class="hbmanager form-validate" action="<?php 
-		echo JRoute::_('index.php?option=com_hbmanager&task=showPrevGames')
-		?>" method="post" id="datesForm" name="datesForm">
- 
-	<div class="fltlft">
+	JRoute::_('index.php?option=com_hbmanager&task=showJournal') 
+	?>" method="post" id="datesForm" name="datesForm">
 
-		<fieldset class="adminform">		
+	<div class="fltlft">
+	
+		<fieldset class="adminform">
 			<legend>
-				<?php
-				echo JText::_('COM_HBMANAGER_DATE_SETTINGS')
+				<?php 
+				echo JText::_('COM_HBMANAGER_DATE_SETTINGS');
 				?>
 			</legend>
-			
 			<dl>
 				<dt>
-				<?php echo $form->getLabel('startdatePrev', 'hbdates'); ?>
+				<?php echo $form->getLabel('date', 'hbDates'); ?>
 				</dt>
 				<dd>
-				<?php echo $form->getInput('startdatePrev', 'hbdates', $this->dates['startdatePrev']); ?>
-				</dd>
-							
-				<dt>
-				<?php echo $form->getLabel('enddatePrev', 'hbdates'); ?>
-				</dt>
-				<dd>
-				<?php echo $form->getInput('enddatePrev', 'hbdates', $this->dates['enddatePrev']); ?>
+				<?php 
+				if (isset($this->dates['date'])) $date = $this->dates['date'];
+				else $date = null;
+				echo $form->getInput('date', 'hbDates', 
+						strftime("%d.%m.%Y", strtotime($date))); 
+				?>
 				</dd>
 			</dl>
-			<input class="submit" type="submit" name="date_button" id="date_button" value="<?php echo JText::_('COM_HBMANAGER_DATE_UPDATE_BUTTON');?>" />
+			<div class="clr"></div>	
+			
+			<h3><?php echo JText::_('COM_HBMANAGER_DATE_PREV_GAMES');?></h3>
+			<dl>
+				<dt>
+				<?php
+					echo $form->getLabel('prevStart', 'hbdates'); 
+				?>
+				</dt>
+				<dd>
+				<?php
+					echo $form->getInput('prevStart', 'hbdates', 
+							$this->dates['prevStart']);
+				?>
+				</dd>
+				
+				<dt>
+				<?php
+					echo $form->getLabel('prevEnd', 'hbdates');
+				?>
+				</dt>
+				<dd>
+				<?php 
+					echo $form->getInput('prevEnd', 'hbdates', 
+							$this->dates['prevEnd']);
+				?>
+				</dd>
+			</dl>
+			
+			
+			<div class="clr"></div>
+			<input class="submit" type="submit" name="date_button" id="date_button" value="<?php 
+				echo JText::_('COM_HBMANAGER_DATE_UPDATE_BUTTON');?>"/>
 		</fieldset>
-		
-	</div>
 	
+	</div>
 </form>	
 <div class="clr"></div>
 
@@ -71,7 +93,7 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 		<fieldset class="adminform">		
 			<legend>
 				<?php 
-				echo JText::_('Letzte Spiele'); 
+				echo JText::_('COM_HBMANAGER_PREVGAMES_HEADLINE');
 				?>
 			</legend>
 
@@ -100,8 +122,8 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 									echo '<tr><th>'.$game->gast.'</th><td>'.$game->toreGast.'</td></tr>'."\n";
 								echo '</table>'."\n";
 								echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
-								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.substr($game->uhrzeit,0,5).' Uhr</p>'."\n";
-								echo '<p>Hallennr.: '.$game->hallenNummer.'</p>'."\n";
+								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.substr($game->zeit,0,5).' Uhr</p>'."\n";
+								echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
 								echo '<p>'.$game->bemerkung.'</p>'."\n";
 							echo '</dd>'."\n"; 
 						echo '</dl>'."\n"; 
@@ -159,8 +181,8 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 	
 ?>
 <div class="clr"></div>
-			<input type="hidden" name="hbdates[startdatePrev]" id="hbdates[startdatePrev]" value="<?php echo $this->dates['startdatePrev']?>" />
-			<input type="hidden" name="hbdates[enddatePrev]" id="hbdates[enddatePrev]" value="<?php echo $this->dates['enddatePrev']?>" />
+			<input type="hidden" name="hbdates[prevStart]" id="hbdates[prevStart]" value="<?php echo $this->dates['prevStart']?>" />
+			<input type="hidden" name="hbdates[prevEnd]" id="hbdates[prevEnd]" value="<?php echo $this->dates['prevEnd']?>" />
 			
 
 			<input type="hidden" name="userid" id="userid" value="<?php echo $userid?>" />

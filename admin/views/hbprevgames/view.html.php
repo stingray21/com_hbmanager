@@ -28,7 +28,8 @@ class HBmanagerViewHbprevgames extends JViewLegacy
 		//echo '=> view->dates<br><pre>'; print_r($dates); echo '</pre>';
 		$this->assignRef('dates', $dates);
 		
-		$games = $model->getGames();
+		//$games = $model->getPrevGames(true);
+		$games = $model->getArrangedGames(true, true);
 		//echo '=> view->games<br><pre>"; print_r($games); echo "</pre>';
 		$this->assignRef('games', $games);
 		

@@ -3,272 +3,33 @@
 defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbprevnext.php';
 
-
-setlocale(LC_TIME, "de_DE.UTF-8");
-
-
-class HBmanagerModelHbjournal extends JModelLegacy
+class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 {	
-	private $prevGames = array();
-	private $nextGames = array();
-	private $berichte = array();
-	private $vorberichte = array();
-
-	private $dateStartPrev = "";
-	private $dateEndPrev = "";
-	private $dateStartNext = "";
-	private $dateEndNext = "";
+	private $reports = array();
+	private $previews = array();
 	
 	function __construct() {
 		parent::__construct();
 		
-		setlocale(LC_TIME, "de_DE");
-		// $datedefault = "last Saturday";
-		// self::setDateStartPrev(strftime("%Y-%m-%d", strtotime($datedefault)-432000));
-		// self::setDateEndPrev(strftime("%Y-%m-%d", strtotime($datedefault)+86400));
-		// self::setDateStartNext(strftime("%Y-%m-%d", strtotime($datedefault)+172800));
-		// self::setDateEndNext(strftime("%Y-%m-%d", strtotime($datedefault)+691200));
-		self::setDates();
-		
-		$db = $this->getDbo();
-		$db->setQuery("SET lc_time_names = 'de_DE'");
-		try
-		{
-			// Execute the query in Joomla 2.5.
-			$result = $db->query();
-		}
-		catch (Exception $e) 
-		{
-			// catch any database errors.
-		}
-	}
-	
-	function getTeams()
-	{	
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('hb_mannschaft');
-		// Zur Kontrolle
-		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
-		$db->setQuery($query);
-		$teams = $db->loadObjectList();
-		return $teams;
-	}
-
-	function getDates()
-	{
-		$dates['startdateNext'] = $this->dateStartNext;
-		$dates['enddateNext'] = $this->dateEndNext;
-		$dates['startdatePrev'] = $this->dateStartPrev;
-		$dates['enddatePrev'] = $this->dateEndPrev;
-		
-		return $dates;
-	}
-	
-	function setDates($dates = null)
-	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		$db = $this->getDbo();
-		
-		if (is_null($dates)){
-			$todaydate = strftime("%Y-%m-%d", time());
-			
-			// previous games dates
-			//echo $todaydate = "2014-09-16";
-			
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
-				$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
-						strtotime('last friday', strtotime($todaydate))))).
-				" AND " . $db->q($todaydate) .
-				" ORDER BY `datum` ASC LIMIT 1";
-			//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-			$db->setQuery($query);
-			$result = $db->loadResult();
-			if (!empty($result)) {
-				$dates['startdatePrev'] = $result;
-			}
-			else {
-				$query = "SELECT `datum` from `hb_spiel` WHERE `datum` < ".
-						$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
-							strtotime('last friday', strtotime($todaydate))))).
-						" ORDER BY `datum` DESC LIMIT 1";
-				//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-				$db->setQuery($query);
-				$result = $db->loadResult();
-			}
-			if (!empty($result)) {
-				$dates['startdatePrev'] = $result;
-			}
-			else {
-				$dates['startdatePrev'] = 
-					strftime("%Y-%m-%d",strtotime('last Monday', 
-					strtotime('last friday', strtotime($todaydate))));
-			}
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
-					$dates['startdatePrev']. " AND " . $db->q($todaydate) . 
-					" ORDER BY `datum` DESC LIMIT 1";
-			//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-			$db->setQuery($query);
-			$dates['enddatePrev'] = $db->loadResult();
-
-			// next games dates
-			//echo $todaydate = "2013-10-23";
-			
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
-				$db->q($todaydate). " AND " . 
-				$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
-							strtotime('next friday', strtotime($todaydate))))).
-				" ORDER BY `datum` ASC LIMIT 1";
-			//echo '=> model->$query <br><pre>".$query."</pre>';
-			$db->setQuery($query);
-			$result = $db->loadResult();
-			if (!empty($result)) {
-				$dates['startdateNext'] = $result;
-			}
-			else {
-				$query = "SELECT `datum` from `hb_spiel` WHERE `datum` > ".
-						$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
-							strtotime('next friday', strtotime($todaydate))))).
-						" ORDER BY `datum` ASC LIMIT 1";
-				//echo '=> model->$query <br><pre>".$query."</pre>';
-				$db->setQuery($query);
-				$dates['startdateNext'] = $db->loadResult();
-			}
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
-					$db->q($dates['startdateNext']) . " AND " . 
-					$db->q(strftime("%Y-%m-%d", strtotime('next friday', 
-						strtotime($dates['startdateNext'])))).
-					" ORDER BY `datum` DESC LIMIT 1";
-			//echo '=> model->$query <br><pre>".$query."</pre>';
-			$db->setQuery($query);
-			$dates['enddateNext'] = $db->loadResult();
-		}
-		
-		self::setDateStartPrev($dates['startdatePrev']);
-		self::setDateEndPrev($dates['enddatePrev']);
-		
-		self::setDateStartNext($dates['startdateNext']);
-		self::setDateEndNext($dates['enddateNext']);
-	}
-	
-	function updateDates($dates)
-	{
-		//echo "<a>Post dates:</a><pre>"; print_r($dates); echo "</pre>";
-		self::setDateStartPrev($dates['startdatePrev']);
-		
-		self::setDateEndPrev(strftime("%Y-%m-%d", strtotime($dates['startdatePrev'])+518400));
-		if ($dates['withEndDatePrev'])
-		{
-			//echo 'mit Enddatum<br />';
-			//echo $dates['startdatePrev'].': '.strtotime($dates['startdatePrev']).'<br />';
-			//echo $dates['enddatePrev'].': '.strtotime($dates['enddatePrev']).'<br />';
-	
-			if ( strtotime($dates['startdatePrev']) <= strtotime($dates['enddatePrev']) )
-			{
-				self::setDateEndPrev($dates['enddatePrev']);
-			}
-		}
-		
-		self::setDateStartNext($dates['startdateNext']);
-		
-		self::setDateEndNext(strftime("%Y-%m-%d", strtotime($dates['startdateNext'])+518400));
-		if ($dates['withEndDateNext'])
-		{
-			//echo 'mit Enddatum<br />';
-			//echo $dates['startdateNext'].': '.strtotime($dates['startdateNext']).'<br />';
-			//echo $dates['enddateNext'].': '.strtotime($dates['enddateNext']).'<br />';
-		
-			if ( strtotime($dates['startdateNext']) <= strtotime($dates['enddateNext']) )
-			{
-				self::setDateEndNext($dates['enddateNext']);
-			}
-		}
-	}
-	
-	
-	// Datum Letzte Spiele
-	
-	function setDateStartPrev($date)
-	{
-		$this->dateStartPrev = strftime("%Y-%m-%d", strtotime($date));
-		//echo strftime("%Y-%m-%d", strtotime($date));
-	}
-	
-	function setDateEndPrev($date)
-	{
-		$this->dateEndPrev = strftime("%Y-%m-%d", strtotime($date));
-	}
-	
-	function getDateStartPrev()
-	{
-		return $this->dateStartPrev;
-	}
-	
-	function getDateEndPrev()
-	{
-		return $this->dateEndPrev;
-	}
-	
-	// Datum Kommende Spiele
-	
-	function setDateStartNext($date)
-	{
-		$this->dateStartNext = strftime("%Y-%m-%d", strtotime($date));
-	}
-	
-	function setDateEndNext($date)
-	{
-		$this->dateEndNext = strftime("%Y-%m-%d", strtotime($date));
-	}
-	
-	function getDateStartNext()
-	{
-		return $this->dateStartNext;
-	}
-	
-	function getDateEndNext()
-	{
-		return $this->dateEndNext;
-	}
-
-	
-	// -------------
-	
-	function getPrevGames()
-	{
-		$db = $this->getDbo();
-	
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('hb_spiel');
-		$query->leftJoin($db->quoteName('hb_mannschaft').' USING ('.$db->quoteName('kuerzel').')');
-		$query->where($db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartPrev).' AND '.$db->quote($this->dateEndPrev));
-		$query->where($db->quoteName('toreHeim').' IS NOT NULL');
-		$query->order($db->quoteName('datum').', '.$db->quoteName('reihenfolge').' ASC');
-		//echo $query;echo "<br />";
-		$db->setQuery($query);
-		$games = $db->loadObjectList();
-		//echo "<pre>"; print_r($games); echo "</pre>";
-	
-		return $this->prevGames = $games;
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
 	function getGameDates()
 	{
 		$db = $this->getDbo();
-	
 		$query = $db->getQuery(true);
-		$query->select('DISTINCT datum, 
-				 DATE_FORMAT(datum, \'%a\' ) AS nametag, DATE_FORMAT(datum, \'%d\' ) AS tag, 
-				 DATE_FORMAT(datum, \'%m\' ) AS monat, DATE_FORMAT(datum, \'%y\' ) AS jahr ');
+		$query->select('DISTINCT DATE(datumZeit) AS datum');
 		$query->from('hb_spiel');
-		$query->order($db->quoteName('datum').' ASC');
-		$query->where($db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartPrev).' AND '.$db->quote($this->dateEndPrev));
-		//echo $query;echo "<br />";
+		$query->order($db->qn('datum').' ASC');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
+				$db->q($this->dates->prevStart).' AND '.
+				$db->q($this->dates->prevEnd));
+		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
-		$dates = $db->loadObjectList();
+		$dates = $db->loadColumn();
 		//echo "<pre>"; print_r($dates); echo "</pre>";
 		
 		return self::formatGameDates($dates);
@@ -278,126 +39,133 @@ class HBmanagerModelHbjournal extends JModelLegacy
 	{
 		for ($i = 0; $i < count($dates); $i++)
 		{
-			$currDate = strtotime($dates[$i]->datum);
-			if (isset($dates[$i+1]))
+			$currDate = strtotime($dates[$i]);
+			$weekend = null;
+			if (isset($dates[$i+1])) 
 			{
-				$nextDate = strtotime($dates[$i+1]->datum);
-				if (strftime("%w", $currDate) == 6 AND strftime("%w", $nextDate) == 0)
-				{
-					if (strftime("%m", $currDate) == strftime("%m", $nextDate))
-					{
-						$gameDates[] = 'Wochenende '.ltrim($dates[$i]->tag,'0').
-							'./'.ltrim($dates[$i+1]->tag,'0').'.'.
-							strftime("%b.",strtotime($dates[$i]->datum));
-					}
-					else
-					{
-						$gameDates[] = 'Wochenende '.ltrim($dates[$i]->tag,'0').
-							'.'.strftime("%b.",strtotime($dates[$i]->datum)).'/'.
-							ltrim($dates[$i+1]->tag,'0').'.'.
-							strftime("%b.",strtotime($dates[$i+1]->datum));
-					}
-				$i++;
-				}
-				else {
-					$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', false);
-				}
+				$weekend = self::formatForWeekend($currDate, 
+					strtotime($dates[$i+1]));
 			}
-			else 
-			{
+			
+			if ($weekend !== null) {
+				$gameDates[] = $weekend;
+				$i++;
+			}
+			else {
 				$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', false);
 			}
 		}
-			//echo "<pre>"; print_r($gameDates); echo "</pre>";
+		//echo __FUNCTION__."<pre>"; print_r($gameDates); echo "</pre>";
 
 		return $gameDates;
 	}
 	
+	protected function formatForWeekend($currDate, $nextDate)
+	{
+		if (strftime("%w", $currDate) == 6 AND 
+			strftime("%w", $nextDate) == 0)
+		{
+			// if same month
+			if (strftime("%m", $currDate) == strftime("%m", $nextDate))
+			{
+				$date = JHTML::_('date', $currDate , 'j.', 'Europe/Berlin').
+					JHTML::_('date', $nextDate , '/j. M.', 'Europe/Berlin');
+			}
+			else
+			{
+				$date = JHTML::_('date', $currDate , 'j. M.', 'Europe/Berlin').
+					JHTML::_('date', $nextDate , ' / j. M.', 'Europe/Berlin');
+			}
+			return 'Wochenende '.$date;
+		}
+		return null;
+	}
+
 	
-	function getAbschnittLetzteSpiele($styles = array())
+	function getSectionRecentGames()
 	{
 		$data = null;
-		$formerMannschaft = null;
-		$formerDate = null;
-		if (!empty($this->prevGames))
-		{	
-			$gameDates = self::getGameDates();
-			$multipleDays = count($gameDates);
-			
-			$data['spiele'] = null;
-			
-			if ($multipleDays == 1) {
-				$data['ueberschrift'] = 'Alle Spiele vom letzten Spieltag';
-				//$data['spiele'] .= $gameDates[0]."\n";
-			}
-			else {
-				$data['ueberschrift'] = 'Alle Spiele von den letzten Spieltagen';
-				//$data['spiele'] .= implode($gameDates, ', ')."\n";
-			}
-			
-			foreach ($this->prevGames as $game)
-			{	
-				//if ($multipleDays > 1) {
-					if ($formerDate != $game->datum) {
-						$data['spiele'] .= JHtml::_('date', $game->datum, 'D, d.m.y', false)."\n";
-					}
-					$formerDate = $game->datum;
-				//}
-				If ($formerMannschaft != $game->mannschaft) $data['spiele'] .= $game->mannschaft." ({$game->ligaKuerzel})\n";
-				$formerMannschaft = $game->mannschaft;
-				$data['spiele'] .= "{$game->heim} - {$game->gast}";
-				$data['spiele'] .= "&nbsp;&nbsp;&nbsp;{$game->toreHeim}:{$game->toreGast}\n";
-			}
-			$data['spiele'] = str_replace(array(". Mannschaft","liche"),array("", "l."), $data['spiele']);
+		if (empty($this->prevGames)) {	
+			return $data;
+		}	
+		$gameDates = self::getGameDates();
+		
+		if (count($gameDates) == 1) {
+			$data['headline'] = 'Alle Spiele des letzten Spieltags';
 		}
-		//echo "<pre>"; print_r($data); echo "</pre>";
+		else {
+			$data['headline'] = 'Alle Spiele der letzten Spieltage';
+		}
+		$data['games'] = self::getSectionRecentGames_Games();
+		$data['games'] = self::formatTeamNames($data['games']);
+		//echo __FUNCTION__."<pre>"; print_r($data); echo "</pre>";
 		return $data;
 	}
 	
-
-	
-	function getNextGames()
-	{
-		$db = $this->getDbo();
-	
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('hb_spiel');
-		$query->leftJoin($db->quoteName('hb_mannschaft').' USING ('.$db->quoteName('kuerzel').')');
-		$query->where($db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartNext).' AND '.$db->quote($this->dateEndNext));
-		$query->order($db->quoteName('datum').' ASC, '.$db->quoteName('uhrzeit').' ASC');
-		//echo $query;echo "<br />";
-		$db->setQuery($query);
-		$games = $db->loadObjectList();
-		//echo "<pre>"; print_r($games); echo "</pre>";
-	
-		return $this->nextGames = $games;
+	protected function formatTeamNames($games) {
+		$games = str_replace(array(". Mannschaft","liche"),
+				array("", "l."), $games);
+		$games = preg_replace('/(männl.|weibl.) ([A-D]-Jugend)/',
+				'$2 $1', $games);
+		$games = preg_replace('/(gemischte) (E-Jugend)/', '$2', $games);
+		return $games;
 	}
 
-	function getAbschnittKommendeSpiele($styles = array())
+
+	protected function getSectionRecentGames_Games() 
 	{
-		//echo "getAbschnittKommendeSpiele";
+		$i = -1;
+		$currTeam = null;
+		$currDate = null;
+		foreach ($this->prevGames as $game) {	
+			if ($currDate != $game->datum) {
+				$data['games'][++$i] = JHtml::_('date', $game->datum, 
+					'D, d.m.y', false)."\n";
+				$currDate = $game->datum;
+			}
+			if ($currTeam != $game->mannschaft) {
+				$data['games'][$i] .= $game->mannschaft.
+					" (".$game->ligaKuerzel.")\n";
+				$currTeam = $game->mannschaft;
+			}
+			$data['games'][$i] .= "&nbsp;&nbsp;";
+			$data['games'][$i] .= $game->heim." - ".$game->gast;
+			$data['games'][$i] .= "&nbsp;&nbsp;&nbsp;".$game->toreHeim.
+				':'.$game->toreGast."\n";
+		}
+		return $data['games'];
+	}
+	
+
+	function getSectionUpcomingGames()
+	{
 		$data = array();
-		$formerMannschaft = null;
-		$formerDate = null;
-		//echo "<pre>"; print_r($this->nextGames); echo "</pre>";
+		$currTeam = null;
+		$currDate = null;
+		//echo __FUNCTION__."<pre>"; print_r($this->nextGames); echo "</pre>";
 		if (!empty($this->nextGames))
 		{
-			$data['spiele'] = null;
-			
-			$data['ueberschrift'] = 'Alle Spiele vom nächsten Spieltag (chronologisch)';
+			$i = -1;			
+			$data['headline'] = 'Alle Spiele vom nächsten Spieltag (chronologisch)';
 			foreach ($this->nextGames as $game)
 			{
-				if ($formerDate != $game->datum) {
-					$data['spiele'] .= JHtml::_('date', $game->datum, 'D, d.m.y', false)."\n";
+				if ($currDate != $game->datum) {
+					$data['games'][++$i] = JHtml::_('date', $game->datum, 
+						'D, d.m.y', false)."\n";
+					$currDate = $game->datum;
 				}
-				$formerDate = $game->datum;
-				if ($formerMannschaft != $game->mannschaft) $data['spiele'] .= $game->mannschaft. " ({$game->ligaKuerzel})\n";
-				$formerMannschaft = $game->mannschaft;
-				$data['spiele'] .= substr($game->uhrzeit,0,5)." Uhr \t{$game->heim} - {$game->gast}\n";
+				if ($currTeam != $game->mannschaft) {
+					$data['games'][$i] .= $game->mannschaft. " (".
+							$game->ligaKuerzel.")\n";
+					$currTeam = $game->mannschaft;
+				}
+				$data['games'][$i] .= "&nbsp;&nbsp;";
+				$data['games'][$i] .= substr($game->zeit,0,5)." Uhr ".
+						"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 			}
 		}
-		$data = str_replace(array(". Mannschaft","liche"),array("", "l."), $data);
+		$data['games'] = self::formatTeamNames($data['games']);
+		//echo __FUNCTION__."<pre>"; print_r($data); echo "</pre>";
 		return $data;
 	}
 	
@@ -409,103 +177,118 @@ class HBmanagerModelHbjournal extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('hb_spiel');
-		$query->leftJoin($db->quoteName('hb_mannschaft').' USING ('.$db->quoteName('kuerzel').')');
-		$query->leftJoin($db->quoteName('hb_spielbericht').' USING ('.$db->quoteName('spielIDhvw').')');
-		$query->where('('.$db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartPrev).' AND '.$db->quote($this->dateEndPrev).')'.
-				' AND ('.$db->quoteName('bericht').' IS NOT NULL OR '.$db->quoteName('spielerliste').' IS NOT NULL)');
-		$query->order($db->quoteName('reihenfolge').' DESC');
-		//echo $query;echo "<br />";
+		$query->leftJoin($db->qn('hb_mannschaft').
+				' USING ('.$db->qn('kuerzel').')');
+		$query->leftJoin($db->qn('hb_spielbericht').
+				' USING ('.$db->qn('spielIDhvw').')');
+		$query->where('( DATE('.$db->qn('datumZeit').') BETWEEN '.
+					$db->q($this->dates->prevStart).' AND '.
+					$db->q($this->dates->prevEnd).')'.
+				' AND ('.$db->qn('bericht').' IS NOT NULL OR '.
+					$db->qn('spielerliste').' IS NOT NULL)');
+		$query->order($db->qn('reihenfolge').' DESC');
+		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
-		//echo "<pre>"; print_r($games); echo "</pre>";
+		//echo __FUNCTION__."<pre>"; print_r($dates); echo "</pre>";
 		
-		return $this->berichte = $games;
+		$db->setQuery($query);
+		$dates = $db->loadColumn();
+		
+		return $this->reports = $games;
 	}
 	
-	function getAbschnittBerichte()
+	function getSectionReports()
 	{
 		$data = array();
 		
-		if (!empty($this->berichte))
+		if (!empty($this->reports))
 		{	
 			$i = 0;
-			foreach ($this->berichte as $bericht)
+			foreach ($this->reports as $report)
 			{	
-				$data[$i]['ueberschrift'] = "{$bericht->mannschaft} - {$bericht->liga} ({$bericht->ligaKuerzel})";
-				$data[$i]['ergebnis'] = "{$bericht->heim} - {$bericht->gast}"
-						."\t{$bericht->toreHeim}:{$bericht->toreGast}";
-				$data[$i]['text'] = $bericht->bericht;
-				if (!empty($bericht->spielerliste)) {
-					$data[$i]['spieler'] = $bericht->spielerliste;
+				$data[$i]['headline'] = $report->mannschaft.' - '.$report->liga;
+				//$data[$i]['headline'] .= '('.$report->ligaKuerzel.')';
+				$data[$i]['result'] = "{$report->heim} - {$report->gast}".
+						"&nbsp;&nbsp;\t{$report->toreHeim}:{$report->toreGast}";
+				$data[$i]['text'] = $report->bericht;
+				if (!empty($report->spielerliste)) {
+					$data[$i]['lineup'] = $report->spielerliste;
 				}
-				if (!empty($bericht->zusatz)) {
-					$data[$i]['zusatz'] = $bericht->zusatz;
+				if (!empty($report->zusatz)) {
+					$data[$i]['add'] = $report->zusatz;
 				}
 				$i++;
 			}
-			//echo "<pre>"; print_r($data); echo "</pre>";
+			//echo __FUNCTION__."<pre>"; print_r($data); echo "</pre>";
 		}
 		return $data;
 	}
 	
-	function getForecasts()
+	function getPreviews()
 	{
 		$db = $this->getDbo();
 	
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('hb_spiel');
-		$query->leftJoin($db->quoteName('hb_mannschaft').' USING ('.$db->quoteName('kuerzel').')');
-		$query->leftJoin($db->quoteName('hb_spielvorschau').' USING ('.$db->quoteName('spielIDhvw').')');
-		$query->where('('.$db->quoteName('datum').' BETWEEN '.$db->quote($this->dateStartNext).' AND '.$db->quote($this->dateEndNext).') AND ('.$db->quoteName('vorschau').' IS NOT NULL)');
-		$query->order($db->quoteName('reihenfolge').' DESC');
-		// echo $query;echo "<br />";
+		$query->leftJoin($db->qn('hb_mannschaft').
+			' USING ('.$db->qn('kuerzel').')');
+		$query->leftJoin($db->qn('hb_spielvorschau').
+			' USING ('.$db->qn('spielIDhvw').')');
+		$query->where('( DATE('.$db->qn('datumZeit').') BETWEEN '.
+				$db->q($this->dates->nextStart).' AND '.
+				$db->q($this->dates->nextEnd).')'
+			.' AND ('.$db->qn('vorschau').' IS NOT NULL)');
+		$query->order($db->qn('reihenfolge').' DESC');
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
-		// echo "<pre>"; print_r($games); echo "</pre>";
-	
-		return $this->vorberichte = $games;
+		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		return $this->previews = $games;
 	}
 	
-	function getAbschnittVorberichte()
+	function getSectionPreview()
 	{
 		
 		$data = array();
 		
-		if (!empty($this->vorberichte))
+		if (!empty($this->previews))
 		{
-			foreach ($this->vorberichte as $bericht)
+			$i = 0;
+			foreach ($this->previews as $preview)
 			{
-				$ueberschrift = $bericht->mannschaft.' - '.$bericht->liga.' ('.$bericht->ligaKuerzel.')';
-				$spiel = substr($bericht->uhrzeit,0,5)." Uhr \t {$bericht->heim} - {$bericht->gast}";
-				if (!empty($bericht->treffOrt) AND !empty($bericht->treffZeit))
+				$data[$i]['headline'] = $preview->mannschaft.' - '.
+					$preview->liga.' ('.$preview->ligaKuerzel.')';
+				$data[$i]['game'] = substr($preview->uhrzeit,0,5).
+					" Uhr \t {$preview->heim} - {$preview->gast}";
+				if (!empty($preview->treffOrt) AND !empty($preview->treffZeit))
 				{
-					$treff = "Treffpunkt: {$bericht->treffOrt} um {$bericht->treffZeit} Uhr";
+					$data[$i]['meetup'] = "Treffpunkt: ".$preview->treffOrt.
+						" um ".$preview->treffZeit." Uhr";
 				}
-				$text = nl2br($bericht->vorschau);
+				$data[$i]['text'] = nl2br($preview->vorschau);
 				
-				$data[] = array('ueberschrift' => $ueberschrift, 'spiel' => $spiel, 'treff' => $treff, 'text' => $text);
 			}
 		}
 		//echo "<pre>"; print_r($data); echo "</pre>";
 		return $data;
 	}
 	
-	function getAbschnittAnfang($link = true)
+	function getSectionTop($link = true)
 	{
-		$data['ueberschrift'] = 'Abt. Handball';
+		$data['headline'] = 'Abt. Handball';
 		
 		if ($link)
 		{
-			$data['link'] = "Aktuellere und ausführlichere Informationen auf unserer Homepage: \n";
+			$data['link'] = "Aktuellere und ausführlichere Informationen "
+					. "auf unserer Homepage: \n";
 			$data['link'] .= "www.handball.tsv-geislingen.de";
 		}
 		
 		return $data;
 	}
-		
 	
-
 
 }
 

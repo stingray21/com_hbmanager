@@ -22,6 +22,12 @@ class HbmanagerViewHbjournal extends JViewLegacy
 		$model = $this->getModel('hbjournal');
 		$this->assignRef('model', $model);
 		
+		$post = JRequest::get('post');
+		//echo '=> view->post<br><pre>'; print_r($post); echo '</pre>';
+		$this->assignRef('post', $post);
+		
+		$model->getGameDates();
+		
 		// previous games
 		$prevGames = $model->getPrevGames();
 		$this->assignRef('prevGames', $prevGames);
@@ -37,13 +43,11 @@ class HbmanagerViewHbjournal extends JViewLegacy
 		$this->assignRef('reports', $reports);
 		//echo '=> view->reports<br><pre>"; print_r($reports);echo "</pre>';
 		
-		// game forecasts
-		$forecasts = $model->getForecasts();
-		$this->assignRef('forecasts', $forecasts);
+		// game previews
+		$previews = $model->getPreviews();
+		$this->assignRef('forecasts', $previews);
 		//echo '=> view->forecasts<br><pre>"; print_r($forecasts);echo "</pre>';
-		
-		$post = JRequest::get('post');
-		$this->assignRef('post', $post);
+	
 		
 		$dates = $model->getDates();
 		//echo '=> view->$dates <br><pre>'; print_r($dates); echo '</pre>';

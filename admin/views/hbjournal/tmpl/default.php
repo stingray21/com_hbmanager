@@ -44,25 +44,25 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 			<dl>
 				<dt>
 				<?php
-					echo $form->getLabel('startdatePrev', 'hbdates'); 
+					echo $form->getLabel('prevStart', 'hbdates'); 
 				?>
 				</dt>
 				<dd>
 				<?php
-					echo $form->getInput('startdatePrev', 'hbdates', 
-							$this->dates['startdatePrev']);
+					echo $form->getInput('prevStart', 'hbdates', 
+							$this->dates['prevStart']);
 				?>
 				</dd>
 				
 				<dt>
 				<?php
-					echo $form->getLabel('enddatePrev', 'hbdates');
+					echo $form->getLabel('prevEnd', 'hbdates');
 				?>
 				</dt>
 				<dd>
 				<?php 
-					echo $form->getInput('enddatePrev', 'hbdates', 
-							$this->dates['enddatePrev']);
+					echo $form->getInput('prevEnd', 'hbdates', 
+							$this->dates['prevEnd']);
 				?>
 				</dd>
 			</dl>
@@ -74,25 +74,25 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 			<dl>
 				<dt>
 				<?php
-					echo $form->getLabel('startdateNext', 'hbdates'); 
+					echo $form->getLabel('nextStart', 'hbdates'); 
 				?>
 				</dt>
 				<dd>
 				<?php
-					echo $form->getInput('startdateNext', 'hbdates', 
-							$this->dates['startdateNext']);
+					echo $form->getInput('nextStart', 'hbdates', 
+							$this->dates['nextStart']);
 				?>
 				</dd>
 				
 				<dt>
 				<?php
-					echo $form->getLabel('enddateNext', 'hbdates');
+					echo $form->getLabel('nextEnd', 'hbdates');
 				?>
 				</dt>
 				<dd>
 				<?php 
-					echo $form->getInput('enddateNext', 'hbdates', 
-							$this->dates['enddateNext']);
+					echo $form->getInput('nextEnd', 'hbdates', 
+							$this->dates['nextEnd']);
 				?>
 				</dd>
 			</dl>
@@ -122,8 +122,8 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 					'style="padding: 0px; margin: 0; text-align: justify; '.
 					$style_font.'"';
 	
-	$styles = array('style_h2' => $style_h2, 
-					'style_p' => $style_p);
+	$styles = array('h2' => $style_h2, 
+					'p' => $style_p);
 
 ?>
 
@@ -136,125 +136,127 @@ echo JHtml::_('icon.msword', $this->item, $params);
 	
 	<p style="font-family: Arial; font-size: 12pt; text-align: right; margin: 1em 0">
 		<?php 
-		//echo strftime('%A, %d.%m.%Y');
-		$datePattern = 'l, d.m.Y';
-		echo JHTML::_('date', time() , $datePattern);
+		echo JHTML::_('date', time(), 'l, d.m.Y', 'Europe/Berlin');
 		?>
 	</p>
 	<h1 style="font-family: Arial; font-size: 14pt; margin: 1em 0 2em; color: black;">
-		Artikel für das Amtsblatt Geislingen
+		<?php echo JText::_('COM_HBMANAGER_JOURNAL_HEADLINE');?>
 	</h1>
 
 	<div id="inhalt" style="width: 9cm">
 	
-		<!-- Abschnitt Anfang - Überschrift und Link -->
+		<!-- Section Top - Headline and hyper link -->
 		<?php 
-		$anfang = $this->model->getAbschnittAnfang();
+		$top = $this->model->getSectionTop();
 		
 		echo '<div>';
-		echo "<p{$styles['style_p']}>&nbsp;</p>";
-		echo "<h2{$styles['style_h2']}>{$anfang['ueberschrift']}</h2>";
+		echo "<p{$styles['p']}>&nbsp;</p>";
+		echo "<h2{$styles['h2']}>{$top['headline']}</h2>";
 		
-		if (isset($anfang['link']))
+		if (isset($top['link']))
 		{
-			echo "<p{$styles['style_p']}>";
-			echo nl2br($anfang['link']);
+			echo "<p{$styles['p']}>";
+			echo nl2br($top['link']);
 			echo "</p>";
 		}
 		echo '</div>';
 		?>
 		
-		<!-- Abschnitt "Letzte Spiele" -->
+		<!-- Section Recent Games -->
 		<?php 
-		$letzteSpiele = $this->model->getAbschnittLetzteSpiele();
+		$recentGames = $this->model->getSectionRecentGames();
 		
-		if (!empty($letzteSpiele))
+		if (!empty($recentGames))
 		{
 			echo '<div>';
-			echo "<p{$styles['style_p']}>&nbsp;</p>";
-			echo "<h2{$styles['style_h2']}>{$letzteSpiele['ueberschrift']}</h2>";
-			echo "<p{$styles['style_p']}>";
-			echo nl2br($letzteSpiele['spiele']);
+			echo "<p{$styles['p']}>&nbsp;</p>";
+			echo "<h2{$styles['h2']}>{$recentGames['headline']}</h2>";
+			foreach ($recentGames['games'] as $gameday) {
+				echo "\n<p{$styles['p']}>";
+				echo nl2br($gameday);
+				echo "</p>";
+			}
+			echo '</div>';
+		}
+		?>
+		
+	
+	<!-- Section Reports-->
+	<?php 
+	$reports = $this->model->getSectionReports();
+	if (!empty($reports))
+	{
+		echo '<div>';
+		echo "<p{$styles['p']}>&nbsp;</p>";
+		echo '<h2'.$styles['h2'].'>Berichte</h2>';
+
+		foreach ($reports as $report)
+		{
+
+			echo "<h2{$styles['h2']}>{$report['headline']}</h2>";
+			echo "<p{$styles['p']}>";
+			echo $report['result']."\n";
+			echo "</pre>";
+			echo "<p{$styles['p']}>";
+			echo nl2br($report['text']);
+			if (isset($report['lineup'])) {
+				echo "<br />Es spielten:<br />".nl2br($report['lineup']);
+			}
+			if (isset($report['add'])) {
+				echo "<br />".nl2br($report['add']);
+			}
 			echo "</p>";
-			echo '</div>';
 		}
-		?>
+		echo '</div>';
+	}
+
+	?>
 		
-		
-		<!-- Abschnitt "Berichte" -->
-		<?php 
-		$berichte = $this->model->getAbschnittBerichte();
-		if (!empty($berichte))
+	<!-- Section Upcoming Games -->
+	<?php 
+	$upcomingGames = $this->model->getSectionUpcomingGames();
+	if (!empty($upcomingGames))
+	{
+		//echo __FUNCTION__."<pre>"; print_r($upcomingGames);echo "</pre>";
+		echo '<div>';
+		echo "<p{$styles['p']}>&nbsp;</p>";
+		echo '<h2'.$styles['h2'].'>'.$upcomingGames['headline'].'</h2>';
+		foreach ($upcomingGames['games'] as $gameday) {
+			echo "\n<p{$styles['p']}>";
+			echo nl2br($gameday);
+			echo "</p>";
+		}
+		echo '</div>';
+	}
+	?>
+
+
+	<!-- Section Preview -->
+	<?php 
+	$previews = $this->model->getSectionPreview();
+	if (!empty($previews))
+	{
+		echo '<div>';
+		echo "<p{$styles['p']}>&nbsp;</p>";
+		echo '<h2'.$styles['h2'].'>Vorschau</h2>';
+
+		foreach ($previews as $preview)
 		{
-			echo '<div>';
-			echo "<p{$styles['style_p']}>&nbsp;</p>";
-			echo '<h2'.$styles['style_h2'].'>Berichte</h2>';
-				
-			foreach ($berichte as $bericht)
+			echo "<h2{$styles['h2']}>{$preview['headline']}</h2>";
+			echo "<p{$styles['p']}>";
+			echo $preview['game']."\n";
+			if (!empty($preview['meetup']))
 			{
-				
-				echo "<h2{$styles['style_h2']}>{$bericht['ueberschrift']}</h2>";
-				echo "<p{$styles['style_p']}>";
-				echo $bericht['ergebnis']."\n";
-				echo "</pre>";
-				echo "<p{$styles['style_p']}>";
-				echo nl2br($bericht['text']);
-				if (isset($bericht['spieler'])) echo "<br />Es spielten:<br />".nl2br($bericht['spieler']);
-				if (isset($bericht['zusatz'])) echo "<br />".nl2br($bericht['zusatz']);
-				echo "</p>";
+				echo  $preview['meetup']."\n";
 			}
-			echo '</div>';
+			echo "</pre>";
+			echo "<p{$styles['p']}>";
+			echo nl2br($preview['text']);
+			echo "</p>";
 		}
-		
-		?>
-		
-		<!-- Abschnitt "Kommende Spiele" -->
-		<?php 
-		$kommendeSpiele = $this->model->getAbschnittKommendeSpiele();
-		if (!empty($kommendeSpiele))
-		{
-			//echo "<pre>"; print_r($kommendeSpiele); echo "</pre>";
-			
-			if (true)
-			{
-				echo '<div>';
-				echo "<p{$styles['style_p']}>&nbsp;</p>";
-				echo '<h2'.$styles['style_h2'].'>'.$kommendeSpiele['ueberschrift'].'</h2>';
-				echo "<p{$styles['style_p']}>";
-				echo nl2br($kommendeSpiele['spiele']);
-				echo "</p>";
-				echo '</div>';
-			}
-		}
-		?>
-		
-		
-		<!-- Abschnitt "Vorschau" -->
-		<?php 
-		$vorberichte = $this->model->getAbschnittVorberichte();
-		if (!empty($vorberichte))
-		{
-			echo '<div>';
-			echo "<p{$styles['style_p']}>&nbsp;</p>";
-			echo '<h2'.$styles['style_h2'].'>Vorschau</h2>';
-				
-			foreach ($vorberichte as $bericht)
-			{
-				echo "<h2{$styles['style_h2']}>{$bericht['ueberschrift']}</h2>";
-				echo "<p{$styles['style_p']}>";
-				echo $bericht['spiel']."\n";
-				if (!empty($bericht['treff']))
-				{
-					echo  $bericht['treff']."\n";
-				}
-				echo "</pre>";
-				echo "<p{$styles['style_p']}>";
-				echo nl2br($bericht['text']);
-				echo "</p>";
-			}
-			echo '</div>';
-		}
-		?>
+		echo '</div>';
+	}
+	?>
 		
 	</div>
 	

@@ -169,8 +169,10 @@ class hbmanagerController extends JControllerAdmin
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
 		
 		$dates = null;
-		if (isset($post['hbdates'])) $dates = $post['hbdates'];
-		$model->setDates($dates);
+		if (isset($post['hbdates'])) {
+			$dates = $post['hbdates'];
+		}
+		$model->setPrevDates($dates);
 		
 		if (isset($post['hbprevgames'])) $prevGames = $post['hbprevgames'];
 		else $prevGames = null;
@@ -241,10 +243,10 @@ class hbmanagerController extends JControllerAdmin
 		//echo "=> contoller->post<br><pre>"; print_r($post); echo "</pre>";
 		
 		$dates = null;
-		if (isset($post['hbdates'])) $dates = $post['hbdates'];
+		if (isset($post['hbdates'])) {
+			$dates = $post['hbdates'];
+		}
 		$model->setDates($dates);
-		
-
 		
 		$view = $this->getView('hbjournal','html');
 		$view->setModel($model, true);
@@ -255,18 +257,6 @@ class hbmanagerController extends JControllerAdmin
 		hbhelper::addSubmenu('hbjournal');
 	}
 
-	function showDatabase()
-	{
-		$model = $this->getModel('hbdatabase');
-	
-		$view = $this->getView('hbdatabase','html');
-		$view->setModel($model, true);
-		$view->display();
-		//self::display();
-		
-		// Set the submenu
-		hbhelper::addSubmenu('hbdatabase');
-	}
 	
 	function createDbTables()
 	{

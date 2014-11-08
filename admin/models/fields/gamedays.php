@@ -15,8 +15,10 @@ class JFormFieldGamedays extends JFormFieldList
 {
 
     public $type = 'gamedays';
- 
-    protected function getOptions()
+	protected $timeframe = null;
+
+
+	protected function getOptions()
     {
         // Initialize variables.
         $options = array();
@@ -29,9 +31,16 @@ class JFormFieldGamedays extends JFormFieldList
         $db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-       	$query->select("DISTINCT DATE_FORMAT(datum, '%a, %d.%m.%Y') AS ".$db->qn('value').", datum AS ".$db->qn('key'));
+       	$query->select("DISTINCT DATE(datumZeit) AS ".$db->qn('datum'));
 		$query->from('hb_spiel');
-		$query->order($db->quoteName('datum').' ASC');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		if ($this->timeframe === 'prev') {
+			$query->where($db->qn('datumZeit').' < NOW()');
+		}
+		elseif ($this->timeframe === 'next') {
+			$query->where($db->qn('datumZeit').' > NOW()');
+		}
+		$query->order($db->qn('datum').' ASC');
 		$db->setQuery($query);
 
         
@@ -46,13 +55,20 @@ class JFormFieldGamedays extends JFormFieldList
 
         	foreach ($items as $item)
             {
-                if ($translate == true)
+                $date = JHTML::_('date', $item->datum , 'D, d.m.Y',
+						'Europe/Berlin');
+//				$date = JFactory::getDate($item->datum, 'Europe/Berlin' )
+//						->format('D, d.m.Y', true);
+				if ($translate == true)
                 {
-                    $options[] = JHtml::_('select.option', $item->key, JText::_($item->value));
+                    $options[] = JHtml::_('select.option', $item->datum, 
+						JText::_($date));
+					
                 }
                 else
                 {
-                    $options[] = JHtml::_('select.option', $item->key, $item->value);
+                    $options[] = JHtml::_('select.option', $item->datum, 
+						$date);
                 }
             }
         }
