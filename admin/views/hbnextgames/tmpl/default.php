@@ -124,8 +124,7 @@ foreach ($this->games as $key => $value)
 						echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
 						echo '<p>'.
 								strftime("%d.%m.%Y", strtotime($game->datum)).
-								' um '.substr($game->zeit,0,5).
-								' Uhr</p>'."\n";
+								' um '.$game->zeit.' Uhr</p>'."\n";
 						echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
 						echo '<p>'.$game->bemerkung.'</p>'."\n";
 					echo '</dd>'."\n"; 

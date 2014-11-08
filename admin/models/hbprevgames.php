@@ -69,7 +69,7 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 	{
 		// content article
 		$games = self::getPrevGames(false,true,true);
-		echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
 		
 		if (!empty($games))
 		{
