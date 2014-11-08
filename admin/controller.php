@@ -207,8 +207,10 @@ class hbmanagerController extends JControllerAdmin
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
 		
 		$dates = null;
-		if (isset($post['hbdates'])) $dates = $post['hbdates'];
-		$model->setDates($dates);
+		if (isset($post['hbdates'])) {
+			$dates = $post['hbdates'];
+		}
+		$model->setNextDates($dates);
 		
 		if (isset($post['hbnextgames'])) $nextGames = $post['hbnextgames'];
 		else $nextGames = null;

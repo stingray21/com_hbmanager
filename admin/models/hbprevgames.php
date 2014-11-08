@@ -16,20 +16,6 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
-
-	public function getArrangedGames($combined = false, $reports = false) {
-		$games = self::getPrevGames($combined, $reports);
-		
-		// arrange games by date
-		$arranged = array();
-		foreach ($games as $game){
-			$arranged[$game->datum][] = $game;
-		}
-		//echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
-		return $this->prevGames = $arranged;
-	}
-	
-	
 	
 	function updateDB($previousGames = array())
 	{
@@ -82,8 +68,8 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 	function writeNews()
 	{
 		// content article
-		$games = self::getPrevGames(true,true);
-		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		$games = self::getPrevGames(false,true,true);
+		echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
 		
 		if (!empty($games))
 		{
@@ -95,68 +81,16 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 		}
 	}
 	
-	protected function getMinMaxDates()
-	{
-		$db = $this->getDbo();
-		// earliest and latest included date 
-		$query = $db->getQuery(true);
-		$query->select('MIN('.$db->qn('datumZeit').') AS min, MAX('.
-				$db->qn('datumZeit').') AS max');
-		$query->from('hb_spiel');
-		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q($this->dates->prevStart).' AND '.
-				$db->q($this->dates->prevEnd));
-		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
-			$db->setQuery($query);
-		$dateframe = $db->loadObject();
-		//echo __FUNCTION__'<pre>';print_r($dateframe); echo '</pre>';
-		return $dateframe;
-	}
 
 	// $titledateKW = 'KW'.JHtml::_('date', $maxDate, 'W', 'Europe/Berlin');
 	protected function getTitle()
 	{
-		$dateframe = self::getMinMaxDates();
-
 		// format date
-		$minDate = strtotime($dateframe->min);
-		$maxDate = strtotime($dateframe->max);
-		if ($minDate === $maxDate)
-		{
-			$titledate = JHtml::_('date', $minDate, 'D, j. M.', 'Europe/Berlin');
-		}
-		// back to back days and weekend
-		elseif (strftime("%j", $minDate)+1 == strftime("%j", $maxDate) AND
-			(strftime("%w", $minDate) == 6 AND strftime("%w", $maxDate) == 0) )
-		{
-			// if same month
-			if (strftime("%m", $minDate) == strftime("%m", $maxDate))
-			{
-				$date = JHTML::_('date', $minDate , 'j.', 'Europe/Berlin').
-					JHTML::_('date', $maxDate , '/j. M.', 'Europe/Berlin');
-			}
-			else
-			{
-				$date = JHTML::_('date', $minDate , 'j. F.', 'Europe/Berlin').
-					JHTML::_('date', $maxDate , ' / j. F.', 'Europe/Berlin');
-			}
-			$titledate = 'Wochenende '.$date;
-		}
-		else
-		{
-			$titledate = JHtml::_('date', $minDate, 'j. ', 'Europe/Berlin');
-			if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
-				$titledate .= JHtml::_('date', $minDate, 'F. ', 'Europe/Berlin');
-			}
-			$titledate .= 'bis ';
-			$titledate .= JHtml::_('date', $maxDate, 'j. F.', 
-				'Europe/Berlin');
-		}
-		
+		$titleDate = self::getTitleDate($this->dates->prevStart, 
+				$this->dates->prevEnd);
 		
 		//$title = JText::_('COM_HBMANAGER_PREVGAMES_ARTICLE_TITLE');
-		$title = 'Ergebnisse vom '.$titledate;
+		$title = 'Ergebnisse vom '.$titleDate;
 		//echo __FUNCTION__.':<pre>';print_r($title);echo'</pre>';
 		return $title;
 	}

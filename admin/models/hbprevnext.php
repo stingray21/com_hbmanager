@@ -282,7 +282,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $date;
 	}
 	
-	function getPrevGames($combined = false, $reports = false)
+	function getPrevGames($arrange = true, $combined = false, $reports = false)
 	{
 		$db = $this->getDbo();
 	
@@ -316,7 +316,10 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db->setQuery($query);
 		$games = $db->loadObjectList();		
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
-	
+		if ($arrange){
+			return $this->nextGames = self::arrangeGamesByDate($games);
+		}
+		
 		return $this->prevGames = $games;
 	}
 	
@@ -357,7 +360,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $select;
 	}
 	
-	function getNextGames($combined = false, $previews = false)
+	function getNextGames($arrange = true, $combined = false, $previews = false)
 	{
 		$db = $this->getDbo();
 	
@@ -368,7 +371,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');
 		if ($previews) {	
-			$query->leftJoin($db->qn('hb_spielbericht').
+			$query->leftJoin($db->qn('hb_spielvorschau').
 				' USING ('.$db->qn('spielIDhvw').')');
 		}
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
@@ -384,9 +387,64 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
-	
+		
+		if ($arrange){
+			return $this->nextGames = self::arrangeGamesByDate($games);
+		}
 		return $this->nextGames = $games;
 	}
+	
+	public function arrangeGamesByDate($games) {
+		// arrange games by date
+		$arranged = array();
+		foreach ($games as $game){
+			$arranged[$game->datum][] = $game;
+		}
+		//echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
+		return $arranged;
+	}
+	
+	protected function getTitleDate($minDateStr, $maxDateStr)
+	{
+		//echo __FUNCTION__.':<pre>'.$minDateStr."\n".$maxDateStr.'</pre>';
+		// format date
+		$minDate = strtotime($minDateStr);
+		$maxDate = strtotime($maxDateStr);
+		if ($minDate === $maxDate)
+		{
+			$titledate = JHtml::_('date', $minDate, 'D, j. M.', 'Europe/Berlin');
+		}
+		// back to back days and weekend
+		elseif (strftime("%j", $minDate)+1 == strftime("%j", $maxDate) AND
+			(strftime("%w", $minDate) == 6 AND strftime("%w", $maxDate) == 0) )
+		{
+			// if same month
+			if (strftime("%m", $minDate) == strftime("%m", $maxDate))
+			{
+				$date = JHTML::_('date', $minDate , 'j.', 'Europe/Berlin').
+					JHTML::_('date', $maxDate , '/j. M.', 'Europe/Berlin');
+			}
+			else
+			{
+				$date = JHTML::_('date', $minDate , 'j. F.', 'Europe/Berlin').
+					JHTML::_('date', $maxDate , ' / j. F.', 'Europe/Berlin');
+			}
+			$titledate = 'Wochenende '.$date;
+		}
+		else
+		{
+			$titledate = JHtml::_('date', $minDate, 'j. ', 'Europe/Berlin');
+			if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
+				$titledate .= JHtml::_('date', $minDate, 'F. ', 'Europe/Berlin');
+			}
+			$titledate .= 'bis ';
+			$titledate .= JHtml::_('date', $maxDate, 'j. F.', 
+				'Europe/Berlin');
+		}
+		
+		return $titledate;
+	}
+	
 }
 
 

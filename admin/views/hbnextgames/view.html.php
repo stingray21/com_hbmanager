@@ -24,13 +24,12 @@ class hbmanagerViewHbnextgames extends JViewLegacy
 		//echo '=> view->$post <br><pre>"; print_r($post); echo "</pre>';
 		$this->assignRef('post', $post);
 		
-//		$model->setDates($post['hbmanagerdates']);
 		$dates = $model->getDates();
 		//echo '=> view->$dates <br><pre>"; print_r($dates); echo "</pre>';
 		$this->assignRef('dates', $dates);
 		
-		$games = $model->getGames();
-		//echo '=> view->$games <br><pre>"; print_r($games); echo "</pre>';
+		$games = $model->getNextGames(true, true, true);
+		//echo '=> view->games<br><pre>"; print_r($games); echo "</pre>';
 		$this->assignRef('games', $games);
 		
 		JToolBarHelper::title(JTEXT::_('COM_HBMANAGER_NEXTGAMES_TITLE'),'hblogo');
