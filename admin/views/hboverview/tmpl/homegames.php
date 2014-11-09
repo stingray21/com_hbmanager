@@ -26,14 +26,22 @@ foreach ($this->homegames as $dayKey => $day)
 	
 	foreach ($day as $gym)
 	{
-		echo '<h5>';
-		echo $gym[0]->hallenName.', '.$gym[0]->stadt.' ('.$gym[0]->hallenNr.')';
-		echo '</h5>';
+		echo '<p>';
+		echo $gym[0]->hallenName.', '.$gym[0]->stadt.' ('.$gym[0]->hallenNummer.')';
+		echo '</p>';
+		$background = false;
 		echo "\t\t<table class=\"HBhomeSchedule\">\n";
 		foreach ($gym as $row)
 		{
+			// switch color of background
+			$background = !$background;
+			// check value of background
+			switch ($background) {
+				case true: $backgroundColor = 'odd'; break;
+				case false: $backgroundColor = 'even'; break;
+			}
 			// row in HBschedule table
-			echo "\t\t\t<tr class=\"".$row->background."\">";
+			echo "\t\t\t<tr class=\"{$backgroundColor}\">";
 			echo "<td>{$row->mannschaft}</td>";
 			//echo "<td class=\"wann leftalign\">";
 			//echo JHtml::_('date', $row->datum, 'D', false);
@@ -41,7 +49,7 @@ foreach ($this->homegames as $dayKey => $day)
 			//echo "<td class=\"wann leftalign\">";
 			//echo JHtml::_('date', $row->datum, 'd.m.y', false);
 			//echo "</td>";
-			echo "<td class=\"wann leftalign\">".$row->zeit." Uhr</td>";
+			echo "<td class=\"wann leftalign\">".substr($row->uhrzeit,0,5)." Uhr</td>";
 			//echo "<td>{$row->ligaKuerzel}</td>";
 			//echo "<td>{$row->hallenNummer}</td>";
 			echo "<td class=\"rightalign";

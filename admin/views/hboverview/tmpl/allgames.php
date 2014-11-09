@@ -51,16 +51,24 @@ foreach ($this->teams as $team)
 		echo "\t\t<tbody>\n";
 		foreach ($team->schedule as $row)
 		{
+			// switch color of background
+			$background = !$background;
+			// check value of background
+			switch ($background) {
+				case true: $backgroundColor = 'odd'; break;
+				case false: $backgroundColor = 'even'; break;
+			}
+		
 			// row in HBschedule table
-			echo "\t\t\t<tr class=\"".$row->background."\">";
+			echo "\t\t\t<tr class=\"{$backgroundColor}\">";
 			echo "<td class=\"wann leftalign\">";
 			echo JHtml::_('date', $row->datum, 'D', false);
 			echo "</td>";
 			echo "<td class=\"wann leftalign\">";
 			echo JHtml::_('date', $row->datum, 'd.m.y', false);
 			echo "</td>";
-			echo "<td class=\"wann leftalign\">".$row->zeit." Uhr</td>";
-			echo "<td>{$row->hallenNr}</td>";
+			echo "<td class=\"wann leftalign\">".substr($row->uhrzeit,0,5)." Uhr</td>";
+			echo "<td>{$row->hallenNummer}</td>";
 			echo "<td class=\"rightalign";
 			if ($row->mark === 1) echo ' heim';
 			echo "\">{$row->heim}</td><td>-</td>";

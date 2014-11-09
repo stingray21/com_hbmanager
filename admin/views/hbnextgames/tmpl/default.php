@@ -11,75 +11,56 @@ $config = new JConfig();
 $user = JFactory::getUser();
 $userid = $user->id;
 
+setlocale(LC_TIME, "de_DE");
+
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-$form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
-				'/models/forms/hbdates.xml');
+$form = JForm::getInstance('myform', 
+		JPATH_COMPONENT_ADMINISTRATOR.'/models/forms/hbdates.xml');
 ?>
 
 <form class="hbmanager form-validate" action="<?php 
-	JRoute::_('index.php?option=com_hbmanager&task=showJournal') 
+	echo JRoute::_('index.php?option=com_hbmanager&task=showNextGames')
 	?>" method="post" id="datesForm" name="datesForm">
-
+ 
 	<div class="fltlft">
-	
+
 		<fieldset class="adminform">
 			<legend>
-				<?php 
-				echo JText::_('COM_HBMANAGER_DATE_SETTINGS');
-				?>
+				<?php echo JText::_('Datumeinstellung'); ?>
 			</legend>
-			<dl>
-				<dt>
-				<?php echo $form->getLabel('date', 'hbDates'); ?>
-				</dt>
-				<dd>
-				<?php 
-				if (isset($this->dates['date'])) $date = $this->dates['date'];
-				else $date = null;
-				echo $form->getInput('date', 'hbDates', 
-						strftime("%d.%m.%Y", strtotime($date))); 
-				?>
-				</dd>
-			</dl>
-			<div class="clr"></div>	
-			
-			
-			<h3><?php echo JText::_('COM_HBMANAGER_DATE_NEXT_GAMES');?></h3>
 			
 			<dl>
 				<dt>
 				<?php
-					echo $form->getLabel('nextStart', 'hbdates'); 
+					echo $form->getLabel('startdateNext', 'hbdates'); 
 				?>
 				</dt>
 				<dd>
 				<?php
-					echo $form->getInput('nextStart', 'hbdates', 
-							$this->dates['nextStart']);
+					echo $form->getInput('startdateNext', 'hbdates', 
+							$this->dates['startdateNext']);
 				?>
 				</dd>
 				
 				<dt>
 				<?php
-					echo $form->getLabel('nextEnd', 'hbdates');
+					echo $form->getLabel('enddateNext', 'hbdates');
 				?>
 				</dt>
 				<dd>
 				<?php 
-					echo $form->getInput('nextEnd', 'hbdates', 
-							$this->dates['nextEnd']);
+					echo $form->getInput('enddateNext', 'hbdates', 
+							$this->dates['enddateNext']);
 				?>
 				</dd>
 			</dl>
-			
-			<div class="clr"></div>
-			<input class="submit" type="submit" name="date_button" id="date_button" value="<?php 
-				echo JText::_('COM_HBMANAGER_DATE_UPDATE_BUTTON');?>"/>
+			<input class="submit" type="submit" name="date_button" id="date_button" value="<?php echo JText::_('COM_HBMANAGER_DATE_UPDATE_BUTTON');?>" />
 		</fieldset>
-	
+		
 	</div>
-</form>	
+	
+</form>
 <div class="clr"></div>
 
 <?php
@@ -124,8 +105,9 @@ foreach ($this->games as $key => $value)
 						echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
 						echo '<p>'.
 								strftime("%d.%m.%Y", strtotime($game->datum)).
-								' um '.$game->zeit.' Uhr</p>'."\n";
-						echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
+								' um '.substr($game->uhrzeit,0,5).
+								' Uhr</p>'."\n";
+						echo '<p>Hallennr.: '.$game->hallenNummer.'</p>'."\n";
 						echo '<p>'.$game->bemerkung.'</p>'."\n";
 					echo '</dd>'."\n"; 
 				echo '</dl>'."\n"; 
@@ -173,8 +155,8 @@ foreach ($this->games as $key => $value)
 ?>
 <div class="clr"></div>
 
-			<input type="hidden" name="hbdates[nextStart]" id="hbdates[nextStart]" value="<?php echo $this->dates['nextStart']?>" />
-			<input type="hidden" name="hbdates[nextEnd]" id="hbdates[nextEnd]" value="<?php echo $this->dates['nextEnd']?>" />
+			<input type="hidden" name="hbdates[startdateNext]" id="hbdates[startdateNext]" value="<?php echo $this->dates['startdateNext']?>" />
+			<input type="hidden" name="hbdates[enddateNext]" id="hbdates[enddateNext]" value="<?php echo $this->dates['enddateNext']?>" />
 			
 			<input type="hidden" name="userid" id="userid" value="<?php echo $userid?>" />
 			<?php
