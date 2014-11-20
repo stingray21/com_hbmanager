@@ -244,8 +244,16 @@ jQuery(document).ready(function($){
 						  tttext += "<br/>" + d.game;
 						  return tttext ; } )  
 						.style("opacity", 1) 
-						.style("left", function() { return (x(d.game)+margin.left) + "px";})     
-						.style("top", function() { return (y(d.goals)+margin.top-57) + "px";});   
+						.style("left", function() { return (x(d.game)+margin.left) + "px";})    
+						.style("top", function() { 
+							//console.log(d3.select("#mode-total").node().checked);	
+							//console.log(document.getElementById('mode-total').checked);
+							var yGoals = d.goals;
+							if (d3.select("#mode-total").node().checked === true) {
+								yGoals = d.goalsTotal;
+							}								
+							ypx = (y(yGoals)+margin.top-57) + "px";
+							return ypx;});   
 					d3.select("#pathid-"+k).transition()
 					  .duration(100)
 					  .style("stroke-width", 3); 

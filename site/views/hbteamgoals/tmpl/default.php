@@ -45,8 +45,8 @@ foreach ($this->players as $player)
 	}
 	echo '</td><td class="goals">';
 	echo $player->tore;
-	if ($player->davon7m != null) {
-		echo '/'.$player->davon7m;
+	if ($player->tore7m != null) {
+		echo '/'.$player->tore7m;
 	}
 	echo '</td><td>';
 	echo $player->spiele;
@@ -95,8 +95,8 @@ foreach ($this->games as $game)
 	
 	<div class="clr"></div>
 	<form class="goalchart">
-		<input type="radio" name="mode" value="single" checked><label>Tore pro Spiel</label>
-		<input type="radio" name="mode" value="total"><label>Tore aller Spiele</label>
+		<input type="radio" id="mode-single" name="mode" value="single" checked><label>Tore pro Spiel</label>
+		<input type="radio" id="mode-total" name="mode" value="total"><label>Tore aller Spiele</label>
 	</form>
 	<div class="clr"></div>
 	<div id="chartgoals">
