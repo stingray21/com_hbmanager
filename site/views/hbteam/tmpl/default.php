@@ -6,6 +6,7 @@ $picPath = './hbdata/images/teams/2014-2015/600px/';
 $picPathFull = './hbdata/images/teams/2014-2015/3000px/';
 ?>
 <div class="hbteam">
+
 <h1><?php echo $this->team->mannschaft; ?>
 <span><?php echo $this->team->liga; ?></span></h1>
 <?php
@@ -46,10 +47,3 @@ if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
 ?>
 </div>
 
-<div id="test">
-<?php
-	$result = $this->model->getRanking();
-	$result = $this->model->getHead2Head('TSV Geislingen', 'SG Tail/Trucht','hbdata_m1_spielplan');
-	
-?>
-</div>

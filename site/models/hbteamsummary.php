@@ -41,7 +41,11 @@ class hbteamModelHBteamSummary extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('hb_mannschaft');
-		$query->where($db->qn('jugend').' = '.$db->q($this->youth));
+		$youth = '';
+		if ($this->youth) {
+			$youth = '!';
+		}
+		$query->where($db->qn('jugend').' '.$youth.'= '.$db->q('aktiv'));
 		$query->leftJoin($db->qn('hb_mannschaftsfoto').' USING ('.
 			$db->qn('kuerzel').')');
 		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
@@ -70,11 +74,11 @@ class hbteamModelHBteamSummary extends JModelLegacy
 		//$query->select('*');
 		$query->select('tag, DATE_FORMAT(beginn, \'%H:%i\') as beginn'.
 			', DATE_FORMAT(ende, \'%H:%i\') as ende, bemerkung, sichtbar,'.
-			' hallenNummer, kurzname, name as hallenName, strasse, plz, stadt');
+			' hallenNr, kurzname, hallenName, strasse, plz, stadt');
 		$query->from($db->qn('hb_mannschaft_training'));
 		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->leftJoin('hb_training USING ('.$db->qn('trainingID').')');
-		$query->leftJoin('hb_halle USING (hallenNummer)');
+		$query->leftJoin('hb_halle USING (hallenNr)');
 		$query->order('FIELD('.$db->qn('tag').','.$db->q('Mo').','.
 			$db->q('Di').','.$db->q('Mi').','.$db->q('Do').','.
 			$db->q('Fr').','.$db->q('Sa').','.$db->q('So').')');
@@ -96,7 +100,7 @@ class hbteamModelHBteamSummary extends JModelLegacy
 	protected function formatTraining($trainings)
 	{
 		foreach ($trainings as $training) {
-			if ($this->showHomeGym == '1' OR $training->hallenNummer != 7014){
+			if ($this->showHomeGym == '1' OR $training->hallenNr != 7014){
 				$training->halleAnzeige = $training->hallenName;
 			}
 		}

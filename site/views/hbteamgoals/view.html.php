@@ -13,17 +13,24 @@ class hbteamViewHBteamGoals extends JViewLegacy
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
+		$model = $this->getModel('hbteamgoals');
+		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
+		$this->assignRef('model', $model);
+		
 		$document = JFactory::getDocument();
 		// local jquery
 		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);
 		JHtml::_('jquery.framework');
+		$document->addScriptDeclaration('
+			var teamkey = \''.$model->teamkey.'\';
+			var season = \''.$model->season.'\';
+			//console.log(teamkey);
+		');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoals.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');
 		
-		$model = $this->getModel('hbteamgoals');
-		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
-		$this->assignRef('model', $model);
+		
 				
 		$team = $model->getTeam();
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';

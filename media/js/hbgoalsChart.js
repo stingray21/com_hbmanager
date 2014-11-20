@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
-
+	console.log(teamkey);
+	console.log(season);
 	
 	d3.selection.prototype.moveToFront = function() {
 	  return this.each(function(){
@@ -63,7 +64,10 @@ jQuery(document).ready(function($){
 		.x(function(d) { return x(d.game); })
 		.y(function(d) { return y(d.goalsTotal); });
 	
-	d3.json("index.php?option=com_hbteam&task=getGoals4Chart&format=raw", function(error, data) {
+	var url = "index.php?option=com_hbteam&task=getGoals4Chart&format=raw" 
+			+ "&teamkey=" + teamkey + "&season=" + season;
+	//console.log(url);
+	d3.json(url, function(error, data) {
 		//console.log(data);
 		
 		var keys = [];
@@ -227,7 +231,7 @@ jQuery(document).ready(function($){
 					//console.log(d);    
 					div.transition()        
 						.duration(200)      
-						.style("opacity", 0.9);      
+						.style("opacity", 0.8);      
 					div.html(function() { 
 						  //console.log(d);
 						  var tttext = '';
