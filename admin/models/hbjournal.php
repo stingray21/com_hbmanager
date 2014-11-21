@@ -84,6 +84,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 	
 	function getSectionRecentGames()
 	{
+		//echo __FUNCTION__."<pre>"; print_r($this->prevGames); echo "</pre>";
 		$data = null;
 		if (empty($this->prevGames)) {	
 			return $data;
@@ -114,24 +115,24 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 
 	protected function getSectionRecentGames_Games() 
 	{
-		$i = -1;
 		$currTeam = null;
-		$currDate = null;
-		foreach ($this->prevGames as $game) {	
-			if ($currDate != $game->datum) {
-				$data['games'][++$i] = JHtml::_('date', $game->datum, 
-					'D, d.m.y', false)."\n";
-				$currDate = $game->datum;
+		$i = -1;			
+		foreach ($this->prevGames as $date => $games)
+		{
+			$data['games'][++$i] = JHtml::_('date', $date, 
+						'D, d.m.y', false)."\n";
+			foreach ($games as $game) 
+			{	
+				if ($currTeam != $game->mannschaft) {
+					$data['games'][$i] .= $game->mannschaft.
+						" (".$game->ligaKuerzel.")\n";
+					$currTeam = $game->mannschaft;
+				}
+				$data['games'][$i] .= "&nbsp;&nbsp;";
+				$data['games'][$i] .= $game->heim." - ".$game->gast;
+				$data['games'][$i] .= "&nbsp;&nbsp;&nbsp;".$game->toreHeim.
+					':'.$game->toreGast."\n";
 			}
-			if ($currTeam != $game->mannschaft) {
-				$data['games'][$i] .= $game->mannschaft.
-					" (".$game->ligaKuerzel.")\n";
-				$currTeam = $game->mannschaft;
-			}
-			$data['games'][$i] .= "&nbsp;&nbsp;";
-			$data['games'][$i] .= $game->heim." - ".$game->gast;
-			$data['games'][$i] .= "&nbsp;&nbsp;&nbsp;".$game->toreHeim.
-				':'.$game->toreGast."\n";
 		}
 		return $data['games'];
 	}
@@ -141,27 +142,28 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 	{
 		$data = array();
 		$currTeam = null;
-		$currDate = null;
 		//echo __FUNCTION__."<pre>"; print_r($this->nextGames); echo "</pre>";
 		if (!empty($this->nextGames))
 		{
 			$i = -1;			
 			$data['headline'] = 'Alle Spiele vom nächsten Spieltag (chronologisch)';
-			foreach ($this->nextGames as $game)
+			foreach ($this->nextGames as $date => $games)
 			{
-				if ($currDate != $game->datum) {
-					$data['games'][++$i] = JHtml::_('date', $game->datum, 
-						'D, d.m.y', false)."\n";
-					$currDate = $game->datum;
+				$data['games'][++$i] = JHtml::_('date', $date, 
+							'D, d.m.y', false)."\n";
+				foreach ($games as $game)
+				{
+					//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+					
+					if ($currTeam != $game->mannschaft) {
+						$data['games'][$i] .= $game->mannschaft. " (".
+								$game->ligaKuerzel.")\n";
+						$currTeam = $game->mannschaft;
+					}
+					$data['games'][$i] .= "&nbsp;&nbsp;";
+					$data['games'][$i] .= $game->zeit." Uhr ".
+							"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 				}
-				if ($currTeam != $game->mannschaft) {
-					$data['games'][$i] .= $game->mannschaft. " (".
-							$game->ligaKuerzel.")\n";
-					$currTeam = $game->mannschaft;
-				}
-				$data['games'][$i] .= "&nbsp;&nbsp;";
-				$data['games'][$i] .= substr($game->zeit,0,5)." Uhr ".
-						"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 			}
 		}
 		$data['games'] = self::formatTeamNames($data['games']);

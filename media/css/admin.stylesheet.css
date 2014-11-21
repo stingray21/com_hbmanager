@@ -34,6 +34,8 @@ input.submit {
 	font-weight:bold;
 	font-style:normal;
 	line-height:1.5em;
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
 	margin-right: 2em; 
 	padding: 0.2em 1em;
 	text-decoration:none;
@@ -206,10 +208,6 @@ form#datesForm label {
 	line-height: 2;
 }
 
-form#addTeam label {
-	min-width: 0;
-}
-
 form#datesForm dt,
 form#datesForm dd {
 	float: left;
@@ -218,14 +216,6 @@ form#datesForm dd {
 
 form#datesForm input {
 	float: left;
-}
-
-form#addTeam fieldset select {
-	width: 95%;
-}
-
-form#updateTeams label {
-	min-width: 0;
 }
 
 

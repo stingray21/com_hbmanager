@@ -1,0 +1,76 @@
+form#updateTeams select, form#updateTeams textarea, 
+form#updateTeams input[type="text"], 
+form#updateTeams .uneditable-input {
+	border-radius: 2px;
+	color: #555;
+	display: inline-block;
+	font-size: 11px;
+	height: 15px;
+	line-height: 22px;
+	margin-bottom: 3px;
+	padding: 1px 2px;
+	vertical-align: middle;
+}
+
+form#addTeam select, form#addTeam textarea, 
+form#addTeam input[type="text"], 
+form#addTeam .uneditable-input {
+	border-radius: 2px;
+	color: #555;
+	display: inline-block;
+	font-size: 11px;
+	height: 15px;
+	line-height: 22px;
+	margin-bottom: 3px;
+	padding: 1px 2px;
+	vertical-align: middle;
+}
+
+form#updateTeams select,
+form#updateTeams select {
+	height: 19px;
+}
+
+form#addTeam label {
+	min-width: 0;
+}
+
+form#datesForm dt,
+form#datesForm dd {
+	float: left;
+	margin: 2px 1em 0 0;
+}
+
+form#datesForm input {
+	float: left;
+}
+
+form#addTeam fieldset select {
+	width: 95%;
+}
+
+form#updateTeams label {
+	min-width: 0;
+}
+
+
+table.deleteTeams {
+	
+	}
+	
+table.deleteTeams th label {
+	font-weight: bold;
+	text-align: left;
+	padding: 0.5em 0.7em;
+	}
+
+table.deleteTeams td{
+	padding: 0.2em 0.2em;
+	}
+
+table.deleteTeams tr:nth-child(odd) td { 
+	//background-color:#fff 
+}
+table.deleteTeams tr:nth-child(even) td { 
+	background-color:#eee 
+}

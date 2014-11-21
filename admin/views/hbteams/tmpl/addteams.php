@@ -12,9 +12,6 @@ $user = JFactory::getUser();
 $userid = $user->id;
 
 $model = $this->model;
-
-setlocale(LC_TIME, "de_DE");
-
 // Button
 echo '<a class="hbbutton" href="'.
 		JRoute::_('index.php?option=com_hbmanager&task=showTeams').
@@ -41,67 +38,103 @@ $form = JForm::getInstance('myform',
 				<?php echo JText::_('COM_HBMANAGER_TEAMS_SELECT_TEAM'); ?>
 			</legend>
 			
-			
-			<table>
-			
-				<tr>
-				<?php
-				foreach($form->getFieldset('addTeam') as $field)
-					{
-						echo '<th>'.$field->label.'</th>';					
-					}
-				?>
-				</tr>
+			<?php 
+if (!empty($this->leagues)) 
+{
+	echo "\n\n".'<table id="teamstable" name="teamstable">'."\n";
 
-				<?php 
-				$i = 0;
-				foreach ($this->leagues as $team)
-				{
-					
-					if (preg_match("/Geisl/",$team->rankingTeams)) {
-						echo '<tr>';
-						
-						$team = (array) $team;
-						
-						echo '<td>';
-						$checked = preg_match("/Geisl/",$team['rankingTeams']);
-						echo hbhelper::formatInput($form->getInput('includeTeam', 
-								'hbAddTeam', $checked), $i);
-						echo '</td>';
-						echo "\n";
-						
-						foreach (array('staffel','staffelName','staffelLink',
-							'geschlecht','jugend','saison') as $value)
-						{
-							echo '<td>';
-							echo hbhelper::formatInput($form->getInput($value, 
-								'hbAddTeam', $team[$value]), $i);
-							echo '</td>';
-							echo "\n";
-						}
-						
-						echo '<td>';
-						$input = hbhelper::formatInput($form->getInput('rankingName', 
-								'hbAddTeam'), $i);
-						echo $model->selectHomeTeam($input, $team['rankingTeams'], 
-								"/Geisl/");
-						echo '</td>';
-						echo "\n";
-						
-						echo '<td>';
-						$input = hbhelper::formatInput($form->getInput('scheduleName', 
-								'hbAddTeam'), $i);
-						echo $model->selectHomeTeam($input, $team['scheduleTeams'], 
-								"/Geisl/");
-						echo '</td>';
-						echo "\n";
-						echo '</tr>';
-						echo "\n\n";
-						$i++;
-					}
-				}
+	$fields = array('staffel','staffelName', 'url', 'geschlecht',
+		'jugend','saison', 'mannschaftenTabelle', 'mannschaftenSpielplan');
+	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->leagues); echo'</pre>';
+	echo '<tr>';
+	echo '<th></th>';
+	foreach ($fields as $key) {
+		echo '<th>';
+		echo $form->getLabel($key, 'hbAddTeam');
+		echo '</th>';
+		echo "\n";
+	}
+	echo '</tr>'."\n\n";
+
+	foreach ($this->leagues as $i => $team)
+	{
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($team); echo'</pre>';
+		echo '<tr>'."\n";
+		
+		echo '<td>';
+		echo hbhelper::formatInput($form->getInput('includeTeam', 'hbAddTeam', 
+					$team->select['mannschaftenTabelle'] !== false), $i);
+		echo '</td>';
+		
+		$team =  (array) $team;
+		foreach ($fields as $key) {			
+			$input = $form->getInput($key, 'hbAddTeam', $team[$key]);		
+			if (isset($team['select'][$key]) ) {
+				$input = $model->getOptions($input, $team[$key], 
+					$team['select'][$key]);
+			}
+			if (!empty($input)) {
+				echo '<td>';
+				echo hbhelper::formatInput($input, $i);
+				echo '</td>';
+				echo "\n";
+			}
+		}
+		echo '</tr>';
+		echo "\n\n";
+	}
+	echo "\n\n".'</table>'."\n\n";
+}
+			
+			
+//				<?php 
+//				$i = 0;
+//				foreach ($this->leagues as $team)
+//				{
+//					
+//					if (preg_match("/Geisl/",$team->rankingTeams)) {
+//						echo '<tr>';
+//						
+//						$team = (array) $team;
+//						
+//						echo '<td>';
+//						$checked = preg_match("/Geisl/",$team['rankingTeams']);
+//						echo hbhelper::formatInput($form->getInput('includeTeam', 
+//								'hbAddTeam', $checked), $i);
+//						echo '</td>';
+//						echo "\n";
+//						
+//						foreach (array('staffel','staffelName','staffelLink',
+//							'geschlecht','jugend','saison') as $value)
+//						{
+//							echo '<td>';
+//							echo hbhelper::formatInput($form->getInput($value, 
+//								'hbAddTeam', $team[$value]), $i);
+//							echo '</td>';
+//							echo "\n";
+//						}
+//						
+//						echo '<td>';
+//						$input = hbhelper::formatInput($form->getInput('rankingName', 
+//								'hbAddTeam'), $i);
+//						echo $model->selectHomeTeam($input, $team['rankingTeams'], 
+//								"/Geisl/");
+//						echo '</td>';
+//						echo "\n";
+//						
+//						echo '<td>';
+//						$input = hbhelper::formatInput($form->getInput('scheduleName', 
+//								'hbAddTeam'), $i);
+//						echo $model->selectHomeTeam($input, $team['scheduleTeams'], 
+//								"/Geisl/");
+//						echo '</td>';
+//						echo "\n";
+//						echo '</tr>';
+//						echo "\n\n";
+//						$i++;
+//					}
+//				}
 				?>
-			</table>
 
 			<div class="clr"></div>
 			<input class="submit" type="submit" name="addTeams_button" id="addTeams_button" value="<?php 

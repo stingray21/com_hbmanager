@@ -25,28 +25,29 @@ class HbmanagerViewHbteams extends JViewLegacy
 		$model = $this->getModel('hbteams');
 		$this->assignRef('model', $model);
 		
-		$leagues = $model->getLeagues();
-		$this->assignRef('leagues', $leagues);
-		//echo '=> view->leagues<br><pre>'; print_r($leagues); echo '</pre>';
-		
 		$post = JRequest::get('post');
 		//echo '=> view->post<br><pre>'; print_r($post); echo '</pre>';
 		$this->assignRef('post', $post);
 		
 		//echo $this->getLayout();
-		$option = null;
-		if ($this->getLayout() === 'deleteteams') {
-			$option = 'deleteTeams';
-		}
-		$teams = $model->getTeams($option);
+		
+		$teams = $model->getTeams();
 		$this->assignRef('teams', $teams);
 		// echo '=> view->teams<br><pre>'; print_r($teams); echo '</pre>';
+		
+		$jinput = JFactory::getApplication()->input;
+		$task = $jinput->get('task');
+		if ($task === 'addTeams') {
+			$leagues = $model->getLeagues();
+		}		
+		$this->assignRef('leagues', $leagues);
 		
 		JToolBarHelper::title(JText::_('COM_HBMANAGER_TEAMS_TITLE'),'hblogo');
 		
 		// get the stylesheet (with automatic lookup, possible template overrides, etc.)
 		//JHtml::stylesheet('admin.stylesheet.css','media/com_hbhvwmanager/css/');
 		JHtml::stylesheet('com_hbmanager/admin.stylesheet.css', array(), true);
+		JHtml::stylesheet('com_hbmanager/hbteams.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);

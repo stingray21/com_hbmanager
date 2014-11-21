@@ -122,7 +122,7 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 									echo '<tr><th>'.$game->gast.'</th><td>'.$game->toreGast.'</td></tr>'."\n";
 								echo '</table>'."\n";
 								echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
-								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.substr($game->zeit,0,5).' Uhr</p>'."\n";
+								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.$game->zeit.' Uhr</p>'."\n";
 								echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
 								echo '<p>'.$game->bemerkung.'</p>'."\n";
 							echo '</dd>'."\n"; 

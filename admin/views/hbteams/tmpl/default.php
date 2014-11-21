@@ -2,16 +2,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::preferences('com_hbmanager');
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base(true).'/components/com_hbmanager/css/default.css');
-
 $config = new JConfig();
 $user = JFactory::getUser();
 $userid = $user->id;
-
-
-setlocale(LC_TIME, "de_DE");
 
 // Button
 echo '<a id="addteams" class="hbbutton" href="'.
@@ -42,44 +35,40 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 			
 			
 			<table id="teamstable" name="teamstable">
-			
-				<tr>
-				<?php
-				foreach($form->getFieldset('team') as $field)
-					{
-						echo '<th>'.$field->label.'</th>';					
-					}
-				?>
-				</tr>
 				
 				<?php 
-				
-				$i = 0;
-				foreach ($this->teams as $team)
-				{
-					
-					echo '<tr>';
-					
-					$team =  (array) $team;
-					foreach ($team as $key => $value) {
-						$value = preg_replace(
-										"#http://www\.hvw-online\.org/\?A#",
-										"?A", $value);
-						$input = $form->getInput($key, 'hbteam', $value);
-						if (!empty($input)) {
-							echo '<td>';
-							echo hbhelper::formatInput($input, $i);
-							echo '</td>';
-							echo "\n";
-						}
+			$fields = array('reihenfolge', 'kuerzel', 'mannschaft', 'name', 'nameKurz', 
+					'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink');
+			//echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->teams); echo'</pre>';
+			echo '<tr>';
+			foreach ($fields as $key) {
+				echo '<th>';
+				echo $form->getLabel($key, 'hbteam');
+				echo '</th>';
+				echo "\n";
+			}
+			echo '</tr>'."\n\n";
+			
+			foreach ($this->teams as $i => $team)
+			{
+				echo '<tr>';
+
+				$team =  (array) $team;
+				foreach ($fields as $key) {					
+					$team[$key] = str_replace("http://www.hvw-online.org/?A","?A", $team[$key]);
+					$input = $form->getInput($key, 'hbteam', $team[$key]);
+					if (!empty($input)) {
+						echo '<td>';
+						echo hbhelper::formatInput($input, $i);
+						echo '</td>';
+						echo "\n";
 					}
-					
-					echo '</tr>';
-					echo "\n\n";
-					$i++;
 				}
-				
-				?>
+				echo '</tr>';
+				echo "\n\n";
+			}
+
+			?>
 			</table>
 			
 			<?php 
@@ -95,3 +84,5 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 	
 	</div>
 </form>	
+
+

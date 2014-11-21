@@ -3,16 +3,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::preferences('com_hbmanager');
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base(true).
-		'/components/com_hbmanager/css/default.css');
 
 $config = new JConfig();
 $user = JFactory::getUser();
 $userid = $user->id;
-
-
-setlocale(LC_TIME, "de_DE");
 
 // Button
 echo '<a class="hbbutton" href="'.
@@ -37,60 +31,48 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.'/models'.
 			</legend>
 			
 			
-			<table>
+			<table id="teamstable" name="teamstable" class="deleteTeams" >
 			
-				<tr>
-					<th>löschen?</th>
-					<th>Kürzel</th>
-					<th>Mannschaft</th>
-					<th>Name</th>
-					<th>Name (kurz)</th>
-					<th>Liga Kürzel</th>
-					<th>Liga</th>
-					<th>m/w</th>
-					<th>Jugend</th>
-					<th>HVW Link Extension (http://www.hvw-online.org/...)</th>
+				<tr>	
+					<?php 
+echo '<th>'.$form->getLabel('deleteTeam','hbDeleteTeam').'</th>'."\n";
+$fields = array('reihenfolge', 'kuerzel', 'mannschaft', 'name', 'nameKurz', 
+		'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink');
+//echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->teams); echo'</pre>';
+foreach ($fields as $key) {
+	echo '<th>';
+	echo $form->getLabel($key, 'hbteam');
+	echo '</th>';
+	echo "\n";
+}
+					?>
 				</tr>
-
 				<?php 
-				
-				$i = 0;
-				foreach ($this->teams as $team)
-				{
-					
-					echo '<tr>';
-						
-					echo '<td>';
-						echo hbhelper::formatInput($form->getInput('deleteTeam', 
-								'hbDeleteTeam'), $i);
-						echo hbhelper::formatInput($form->getInput('kuerzel', 
-								'hbDeleteTeam', $team->kuerzel), $i);
-					echo '</td>';
-					echo "\n";
-					
-					$team =  (array) $team;
-					foreach ($team as $key => $value) {
-						$value = preg_replace(
-									"#http://www\.hvw-online\.org/\?A#",
-									"?A", $value);
-						$value = preg_replace(array('/^m$/','/^w$/','/^g$/'), 
-									array('männlich','weiblich','gemischt'), 
-									$value);
-						if ($key === 'jugend') 
-							$value = preg_replace(array('/0/','/1/'), 
-									array('Aktiv','Jugend'), $value);
-						echo '<td>';
-						echo $value;
-						echo '</td>';
-						echo "\n";
-					}
-					
-					echo '</tr>';
-					echo "\n\n";
-					$i++;
-				}
-				
-				?>
+foreach ($this->teams as $i => $team)
+	{
+		echo '<tr>';
+		
+		echo '<td>';
+			echo hbhelper::formatInput($form->getInput('deleteTeam', 
+					'hbDeleteTeam'), $i);
+			echo hbhelper::formatInput($form->getInput('kuerzel', 
+					'hbDeleteTeam', $team->kuerzel), $i);
+		echo '</td>';
+		echo "\n";
+		
+		$team =  (array) $team;
+		foreach ($fields as $key) {					
+			$team[$key] = str_replace("http://www.hvw-online.org/?A","?A", $team[$key]);
+			echo '<td>';
+			echo $team[$key];
+			echo '</td>';
+			echo "\n";
+		}
+		echo '</tr>';
+		echo "\n\n";
+	}
+
+			?>
 			</table>
 
 			<div class="clr"></div>

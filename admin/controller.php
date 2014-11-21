@@ -52,16 +52,10 @@ class hbmanagerController extends JControllerAdmin
 		
 		$jinput = JFactory::getApplication()->input;
 		$updateHvw = $jinput->get('getHvwData', false);
-		
 		if ($updateHvw)
 		{
-			$year = strftime('%Y');
-			if (strftime('%m') < 8) $year = $year-1;
-			$leagueArray = $model->getLeagueArrayFromHVW(
-					'http://www.hvw-online.org/index.php'.
-					'?id=39&orgID=11&A=g_org&nm=0&do='.
-					$year.'-10-01');
-			$model->updateLeaguesInDB($leagueArray);
+			set_time_limit(90);
+			$model->updateLeagues();
 		}
 		
 		$view = $this->getView('hbteams','html');
@@ -207,8 +201,10 @@ class hbmanagerController extends JControllerAdmin
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
 		
 		$dates = null;
-		if (isset($post['hbdates'])) $dates = $post['hbdates'];
-		$model->setDates($dates);
+		if (isset($post['hbdates'])) {
+			$dates = $post['hbdates'];
+		}
+		$model->setNextDates($dates);
 		
 		if (isset($post['hbnextgames'])) $nextGames = $post['hbnextgames'];
 		else $nextGames = null;
