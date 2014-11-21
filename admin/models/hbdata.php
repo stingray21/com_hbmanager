@@ -262,6 +262,12 @@ class hbmanagerModelHbdata extends JModelLegacy
 				->values($values);
 
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		$query .= "\nON DUPLICATE KEY UPDATE \n";
+		$dublicates = array();
+		foreach ($columns as $field) {
+			$dublicates[] = $db->qn($field).' = VALUES('.$db->qn($field).')';
+		}
+		$query .= implode(",\n", $dublicates);
 		$db->setQuery($query);
 		$result = $db->execute();
 

@@ -6,8 +6,6 @@ jimport('joomla.application.component.modeladmin');
 
 class hbmanagerModelHbOverview extends JModelLegacy
 {	
-	private $updatedRankings = array();
-	private $updatedSchedules = array();
 	
 	function __construct() 
 	{
@@ -35,20 +33,34 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		// getting schedule of the team from the DB
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from($db->quoteName('hb_spiel'));
-		$query->where($db->quoteName('Kuerzel').' = '.$db->Quote($team->kuerzel));
-		$query->order($db->quoteName(array('datum', 'uhrzeit')));
-		//echo nl2br($query);//die; //see resulting query
+		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%m').') AS '.$db->qn('zeit').', '.
+				'IF('.$db->qn('heim').' IN '.self::getTeamNames().',1,2) '.
+					'AS mark');
+		$query->from($db->qn('hb_spiel'));
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where($db->qn('Kuerzel').' = '.$db->q($team->kuerzel));
+		$query->order($db->qn('datumZeit'));
+		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
-		//echo "<pre>"; print_r($rows); echo "</pre>";
-		
-		$rows = self::markHomeInSchedule($rows, $team->nameKurz);
-		
+		$rows = self::addRowColor($rows);
+		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
 		return $rows;
 	}
 
+	function addRowColor($rows)
+	{
+		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
+		for ($i = 0; $i < count($rows); $i++)
+		{
+			$color = ($i % 2 == 1) ? 'even' : 'odd';
+			$rows[$i]->background = $color;
+		}
+		return $rows;
+	}
+	
 	function getTeamArray()
 	{
 		$teams = self::getTeams();
@@ -59,22 +71,7 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		return $teams;
 	}
 
-	function markHomeInSchedule($rows, $hometeam)
-	{
-		foreach ($rows as $row)
-		{
-			if (strcmp(trim($row->heim), trim($hometeam)) == 0)	{
-				$row->mark = 1;
-			}
-			elseif (strcmp(trim($row->gast), trim($hometeam)) == 0)	{
-				$row->mark = 2;
-			}
-			else {
-				$row->mark = 0;
-			}
-		}
-		return $rows;
-	}
+	
 	
 	function getTeamNames()
 	{
@@ -85,7 +82,6 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
 		$db->setQuery($query);
 		$names = $db->loadColumn();
-		
 		foreach ($names as $key => $name){
 			$names[$key] = $db->q($name);
 		}
@@ -98,28 +94,22 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		// getting schedule of the team from the DB
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('`hallenNummer`, `kuerzel`, `spielID`, `spielIDhvw`, '
-			. '`datum`, `uhrzeit`, `heim`, `gast`, `toreHeim`, `toreGast`, '
-			. '`bemerkung`, '
-			. '`mannschaftID`, `reihenfolge`, `mannschaft`, '
-			. 'hb_mannschaft.`name` as `name`, `nameKurz`, '
-			. '`ligaKuerzel`, `liga`, `geschlecht`, `jugend`, `hvwLink`, '
-			. '`updateTabelle`, `updateSpielplan`, '
-			. '`halleID`,  hb_halle.`name` as `hallenName`, `kurzname`, '
-			. '`land`, `plz`, `stadt`, `strasse`, `telefon`, `bezirkNummer`, '
-			. '`bezirk`, `freigabeVerband`, `freigabeBezirk`, '
-			. '`haftmittel`, `letzteAenderung`');
+		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%m').') AS '.$db->qn('zeit'));
 		$query->from($db->qn('hb_spiel'));
 		$query->where($db->qn('Heim').' IN '.self::getTeamNames());
+		$query->where($db->qn('hallenNr').' IN (7005, 7014, 7003)');
 		$query->join('INNER',$db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
-		$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNummer').')');
-		$query->order($db->qn(array('datum', 'uhrzeit')));
-		//echo nl2br($query);//die; //see resulting query
+		$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNr').')');
+		$query->order($db->qn('datumZeit'));
+		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
-		//echo "<pre>"; print_r($rows); echo "</pre>";
+		$rows = self::addRowColor($rows);
+		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
 		$arangedRows = self::arangeGames($rows);
-		//echo "<pre>"; print_r($arangedRows); echo "</pre>";
+		//echo __FUNCTION__."<pre>"; print_r($arangedRows); echo "</pre>";
 		return $arangedRows;
 	}
 	
@@ -128,8 +118,9 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		$rows = '';
 		foreach ($inputRows as $value)
 		{
-			$rows[$value->datum][$value->hallenNummer][] = $value;
+			$rows[$value->datum][$value->hallenNr][] = $value;
 		}
+		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
 		return $rows;
 	}
 	

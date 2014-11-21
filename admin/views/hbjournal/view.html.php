@@ -31,12 +31,12 @@ class HbmanagerViewHbjournal extends JViewLegacy
 		// previous games
 		$prevGames = $model->getPrevGames();
 		$this->assignRef('prevGames', $prevGames);
-		//echo '=> view->prevGames<br><pre>"; print_r($prevGames);echo "</pre>';
+		//echo '=> view->prevGames<br><pre>'; print_r($prevGames);echo '</pre>';
 		
 		// next games
 		$nextGames = $model->getNextGames();
 		$this->assignRef('nextGames', $nextGames);
-		//echo '=> view->nextGames<br><pre>"; print_r($nextGames);echo "</pre>';
+		//echo '=> view->nextGames<br><pre>'; print_r($nextGames);echo '</pre>';
 		
 		// game reports
 		$reports = $model->getReports();

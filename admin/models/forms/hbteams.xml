@@ -11,7 +11,7 @@
 				default="" 
 				label="RF" 
 				description="" 
-				size="2" 
+				size="1" 
 			/>
 			<field 
 				name="kuerzel" 
@@ -19,7 +19,7 @@
 				default="" 
 				label="Kürzel" 
 				description="" 
-				size="7" 
+				size="5" 
 			/>
 			<field 
 				name="mannschaft" 
@@ -41,9 +41,9 @@
 				name="nameKurz" 
 				type="text" 
 				default="" 
-				label="Name" 
+				label="Name (kurz)" 
 				description="" 
-				size="20" 
+				size="17" 
 			/>
 			<field 
 				name="ligaKuerzel" 
@@ -59,7 +59,7 @@
 				default="" 
 				label="Liga" 
 				description="" 
-				size="30" 
+				size="20" 
 			/>	
 			<field 
 				name="geschlecht" 
@@ -80,17 +80,23 @@
 				label="Jugend" 
 				description=""
 				>				
-					<option value="0">Aktiv</option>
-					<option value="1">Jugend</option>
+					<option value="aktiv">Aktiv</option>
+					<option value="A">A-Jgd.</option>
+					<option value="B">B-Jgd.</option>
+					<option value="C">C-Jgd.</option>
+					<option value="D">D-Jgd.</option>
+					<option value="E">E-Jgd.</option>
+					<option value="minis">Minis</option>
 			</field>	 
 			<field 
 				name="hvwLink" 
 				type="text" 
 				default="" 
-				label="HVW Link Extension (http://www.hvw-online.org/...)" 
+				label="http://www.hvw-online.org/..." 
 				description="Link" 
 				size="47" 
-			/>			
+			/>		
+			<!--label="HVW Link Extension &lt;br&gt;(http://www.hvw-online.org/...)" -->	
 		</fieldset>
 	</fields>
 	
@@ -123,7 +129,7 @@
 				size="40" 
 			/>
 			<field 
-				name="staffelLink" 
+				name="url" 
 				type="text" 
 				default="" 
 				label="HVW Link" 
@@ -149,9 +155,14 @@
 				label="Jugend" 
 				description=""
 				>				
-					<option value="0">Aktiv</option>
-					<option value="1">Jugend</option>
-			</field>
+					<option value="aktiv">Aktiv</option>
+					<option value="A">A-Jgd.</option>
+					<option value="B">B-Jgd.</option>
+					<option value="C">C-Jgd.</option>
+					<option value="D">D-Jgd.</option>
+					<option value="E">E-Jgd.</option>
+					<option value="minis">Minis</option>
+			</field>	 
 			<field 
 				name="saison" 
 				type="text" 
@@ -161,7 +172,7 @@
 				size="10" 
 			/>	 	 	 	
 			<field 
-				name="rankingName" 
+				name="mannschaftenTabelle" 
 				type="list" 
 				default="" 
 				label="in Tabelle" 
@@ -170,7 +181,7 @@
 					<option value="leer">auswaehlen</option>
 			</field>
 			<field 
-				name="scheduleName" 
+				name="mannschaftenSpielplan" 
 				type="list" 
 				default="" 
 				label="in Spielplan" 

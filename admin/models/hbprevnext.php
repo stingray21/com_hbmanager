@@ -56,22 +56,10 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
 		
 		// previous games dates
-		if (is_null($dates['prevStart']) || is_null($dates['prevEnd'])) {
-			self::setPrevGamesDates();
-		}
-		else {
-			$this->dates->prevStart	= $dates['prevStart'];
-			$this->dates->prevEnd	= $dates['prevEnd'];
-		}
+		self::setPrevDates($dates = null);
 		
 		// upcoming games dates
-		if (is_null($dates['nextStart']) || is_null($dates['nextEnd']))	{
-			self::setNextGamesDates();
-		}
-		else {
-			$this->dates->nextStart	= $dates['nextStart'];
-			$this->dates->nextEnd	= $dates['nextEnd'];
-		}
+		self::setNextDates($dates = null);
 		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
@@ -87,7 +75,6 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			$this->dates->prevStart	= $dates['prevStart'];
 			$this->dates->prevEnd	= $dates['prevEnd'];
 		}
-		
 		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
@@ -172,7 +159,6 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 	
 	function getMostRecentGameDate()
 	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
 		$db = $this->getDbo();
 		
 		// earlist game of the previous week
@@ -182,8 +168,10 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$db->q($this->dates->prevStart).' AND '.
-				$db->q(strftime("%Y-%m-%d", strtotime('last Tuesday', 
-						strtotime($this->dates->today))))
+				$db->q(strftime("%Y-%m-%d", strtotime('next Tuesday', 
+					strtotime('last Saturday', 
+						strtotime($this->dates->today))
+					)))
 				);
 		$query->order($db->qn('datumZeit').' DESC');
 		//$query->setLimit(1);
@@ -282,7 +270,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $date;
 	}
 	
-	function getPrevGames($combined = false, $reports = false)
+	function getPrevGames($arrange = true, $combined = false, $reports = false)
 	{
 		$db = $this->getDbo();
 	
@@ -292,8 +280,10 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		}
 		else {
 			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME('.$db->qn('datumZeit').') AS '.$db->qn('zeit');
-		}	
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%m').') AS '.$db->qn('zeit'); 
+		}
+		// %H:%m hour with leading 0
 		$query->select($select);
 		$query->from('hb_spiel');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
@@ -316,7 +306,10 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db->setQuery($query);
 		$games = $db->loadObjectList();		
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
-	
+		if ($arrange){
+			return $this->prevGames = self::arrangeGamesByDate($games);
+		}
+		
 		return $this->prevGames = $games;
 	}
 	
@@ -324,7 +317,8 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 	{
 		$db = $this->getDbo();
 		$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').
-				', TIME('.$db->qn('datumZeit').') AS '.$db->qn('zeit').',
+				', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%m').') AS '.$db->qn('zeit').',
 					CASE 
 					WHEN (SUBSTRING('.$db->qn('kuerzel').',1,3) = '
 						.$db->q('gJE').') THEN
@@ -357,18 +351,19 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $select;
 	}
 	
-	function getNextGames($combined = false, $previews = false)
+	function getNextGames($arrange = true, $combined = false, $previews = false)
 	{
 		$db = $this->getDbo();
 	
 		$query = $db->getQuery(true);
 		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME('.$db->qn('datumZeit').') AS '.$db->qn('zeit'));
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%m').') AS '.$db->qn('zeit'));
 		$query->from('hb_spiel');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');
 		if ($previews) {	
-			$query->leftJoin($db->qn('hb_spielbericht').
+			$query->leftJoin($db->qn('hb_spielvorschau').
 				' USING ('.$db->qn('spielIDhvw').')');
 		}
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
@@ -384,9 +379,64 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
-	
+		
+		if ($arrange){
+			return $this->nextGames = self::arrangeGamesByDate($games);
+		}
 		return $this->nextGames = $games;
 	}
+	
+	public function arrangeGamesByDate($games) {
+		// arrange games by date
+		$arranged = array();
+		foreach ($games as $game){
+			$arranged[$game->datum][] = $game;
+		}
+		//echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
+		return $arranged;
+	}
+	
+	protected function getTitleDate($minDateStr, $maxDateStr)
+	{
+		//echo __FUNCTION__.':<pre>'.$minDateStr."\n".$maxDateStr.'</pre>';
+		// format date
+		$minDate = strtotime($minDateStr);
+		$maxDate = strtotime($maxDateStr);
+		if ($minDate === $maxDate)
+		{
+			$titledate = JHtml::_('date', $minDate, 'D, j. M.', 'Europe/Berlin');
+		}
+		// back to back days and weekend
+		elseif (strftime("%j", $minDate)+1 == strftime("%j", $maxDate) AND
+			(strftime("%w", $minDate) == 6 AND strftime("%w", $maxDate) == 0) )
+		{
+			// if same month
+			if (strftime("%m", $minDate) == strftime("%m", $maxDate))
+			{
+				$date = JHTML::_('date', $minDate , 'j.', 'Europe/Berlin').
+					JHTML::_('date', $maxDate , '/j. M.', 'Europe/Berlin');
+			}
+			else
+			{
+				$date = JHTML::_('date', $minDate , 'j. F.', 'Europe/Berlin').
+					JHTML::_('date', $maxDate , ' / j. F.', 'Europe/Berlin');
+			}
+			$titledate = 'Wochenende '.$date;
+		}
+		else
+		{
+			$titledate = JHtml::_('date', $minDate, 'j. ', 'Europe/Berlin');
+			if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
+				$titledate .= JHtml::_('date', $minDate, 'F. ', 'Europe/Berlin');
+			}
+			$titledate .= 'bis ';
+			$titledate .= JHtml::_('date', $maxDate, 'j. F.', 
+				'Europe/Berlin');
+		}
+		
+		return $titledate;
+	}
+	
 }
 
 

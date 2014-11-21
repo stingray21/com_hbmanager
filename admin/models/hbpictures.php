@@ -19,7 +19,7 @@ class hbmanagerModelHbpictures extends JModelLegacy
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select($db->qn('kuerzel').', '.$db->qn('mannschaftID').', '.
+		$query->select($db->qn('kuerzel').', '.
 			$db->qn('reihenfolge').', '.$db->qn('mannschaft').', '.
 			$db->qn('name').', '.$db->qn('nameKurz').', '.
 			$db->qn('ligaKuerzel').', '.$db->qn('liga').', '.
