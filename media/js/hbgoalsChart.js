@@ -9,7 +9,7 @@ jQuery(document).ready(function($){
 	};
 
 	var margin = {top: 20, right: 150, bottom: 120, left: 50},
-		width = 600 - margin.left - margin.right,
+		width = 550 - margin.left - margin.right,
 		height = 400 - margin.top - margin.bottom;
 
 	var x = d3.scale.ordinal()
@@ -231,7 +231,7 @@ jQuery(document).ready(function($){
 					//console.log(d);    
 					div.transition()        
 						.duration(200)      
-						.style("opacity", 0.8);      
+						.style("opacity", 0.9);      
 					div.html(function() { 
 						  //console.log(d);
 						  var tttext = '';

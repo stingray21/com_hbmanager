@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 
 foreach ($this->players as $player) 
 {
-	//echo '=> view->players<br><pre>'; print_r($player); echo '</pre>';
+	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($player); echo'</pre>';
 	echo '<tr';
 	if ($player->tore === null)echo ' class="notPlayed"';
 	echo '><td class="name">';
@@ -70,10 +70,11 @@ foreach ($this->players as $player)
 <?php
 foreach ($this->games as $game) 
 {
+	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($game); echo'</pre>';
 	?>
 	<tr class="gamebutton<?php
-	if ($game->spielIDhvw === $this->gameId) echo ' selected';
-		?>" id="<?php echo $game->spielIDhvw;?>">
+	if ($game->spielIdHvw === $this->gameId) echo ' selected';
+		?>" id="<?php echo $game->spielIdHvw;?>">
 		<td class="date"><?php 
 		echo JHtml::_('date', $game->datum, 'd. M.', false);
 		//echo JHtml::_('date', $game->datum, 'd.m.y', false);

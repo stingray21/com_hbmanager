@@ -39,8 +39,10 @@ class hbteamModelHBteamGoals extends JModelLegacy
 				$this->season = $jinput->get('season');
 			}
 			$game = self::getRecentGame();
-			$this->gameId = $game->spielIDhvw;
-			$this->gameDate = $game->datum;
+			if (!empty($game)) {
+				$this->gameId = $game->spielIdHvw;
+				$this->gameDate = $game->datum;
+			}
 			
 	}
 	
@@ -67,10 +69,10 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		}
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('spielIDhvw, DATE(`datumZeit`) AS `datum`');
+		$query->select('spielIdHvw, DATE(`datumZeit`) AS `datum`');
 		$query->from('hb_spiel_spieler');
 		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
-		$query->group($db->qn('spielIDhvw'));
+		$query->group($db->qn('spielIdHvw'));
 		$query->where('hb_spiel_spieler.'.$db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->where($db->qn('eigenerVerein').' = 1');
 		$query->where($db->qn('datumZeit').' < NOW() ');
@@ -136,37 +138,39 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query->select('DATE(`datumZeit`) AS `datum`');
 		$query->from('hb_spiel');
 		$query->where($db->qn('spielIdHvw').' = '.$db->q($gameId));
-		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
-		$db->setQuery($query);
-		$this->gameDate = $db->loadResult();
-		//echo '=> model->gameDate<br><pre>'; print_r($this->gameDate); echo '</pre>';
+//		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
+//		$db->setQuery($query);
+//		$this->gameDate = $db->loadResult();
+//		//echo '=> model->gameDate<br><pre>'; print_r($this->gameDate); echo '</pre>';
 		
 		$db = $this->getDbo();
-		
+		//$season = $season.'/'.(season+1);
 		$totalQuery = $db->getQuery(true);
 		$totalQuery->select('alias, count(tore) AS spiele, sum(tore) AS toregesamt, '.
 			'ROUND(sum(tore) / count(tore), 1) AS quote');
 		$totalQuery->from('hb_spiel_spieler');
 		$totalQuery->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
-		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($season));
+		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($season.'/'.($season+1)));
 		$totalQuery->where($db->qn('datumZeit').' <= '.$db->q($this->gameDate));
+		$totalQuery->where($db->qn('trikotNr').' != 0');
 		$totalQuery->group('alias');
 		$totalQuery->order($db->qn('datumZeit').' ASC');
 
-		//echo '=> model->$totalQuery <br><pre>'; echo $totalQuery; echo '</pre>';
+//		echo '=> model->$totalQuery <br><pre>'; echo $totalQuery; echo '</pre>';
 //		$db->setQuery($query);
 //		$players = $db->loadObjectList();
-		//echo '=> model->players<br><pre>'; print_r($players); echo '</pre>';
+//		echo '=> model->players<br><pre>'; print_r($players); echo '</pre>';
 		
 		$innerQuery = $db->getQuery(true);
 		$innerQuery->select('`alias`');
 		$innerQuery->from('hb_spiel_spieler');
 		$innerQuery->group($db->qn('alias'));
 		$innerQuery->where($db->qn('kuerzel').' = '.$db->q($teamkey));
+		$innerQuery->where($db->qn('trikotNr').' != 0');
 		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
-//		$db->setQuery($innerQuery);
-//		$players = $db->loadObjectList();
-//		echo '=> model->players<br><pre>'; print_r($players); echo '</pre>';
+		$db->setQuery($innerQuery);
+		$players = $db->loadObjectList();
+		//echo '=> model->players<br><pre>'; print_r($players); echo '</pre>';
 		
 		$query = $db->getQuery(true);
 		//$query->select('*');
@@ -186,6 +190,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query->leftJoin($db->qn('hb_spiel_spieler').' ON spieler.alias=hb_spiel_spieler.alias AND spielIDhvw='.$db->q($gameId));
 		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
 		$query->leftJoin('( '.$totalQuery.' ) as `gesamtTabelle` ON spieler.alias=gesamtTabelle.alias');
+		//$query->where($db->qn('trikotNr').' != 0');
 		//$query->order($db->qn('datum').' ASC');
 
 		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
@@ -262,6 +267,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			$query->leftJoin('#__contact_details ON (#__contact_details.alias = hb_spiel_spieler.alias)');
 			$query->where('hb_spiel.'.$db->qn('spielIDhvw').' = '.$db->q($game->spielIDhvw));
 			$query->where($db->qn('tore').' IS NOT NULL');
+			$query->where('hb_spiel_spieler.'.$db->qn('trikotNr').' != 0');
 			$query->group('hb_spiel_spieler.alias');
 			$query->order('name');
 			//echo '=> model->$query <br><pre>'.$query.'</pre>';
@@ -302,5 +308,22 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$data['game'] = $gameIdList; 
 		//echo '=> model->data<br><pre>'; print_r($data); echo '</pre>';
 		return $data;
+	}
+	
+	function getFbMetaTag()
+	{
+		$title = 'TSV Geislingen - Männer Mannschaft: Torschützen'; //$this->item->title
+		$url = JURI::Root().'/index.php/aktive/m-1/m-1goals';
+		$image = JURI::Root().'/media/hbteam/images/goalchart-dummy.jpg';
+		$desc = 'Statistik der Torschützen dieser Saison';
+			
+		$fbog = '<meta property="og:site_name" content="TSV Geislingen - Abt. Handball"/>'."\n";
+		$fbog .= '<meta property="og:title" content="'.$title.'"/>'."\n";
+		$fbog .= '<meta property="og:type" content="article" />'."\n";
+		$fbog .= '<meta property="og:image" content="'.$image.'" />'."\n";
+		$fbog .= '<meta property="og:url" content="'.$url.'" />'."\n";
+		$fbog .= '<meta property="og:description" content="'.$desc.'" />'."\n";
+		
+		return $fbog;
 	}
 }

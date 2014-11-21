@@ -30,7 +30,8 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');
 		
-		
+		// add meta tag
+		$document->addCustomTag($model->getFbMetaTag());
 				
 		$team = $model->getTeam();
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
