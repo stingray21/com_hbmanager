@@ -66,7 +66,22 @@ class hbmanagerModelHbdata extends JModelLegacy
 		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
 		return $teams;
     }
-
+	
+	function getHvwTeamArray ()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('kuerzel, '.$db->q('false').' AS updated ');
+		$query->from('hb_mannschaft');
+		$query->where($db->qn('hvwLink').' IS NOT NULL');
+		$db->setQuery($query);
+		//$teams = $db->loadColumn();
+		$teams = $db->loadObjectList();
+		//echo '=> model->$updated <br><pre>'; echo $query; echo '</pre>';
+		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
+		return $teams;
+	}
+	
     function updateTeam($teamkey) 
     {
 		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
