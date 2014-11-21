@@ -24,7 +24,7 @@ class hbmanagerModelHbpictures extends JModelLegacy
 			$db->qn('name').', '.$db->qn('nameKurz').', '.
 			$db->qn('ligaKuerzel').', '.$db->qn('liga').', '.
 			$db->qn('geschlecht').', '.$db->qn('jugend').', '.
-			$db->qn('id').', '.$db->qn('dateiname').', '.$db->qn('saison').
+			$db->qn('dateiname').', '.$db->qn('saison').
 			', '.$db->qn('untertitel_dt1').', '.$db->qn('untertitel_dd1').
 			', '.$db->qn('untertitel_dt2').', '.$db->qn('untertitel_dd2').
 			', '.$db->qn('untertitel_dt3').', '.$db->qn('untertitel_dd3').

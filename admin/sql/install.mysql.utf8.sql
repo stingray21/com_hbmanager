@@ -184,9 +184,9 @@ CREATE TABLE IF NOT EXISTS `hb_tabelle_details` (
 -- Table structure for table `hb_halle`
 --
 
+
 CREATE TABLE IF NOT EXISTS `hb_halle` (
-  `halleID` int(6) unsigned NOT NULL AUTO_INCREMENT,
-  `hallenNr` int(6) DEFAULT NULL,
+  `hallenNr` int(6) NOT NULL DEFAULT '0',
   `kurzname` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `hallenName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `land` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -194,14 +194,14 @@ CREATE TABLE IF NOT EXISTS `hb_halle` (
   `stadt` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `strasse` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telefon` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `bezirkNummer` int(6) DEFAULT NULL,
+  `bezirkNr` int(6) DEFAULT NULL,
   `bezirk` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `freigabeVerband` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `freigabeBezirk` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `haftmittel` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `letzteAenderung` datetime DEFAULT NULL,
-  PRIMARY KEY (`halleID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=54 ;
+  PRIMARY KEY (`hallenNr`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

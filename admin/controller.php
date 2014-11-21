@@ -335,6 +335,7 @@ class hbmanagerController extends JControllerAdmin
 		// Set view
 		//JRequest::setVar('view', 'ajax');
 		//parent::display();
+		//echo __FILE__.'('.__LINE__.'):<pre>test</pre>';
 		$view = $this->getView('hbteams','raw');
 		$view->setLayout('addRow');
 		$view->display();
