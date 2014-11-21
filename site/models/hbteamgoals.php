@@ -310,20 +310,4 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		return $data;
 	}
 	
-	function getFbMetaTag()
-	{
-		$title = 'TSV Geislingen - Männer Mannschaft: Torschützen'; //$this->item->title
-		$url = JURI::Root().'/index.php/aktive/m-1/m-1goals';
-		$image = JURI::Root().'/media/hbteam/images/goalchart-dummy.jpg';
-		$desc = 'Statistik der Torschützen dieser Saison';
-			
-		$fbog = '<meta property="og:site_name" content="TSV Geislingen - Abt. Handball"/>'."\n";
-		$fbog .= '<meta property="og:title" content="'.$title.'"/>'."\n";
-		$fbog .= '<meta property="og:type" content="article" />'."\n";
-		$fbog .= '<meta property="og:image" content="'.$image.'" />'."\n";
-		$fbog .= '<meta property="og:url" content="'.$url.'" />'."\n";
-		$fbog .= '<meta property="og:description" content="'.$desc.'" />'."\n";
-		
-		return $fbog;
-	}
 }
