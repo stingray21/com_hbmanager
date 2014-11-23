@@ -5,6 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controller library
 jimport('joomla.application.component.controller');
 
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hboverview.php';
 
 /**
  * HB Manager Component Controller
@@ -20,11 +21,11 @@ class HBmanagerController extends JControllerLegacy
 	
 	function showAllGames()
 	{
-		$model = $this->getModel('hboverviewall');
+		$model = $this->getModel('hboverview');
 		
-		$view = $this->getView('hboverviewall','html');
+		$view = $this->getView('hboverview','html');
 		$view->setModel($model);	
-	
+		$view->setLayout('allGames');
 		$view->display();
 		
 		// Set the submenu
@@ -33,11 +34,11 @@ class HBmanagerController extends JControllerLegacy
 	
 	function showHomeGames()
 	{
-		$model = $this->getModel('hboverviewhome');
+		$model = $this->getModel('hboverview');
 	
-		$view = $this->getView('hboverviewhome','html');
+		$view = $this->getView('hboverview','html');
 		$view->setModel($model);	
-	
+		$view->setLayout('homeGames');
 		$view->display();
 		
 		// Set the submenu

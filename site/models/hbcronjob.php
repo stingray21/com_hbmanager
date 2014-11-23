@@ -12,9 +12,9 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 	{
 		
 		$teams = self::getOutdatedTeams();
-		echo '<pre>';print_r($teams); echo '</pre>';
+		//echo '<pre>';print_r($teams); echo '</pre>';
 		
-		if (is_array($teams)) {
+		if (is_array($teams) and !empty($teams)) {
 			foreach ($teams as $team)
 			{
 				self::updateTeam($team->kuerzel);
@@ -31,7 +31,7 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 		return $result;
 	}
 	
-	protected function getHvwTeamArray ()
+	function getHvwTeamArray ()
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -47,35 +47,27 @@ class hbmanagerModelHbcronjob extends hbmanagerModelHbdata
 	
 	function getOutdatedTeams()
 	{
-		$allTeams = self::getHvwTeamArray();
-		//echo '<pre>';print_r($allTeams); echo '</pre>';
-		$teams = null;
-		foreach ($allTeams as $teamkey)
-		{
-			
-			$db = $this->getDbo();
-			$query = $db->getQuery(true);
-			$query->select('DISTINCT('.$db->qn('kuerzel').')' );
-			$query->from($db->qn('hb_mannschaft'));
-			$query->innerJoin($db->qn('hb_spiel').
-				' USING ('.$db->qn('kuerzel').')' );
-			$query->where($db->qn('kuerzel').' = '.$db->q($teamkey),'AND');
-			$query->where('( ('.$db->qn('ToreHeim').' IS NULL'
-				. ' AND '.$db->qn('bemerkung').' IS NULL'
-				. ' AND '.$db->qn('datumZeit').' + INTERVAL 2 HOUR < NOW() )'
-				. ' OR '
-				. '( DAYOFWEEK(NOW()) = 2 '
-				. 'AND DAYOFWEEK('.$db->qn('update').') != 2 ) )');
-			
-			//echo '=> model->$query <br><pre>'.$query.'</pre>';
-			$db->setQuery($query);
-			$result = $db->loadObject();
-			//echo '<pre>';print_r($result); echo '</pre>';
-			
-			if (!empty($result)) {
-				$teams[] = $result;
-			}
-		}
+		
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('DISTINCT('.$db->qn('kuerzel').')' );
+		$query->from($db->qn('hb_mannschaft'));
+		$query->innerJoin($db->qn('hb_spiel').
+			' USING ('.$db->qn('kuerzel').')' );
+		$query->where($db->qn('hvwLink').' IS NOT NULL','AND');
+		$query->where('( ('.$db->qn('ToreHeim').' IS NULL'
+			. ' AND '.$db->qn('bemerkung').' IS NULL'
+			//. ' AND '.$db->qn('update').' + INTERVAL 2 HOUR < UTC_TIMESTAMP()'
+			. ' AND '.$db->qn('datumZeit').' + INTERVAL 2 HOUR < '
+			. 'CONVERT_TZ(UTC_TIMESTAMP(),\'UTC\',\'Europe/Berlin\') )'
+			. ' OR '
+			. '( DAYOFWEEK(NOW()) = 2 '
+			. 'AND DAYOFWEEK('.$db->qn('update').') != 2 ) )');
+
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$teams = $db->loadObjectList();
+		//echo __FUNCTION__.'<pre>';print_r($teams); echo '</pre>';
 		
 		return $teams;
 	}
