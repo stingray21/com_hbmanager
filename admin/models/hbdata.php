@@ -258,7 +258,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		$columns = array('saison',  'spielIDhvw', 'kuerzel', 
+		$columns = array('saison',  'spielIdHvw', 'kuerzel', 
 				'ligaKuerzel', 'hallenNr', 'datumZeit', 
 				'heim', 'gast', 'toreHeim', 'toreGast', 'bemerkung',
 				'wertungHeim', 'wertungGast', 'eigenerVerein');
@@ -296,7 +296,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$db = $this->getDbo();
 
 		$value['saison'] = $db->q(self::getSeason());
-		$value['spielIDhvw'] = $db->q($data[1]);
+		$value['spielIdHvw'] = $db->q($data[1]);
 		$value['kuerzel'] = $db->q($teamkey);
 		$value['ligaKuerzel'] = $db->q($data[0]);
 		// HallenNummer

@@ -1,0 +1,111 @@
+div#hboverview {
+	margin: 1em;
+
+}
+
+div#prevGames,
+div#nextGames {
+	margin: 1em;
+}
+
+div#hboverview h2 {
+	padding-left: 0.5em;
+	margin-top: 2em;
+	margin-bottom: 0.25em;
+	//color: #04c;
+	border-bottom: 1px solid #ddd;
+}
+
+div#hboverview h3.date {
+	font-size: 1em;
+	margin-bottom: 0.25em;
+	color: #999;
+}
+
+div#hboverview h4.team {
+	margin-top: 1em;
+	margin-bottom: 0.25em;
+	font-weight: bold;
+	display: inline-block;
+	width: 20em;
+}
+
+div#hboverview div.games > h4.team:first-child {
+	margin-top: 0.25em;
+}
+
+div#hboverview h4.team a.teamLink {
+	color: #444;
+	text-decoration: none;
+}
+
+div#hboverview h4.team span {
+	color: #999;
+	font-size: 0.8em;
+}
+
+div#hboverview div.games {
+	margin-left: 1em;
+}
+
+div#hboverview span.time {
+	width: 6em;
+	margin-left:1em;
+	display: inline-block;
+	//background: blue;
+	color: #999;
+}
+
+div#hboverview span.home {
+	width: 10em;
+	display: inline-block;
+}
+
+div#hboverview span.away {
+	width: 10em;
+	margin-left: 1em;
+	display: inline-block;
+}
+
+span.score {
+	//width: 2em;
+	display: inline-block;
+}
+
+span.own {
+	font-weight: bold;
+}
+
+span.indicator {
+	width: 18px;
+	height: 18px;
+	opacity:0.7;
+	margin-bottom: -0.25em;
+	margin-left: 1em;
+	display: inline-block;
+	//border: 1px solid #666;
+	background: url(../images/balls_18px.png) no-repeat 0px 0px #FFFFFF;
+}
+
+span.indicator.win {
+	background: url(../images/balls_18px.png) no-repeat 0px -54px #FFFFFF;
+}
+
+span.indicator.tied {
+	background: url(../images/balls_18px.png) no-repeat 0px -36px #FFFFFF;
+}
+
+span.indicator.loss {
+	background: url(../images/balls_18px.png) no-repeat 0px -18px #FFFFFF;
+}
+
+div#hboverview div.games a.hvwLink {
+	width: 50px;
+	height: 18px;
+	opacity:0.5;
+	margin-bottom: -0.25em;
+	margin-left: 5em;
+	display: inline-block;
+	//border: 1px solid #666;
+	background: url(../images/hvw-50x18.png) no-repeat 0px 0px #FFFFFF;
+}

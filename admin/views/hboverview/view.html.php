@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla view library
 jimport('joomla.application.component.view');
+require_once JPATH_COMPONENT_SITE.'/models/hboverview.php';
  
 /**
  * HTML View class for the HB Manager Component
