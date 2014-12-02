@@ -121,7 +121,7 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 									echo '<tr><th>'.$game->heim.'</th><td>'.$game->toreHeim.'</td></tr>'."\n";
 									echo '<tr><th>'.$game->gast.'</th><td>'.$game->toreGast.'</td></tr>'."\n";
 								echo '</table>'."\n";
-								echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
+								echo '<p>SpielNr.: '.$game->spielIdHvw.'</p>'."\n"; 
 								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.$game->zeit.' Uhr</p>'."\n";
 								echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
 								echo '<p>'.$game->bemerkung.'</p>'."\n";
@@ -130,7 +130,7 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 					echo '</div>'."\n";
 						
 					echo '<div class="spieleBericht">'."\n";
-						echo hbhelper::formatInput($form->getInput('spielIDhvw', 'hbprevgames', $game->spielIDhvw), $i)."\n";
+						echo hbhelper::formatInput($form->getInput('spielIdHvw', 'hbprevgames', $game->spielIdHvw), $i)."\n";
 						echo '<dl>'."\n";
 							echo '<dt>';
 								echo $form->getLabel('bericht', 'hbprevgames');

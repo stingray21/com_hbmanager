@@ -39,7 +39,7 @@ class hbmanagerModelHbnextgames extends HBmanagerModelHbprevnext
 				$query = "REPLACE INTO ".$db->qn('hb_spielvorschau').
 					"(".$db->qn('SpielIDhvw').", ".$db->qn('vorschau').", ".
 					$db->qn('treffOrt').", ".$db->qn('treffZeit').") ".
-					"VALUES (".$db->q($game['spielIDhvw']).', ';
+					"VALUES (".$db->q($game['spielIdHvw']).', ';
 					if (empty($game['vorschau'])) $query .= 'NULL, ';
 						else $query .= $db->q($game['vorschau']).', ';
 					if (empty($game['treffOrt'])) $query .= 'NULL, ';
@@ -69,7 +69,7 @@ class hbmanagerModelHbnextgames extends HBmanagerModelHbprevnext
 				$db->qn('datumZeit').')) AS max');
 		$query->from('hb_spielvorschau');
 		$query->leftJoin($db->qn('hb_spiel').
-				' USING ('.$db->qn('spielIDhvw').')');
+				' USING ('.$db->qn('spielIdHvw').')');
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$db->q($this->dates->nextStart).' AND '.
@@ -91,7 +91,7 @@ class hbmanagerModelHbnextgames extends HBmanagerModelHbprevnext
 					$db->q('%k:%m').') AS '.$db->qn('zeit'));
 		$query->from('hb_spielvorschau');
 		$query->leftJoin($db->qn('hb_spiel').
-				' USING ('.$db->qn('spielIDhvw').')');
+				' USING ('.$db->qn('spielIdHvw').')');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');
 		$query->leftJoin($db->qn('hb_halle').

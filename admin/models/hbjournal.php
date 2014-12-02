@@ -182,7 +182,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 		$query->leftJoin($db->qn('hb_mannschaft').
 				' USING ('.$db->qn('kuerzel').')');
 		$query->leftJoin($db->qn('hb_spielbericht').
-				' USING ('.$db->qn('spielIDhvw').')');
+				' USING ('.$db->qn('spielIdHvw').')');
 		$query->where('( DATE('.$db->qn('datumZeit').') BETWEEN '.
 					$db->q($this->dates->prevStart).' AND '.
 					$db->q($this->dates->prevEnd).')'.
@@ -237,7 +237,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 		$query->leftJoin($db->qn('hb_mannschaft').
 			' USING ('.$db->qn('kuerzel').')');
 		$query->leftJoin($db->qn('hb_spielvorschau').
-			' USING ('.$db->qn('spielIDhvw').')');
+			' USING ('.$db->qn('spielIdHvw').')');
 		$query->where('( DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$db->q($this->dates->nextStart).' AND '.
 				$db->q($this->dates->nextEnd).')'

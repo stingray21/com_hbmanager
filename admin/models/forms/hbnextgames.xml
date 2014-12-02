@@ -3,7 +3,7 @@
 	<fields name="hbnextgames">
 		<fieldset name="games">
 			<field
-				name="spielIDhvw"
+				name="spielIdHvw"
 				type="hidden"
 			/>
 			<field 

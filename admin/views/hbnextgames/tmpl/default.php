@@ -121,7 +121,7 @@ foreach ($this->games as $key => $value)
 							echo '<tr><th>'.$game->heim.'</th></tr>'."\n";
 							echo '<tr><th>'.$game->gast.'</th></tr>'."\n";
 						echo '</table>'."\n";
-						echo '<p>SpielNr.: '.$game->spielIDhvw.'</p>'."\n"; 
+						echo '<p>SpielNr.: '.$game->spielIdHvw.'</p>'."\n"; 
 						echo '<p>'.
 								strftime("%d.%m.%Y", strtotime($game->datum)).
 								' um '.$game->zeit.' Uhr</p>'."\n";
@@ -132,8 +132,8 @@ foreach ($this->games as $key => $value)
 			echo '</div>'."\n";
 
 			echo '<div class="spieleVorschau">'."\n";
-				echo hbhelper::formatInput($form->getInput('spielIDhvw', 
-						'hbnextgames', $game->spielIDhvw), $i)."\n";
+				echo hbhelper::formatInput($form->getInput('spielIdHvw', 
+						'hbnextgames', $game->spielIdHvw), $i)."\n";
 				echo '<dl>'."\n";
 					echo '<dt>';
 						echo $form->getLabel('vorschau', 'hbnextgames');

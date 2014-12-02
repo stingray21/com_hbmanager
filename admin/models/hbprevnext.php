@@ -290,7 +290,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			$db->qn('kuerzel').')');
 		if ($reports) {	
 			$query->leftJoin($db->qn('hb_spielbericht').
-				' USING ('.$db->qn('spielIDhvw').')');
+				' USING ('.$db->qn('spielIdHvw').')');
 		}
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '
@@ -364,7 +364,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 				$db->qn('kuerzel').')');
 		if ($previews) {	
 			$query->leftJoin($db->qn('hb_spielvorschau').
-				' USING ('.$db->qn('spielIDhvw').')');
+				' USING ('.$db->qn('spielIdHvw').')');
 		}
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.

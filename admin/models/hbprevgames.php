@@ -35,11 +35,11 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 			{
 				$query = $db->getQuery(true);
 				$query = "REPLACE INTO ".$db->qn('hb_spielbericht')."(".
-						$db->qn('spielIDhvw').", ".$db->qn('bericht').", ".
+						$db->qn('spielIdHvw').", ".$db->qn('bericht').", ".
 						$db->qn('spielerliste').", ".$db->qn('zusatz').", ".
 						$db->qn('spielverlauf').", ".$db->qn('halbzeitstand')
 						.")".
-						"VALUES (".$db->q($game['spielIDhvw']).", ";
+						"VALUES (".$db->q($game['spielIdHvw']).", ";
 					if (empty($game['bericht'])) $query .= 'NULL, ';
 						else $query .= $db->q($game['bericht']).", ";
 					if (empty($game['spielerliste'])) $query .= 'NULL, ';
