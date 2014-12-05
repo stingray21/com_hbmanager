@@ -43,6 +43,11 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 
 	public function getDates()
 	{
+		if (empty($this->dates->nextStart) && empty($this->dates->prevStart)) {
+			//echo 'no dates';
+			self::setDates();
+		}
+		
 		$dates['nextStart'] = $this->dates->nextStart;
 		$dates['nextEnd'] = $this->dates->nextEnd;
 		$dates['prevStart'] = $this->dates->prevStart;
@@ -281,7 +286,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		else {
 			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
 				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit'); 
+					$db->q('%k:%i').') AS '.$db->qn('zeit'); 
 		}
 		// %H:%m hour with leading 0
 		$query->select($select);
@@ -318,7 +323,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db = $this->getDbo();
 		$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').
 				', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit').',
+					$db->q('%k:%i').') AS '.$db->qn('zeit').',
 					CASE 
 					WHEN (SUBSTRING('.$db->qn('kuerzel').',1,3) = '
 						.$db->q('gJE').') THEN
@@ -358,7 +363,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
 				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit'));
+					$db->q('%k:%i').') AS '.$db->qn('zeit'));
 		$query->from('hb_spiel');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');

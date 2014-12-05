@@ -5,6 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controller library
 jimport('joomla.application.component.controller');
 
+require_once JPATH_COMPONENT_SITE.'/models/hboverview.php';
 
 /**
  * HB Manager Component Controller

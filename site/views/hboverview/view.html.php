@@ -4,7 +4,6 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla view library
 jimport('joomla.application.component.view');
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hboverview.php';
 /**
  * HTML View class for the HB Manager Component
  */
@@ -15,6 +14,17 @@ class HbManagerViewHbOverview extends JViewLegacy
 	{
 		
 		$model = $this->getModel('HBoverview');
+		$dates = $model->getDates();
+		
+		// previous games
+		$prevGames = $model->getPrevGames();
+		$this->assignRef('prevGames', $prevGames);
+		//echo '=> view->prevGames<br><pre>'; print_r($prevGames);echo '</pre>';
+		
+		// next games
+		$nextGames = $model->getNextGames();
+		$this->assignRef('nextGames', $nextGames);
+		//echo '=> view->nextGames<br><pre>'; print_r($nextGames);echo '</pre>';
 		
 		$teams = $model->getTeamArray();
 		$this->assignRef('teams', $teams);
@@ -23,6 +33,7 @@ class HbManagerViewHbOverview extends JViewLegacy
 		//echo '=> view->$teams <br><pre>'; print_r($teams); echo '</pre>';
 		
 		JHtml::stylesheet('com_hbmanager/site.stylesheet.css', array(), true);
+		JHtml::stylesheet('com_hbmanager/hboverview.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);

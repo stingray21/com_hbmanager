@@ -3,8 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbprevnext.php';
 
-class hbmanagerModelHbOverview extends JModelLegacy
+class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 {	
 	
 	function __construct() 
@@ -34,9 +35,9 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit').', '.
-				'IF('.$db->qn('heim').' IN '.self::getTeamNames().',1,2) '.
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '
+				. $db->q('%k:%i').') AS '.$db->qn('zeit').', '
+				.'IF('.$db->qn('heim').' IN '.self::getTeamNames().',1,2) '.
 					'AS mark');
 		$query->from($db->qn('hb_spiel'));
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
@@ -79,13 +80,17 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT '.$db->qn('nameKurz'));
 		$query->from('hb_mannschaft');
-		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
+		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$names = $db->loadColumn();
 		foreach ($names as $key => $name){
 			$names[$key] = $db->q($name);
 		}
-		$result = '('.implode(' , ', $names).')';
+		$result = '';
+		if (!empty($names)) {
+			$result = '('.implode(' , ', $names).')';
+		}
+		//echo __FUNCTION__."<pre>"; print_r($result); echo "</pre>";
 		return $result;
 	}
 	
@@ -96,9 +101,12 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
 				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit'));
+					$db->q('%k:%i').') AS '.$db->qn('zeit'));
 		$query->from($db->qn('hb_spiel'));
-		$query->where($db->qn('Heim').' IN '.self::getTeamNames());
+		$teamNames = self::getTeamNames();
+		if (!empty($teamNames)) {
+			$query->where($db->qn('Heim').' IN '.$teamNames);
+		}
 		$query->where($db->qn('hallenNr').' IN (7005, 7014, 7003)');
 		$query->join('INNER',$db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
 		$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNr').')');
@@ -124,4 +132,84 @@ class hbmanagerModelHbOverview extends JModelLegacy
 		return $rows;
 	}
 	
+	function getPrevGames() 
+	{
+		$prevGames = parent::getPrevGames(1,0,1);
+		foreach ($prevGames as $date => $games)
+		{
+			foreach ($games as $game)
+			{
+				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+				$game->ergebnis = self::getGameResult($game);
+				$game->eigeneMannschaft = self::getOwnTeam($game);
+				$game->anzeige = self::getIndicator($game);			
+			}
+		}
+		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
+		return $this->prevGames = $prevGames;
+	}
+	
+	protected function getGameResult($game)
+	{
+		if ($game->wertungHeim > $game->wertungGast) {
+			$result = 1;
+		} 
+		elseif ($game->wertungHeim < $game->wertungGast) {
+			$result = 2;
+		} 
+		elseif ($game->wertungHeim == $game->wertungGast && $game->wertungHeim !== null ) {
+			$result = 0;
+		}
+		else {
+			$result = null;
+		}
+		return $result;
+	}	
+	
+	protected function getOwnTeam($game)
+	{
+		if ($game->heim == $game->nameKurz) {
+			$ownTeam = 1;
+		}
+		elseif ($game->gast == $game->nameKurz) {
+			$ownTeam = 2;
+		}
+		else {
+			$ownTeam = null;
+		}
+		return $ownTeam;
+	}
+	
+	protected function getIndicator($game) {
+		if ($game->ergebnis === $game->eigeneMannschaft && 
+				$game->ergebnis !== null) {
+			$indicator = 'win';
+		}
+		elseif ($game->ergebnis !== $game->eigeneMannschaft && 
+				$game->ergebnis !== null && $game->ergebnis !== 0) {
+			$indicator = 'loss';
+		}
+		elseif ($game->ergebnis === 0) {
+			$indicator = 'tied';
+		}
+		else {
+			$indicator = 'blank';
+		}
+		return $indicator;
+	}
+	
+	function getNextGames() 
+	{
+		$nextGames = parent::getNextGames(1,0,1);
+		foreach ($nextGames as $date => $games)
+		{
+			foreach ($games as $game)
+			{
+				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+				$game->eigeneMannschaft = self::getOwnTeam($game);	
+			}
+		}
+		//echo __FUNCTION__."<pre>"; print_r($nextGames); echo "</pre>";
+		return $this->nextGames = $nextGames;
+	}
 }

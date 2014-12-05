@@ -88,7 +88,7 @@ class hbmanagerModelHbnextgames extends HBmanagerModelHbprevnext
 		$query = $db->getQuery(true);
 		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
 				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%m').') AS '.$db->qn('zeit'));
+					$db->q('%k:%i').') AS '.$db->qn('zeit'));
 		$query->from('hb_spielvorschau');
 		$query->leftJoin($db->qn('hb_spiel').
 				' USING ('.$db->qn('spielIdHvw').')');
