@@ -116,7 +116,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		
 	function getEarliestGameDate_LastWeek()
 	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates->today);echo'</pre>';
 		$db = $this->getDbo();
 		
 		// earlist game of the previous week
@@ -228,9 +228,12 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $date;
 	}
 	
-	function getNextGameDate()
+	function getNextGameDate($offset = null)
 	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
+		if ($offset === null) {
+			$offset = $this->dates->today;
+		}
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
 		$db = $this->getDbo();
 		
 		// earlist game of the this week
@@ -238,7 +241,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
 		$query->from('hb_spiel');
 		$query->where('DATE('.$db->qn('datumZeit').') > '.
-				$db->q($this->dates->today));
+				$db->q($offset));
 		$query->order($db->qn('datumZeit').' ASC');
 		//$query->setLimit(1);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
@@ -275,13 +278,13 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $date;
 	}
 	
-	function getPrevGames($arrange = true, $combined = false, $reports = false)
+	function getPrevGames($arrange = true, $combined = false, $reports = false, $all = false)
 	{
 		$db = $this->getDbo();
 	
 		$query = $db->getQuery(true);
 		if ($combined) {
-			$select = $this->prevGames = self::getCombinedPrevSelect();
+			$select = self::getCombinedSelect();
 		}
 		else {
 			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
@@ -301,7 +304,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '
 			.$db->q($this->dates->prevStart).' AND '
 			.$db->q($this->dates->prevEnd));
-		$query->where($db->qn('toreHeim').' IS NOT NULL');
+		if (!$all) $query->where($db->qn('toreHeim').' IS NOT NULL');
 		if ($combined) {	
 			$query->group($db->qn('kuerzel').',DATE('.$db->qn('datumZeit').')'
 				.', '.$db->qn('heim').', '.$db->qn('gast') );
@@ -318,7 +321,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $this->prevGames = $games;
 	}
 	
-	function getCombinedPrevSelect()
+	function getCombinedSelect()
 	{
 		$db = $this->getDbo();
 		$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').

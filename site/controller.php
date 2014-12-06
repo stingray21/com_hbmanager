@@ -20,7 +20,7 @@ class HBmanagerController extends JControllerLegacy
 	function showGames()
 	{
 		$model = $this->getModel('hboverview');
-		$dates = $model->getDates();
+		$model->setDates();
 		//echo __FUNCTION__.'<pre>'; print_r($dates); echo '</pre>';
 		
 		$view = $this->getView('hboverview','html');

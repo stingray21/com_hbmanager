@@ -7,11 +7,14 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbprevnext.php';
 
 class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 {	
+	protected $currGames = array();
 	
 	function __construct() 
 	{
 		parent::__construct();
 		
+		$this->dates->currStart = null;
+		$this->dates->currEnd = null;
 		
 	}
 	
@@ -27,6 +30,24 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
 		return $teams;
+	}
+	
+	function setDates($dates = null)
+	{
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
+		parent::setdates();
+		$dates = $this->dates;
+		if (strtotime($dates->today) >= strtotime($dates->nextStart) &&
+				strtotime($dates->today) <= strtotime($dates->nextEnd) )
+		{
+			//echo 'current games';
+			$this->dates->currStart = $dates->nextStart;
+			$this->dates->currEnd = $dates->nextEnd;
+			$this->dates->nextStart = self::getNextGameDate($dates->nextEnd);
+			$this->dates->nextEnd = self::getNextGameEndDate();
+		}
+		
+		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
 	function getSchedule($team)
@@ -94,6 +115,48 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $result;
 	}
 	
+	function getCurrGames($arrange = true, $combined = false)
+	{
+		if ($this->dates->currStart === null) {
+			return null;
+		}
+		
+		$db = $this->getDbo();
+	
+		$query = $db->getQuery(true);
+		if ($combined) {
+			$select = self::getCombinedSelect();
+		}
+		else {
+			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
+					$db->q('%k:%i').') AS '.$db->qn('zeit'); 
+		}
+		// %H:%m hour with leading 0
+		$query->select($select);
+		$query->from('hb_spiel');
+		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
+			$db->qn('kuerzel').')');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '
+			.$db->q($this->dates->currStart).' AND '
+			.$db->q($this->dates->currEnd));
+		if ($combined) {	
+			$query->group($db->qn('kuerzel').',DATE('.$db->qn('datumZeit').')'
+				.', '.$db->qn('heim').', '.$db->qn('gast') );
+		}
+		$query->order($db->qn('datum').', '.$db->qn('zeit').' ASC');
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$games = $db->loadObjectList();		
+		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		if ($arrange){
+			return $this->currGames = self::arrangeGamesByDate($games);
+		}
+		
+		return $this->currGames = $games;
+	}
+	
 	function getHomeGames()
 	{
 		// getting schedule of the team from the DB
@@ -132,9 +195,9 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $rows;
 	}
 	
-	function getPrevGames() 
+	function getPrevGames($arrange = true, $combined = false, $reports = false, $all = false) 
 	{
-		$prevGames = parent::getPrevGames(1,0,1);
+		$prevGames = parent::getPrevGames(1,0,1,1);
 		foreach ($prevGames as $date => $games)
 		{
 			foreach ($games as $game)

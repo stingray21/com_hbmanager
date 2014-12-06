@@ -16,6 +16,11 @@ div#hboverview h2 {
 	border-bottom: 1px solid #ddd;
 }
 
+div#hboverview h2.current {
+	color: #04C;
+	font-weight: bold;
+}
+
 div#hboverview h3.date {
 	font-size: 1em;
 	margin-bottom: 0.25em;

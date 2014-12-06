@@ -14,7 +14,12 @@ class HbManagerViewHbOverview extends JViewLegacy
 	{
 		
 		$model = $this->getModel('HBoverview');
-		$dates = $model->getDates();
+		$model->setDates();
+		
+		// current games
+		$currGames = $model->getCurrGames();
+		$this->assignRef('currGames', $currGames);
+		//echo '=> view->currGames<br><pre>'; print_r($currGames);echo '</pre>';
 		
 		// previous games
 		$prevGames = $model->getPrevGames();

@@ -161,7 +161,8 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 						$currTeam = $game->mannschaft;
 					}
 					$data['games'][$i] .= "&nbsp;&nbsp;";
-					$data['games'][$i] .= $game->zeit." Uhr ".
+					$data['games'][$i] .= $game->zeit.JHtml::_('date', $game->zeit, 'H:i', true).
+						JHtml::_('date', $game->zeit, 'H:i', false)." Uhr ".
 							"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 				}
 			}
