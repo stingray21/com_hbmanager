@@ -2,15 +2,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = false; //true: user-time, false:server-time
+
 echo '<h3>'.JText::_('COM_HBMANAGER_OVERVIEW_HOME_TITLE').'</h3>';
-//$datePattern = "%A, %d.%m.%Y &nbsp;&nbsp;%H:%M:%S Uhr";
-$datePattern = 'D, d.m.Y';
+
 echo '<div id="hboverview">';
 if (!empty($this->homegames)) 
 {
 	foreach ($this->homegames as $dayKey => $day)
 	{
-		echo "<h4>".JHtml::_('date', $dayKey, $datePattern, false)."</h4>";
+		echo "<h4>".JHtml::_('date', $dayKey, 'D, d.m.Y', $tz)."</h4>";
 
 		foreach ($day as $gym)
 		{
@@ -29,7 +30,9 @@ if (!empty($this->homegames))
 				//echo "<td class=\"wann leftalign\">";
 				//echo JHtml::_('date', $row->datum, 'd.m.y', false);
 				//echo "</td>";
-				echo "<td class=\"wann leftalign\">".$row->zeit." Uhr</td>";
+				echo "<td class=\"wann leftalign\">";
+				echo JHtml::_('date', $row->zeit, 'H:i', $tz);
+				echo " Uhr</td>";
 				//echo "<td>{$row->ligaKuerzel}</td>";
 				//echo "<td>{$row->hallenNummer}</td>";
 				echo "<td class=\"rightalign";

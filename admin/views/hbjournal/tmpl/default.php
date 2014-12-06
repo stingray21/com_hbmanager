@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::preferences('com_hbmanager');
 
+$tz = 'Europe/Berlin'; //true: user-time, false:server-time
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/icon.php';
 
@@ -34,7 +35,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 				if (isset($this->dates['date'])) $date = $this->dates['date'];
 				else $date = null;
 				echo $form->getInput('date', 'hbDates', 
-						strftime("%d.%m.%Y", strtotime($date))); 
+						JHtml::_('date', $date, 'd.m.y', $tz)); 
 				?>
 				</dd>
 			</dl>
@@ -136,7 +137,7 @@ echo JHtml::_('icon.msword', $this->item, $params);
 	
 	<p style="font-family: Arial; font-size: 12pt; text-align: right; margin: 1em 0">
 		<?php 
-		echo JHTML::_('date', time(), 'l, d.m.Y', 'Europe/Berlin');
+		echo JHTML::_('date', time(), 'l, d.m.Y', $tz);
 		?>
 	</p>
 	<h1 style="font-family: Arial; font-size: 14pt; margin: 1em 0 2em; color: black;">

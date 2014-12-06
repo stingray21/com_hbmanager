@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = false; //true: user-time, false:server-time
+
 JToolBarHelper::preferences('com_hbmanager');
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base(true).
@@ -38,7 +40,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 				if (isset($this->dates['date'])) $date = $this->dates['date'];
 				else $date = null;
 				echo $form->getInput('date', 'hbDates', 
-						strftime("%d.%m.%Y", strtotime($date))); 
+						JHtml::_('date', $date, 'd.m.y', $tz));
 				?>
 				</dd>
 			</dl>
@@ -101,7 +103,7 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 		$i = 0;
 		foreach ($this->games as $key => $value)
 		{
-			echo '<h3>'.strftime("%A, %d.%m.%Y (KW%V)", strtotime($key)).'</h3>'."\n"; 
+			echo '<h3>'.JHtml::_('date', $key, 'l, j. F', $tz).'</h3>';
 			
 			foreach ($value as $game)
 			{
@@ -122,7 +124,11 @@ $form = JForm::getInstance('myformgames', JPATH_COMPONENT_ADMINISTRATOR.'/models
 									echo '<tr><th>'.$game->gast.'</th><td>'.$game->toreGast.'</td></tr>'."\n";
 								echo '</table>'."\n";
 								echo '<p>SpielNr.: '.$game->spielIdHvw.'</p>'."\n"; 
-								echo '<p>'.strftime("%d.%m.%Y", strtotime($game->datum)).' um '.$game->zeit.' Uhr</p>'."\n";
+								echo '<p>'.
+									JHtml::_('date', $game->datum, 'd.m.y', $tz).
+									' um '.
+									JHtml::_('date', $game->zeit, 'H:i', $tz).
+									' Uhr</p>'."\n";
 								echo '<p>Hallennr.: '.$game->hallenNr.'</p>'."\n";
 								echo '<p>'.$game->bemerkung.'</p>'."\n";
 							echo '</dd>'."\n"; 

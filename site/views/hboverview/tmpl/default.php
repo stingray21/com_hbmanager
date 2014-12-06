@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = false; //true: user-time, false:server-time
+
 echo "\n\n".'<h1>'.JText::_('COM_HBMANAGER_OVERVIEW_DEFAULT_TITLE').'</h1>';
 
 echo "\n\n".'<div id="hboverview">';
@@ -16,7 +18,7 @@ if (!empty($this->currGames))
 	foreach ($this->currGames as $date => $games)
 	{
 		echo '<h3 class="date">';
-		echo JHtml::_('date', $date, 'D, d.m.y', false)."\n";
+		echo JHtml::_('date', $date, 'D, d.m.y', $tz)."\n";
 		echo '</h3>';
 		echo "\n".'<div class="games">';
 		foreach ($games as $game)
@@ -45,7 +47,7 @@ if (!empty($this->currGames))
 			}
 			echo '<div class="game">';
 			echo '<span class="time">';
-			echo $game->zeit;
+			echo JHtml::_('date', $game->zeit, 'H:i', $tz);
 			echo ' Uhr </span>';
 			echo '<span class="home';
 			if ($game->eigeneMannschaft === 1) echo ' own';
@@ -84,7 +86,7 @@ if (!empty($this->prevGames))
 	foreach ($this->prevGames as $date => $games)
 	{
 		echo '<h3 class="date">';
-		echo JHtml::_('date', $date, 'D, d.m.y', false)."\n";
+		echo JHtml::_('date', $date, 'D, d.m.y', $tz)."\n";
 		echo '</h3>';
 		echo "\n".'<div class="games">';
 		foreach ($games as $game)
@@ -113,7 +115,7 @@ if (!empty($this->prevGames))
 			}
 			echo '<div class="game">';
 			echo '<span class="time">';
-			echo $game->zeit;
+			echo JHtml::_('date', $game->zeit, 'H:i', $tz);
 			echo ' Uhr </span>';
 			echo '<span class="home';
 			if ($game->eigeneMannschaft === 1) echo ' own';
@@ -155,7 +157,7 @@ if (!empty($this->nextGames))
 	foreach ($this->nextGames as $date => $games)
 	{
 		echo '<h3 class="date">';
-		echo JHtml::_('date', $date, 'D, d.m.y', false)."\n";
+		echo JHtml::_('date', $date, 'D, d.m.y', $tz)."\n";
 		echo '</h3>';
 		echo "\n".'<div class="games">';
 		foreach ($games as $game)
@@ -185,7 +187,7 @@ if (!empty($this->nextGames))
 			}
 			echo '<div class="game">';
 			echo '<span class="time">';
-			echo $game->zeit;
+			echo JHtml::_('date', $game->zeit, 'H:i', $tz);
 			echo ' Uhr </span>';
 			echo '<span class="home';
 			if ($game->eigeneMannschaft === 1) echo ' own';

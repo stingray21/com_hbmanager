@@ -1,7 +1,9 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+
+
+
 jimport('joomla.application.component.modeladmin');
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbprevnext.php';
 
@@ -9,6 +11,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 {	
 	private $reports = array();
 	private $previews = array();
+	private $tz = 'Europe/Berlin'; //true: user-time, false:server-time
 	
 	function __construct() {
 		parent::__construct();
@@ -52,7 +55,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 				$i++;
 			}
 			else {
-				$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', false);
+				$gameDates[] = JHtml::_('date', $currDate, 'D, d.m.y', $this->tz);
 			}
 		}
 		//echo __FUNCTION__."<pre>"; print_r($gameDates); echo "</pre>";
@@ -68,13 +71,13 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 			// if same month
 			if (strftime("%m", $currDate) == strftime("%m", $nextDate))
 			{
-				$date = JHTML::_('date', $currDate , 'j.', 'Europe/Berlin').
-					JHTML::_('date', $nextDate , '/j. M.', 'Europe/Berlin');
+				$date = JHTML::_('date', $currDate , 'j.', $this->tz).
+					JHTML::_('date', $nextDate , '/j. M.', $this->tz);
 			}
 			else
 			{
-				$date = JHTML::_('date', $currDate , 'j. M.', 'Europe/Berlin').
-					JHTML::_('date', $nextDate , ' / j. M.', 'Europe/Berlin');
+				$date = JHTML::_('date', $currDate , 'j. M.', $this->tz).
+					JHTML::_('date', $nextDate , ' / j. M.', $this->tz);
 			}
 			return 'Wochenende '.$date;
 		}
@@ -120,7 +123,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 		foreach ($this->prevGames as $date => $games)
 		{
 			$data['games'][++$i] = JHtml::_('date', $date, 
-						'D, d.m.y', false)."\n";
+						'D, d.m.y', $this->tz)."\n";
 			foreach ($games as $game) 
 			{	
 				if ($currTeam != $game->mannschaft) {
@@ -150,7 +153,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 			foreach ($this->nextGames as $date => $games)
 			{
 				$data['games'][++$i] = JHtml::_('date', $date, 
-							'D, d.m.y', false)."\n";
+							'D, d.m.y', $this->tz)."\n";
 				foreach ($games as $game)
 				{
 					//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
@@ -161,8 +164,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 						$currTeam = $game->mannschaft;
 					}
 					$data['games'][$i] .= "&nbsp;&nbsp;";
-					$data['games'][$i] .= $game->zeit.JHtml::_('date', $game->zeit, 'H:i', true).
-						JHtml::_('date', $game->zeit, 'H:i', false)." Uhr ".
+					$data['games'][$i] .= JHtml::_('date', $game->zeit, 'H:i', $this->tz)." Uhr ".
 							"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 				}
 			}
@@ -263,7 +265,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 			{
 				$data[$i]['headline'] = $preview->mannschaft.' - '.
 					$preview->liga.' ('.$preview->ligaKuerzel.')';
-				$data[$i]['game'] = substr($preview->uhrzeit,0,5).
+				$data[$i]['game'] = JHtml::_('date', $preview->zeit, 'H:i', $this->tz).
 					" Uhr \t {$preview->heim} - {$preview->gast}";
 				if (!empty($preview->treffOrt) AND !empty($preview->treffZeit))
 				{

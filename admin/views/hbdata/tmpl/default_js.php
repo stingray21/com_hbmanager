@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = true; //true: user-time, false:server-time
+
 JToolBarHelper::preferences('com_hbmanager');
 
 //echo '<p>Javascript</p>';
@@ -21,8 +23,6 @@ echo '<div class="clr"></div>';
 echo '<table id="hvwupdate">';
 echo '<tr><th>Mannschaft</th><th>letztes Update</th><th></th></tr>'."\n";
 
-//$datePattern = "%A, %d.%m.%Y &nbsp;&nbsp;%H:%M:%S Uhr";
-$datePattern = 'D, d.m.Y - H:i:s \U\h\r';
 
 foreach ($this->teams as $team)
 {
@@ -36,7 +36,7 @@ foreach ($this->teams as $team)
 	echo '>';
 	if(empty($team->hvwLink)) echo 'keine HVW Daten';
 	if (!empty($team->update)) 
-		echo JHTML::_('date', $team->update , $datePattern);
+		echo JHTML::_('date', $team->update , 'D, d.m.Y - H:i:s \U\h\r', $tz);
 	echo '</td>';
 		
 	if (!empty($team->hvwLink)) {
