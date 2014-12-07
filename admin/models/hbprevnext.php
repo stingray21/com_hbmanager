@@ -98,137 +98,18 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
-	function setPrevGamesDates()
+	function setPrevGamesDates($offset = null)
 	{
-		// earlist game of the previous week
-		$date = self::getEarliestGameDate_LastWeek();
-		// if no game date from previous week, get the most recent game date
+		$date = self::setPrevEndDate($offset);
 		if (empty($date)) {
-			$date = self::getGameDateBeforeLastWeek();
+			$date = strftime("%Y-%m-%d",strtotime('next Sunday', 
+					strtotime('last Friday', strtotime($this->dates->today))));
 		}
-		if (empty($date)) {
-			$date = strftime("%Y-%m-%d",strtotime('last Monday', 
-					strtotime('last saturday', strtotime($this->dates->today))));
-		}
-		$this->dates->prevStart = $date;
-		$this->dates->prevEnd = self::getMostRecentGameDate();
-	}
-		
-	function getEarliestGameDate_LastWeek()
-	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates->today);echo'</pre>';
-		$db = $this->getDbo();
-		
-		// earlist game of the previous week
-		$query = $db->getQuery(true);
-		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
-		$query->from('hb_spiel');
-		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
-					strtotime('last saturday', strtotime($this->dates->today))))).
-				' AND ' . $db->q($this->dates->today) );
-		$query->order($db->qn('datumZeit').' ASC');
-		//$query->setLimit(1);
-		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$date = $db->loadResult();
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
-		return $date;
-	}
-
-	
-	function getGameDateBeforeLastWeek()
-	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
-		$db = $this->getDbo();
-		
-		$query = $db->getQuery(true);
-		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
-		$query->from('hb_spiel');
-		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('datumZeit').') < '.
-					$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
-						strtotime('last saturday', strtotime($this->dates->today))
-					))) 
-				);
-		$query->order($db->qn('datumZeit').' DESC');
-		//$query->setLimit(1);
-		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$date = $db->loadResult();
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
-		return $date;
+		$this->dates->prevEnd = $date;
+		$this->dates->prevStart = self::setPrevStartDate();
 	}
 	
-	
-	function getMostRecentGameDate()
-	{
-		$db = $this->getDbo();
-		
-		// earlist game of the previous week
-		$query = $db->getQuery(true);
-		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
-		$query->from('hb_spiel');
-		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q($this->dates->prevStart).' AND '.
-				$db->q(strftime("%Y-%m-%d", strtotime('next Tuesday', 
-					strtotime('last Saturday', 
-						strtotime($this->dates->today))
-					)))
-				);
-		$query->order($db->qn('datumZeit').' DESC');
-		//$query->setLimit(1);
-		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$date = $db->loadResult();
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
-		return $date;
-	}
-	
-	
-	function setNextGamesDates()
-	{
-		// earlist game of the previous week
-		$date = self::getEarliestGameDate_ThisWeek();
-		// if no game date from previous week, get the most recent game date
-		if (empty($date)) {
-			$date = self::getNextGameDate();
-		}
-		if (empty($date)) {
-			$date = strftime("%Y-%m-%d",strtotime('next Monday', 
-					strtotime('last friday', strtotime($this->dates->today))));
-		}
-		$this->dates->nextStart = $date;
-		$this->dates->nextEnd = self::getNextGameEndDate();
-	}
-	
-	function getEarliestGameDate_ThisWeek()
-	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
-		$db = $this->getDbo();
-		
-		// earlist game of the this week
-		$query = $db->getQuery(true);
-		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
-		$query->from('hb_spiel');
-		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q($this->dates->today).' AND ' .  
-				$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
-					strtotime('next friday', strtotime($this->dates->today)))))
-					);
-		$query->order($db->qn('datumZeit').' ASC');
-		//$query->setLimit(1);
-		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$date = $db->loadResult();
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
-		return $date;
-	}
-	
-	function getNextGameDate($offset = null)
+	function setPrevEndDate($offset = null)
 	{
 		if ($offset === null) {
 			$offset = $this->dates->today;
@@ -236,14 +117,16 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
 		$db = $this->getDbo();
 		
-		// earlist game of the this week
 		$query = $db->getQuery(true);
-		$query->select('DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum'));
+		$query->select('MAX(DATE('.$db->qn('datumZeit').')) AS '
+					.$db->qn('datum'));
 		$query->from('hb_spiel');
-		$query->where('DATE('.$db->qn('datumZeit').') > '.
-				$db->q($offset));
-		$query->order($db->qn('datumZeit').' ASC');
-		//$query->setLimit(1);
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') <= '.
+					$db->q(strftime("%Y-%m-%d", strtotime('next Sunday', 
+						strtotime('last Friday', strtotime($offset))
+					))) 
+				);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -251,28 +134,82 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $date;
 	}
 	
-	function getNextGameEndDate()
+	function setPrevStartDate()
 	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
+		$offset = $this->dates->prevEnd;
+		
 		$db = $this->getDbo();
 		
-		// get last game date after next game (1 week time frame)
 		$query = $db->getQuery(true);
-		$query->select('DISTINCT DATE('.$db->qn('datumZeit').') AS '.
-				$db->qn('datum'));
+		$query->select('MIN(DATE('.$db->qn('datumZeit').')) AS '
+					.$db->qn('datum'));
 		$query->from('hb_spiel');
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q($this->dates->nextStart).' AND ' .  
-				$db->q(strftime("%Y-%m-%d", strtotime('next Sunday',
-						strtotime($this->dates->nextStart)
-					)))
+					$db->q(strftime("%Y-%m-%d", strtotime('last Monday', 
+					strtotime($offset) ) ) ).' AND '.$db->q($offset)
 				);
-		$query->order($db->qn('datumZeit').' DESC');
-		//$query->setLimit(1);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);		
-		//$date = $db->loadColumn();
+		$db->setQuery($query);
+		$date = $db->loadResult();
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
+		return $date;
+	}
+		
+	
+	function setNextGamesDates($offset = null)
+	{
+		$date = self::setNextStartDate($offset);
+		if (empty($date)) {
+			$date = strftime("%Y-%m-%d",strtotime('next Monday', 
+					strtotime('last Friday', strtotime($this->dates->today))));
+		}
+		$this->dates->nextStart = $date;
+		$this->dates->nextEnd = self::setNextEndDate();
+	}
+	
+	function setNextStartDate($offset = null)
+	{
+		if ($offset === null) {
+			$offset = $this->dates->today;
+		}
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
+		$db = $this->getDbo();
+		
+		$query = $db->getQuery(true);
+		$query->select('MIN(DATE('.$db->qn('datumZeit').')) AS '
+					.$db->qn('datum'));
+		$query->from('hb_spiel');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') >= '.
+					$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
+						strtotime('last Friday', strtotime($offset))
+					))) 
+				);
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$date = $db->loadResult();
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
+		return $date;
+	}
+	
+	function setNextEndDate()
+	{
+		$offset = $this->dates->nextStart;
+		
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('MAX(DATE('.$db->qn('datumZeit').')) AS '
+					.$db->qn('datum'));
+		$query->from('hb_spiel');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.$db->q($offset).
+					' AND '.$db->q(strftime("%Y-%m-%d", strtotime('next Sunday', 
+							strtotime('last Monday', strtotime($offset) )
+					) ) )
+				);
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
 		$date = $db->loadResult();
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($date);echo'</pre>';
 		return $date;

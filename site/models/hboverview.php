@@ -36,15 +36,15 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	{
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
 		parent::setdates();
-		$dates = $this->dates;
-		if (strtotime($dates->today) >= strtotime($dates->nextStart) &&
-				strtotime($dates->today) <= strtotime($dates->nextEnd) )
-		{
-			//echo 'current games';
-			$this->dates->currStart = $dates->nextStart;
-			$this->dates->currEnd = $dates->nextEnd;
-			$this->dates->nextStart = self::getNextGameDate($dates->nextEnd);
-			$this->dates->nextEnd = self::getNextGameEndDate();
+		$dates = self::getCurrentGameDates();
+		if (!empty($dates->start) && !empty($dates->ende) )
+		{	
+			self::setPrevGamesDates( strftime("%Y-%m-%d", 
+					strtotime('last Sunday', strtotime($dates->start) ) ) );
+//			self::setNextGamesDates( strftime("%Y-%m-%d", 
+//					strtotime('next Sunday', strtotime($dates->end) ) ) );
+			$this->dates->currStart = $dates->start;
+			$this->dates->currEnd = $dates->ende;
 		}
 		
 		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
@@ -115,6 +115,32 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $result;
 	}
 	
+	function getCurrentGameDates()
+	{
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
+		$db = $this->getDbo();
+		
+		// earlist game of the this week
+		$query = $db->getQuery(true);
+		$query->select('MIN(DATE('.$db->qn('datumZeit').')) AS '
+				.$db->qn('start').
+				', MAX(DATE('.$db->qn('datumZeit').')) AS '
+				.$db->qn('ende'));
+		$query->from('hb_spiel');
+		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
+				$db->q(strftime("%Y-%m-%d", strtotime('last Friday', 
+					strtotime($this->dates->today)))).' AND ' .  
+				$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
+					strtotime($this->dates->today))))
+					);
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$dates = $db->loadObject();
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
+		return $dates;
+	}
+	
 	function getCurrGames($arrange = true, $combined = false)
 	{
 		if ($this->dates->currStart === null) {
@@ -151,10 +177,25 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$games = $db->loadObjectList();		
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
 		if ($arrange){
-			return $this->currGames = self::arrangeGamesByDate($games);
+			$games = self::arrangeGamesByDate($games);
 		}
-		
+		$games = self::addCssInfo($games);
 		return $this->currGames = $games;
+	}
+	
+	function addCssInfo($gameDays)
+	{
+		foreach ($gameDays as $date => $games)
+		{
+			foreach ($games as $game)
+			{
+				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+				$game->ergebnis = self::getGameResult($game);
+				$game->eigeneMannschaft = self::getOwnTeam($game);
+				$game->anzeige = self::getIndicator($game);			
+			}
+		}
+		return $gameDays;
 	}
 	
 	function getHomeGames()
@@ -198,16 +239,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	function getPrevGames($arrange = true, $combined = false, $reports = false, $all = false) 
 	{
 		$prevGames = parent::getPrevGames(1,0,1,1);
-		foreach ($prevGames as $date => $games)
-		{
-			foreach ($games as $game)
-			{
-				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
-				$game->ergebnis = self::getGameResult($game);
-				$game->eigeneMannschaft = self::getOwnTeam($game);
-				$game->anzeige = self::getIndicator($game);			
-			}
-		}
+		$prevGames = self::addCssInfo($prevGames);
 		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
 		return $this->prevGames = $prevGames;
 	}
