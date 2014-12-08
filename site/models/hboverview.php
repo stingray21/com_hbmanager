@@ -41,8 +41,8 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		{	
 			self::setPrevGamesDates( strftime("%Y-%m-%d", 
 					strtotime('last Sunday', strtotime($dates->start) ) ) );
-//			self::setNextGamesDates( strftime("%Y-%m-%d", 
-//					strtotime('next Sunday', strtotime($dates->end) ) ) );
+			self::setNextGamesDates( strftime("%Y-%m-%d", 
+					strtotime('this Sunday', strtotime($dates->ende) ) ) );
 			$this->dates->currStart = $dates->start;
 			$this->dates->currEnd = $dates->ende;
 		}
@@ -117,9 +117,13 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	
 	function getCurrentGameDates()
 	{
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($dateToday);echo'</pre>';
+		//echo __FUNCTION__.':<pre>';print_r($this->dates->today);echo'</pre>';
 		$db = $this->getDbo();
-		
+		// if not Friday-Sunday abort
+		$today = strftime("%w", strtotime($this->dates->today));
+		if ($today < 5 && $today != 0) {
+			return;
+		}
 		// earlist game of the this week
 		$query = $db->getQuery(true);
 		$query->select('MIN(DATE('.$db->qn('datumZeit').')) AS '
@@ -129,9 +133,9 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$query->from('hb_spiel');
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
-				$db->q(strftime("%Y-%m-%d", strtotime('last Friday', 
+				$db->q(strftime("%Y-%m-%d", strtotime('last Thursday +1 day', 
 					strtotime($this->dates->today)))).' AND ' .  
-				$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
+				$db->q(strftime("%Y-%m-%d", strtotime('last Thursday +4 day', 
 					strtotime($this->dates->today))))
 					);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';

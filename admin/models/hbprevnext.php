@@ -22,8 +22,8 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$this->dates->nextEnd = null;	
 		
 		$this->dates->today = strftime("%Y-%m-%d", time());
-		//echo $this->dates->today = "2014-10-16";
-		
+//		$this->dates->today = "2014-12-08";
+//		echo '<pre>'.strftime("%A %w, %Y-%m-%d", strtotime($this->dates->today)).'</pre>';
 		//self::setDates();
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
