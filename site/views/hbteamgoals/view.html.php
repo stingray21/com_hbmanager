@@ -17,10 +17,10 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$model = $this->getModel('hbteamgoals');
 		// add meta tag
 		$document->setMetaData('og:site_name', "TSV Geislingen - Abt. Handball");
-		$document->setMetaData('og:title', "TSV Geislingen - Männer Mannschaft: Torschützen");
+		$document->setMetaData('og:title', "TSV Geislingen - Handball: Torschützen");
 		$document->setMetaData('og:type', "article");
 		$document->setMetaData('og:image', JURI::Root().'media/com_hbteam/images/goalchart_dummy.png');
-		$document->setMetaData('og:url', JURI::Root().'index.php/aktive/'.$model->teamkey.'/'.$model->teamkey.'-goals');
+		$document->setMetaData('og:url', JURI::Root().'index.php/aktive/'.$model->teamkey.'/'.$model->teamkey.'-tore');
 		$document->setMetaData('og:description', "Statistik der Torschützen dieser Saison");
 		
 		

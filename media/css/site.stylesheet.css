@@ -221,8 +221,9 @@ table.goals tr.notPlayed
 table.goals th,
 table.goals td
 {
-	padding: 2px 8px;
+	padding: 0.2em 0.2em;
 	text-align: center;
+	width: 2em;
 }
 
 table.goals .goals
@@ -233,6 +234,7 @@ table.goals .goals
 table.goals .name
 {
 	text-align: left;
+	width: 12em;
 }
 
 

@@ -71,11 +71,11 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('spielIdHvw, DATE(`datumZeit`) AS `datum`');
 		$query->from('hb_spiel_spieler');
-		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
+		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIdHvw').')');
 		$query->group($db->qn('spielIdHvw'));
 		$query->where('hb_spiel_spieler.'.$db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->where($db->qn('eigenerVerein').' = 1');
-		$query->where($db->qn('datumZeit').' < NOW() ');
+		$query->where('DATE('.$db->qn('datumZeit').') < NOW() ');
 		$query->order($db->qn('datumZeit').' DESC');
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$db->setQuery($query);
@@ -93,13 +93,13 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select('*, DATE(`datumZeit`) AS `datum`');
 		$query->from('hb_spiel');
-		$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIDhvw').')');
+		$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIdHvw').')');
 		$query->where('hb_spiel.'.$db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->where('hb_spiel.'.$db->qn('toreHeim').' IS NOT NULL');
 		$query->where($db->qn('eigenerVerein').' = 1');
-		$query->where($db->qn('datumZeit').' < NOW() ');
+		$query->where('DATE('.$db->qn('datumZeit').') < NOW() ');
 		$query->order($db->qn('datumZeit').' ASC');
-		$query->group('spielIDhvw');
+		$query->group('spielIdHvw');
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
@@ -107,14 +107,12 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		
 		foreach ($games as $game)
 		{
-			$gameName = $game->heim.'&'.$game->gast;
-			$pattern = '/(.*)&(TSV Geislingen)/';
-			$replacement = '${1} (A)';
-			$gameName = preg_replace($pattern, $replacement, $gameName);
-			$pattern = '/(TSV Geislingen)&(.*)/';
-			$replacement = '${2} (H)';
-			$gameName = preg_replace($pattern, $replacement, $gameName);
-			$game->gameName = $gameName;
+			if (strpos($game->heim, 'Geisl') !== FALSE) {
+				$game->gameName = $game->gast.' (H)';
+			}
+			else {
+				$game->gameName = $game->heim.' (A)';
+			}
 		}
 		return $games;
 	}
@@ -146,17 +144,21 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$db = $this->getDbo();
 		//$season = $season.'/'.(season+1);
 		$totalQuery = $db->getQuery(true);
-		$totalQuery->select('alias, count(tore) AS spiele, sum(tore) AS toregesamt, '.
-			'ROUND(sum(tore) / count(tore), 1) AS quote');
+		$totalQuery->select('alias, '
+			. 'count(trikotNr NOT IN ('.$db->q('A').','.$db->q('B').','
+			. $db->q('C').','.$db->q('D').') ) AS spiele, '
+			. 'sum(tore) AS toregesamt,'
+			. ' ROUND(sum(tore) / count(tore), 1) AS quote');
 		$totalQuery->from('hb_spiel_spieler');
-		$totalQuery->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
+		$totalQuery->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIdHvw').')');
 		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($season.'/'.($season+1)));
-		$totalQuery->where($db->qn('datumZeit').' <= '.$db->q($this->gameDate));
-		$totalQuery->where($db->qn('trikotNr').' != 0');
+		$totalQuery->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
+		$totalQuery->where($db->qn('trikotNr').' NOT IN ('.$db->q('A').','.$db->q('B').','
+			. $db->q('C').','.$db->q('D').')');
 		$totalQuery->group('alias');
 		$totalQuery->order($db->qn('datumZeit').' ASC');
 
-//		echo '=> model->$totalQuery <br><pre>'; echo $totalQuery; echo '</pre>';
+		//echo '=> model->$totalQuery <br><pre>'; echo $totalQuery; echo '</pre>';
 //		$db->setQuery($query);
 //		$players = $db->loadObjectList();
 //		echo '=> model->players<br><pre>'; print_r($players); echo '</pre>';
@@ -166,7 +168,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$innerQuery->from('hb_spiel_spieler');
 		$innerQuery->group($db->qn('alias'));
 		$innerQuery->where($db->qn('kuerzel').' = '.$db->q($teamkey));
-		$innerQuery->where($db->qn('trikotNr').' != 0');
+		$innerQuery->where($db->qn('trikotNr').' NOT IN ('.$db->q('A').','.$db->q('B').','
+			. $db->q('C').','.$db->q('D').')');
 		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
 		$db->setQuery($innerQuery);
 		$players = $db->loadObjectList();
@@ -187,10 +190,11 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query->leftJoin($db->qn('hb_spieler').' USING ('.$db->qn('alias').')');
 		$query->leftJoin($db->qn('#__contact_details').' USING ('.$db->qn('alias').')');
 		$query->leftJoin($db->qn('hb_mannschaft_spieler').' USING ('.$db->qn('alias').')');
-		$query->leftJoin($db->qn('hb_spiel_spieler').' ON spieler.alias=hb_spiel_spieler.alias AND spielIDhvw='.$db->q($gameId));
-		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIDhvw').')');
+		$query->leftJoin($db->qn('hb_spiel_spieler').' ON spieler.alias=hb_spiel_spieler.alias AND spielIdHvw='.$db->q($gameId));
+		$query->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIdHvw').')');
 		$query->leftJoin('( '.$totalQuery.' ) as `gesamtTabelle` ON spieler.alias=gesamtTabelle.alias');
-		//$query->where($db->qn('trikotNr').' != 0');
+		$query->where('hb_spiel_spieler.'.$db->qn('trikotNr').' NOT IN ('.$db->q('A').','.$db->q('B').','
+			. $db->q('C').','.$db->q('D').')');
 		//$query->order($db->qn('datum').' ASC');
 
 		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
@@ -237,7 +241,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		}
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select($db->qn(array('spielIDhvw','heim','gast')));
+		$query->select($db->qn(array('spielIdHvw','heim','gast')));
 		$query->from('hb_spiel');
 		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
 		$query->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
@@ -261,11 +265,11 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			$query = $db->getQuery(true);
 			$query->select('hb_spiel_spieler.alias as alias, name, tore, tore7m, hb_spiel_spieler.tw as tw');
 			$query->from('hb_spiel');
-			$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIDhvw').')');
+			$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIdHvw').')');
 			$query->leftJoin($db->qn('hb_mannschaft_spieler').' ON ( hb_mannschaft_spieler.kuerzel = hb_spiel.kuerzel'.
 				' AND hb_mannschaft_spieler.alias = hb_spiel_spieler.alias)');
 			$query->leftJoin('#__contact_details ON (#__contact_details.alias = hb_spiel_spieler.alias)');
-			$query->where('hb_spiel.'.$db->qn('spielIDhvw').' = '.$db->q($game->spielIDhvw));
+			$query->where('hb_spiel.'.$db->qn('spielIdHvw').' = '.$db->q($game->spielIdHvw));
 			$query->where($db->qn('tore').' IS NOT NULL');
 			$query->where('hb_spiel_spieler.'.$db->qn('trikotNr').' != 0');
 			$query->group('hb_spiel_spieler.alias');
@@ -274,15 +278,14 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			$db->setQuery($query);
 			$players = $db->loadObjectList();
 			//echo '=> model->player<br><pre>'; print_r($players); echo '</pre>';
-			$gameName = $game->heim.'&'.$game->gast;
-			$pattern = '/(.*)&(TSV Geislingen)/';
-			$replacement = '${1} (A)';
-			$gameName = preg_replace($pattern, $replacement, $gameName);
-			$pattern = '/(TSV Geislingen)&(.*)/';
-			$replacement = '${2} (H)';
-			$gameName = preg_replace($pattern, $replacement, $gameName);
+			if (strpos($game->heim, 'Geisl') !== FALSE) {
+				$gameName = $game->gast.' (H)';
+			}
+			else {
+				$gameName = $game->heim.' (A)';
+			}
 			
-			//$gameName = $game->spielIDhvw; 
+			//$gameName = $game->spielIdHvw; 
 			$gameIdList[]= $gameName; 
 			foreach ($players as $player) {
 				$player->tore = (int) $player->tore;

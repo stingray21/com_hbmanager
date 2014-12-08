@@ -25,21 +25,7 @@ if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
 }
 
 
-	$modules =& JModuleHelper::getModules('HBtrainingInComponent');
-	foreach ($modules as $module){
-		echo JModuleHelper::renderModule($module);
-	}
-	$modules =& JModuleHelper::getModules('HBscheduleInComponent');
-	foreach ($modules as $module){
-		echo JModuleHelper::renderModule($module);
-	}
-	
-	$modules =& JModuleHelper::getModules('HBstandingsInComponent');
-	foreach ($modules as $module){
-		echo JModuleHelper::renderModule($module);
-	}
-	
-	$modules =& JModuleHelper::getModules('HBHVWlinkInComponent');
+	$modules =& JModuleHelper::getModules('HBteam');
 	foreach ($modules as $module){
 		echo JModuleHelper::renderModule($module);
 	}

@@ -45,7 +45,8 @@ foreach ($this->players as $player)
 	}
 	echo '</td><td class="goals">';
 	echo $player->tore;
-	if ($player->tore7m != null) {
+	//if ($player->tore7m != null)
+	if ($player->tore7m != 0) {
 		echo '/'.$player->tore7m;
 	}
 	echo '</td><td>';

@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `hb_mannschaft_training` (
 
 CREATE TABLE IF NOT EXISTS `hb_spiel` (
   `spielID` int(6) NOT NULL AUTO_INCREMENT,
-  `spielIDhvw` int(6) DEFAULT NULL,
+  `spielIdHvw` int(6) DEFAULT NULL,
   `kuerzel` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `hallenNummer` int(6) DEFAULT NULL,
   `datum` date DEFAULT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `hb_spiel` (
   `toreGast` int(3) DEFAULT NULL,
   `bemerkung` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`spielID`),
-  UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
+  UNIQUE KEY `spielIdHvw` (`spielIdHvw`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -144,14 +144,14 @@ CREATE TABLE IF NOT EXISTS `hb_spiel` (
 
 CREATE TABLE IF NOT EXISTS `hb_spielbericht` (
   `spielberichtID` int(6) NOT NULL AUTO_INCREMENT,
-  `spielIDhvw` int(6) DEFAULT NULL,
+  `spielIdHvw` int(6) DEFAULT NULL,
   `bericht` longtext COLLATE utf8_unicode_ci,
   `spielerliste` longtext COLLATE utf8_unicode_ci,
   `zusatz` longtext COLLATE utf8_unicode_ci,
   `halbzeitstand` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `spielverlauf` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`spielberichtID`),
-  UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
+  UNIQUE KEY `spielIdHvw` (`spielIdHvw`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -162,12 +162,12 @@ CREATE TABLE IF NOT EXISTS `hb_spielbericht` (
 
 CREATE TABLE IF NOT EXISTS `hb_spielvorschau` (
   `spielvorschauID` int(6) NOT NULL AUTO_INCREMENT,
-  `spielIDhvw` int(6) DEFAULT NULL,
+  `spielIdHvw` int(6) DEFAULT NULL,
   `vorschau` longtext COLLATE utf8_unicode_ci,
   `treffOrt` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `treffZeit` time DEFAULT NULL,
   PRIMARY KEY (`spielvorschauID`),
-  UNIQUE KEY `spielIDhvw` (`spielIDhvw`)
+  UNIQUE KEY `spielIdHvw` (`spielIdHvw`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 
