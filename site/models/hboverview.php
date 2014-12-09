@@ -29,6 +29,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
 		return $teams;
 	}
 	
@@ -187,7 +188,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $this->currGames = $games;
 	}
 	
-	function addCssInfo($gameDays)
+	protected function addCssInfo($gameDays)
 	{
 		foreach ($gameDays as $date => $games)
 		{
@@ -197,6 +198,19 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 				$game->ergebnis = self::getGameResult($game);
 				$game->eigeneMannschaft = self::getOwnTeam($game);
 				$game->anzeige = self::getIndicator($game);			
+			}
+		}
+		return $gameDays;
+	}
+	
+	protected function addStandings($gameDays)
+	{
+		foreach ($gameDays as $date => $games)
+		{
+			foreach ($games as $game)
+			{
+				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";	
+				$game->standings = self::getDetailedStandings($game);
 			}
 		}
 		return $gameDays;
@@ -244,6 +258,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	{
 		$prevGames = parent::getPrevGames(1,0,1,1);
 		$prevGames = self::addCssInfo($prevGames);
+		$prevGames = self::addStandings($prevGames);
 		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
 		return $this->prevGames = $prevGames;
 	}
@@ -297,7 +312,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $indicator;
 	}
 	
-	function getNextGames() 
+	function getNextGames($arrange = true, $combined = false, $reports = false) 
 	{
 		$nextGames = parent::getNextGames(1,0,1);
 		foreach ($nextGames as $date => $games)
@@ -308,7 +323,48 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 				$game->eigeneMannschaft = self::getOwnTeam($game);	
 			}
 		}
+		$nextGames = self::addStandings($nextGames);
 		//echo __FUNCTION__."<pre>"; print_r($nextGames); echo "</pre>";
 		return $this->nextGames = $nextGames;
+	}
+	
+	protected function addBackground ($standings)
+	{
+		$background = false;
+		foreach ($standings as $row)
+		{
+			// switch color of background
+			if (!empty($row->platz)) $background = !$background;
+			// check value of background
+			switch ($background) {
+				case true: $row->background = 'odd'; break;
+				case false: $row->background = 'even'; break;
+			}
+		}
+		return $standings;
+	}
+
+	public function getDetailedStandings($team)
+	{
+		$db = JFactory::getDBO();
+		// getting standings of the team from the DB
+		$query = $db->getQuery(true);
+		$query->select('*, '.
+			'IF('.$db->qn('mannschaft').'='.$db->q($team->name).',1,0) AS heimVerein');
+		$query->from($db->qn('hb_tabelle_details'));
+		$query->where($db->qn('kuerzel').' = '.$db->q($team->kuerzel));
+		$query->order($db->qn('platz'));
+		//echo nl2br($query);//die; //see resulting query
+		$db->setQuery($query);
+		$standings = $db->loadObjectList();
+		//echo "<pre>"; print_r($standings); echo "</pre>";
+		//display and convert to HTML when SQL error
+		if (is_null($posts=$db->loadRowList()))
+		{
+			$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+			return;
+		}
+		$standings = self::addBackground($standings);
+		return $standings;
 	}
 }

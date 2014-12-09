@@ -13,6 +13,12 @@ class HbManagerViewHbOverview extends JViewLegacy
 	function display($tpl = null)
 	{
 		
+		$document = JFactory::getDocument();
+		// local jquery
+		//JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
+		JHtml::_('jquery.framework');
+		$document->addScript(JURI::Root().'/media/com_hbmanager/js/hboverview.js');
+		
 		$model = $this->getModel('HBoverview');
 		$model->setDates();
 		
