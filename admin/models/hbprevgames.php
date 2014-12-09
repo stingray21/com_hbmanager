@@ -106,7 +106,7 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 			{
 				$content .= '<h4>'.
 						'<a href="'.JURI::Root().'index.php/'.
-						strtolower($game->kuerzel).'-home">'.
+						strtolower($game->kuerzel).'">'.
 						$game->mannschaft.' <span class="liga">'.$game->liga
 						.' ('.$game->ligaKuerzel.')</span></a>'.
 						'</h4>';
