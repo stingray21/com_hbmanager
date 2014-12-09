@@ -105,8 +105,9 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 			if ($prevTeam !== $game->mannschaft)
 			{
 				$content .= '<h4>'.
-						'<a href="'.JURI::Root().'index.php/'.
-						strtolower($game->kuerzel).'">'.
+						'<a href="'.JURI::Root().'index.php/';
+				$content .= ($game->jugend === 'aktiv') ? 'aktive' : 'jugend';
+				$content .= '/'.strtolower($game->kuerzel).'">'.
 						$game->mannschaft.' <span class="liga">'.$game->liga
 						.' ('.$game->ligaKuerzel.')</span></a>'.
 						'</h4>';
