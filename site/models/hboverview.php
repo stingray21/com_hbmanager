@@ -185,6 +185,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 			$games = self::arrangeGamesByDate($games);
 		}
 		$games = self::addCssInfo($games);
+		$games = self::addStandings($games);
 		return $this->currGames = $games;
 	}
 	

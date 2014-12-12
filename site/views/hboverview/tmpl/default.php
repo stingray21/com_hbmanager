@@ -45,7 +45,7 @@ if (!empty($this->currGames))
 				echo '<div class="teamInfo">';
 				echo '<a class="hvwLink" href="'.$game->hvwLink.
 					'" target="_BLANK" alt="zur HVW-Seite"> </a>';
-				echo '<a id="btnShow_prev-'.$game->kuerzel.
+				echo '<a id="btnShow_curr-'.$game->kuerzel.
 					'" class="btnShowTable">'.
 					JText::_('COM_HBMANAGER_OVERVIEW_STANDINGS').'</a>';
 //				echo '<a id="report_'.$game->kuerzel.
@@ -56,7 +56,7 @@ if (!empty($this->currGames))
 				
 				// standings
 				$showDiff = true;
-				echo '<table id="standings_next-'.$game->kuerzel.'" data-state="hidden" class="HBminiStandings HBhighlight">';
+				echo '<table id="standings_curr-'.$game->kuerzel.'" data-state="hidden" class="HBminiStandings HBhighlight">';
 				echo "<thead>";			
 				echo "<tr><th></th><th class=\"textteam\">Mannschaft</th>";
 				echo "<th>Sp.</th><th>S</th><th>U</th><th>N</th>";
