@@ -277,18 +277,25 @@ class hbmanagerModelHbdata extends JModelLegacy
 				->values($values);
 
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
-		$query .= "\nON DUPLICATE KEY UPDATE \n";
+		$query .= self::getOnDublicate($columns);
+		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$result = $db->execute();
+		
+		//echo '<pre>result';print_r($result);echo '</pre>';
+		return $result;
+    }
+	
+	protected function getOnDublicate($columns) {
+		$db = $this->getDbo();
+		$query = "\nON DUPLICATE KEY UPDATE \n";
 		$dublicates = array();
 		foreach ($columns as $field) {
 			$dublicates[] = $db->qn($field).' = VALUES('.$db->qn($field).')';
 		}
-		$query .= implode(",\n", $dublicates);
-		$db->setQuery($query);
-		$result = $db->execute();
-
-		//echo '<pre>result';print_r($result);echo '</pre>';
-		return $result;
-    }
+		
+		return $query .= implode(",\n", $dublicates);
+	}
 
     protected function formatGamesValues($data, $teamkey)
     {
