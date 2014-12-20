@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	
+	<fields name="hbteammenus">
+		
+		<fieldset name="team">
+					
+			<field 
+				name="mannschaft" 
+				type="hidden" 
+				default="" 
+			/>
+			<field 
+				name="kategorie" 
+				type="hidden" 
+				default="" 
+			/>
+			<field 
+				name="kuerzel" 
+				type="hidden" 
+				default="" 
+			/>
+			<field 
+				name="id" 
+				type="hidden" 
+				default="" 
+			/>
+			<field
+				name="add][team"
+				type="checkbox"
+				value="1" 
+				label="Manschaft" 
+				description=""
+				default="0"
+			/>
+			<field
+				name="add][players"
+				type="checkbox"
+				value="1" 
+				label="Spieler" 
+				description=""
+				default="0"
+			/>
+			<field
+				name="add][reports"
+				type="checkbox"
+				value="1" 
+				label="Torschützen" 
+				description=""
+				default="0"
+			/>
+			<field
+				name="add][goals"
+				type="checkbox"
+				value="1" 
+				label="Berichte" 
+				description=""
+				default="0"
+			/>
+			
+		</fieldset>
+		
+	</fields>
+</form>

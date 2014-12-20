@@ -304,6 +304,33 @@ class hbmanagerController extends JControllerAdmin
 		hbhelper::addSubmenu('hbjournal');
 	}
 	
+	function showTeamMenus()
+	{
+		$model = $this->getModel('hbteammenus');
+		$view = $this->getView('hbteammenus','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbteammenus');
+	}
+	
+	function addTeamMenus()
+	{
+		$model = $this->getModel('hbteammenus');
+		$post = JRequest::get('post');
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+		$model->addMenuItems($post['hbteammenus']);
+		$view = $this->getView('hbteammenus','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbteammenus');
+	}
+	
 	function showPictures()
 	{
 //		$jinput = JFactory::getApplication()->input;
