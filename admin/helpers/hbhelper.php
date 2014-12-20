@@ -34,14 +34,17 @@ abstract class HbHelper
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_OVERVIEW_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showOverview',
 				$submenu == 'hboverview');
+		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_TEAMMENUS_SUBMENU'), 
+				'index.php?option=com_hbmanager&task=showTeamMenus',
+				$submenu == 'hboverview');
 	}
 	
 	public static function formatInput($input, $i)
 	{
-		$formatedInput = preg_replace('/name="([\S]{1,})\[([\S]{1,})\]/',
-					"name=\"$1[".$i."][$2]", $input);
-		$formatedInput = preg_replace('/id="([\S]{1,})_([\S]{1,})/',
-					"id=\"$1_".$i."_$2", $formatedInput);
+		$formatedInput = preg_replace('/name="([\S]*?)\[/',
+					"name=\"$1[".$i."][", $input);
+		$formatedInput = preg_replace('/id="([\S]*?)_/',
+					"id=\"$1_".$i."_", $formatedInput);
 		return $formatedInput;
 	}
 }
