@@ -1,40 +1,28 @@
 div#hboverview {
 	margin: 1em;
-
+	padding-left: 1em;
 }
 
-div#prevGames,
-div#nextGames {
-	margin: 1em;
+div#hboverview div#prevGames,
+div#hboverview div#nextGames {
 }
 
 div#hboverview h2 {
-	padding-left: 0.5em;
 	margin-top: 2em;
-	margin-bottom: 0.25em;
-	//color: #04c;
-	border-bottom: 1px solid #ddd;
 }
 
-div#hboverview h2.current {
-	color: #04C;
-	font-weight: bold;
-}
-
-div#hboverview h3.date {
-	font-size: 1.2em;
+div#hboverview h2:first-child {
 	margin-top: 1em;
-	margin-bottom: 0.5em;
-	//font-weight: bold;
-	color: #444;
+}
+
+div#hboverview h3 {
+    font-size: 1.25em;
+    color: #999;
 }
 
 div#hboverview h4.team {
-	margin-top: 1em;
-	margin-bottom: 0.25em;
-	font-weight: bold;
-	display: inline-block;
-	width: 18em;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
 }
 
 div#hboverview div.games > h4.team:first-child {
@@ -74,8 +62,9 @@ div#hboverview span.away {
 	display: inline-block;
 }
 
-span.score {
-	width: 1em;
+div#hboverview span.score span.home,
+div#hboverview span.score span.away {
+	width: 2em;
 	display: inline-block;
 }
 
@@ -135,6 +124,30 @@ div#hboverview div.games .linkReport {
 	margin: 0em 1em;
 }
 
+
+@media (max-width: 1200px) {
+  #hboverview div.game span.time {
+    display: block;
+  }
+  
+  #hboverview div.game > span.home {
+    margin-left: 1em;
+	width: auto;
+	min-width: 10em;
+  }
+  
+  #hboverview div.game > span.away {
+    margin-left: 1em;
+	width: auto;
+  }
+  
+  #hboverview div.game > span.score {
+    margin-left: 9.25em;
+	display: block;
+  }
+  
+}
+
 /* mini standings */
 
 
@@ -146,65 +159,73 @@ div#hboverview .btnShowTable {
 	margin: 0em 1em;
 }
 
-table.HBminiStandings {
-	width: 80%;
+div#hboverview table.HBminiStandings {
+	width: 82%;
 	margin: 0.25em 1em 1em;
 	display: none;
 	
 	}
 
-table.HBminiStandings td,
-table.HBminiStandings th {
+div#hboverview table.HBminiStandings td,
+div#hboverview table.HBminiStandings th {
 	padding: 0.1em 0.2em;
 	border: 0;
 	}
 
-table.HBminiStandings.HBhighlight tr:hover td {
+div#hboverview table.HBminiStandings.HBhighlight tr:hover td {
 	//background: #23B;
 	//color: #fff;
 	cursor: default;
 	}
 	
-table.HBminiStandings.HBhighlight tr:hover a,
-table.HBminiStandings.HBhighlight tr:hover a:link {
+div#hboverview table.HBminiStandings.HBhighlight tr:hover a,
+div#hboverview table.HBminiStandings.HBhighlight tr:hover a:link {
 	//color: #fff;
 	}	
 	
-table.HBminiStandings.HBhighlight tr.heim td {
+div#hboverview table.HBminiStandings.HBhighlight tr.heim td {
 	background: #ccc;
 	//color: #fff;
 	cursor: default;
 	}
 	
 
-table.HBminiStandings th {
+div#hboverview table.HBminiStandings th {
 	text-align: center;
 	}
 
-table.HBminiStandings td {
+div#hboverview table.HBminiStandings td {
 	text-align: center;
 	}
 
-table.HBminiStandings .textteam {
+div#hboverview table.HBminiStandings .textteam {
 	text-align: left;
 	}
 	
-table.HBminiStandings th.goals {
+div#hboverview table.HBminiStandings th.goals {
 	text-align: center;
 	}
 	
-table.HBminiStandings td.goals,
-table.HBminiStandings td.points {
+div#hboverview table.HBminiStandings td.goals,
+div#hboverview table.HBminiStandings td.points {
 	text-align: right;
 	padding-right: 0.1em;
 	}
 	
-table.HBminiStandings td.goalsCon,
-table.HBminiStandings td.negPoints {
+div#hboverview table.HBminiStandings td.goalsCon,
+div#hboverview table.HBminiStandings td.negPoints {
 	text-align: left;
 	padding-left: 0.1em;
 	}
 	
-table.HBminiStandings td.sepaDots {
+div#hboverview table.HBminiStandings td.sepaDots {
 	padding: 0.2em 0;
 	}
+	
+@media (max-width: 767px) {
+  div#hboverview table.HBminiStandings {
+	width: 90%;
+	}
+	
+	
+}

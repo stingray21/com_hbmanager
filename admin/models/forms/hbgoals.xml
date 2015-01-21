@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="hbgoals">
+		<fieldset name="goals">
+			<field
+				name="gameId"
+				type="text"
+				label="Spiel-Nr." 
+				description="Spiel-Nummer von HVW"
+				default=""
+				size="10"
+			/>
+			<field
+				name="goalsCsv"
+				type="textarea"
+				label="Spielbericht CSV von HVW" 
+				description="Spielbericht Informationen in CSV Format von HVW Spielbericht PDF (Exportiert mit Tabula)"
+				default=""
+				cols="85"
+				rows="20"
+			/>
+		</fieldset>
+	</fields>
+</form>
