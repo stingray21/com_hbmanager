@@ -6,7 +6,7 @@ JToolBarHelper::preferences('com_hbmanager');
 
 
 ?>
-
+<p>TEST default</p>
 
 
 

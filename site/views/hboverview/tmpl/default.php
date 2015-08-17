@@ -98,16 +98,14 @@ if (!empty($this->currGames))
 			
 			if ($game->toreHeim !== null)
 			{
-				echo '<span class="score">';
-				echo '<span class="home';
-				echo ($game->eigeneMannschaft === 1) ? ' own' : '';
+				echo '<span class="score';
+				if ($game->eigeneMannschaft === 1) echo ' own';
 				echo '">'.$game->toreHeim.'</span>';
 				echo ":";
-				echo '<span class="away';
-				echo ($game->eigeneMannschaft === 2) ? ' own' : '';
+				echo '<span class="score';
+				if ($game->eigeneMannschaft === 2) echo ' own';
 				echo '">'.$game->toreGast.'</span>';
 				echo '<span class="indicator '.$game->anzeige.'"></span>';
-				echo '</span>';
 			}
 			echo '</div>';
 			echo "\n";
@@ -199,25 +197,23 @@ if (!empty($this->prevGames))
 			echo JHtml::_('date', $game->zeit, 'H:i', $tz);
 			echo ' Uhr </span>';
 			echo '<span class="home';
-			echo ($game->eigeneMannschaft === 1) ? ' own' : '';
+			if ($game->eigeneMannschaft === 1) echo ' own';
 			echo '">'.$game->heim.'</span>';
 			echo " - ";
 			echo '<span class="away';
-			echo ($game->eigeneMannschaft === 2) ? ' own' : '';
+			if ($game->eigeneMannschaft === 2) echo ' own';
 			echo '">'.$game->gast.'</span>';
 			
 			if ($game->toreHeim !== null)
 			{
-				echo '<span class="score">';
-				echo '<span class="home';
-				echo ($game->eigeneMannschaft === 1) ? ' own' : '';
+				echo '<span class="score';
+				if ($game->eigeneMannschaft === 1) echo ' own';
 				echo '">'.$game->toreHeim.'</span>';
 				echo ":";
-				echo '<span class="away';
-				echo ($game->eigeneMannschaft === 2) ? ' own' : '';
+				echo '<span class="score';
+				if ($game->eigeneMannschaft === 2) echo ' own';
 				echo '">'.$game->toreGast.'</span>';
 				echo '<span class="indicator '.$game->anzeige.'"></span>';
-				echo '</span>';
 			}
 			echo '</div>';
 			echo "\n";

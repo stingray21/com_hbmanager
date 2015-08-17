@@ -1,7 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<root>
-	<params>
-
-	</params>
-</root>
+<config>
+	<fieldset
+		name="greetings"
+		label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_LABEL"
+		description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_DESC"
+	>
+		<field 
+			name="hvwurl" 
+			type="url" 
+			default="http://www.hvw-online.org/index.php?id=39&amp;orgID=11&amp;A=g_org&amp;nm=0" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_HVW_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_HVW_DESC" 
+			size="100" 
+		/>
+		
+		<field 
+			name="hvwurl" 
+			type="url" 
+			default="http://www.hvw-online.org/index.php?id=39&amp;orgID=11&amp;A=g_org&amp;nm=0" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_HVW_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_HVW_DESC" 
+			size="100" 
+		/>
+		
+		<field 
+			name="clubindicator" 
+			type="text" 
+			default="Geisl" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_CLUB_INDICATOR_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_CLUB_INDICATORURL_DESC" 
+			size="10"
+		/>
+		
+		<field 
+			name="urlyear" 
+			type="text" 
+			default="2015" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_YEAR_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_YEAR_DESC" 
+			size="10"
+		/>
+		
+		<field 
+			name="urlstartdate" 
+			type="calendar" 
+			default="2015-10-01" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_STARTDATE_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_STARTDATE_DESC" 
+			format="%Y-%m-%d" 
+		/>
+	</fieldset>
+</config>

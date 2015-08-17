@@ -67,6 +67,10 @@ class hbmanagerModelHbteams extends JModelLegacy
 	
 	protected function formatLeagues($leagues)
 	{
+		$params = JComponentHelper::getParams( 'com_hbmanager' );
+		$clubindicator = $params->get( 'clubindicator' );
+		//echo __FILE__.'<pre>';print_r($params); echo'</pre>';
+		
 		foreach ($leagues as $key => $league)
 		{
 			//echo __FUNCTION__.'<pre>';print_r($league); echo'</pre>';
@@ -79,7 +83,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 					$leagues[$key]->select[$field] = false;
 					foreach ($leagues[$key]->{$field} as $select => $name)
 					{
-						if (strpos($name, 'Geisl') !== FALSE) {
+						if (strpos($name, $clubindicator) !== FALSE) {
 							$leagues[$key]->select[$field] = $select;
 						}							
 					}
@@ -95,6 +99,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 	{
 		$time_pre = microtime(true);
 		
+		//self::getAddress();
 		$leagueSource = self::getSource(self::getAddress());
 		//echo __FUNCTION__.'<pre>';print_r($leagueSource); echo'</pre>';
 		$leagues = self::formatSource($leagueSource);
@@ -126,13 +131,24 @@ class hbmanagerModelHbteams extends JModelLegacy
 		
 	protected function getAddress() 
 	{
-		$year = strftime('%Y');
-		if (strftime('%m') < 8) {
-			$year = $year-1;
-		}
+//		$year = strftime('%Y');
+//		if (strftime('%m') < 8) {
+//			$year = $year-1;
+//		}
+//		$address = 'http://www.hvw-online.org/index.php'.
+//				'?id=39&orgID=11&A=g_org&nm=0&do='.
+//				$year.'-10-01';
+		
+		$params = JComponentHelper::getParams( 'com_hbmanager' );
+		$url = $params->get( 'urlhvw' );
+		$urlstartdate = $params->get( 'urlstartdate' ); 
+		$urlyear = $params->get( 'urlyear' );
+		//echo __FILE__.'<pre>';print_r($params); echo'</pre>';
+		
 		$address = 'http://www.hvw-online.org/index.php'.
 				'?id=39&orgID=11&A=g_org&nm=0&do='.
-				$year.'-10-01';
+				$urlstartdate;
+		
 		
 		// local, for testing
 		//$address = 'http://localhost/test/hvw-zollern.htm';
@@ -155,7 +171,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		// TODO check out regex possessive quantifier (-> performance)
 		$pattern = '|&&+'.
 				'(?P<url>\?A=g_class&id=\d{1,2}&orgID=\d{1,2}&score=\d{4,6})">'.
-				'(?P<league>[\w\d\-]{3,10})<\/a>|';
+				'(?P<league>[\w\d\-\/\+]{3,10})<\/a>|';
 		preg_match_all($pattern, $source, $leagueSource, PREG_SET_ORDER);
 		//echo __FILE__.'<pre>';print_r($leagueSource); echo'</pre>';
 

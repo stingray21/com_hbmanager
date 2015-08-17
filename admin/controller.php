@@ -15,10 +15,11 @@ class hbmanagerController extends JControllerAdmin
 
 	function display($cachable=false, $urlparams = false)
 	{
-		// set default view if not set
-		JRequest::setVar('view', JRequest::getCmd('view', 'hbmanager'));
-
-		parent::display($cachable);
+		$model = $this->getModel('hbmanager');
+		$view = $this->getView('hbmanager','html');
+		$view->setModel($model);
+		
+		$view->display();
 		// Set the submenu
 		hbhelper::addSubmenu('');
 	}
@@ -316,28 +317,12 @@ class hbmanagerController extends JControllerAdmin
 		hbhelper::addSubmenu('hbteammenus');
 	}
 	
-	function testTeamMenus()
-	{
-		$model = $this->getModel('hbteammenus');
-		$model->getComponentId();
-		$model->test();
-		$view = $this->getView('hbteammenus','html');
-		$view->setModel($model, true);
-		$view->display();
-		//self::display();
-		
-		// Set the submenu
-		hbhelper::addSubmenu('hbteammenus');
-	}
-	
 	function addTeamMenus()
 	{
 		$model = $this->getModel('hbteammenus');
 		$post = JRequest::get('post');
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
-		if (isset($post['hbteammenus'])) {
-			$model->addMenuItems($post['hbteammenus']);
-		}
+		$model->addMenuItems($post['hbteammenus']);
 		$view = $this->getView('hbteammenus','html');
 		$view->setModel($model, true);
 		$view->display();
@@ -345,35 +330,6 @@ class hbmanagerController extends JControllerAdmin
 		
 		// Set the submenu
 		hbhelper::addSubmenu('hbteammenus');
-	}
-	
-	function showGoalsInput()
-	{
-		$model = $this->getModel('hbgoalsinput');
-		$view = $this->getView('hbgoalsinput','html');
-		$view->setModel($model, true);
-		$view->display();
-		//self::display();
-		
-		// Set the submenu
-		hbhelper::addSubmenu('hbgoalsinput');
-	}
-	
-	function addGoals()
-	{
-		$model = $this->getModel('hbgoalsinput');
-		$post = JRequest::get('post');
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
-		if (isset($post['hbgoals'])) {
-			$model->addGoals($post['hbgoals']);
-		}
-		$view = $this->getView('hbgoalsinput','html');
-		$view->setModel($model, true);
-		$view->display();
-		//self::display();
-		
-		// Set the submenu
-		hbhelper::addSubmenu('hbgoalsinput');
 	}
 	
 	function showPictures()

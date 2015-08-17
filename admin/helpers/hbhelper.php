@@ -34,12 +34,9 @@ abstract class HbHelper
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_OVERVIEW_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showOverview',
 				$submenu == 'hboverview');
-		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_GOALSINPUT_SUBMENU'), 
-				'index.php?option=com_hbmanager&task=showGoalsInput',
-				$submenu == 'hbgoalsinput');
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_TEAMMENUS_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showTeamMenus',
-				$submenu == 'hbteammenus');
+				$submenu == 'hboverview');
 	}
 	
 	public static function formatInput($input, $i)
