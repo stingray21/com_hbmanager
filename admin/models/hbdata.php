@@ -324,7 +324,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$value['kuerzel'] = $db->q($teamkey);
 		$value['ligaKuerzel'] = $db->q($data[0]);
 		// HallenNummer
-		if (trim($data[5]) != '') $value['hallenNummer'] = (int)$data[5];
+		if (trim($data[3]) != '') $value['hallenNummer'] = (int)$data[3];
 				else  $value['hallenNr'] = "NULL";
 		// Datum & Uhrzeit
 		if (trim($data[2]) != '') {	
