@@ -86,12 +86,18 @@ class hbmanagerController extends JControllerAdmin
 	
 	function showData()
 	{
+		$jinput = JFactory::getApplication()->input;
+		$nojs = $jinput->get('nojs', false);
+		
 		$model = $this->getModel('hbdata');
 		
 		$view = $this->getView('hbdata','html');
 		$view->setModel($model);
+				
 		$view->setLayout('default_js');
-		//$view->setLayout('default');
+		if ($nojs == true) {
+			$view->setLayout('default'); // without js
+		}
 		
 		$view->display();
 		

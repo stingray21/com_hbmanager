@@ -49,3 +49,7 @@ foreach ($this->teams as $team)
 }
 
 echo '</table>';
+
+echo '<a id="hvwupdateall" href="'.
+		JRoute::_('index.php?option=com_hbmanager&task=showData&nojs=1').
+		'">'.JText::_('COM_HBMANAGER_DATA_SHOW_NOJS_LINK').'</a>';

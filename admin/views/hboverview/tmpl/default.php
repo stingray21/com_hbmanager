@@ -2,8 +2,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::preferences('com_hbmanager');
-
 
 // Button
 echo '<a id="showall" class="hbbutton" href="'.

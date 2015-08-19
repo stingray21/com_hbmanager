@@ -19,7 +19,7 @@
 				default="" 
 				label="Kürzel" 
 				description="" 
-				size="5" 
+				size="7" 
 			/>
 			<field 
 				name="mannschaft" 
@@ -86,6 +86,7 @@
 					<option value="C">C-Jgd.</option>
 					<option value="D">D-Jgd.</option>
 					<option value="E">E-Jgd.</option>
+					<option value="F">F-Jgd.</option>
 					<option value="minis">Minis</option>
 			</field>	 
 			<field 

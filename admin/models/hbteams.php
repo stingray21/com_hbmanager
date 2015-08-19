@@ -545,9 +545,13 @@ class hbmanagerModelHbteams extends JModelLegacy
 	
 	protected function getNewTeamkey($data) 
 	{
+		//echo __FUNCTION__.'<pre>';print_r($data); echo'</pre>';
 		// kuerzel
-		$team = preg_replace( "/(^((m|w|g)J[A-E])|(M|F))-[A-Z]{2,3}.*/" ,
-					"$1" , $data);
+		$pattern =  "/^(?P<key>((m|w)J[A-D])|(M|F)(\d\d)?|(gJ(E|F)))(-[A-Z]{2,3}|[\d\+\/]{1,5})?/";
+		preg_match($pattern, $data, $match);
+		//echo __FUNCTION__.'<pre>';print_r($match); echo'</pre>';
+		$team = $match['key'];
+		
 		$i = 1;		
 		do {
 			$teamkey = $team.'-'.$i++;
@@ -579,7 +583,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 	
 	protected function getNewAge($data) 
 	{
-		$age = preg_replace('/.*Jugend ([A-E]).*/',
+		$age = preg_replace('/.*Jugend ([A-F]).*/',
 				"$1", $data);
 		if ($age === $data) {
 			$age = 'aktiv';
@@ -591,7 +595,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 	protected function getNewLeague($data) 
 	{
 		//echo __FUNCTION__.'<pre>';print_r($data); echo'</pre>';
-		$pattern = "/(Jugend [A-E]|Männer|Frauen) (?P<league>[\w\d ]*)/";
+		$pattern = "/(Jugend [A-F]|Männer|Frauen) (?P<league>[\w\d\+ ]*)/";
 		preg_match($pattern, $data, $match);
 		//echo __FUNCTION__.'<pre>';print_r($match); echo'</pre>';
 		$league = $match['league'];

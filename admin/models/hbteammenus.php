@@ -13,6 +13,7 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 	private $titles = array();
 	private $alias = array();
 	private $categoryId = array();
+	private $categoryMenutype = array();
 	private $componentId = '';
 	
 	
@@ -20,10 +21,61 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 	{
 		parent::__construct();
 		self::setCategoryIds();
+		self::setCategoryMenutype();
 		self::setComponentId();
 		self::setTitles();
 		self::setAlias();
 		//echo __FUNCTION__.'<pre>';print_r($this->categoryuIds); echo'</pre>';
+	}
+	
+	function setCategoryIds()
+	{
+		$params = JComponentHelper::getParams( 'com_hbmanager' );
+		$menuActive = $params->get( 'menuActive' );
+		//echo __FILE__.'<pre>';print_r($params); echo'</pre>';
+		
+		$id['aktiv'] = $menuActive;
+		
+		$menuYouth = $params->get( 'menuYouth' );
+		
+		if ($menuYouth !== 'ONLY1')  {
+			$id['jugend'] = $menuYouth;
+		} else {
+			$id['jugend'] = $menuActive;
+		}
+	
+		//echo __FUNCTION__.'<pre>';print_r($id); echo'</pre>';
+		return $this->categoryId = $id;
+	}
+	
+	protected function setCategoryMenutype()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->qn('menutype'));
+		$query->from('#__menu');
+		$query->where($db->qn('id').' = '.$db->q($this->categoryId['aktiv']));
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$menutype['aktiv'] = $db->loadResult();
+		
+		$params = JComponentHelper::getParams( 'com_hbmanager' );
+		$menuYouth = $params->get( 'menuYouth' );
+		if ($menuYouth !== 'ONLY1')  {
+			$query = $db->getQuery(true);
+			$query->select($db->qn('menutype'));
+			$query->from('#__menu');
+			$query->where($db->qn('id').' = '.$db->q($this->categoryId['jugend']));
+			//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+			$db->setQuery($query);
+			$menutype['jugend'] = $db->loadResult();
+		} else {
+			$menutype['jugend'] = $menutype['aktiv'];
+		}
+		
+		//echo __FUNCTION__.'<pre>';print_r($alias); echo'</pre>';
+		
+		return $this->categoryMenutype = $menutype;
 	}
 	
 	function getTeams()
@@ -56,6 +108,67 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 //			$teams = self::getEmptyTeam();
 //		}
 		//echo __FUNCTION__.'<pre>';print_r($teams); echo'</pre>';
+		$aliases = self::getMenuAliases();
+		$teams = self::addCheckboxFlags($teams, $aliases);
+		//echo __FUNCTION__.'<pre>';print_r($teams); echo'</pre>';
+		return $teams;
+	}
+	
+	protected function getMenuAliases()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->qn('alias').', '.$db->qn('id'));
+		$query->from('#__menu');
+		$query->where($db->qn('parent_id').' IN ('.
+				$db->q($this->categoryId['aktiv']).','.$db->q($this->categoryId['jugend']).')');
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		//$aliases = $db->loadColumn(0); // without sub menu aliases
+		$aliases = self::addSubMenuAliases($db->loadColumn(1));
+		//echo __FUNCTION__.'<pre>';print_r($aliases); echo'</pre>';
+		return $aliases;
+	}
+	
+	protected function addSubMenuAliases($ids)
+	{
+		$ids = array_merge($ids, $this->categoryId);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->qn('alias').', '.$db->qn('id'));
+		$query->from('#__menu');
+		$query->where($db->qn('parent_id').' IN ('.implode(',', $ids).')');
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$aliases = $db->loadColumn();
+		//echo __FUNCTION__.'<pre>';print_r($aliases); echo'</pre>';
+		return $aliases;
+	}
+	
+	protected function addCheckboxFlags($teams, $aliases)
+	{
+		foreach ($teams as &$team) {
+			//echo __FUNCTION__.'<pre>';print_r($team); echo'</pre>';
+			$team->menus = null;
+			foreach ($aliases as $alias) {
+				// TODO 
+				if (strpos($alias, $team->alias) !== false ) {
+					if (strcmp($alias, $team->alias) === 0) {
+						$team->menus['add][team'] = true;
+					} 
+					if (strpos($alias, 'spieler') !== false ) {
+						$team->menus['add][players'] = true;
+					} 
+					if (strpos($alias, 'berichte') !== false ) {
+						$team->menus['add][reports'] = true;
+					} 
+					if (strpos($alias, 'tore') !== false ) {
+						$team->menus['add][goals'] = true;
+					} 
+				}
+			}
+		}
+		//echo __FUNCTION__.'<pre>';print_r($teams); echo'</pre>';
 		return $teams;
 	}
 	
@@ -65,32 +178,13 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select($db->qn('id').', '.$db->qn('alias'));
 		$query->from('#__menu');
-		$query->where($db->qn('menutype').' = '.$db->q('teams'));
+		//$query->where($db->qn('menutype').' = '.$db->q('teams'));
 		$query->where($db->qn('alias').' = '.$db->q($alias));
 		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$id = $db->loadResult();
 		//echo __FUNCTION__.'<pre>';print_r($id); echo'</pre>';
 		return $id;
-	}
-	
-	function setCategoryIds()
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->qn('id').', '.$db->qn('alias'));
-		$query->from('#__menu');
-		$query->where($db->qn('menutype').' = '.$db->q('teams'));
-		$query->where($db->qn('level').' = 1');
-		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$result = $db->loadAssocList();
-		//echo __FUNCTION__.'<pre>';print_r($result); echo'</pre>';
-		foreach ($result as $value)
-		{
-			$id[$value['alias']] = $value['id'];
-		}
-		return $this->categoryId = $id;
 	}
 	
 	function setComponentId()
@@ -132,6 +226,7 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 		{
 			//echo __FUNCTION__.'<pre>';print_r($team); echo'</pre>';
 			if (!empty($team['add'])) {
+				$team['menutype'] =  $this->categoryMenutype[$team['kategorie']];
 				$team['parentId'] = $this->categoryId[$team['kategorie']];
 				$team['alias'] = strtolower($team['kuerzel']);
 				$team['title'] =  $team['mannschaft'];
@@ -150,11 +245,14 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 			if ($key != 'team')
 			{
 				$submenu = array();
+				$submenu['menutype'] =  $team['menutype'];
 				$submenu['title'] =  $this->titles[$key];
 				$submenu['alias'] = $team['alias'].$this->alias[$key];
 				$submenu['kuerzel'] = $team['kuerzel'];
 				$submenu['parentId'] = $team['id'];
 				$submenu['id'] = self::getMenuId($submenu['alias']);
+				$submenu['view'] = $key;
+				//echo __FUNCTION__.'<pre>';print_r($submenu); echo'</pre>';
 				self::addItem($submenu);
 			}
 		}
@@ -163,7 +261,7 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 	function addItem ($team)
 	{
 		//echo __FUNCTION__.'<pre>';print_r($team); echo'</pre>';
-		$table = JTable::getInstance('Teammenu','HbmanagerTable');
+		$table = JTable::getInstance('Menu', 'JTable');
 		if (!empty($team['id'])) {
 			$table->load($team['id']);
 		}
@@ -185,11 +283,12 @@ class HbmanagerModelHbteammenus extends JModelLegacy
 	
 	protected function getValues($team) {
 		$value = array();
-		$value['menutype'] =  'teams';
+		$value['menutype'] =  $team['menutype'];
 		$value['title'] =  $team['title'];
 		$value['alias'] =  $team['alias'];
 		$value['note'] =  '';
-		$value['link'] =  'index.php?option=com_hbteam&view=hbteam';
+		$view = isset($team['view']) ? $team['view'] : '';
+		$value['link'] =  'index.php?option=com_hbteam&view=hbteam'.$view;
 		$value['type'] =  'component';
 		$value['component_id'] =  $this->componentId;
 		$value['template_style_id'] =  0;

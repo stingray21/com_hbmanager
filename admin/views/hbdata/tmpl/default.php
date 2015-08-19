@@ -6,7 +6,6 @@ $tz = true; //true: user-time, false:server-time
 
 JToolBarHelper::preferences('com_hbmanager');
 
-
 // Button
 echo '<a id="hvwupdateall" class="hbbutton" href="'.
 		JRoute::_('index.php?option=com_hbmanager&task=updateData&teamkey=all').
@@ -14,7 +13,7 @@ echo '<a id="hvwupdateall" class="hbbutton" href="'.
 
 echo '<div class="clr"></div>';
 
-echo '<p>no JavaScript</p>';
+echo '<h3>no JavaScript</h3>';
 
 echo '<table id="hvwupdate">';
 echo '<tr><th>Mannschaft</th><th>letztes Update</th><th></th></tr>'."\n";
@@ -43,3 +42,7 @@ foreach ($this->teams as $team)
 }
 
 echo '</table>';
+
+echo '<a id="hvwupdateall" href="'.
+		JRoute::_('index.php?option=com_hbmanager&task=showData').
+		'">'.JText::_('COM_HBMANAGER_DATA_SHOW_JS_LINK').'</a>';

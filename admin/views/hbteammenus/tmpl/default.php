@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+JToolBarHelper::preferences('com_hbmanager');
+
 $config = new JConfig();
 $user = JFactory::getUser();
 $userid = $user->id;
@@ -51,12 +53,15 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 				echo $team->mannschaft;
 				echo '</td>';
 				foreach ($form->getFieldset('team') as $field) {
+					//echo __FILE__.' - '.__LINE__.'<pre>';print_r($field->fieldname); echo'</pre>';
 					echo "\t".'<td>';
-					if (property_exists($team, $field->fieldname )) {
-						$field->setValue($team->{$field->fieldname});
+					
+					if (strpos($field->fieldname, 'add][') !== false ) {
+						$value = isset($team->menus[$field->fieldname]) ? true : false;
+					} else {
+						$value = $team->{$field->fieldname};
 					}
-					//echo __FILE__.' - '.__LINE__.'<pre>';print_r($field); echo'</pre>';
-					$input = $field->input;					
+					$input = $form->getInput($field->fieldname, 'hbteammenus', $value );
 					echo hbhelper::formatInput($input, $i);
 					echo '</td>'."\n";
 				}		

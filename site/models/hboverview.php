@@ -8,6 +8,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbprevnext.php';
 class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 {	
 	protected $currGames = array();
+	private $season;
 	
 	function __construct() 
 	{
@@ -16,7 +17,20 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$this->dates->currStart = null;
 		$this->dates->currEnd = null;
 		
+		self::setSeason();
 	}
+	
+	protected function setSeason()
+    {
+		$year = strftime('%Y');
+		if (strftime('%m') < 8) {
+			$year = $year-1;
+		}
+		
+		$season = $year."-".($year+1);
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($season);echo'</pre>';
+		$this->season = $season;
+    }
 	
 	function getTeams()
 	{
@@ -64,6 +78,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$query->from($db->qn('hb_spiel'));
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where($db->qn('Kuerzel').' = '.$db->q($team->kuerzel));
+		$query->where($db->qn('saison').' = '.$db->q($this->season));
 		$query->order($db->qn('datumZeit'));
 		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);

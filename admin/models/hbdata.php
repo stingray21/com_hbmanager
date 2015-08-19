@@ -156,12 +156,13 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$searchMarker = array('</td>', '</tr>',"\n" ,"\t");
 		$replaceMarker = array('||', '&&', '', '');
 		$source = str_replace($searchMarker, $replaceMarker ,$source);
-
+		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($source); echo '</pre>';
 		$source = strip_tags($source);
 
-		$search = array(', ');
-		$replace = array('||');
-		$source = str_replace($search, $replace ,$source);
+		// split date field
+		//$search = array(', ');
+		//$replace = array('||');
+		//$source = str_replace($search, $replace ,$source);
 
 		//echo $source;
 
@@ -181,21 +182,37 @@ class hbmanagerModelHbdata extends JModelLegacy
 
     protected function formatScheduleData($data)
     {
+		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($data); echo '</pre>';
 		foreach ($data as $key => $value) 
 		{
-			$value[3] = preg_replace('/(\d{2}).(\d{2}).(\d{2})/',
-										'20$3-$2-$1', $value[3]);
-			$value[4] = str_replace('h', ':00', $value[4]);
-			unset($value[7]);
-			unset($value[10]);
-			unset($value[13]);
-			$judging = self::getJudging($value[12],$value[9],$value[11]);
+			//if ($value[1] ==  73568) {echo '=> '.__FUNCTION__.'<br><pre>'; print_r($value); echo '</pre>';}
+			
+			//format date time
+			$pattern = "/\w{2}, (?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{2})(, (?P<time>\d{2}:\d{2})h)?/";
+			
+			//TODO
+			// try(maybe in formatGamesValues())
+			// $date = "6.1.2009 13:00+01:00";
+			// print_r(date_parse_from_format("j.n.Y H:iP", $date));
+			
+			
+			preg_match($pattern, $value[2], $match);
+			//echo __FUNCTION__.'<pre>';print_r($match); echo'</pre>';
+			$value[2] = '20'.$match['year'].$match['month'].$match['day'];
+			if (!isset($match['time'])) $match['time'] = '00:00';
+			$value[2] .= ' '.$match['time'].":00";
+			
+			unset($value[5]);
+			unset($value[8]);
+			unset($value[11]);
+			$judging = self::getJudging($value[10],$value[7],$value[9]);
 			$value[] = $judging['home']; 
 			$value[] = $judging['away'];
 			$value = array_values($value);
 			$data[$key] = $value;
 		}
-		//echo '=> model->$data <br><pre>'; print_r($data); echo '</pre>';
+		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($data); echo '</pre>';
+		//exit();
 		return $data;
     }
 
@@ -310,35 +327,33 @@ class hbmanagerModelHbdata extends JModelLegacy
 		if (trim($data[5]) != '') $value['hallenNummer'] = (int)$data[5];
 				else  $value['hallenNr'] = "NULL";
 		// Datum & Uhrzeit
-		if (trim($data[3]) != '' || trim($data[4]) != '') {	
-
-				$date = JFactory::getDate($data[3].' '.$data[4], 'Europe/Berlin' )
-								->toSql();
+		if (trim($data[2]) != '') {	
+				$date = JFactory::getDate($data[2], 'Europe/Berlin' )->toSql();
 				//echo '<p>HVW:'.$data[3].' '.$data[4].' -> in DB: '.$date."</p>";
 				$value['datumzeit'] = $db->q($date);
 		}
 		else  $value['datumzeit'] = "NULL";
 
-		$value['heim'] = $db->q(addslashes($data[6]));
-		$value['gast'] = $db->q(addslashes($data[7]));
+		$value['heim'] = $db->q(addslashes($data[4]));
+		$value['gast'] = $db->q(addslashes($data[5]));
 		// ToreHeim
-		if (trim($data[8]) != '') $value['toreHeim'] = (int)$data[8];
+		if (trim($data[6]) != '') $value['toreHeim'] = (int)$data[6];
 				else  $value['toreHeim'] = "NULL";
 		// ToreGast
-		if (trim($data[9]) != '') $value['toreGast'] = (int)$data[9];
+		if (trim($data[7]) != '') $value['toreGast'] = (int)$data[7];
 				else  $value['toreGast'] = "NULL";
 		// Bemerkung
-		if (trim($data[10]) != '') $value['bemerkung'] = $db->q($data[10]);
+		if (trim($data[8]) != '') $value['bemerkung'] = $db->q($data[8]);
 				else  $value['bemerkung'] = "NULL";
 		// WertungHeim
-		if (trim($data[11]) != '') $value['wertungHeim'] = (int)$data[11];
+		if (trim($data[9]) != '') $value['wertungHeim'] = (int)$data[9];
 				else  $value['wertungHeim'] = "NULL";
 		// WertungGast
-		if (trim($data[12]) != '') $value['wertungGast'] = (int)$data[12];
+		if (trim($data[10]) != '') $value['wertungGast'] = (int)$data[10];
 				else  $value['wertungGast'] = "NULL";
 		
 		// Team of own club
-		$ownTeam = self::checkIfOwnTeamIsPlaying($data[6], $data[7]);
+		$ownTeam = self::checkIfOwnTeamIsPlaying($data[4], $data[5]);
 		if ($ownTeam) $value['eigenerVerein'] = $ownTeam;
 				else  $value['eigenerVerein'] = "NULL";		
 
@@ -675,6 +690,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 				SELECT heim as mannschaft, kuerzel 
 				FROM hb_spiel
 				WHERE kuerzel = ".$db->q($teamkey)."
+				AND saison=".$db->q($this->season)." 
 				GROUP BY mannschaft
 				) AS m
 			LEFT JOIN
@@ -689,8 +705,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 				s1.wertungHeim hWertung, 
 				s1.wertungGast gWertung
 				FROM hb_spiel s1 
-				WHERE s1.wertungHeim IS NOT NULL && kuerzel = ".
-					$db->q($teamkey)."
+				WHERE s1.wertungHeim IS NOT NULL  
+					AND kuerzel = ".$db->q($teamkey)."
+					AND saison=".$db->q($this->season)." 
 
 				UNION 
 
@@ -704,8 +721,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 				s2.wertungGast hWertung, 
 				s2.wertungHeim gWertung 
 				FROM hb_spiel s2 
-				WHERE s2.wertungHeim IS NOT NULL && kuerzel = ".
-					$db->q($teamkey)."
+				WHERE s2.wertungHeim IS NOT NULL 
+					AND kuerzel = ".$db->q($teamkey)."
+					AND saison=".$db->q($this->season)." 
 			) AS s USING (mannschaft)
 
 			GROUP BY mannschaft 
@@ -851,6 +869,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 			FROM hb_spiel s1 
 			WHERE heim=".$db->q($team->mannschaft)."
 			AND gast=".$db->q($opponent->mannschaft)."
+			AND saison=".$db->q($this->season)." 
 			AND kuerzel=".$db->q($teamkey)." 
 
 			UNION 
@@ -865,11 +884,12 @@ class hbmanagerModelHbdata extends JModelLegacy
 			FROM hb_spiel s2 
 			WHERE gast=".$db->q($team->mannschaft)."
 			AND heim=".$db->q($opponent->mannschaft)."
+			AND saison=".$db->q($this->season)." 
 			AND kuerzel=".$db->q($teamkey)." 
 			) AS s 
 
 			GROUP BY mannschaft";
-//		echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
+		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
 		$db->setQuery($query);
 		$result = $db->loadObject();
 		//echo '<pre>direct comparison: ';print_r($result);echo'</pre>';

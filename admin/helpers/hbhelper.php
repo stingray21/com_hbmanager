@@ -36,7 +36,7 @@ abstract class HbHelper
 				$submenu == 'hboverview');
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_TEAMMENUS_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showTeamMenus',
-				$submenu == 'hboverview');
+				$submenu == 'hbteammenus');
 	}
 	
 	public static function formatInput($input, $i)
