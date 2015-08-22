@@ -29,7 +29,7 @@
 				name="add][team"
 				type="checkbox"
 				value="1" 
-				label="Manschaft" 
+				label="Mannschaft" 
 				description=""
 				default="0"
 			/>
@@ -45,7 +45,7 @@
 				name="add][reports"
 				type="checkbox"
 				value="1" 
-				label="Torschützen" 
+				label="Berichte" 
 				description=""
 				default="0"
 			/>
@@ -53,7 +53,7 @@
 				name="add][goals"
 				type="checkbox"
 				value="1" 
-				label="Berichte" 
+				label="Torschützen" 
 				description=""
 				default="0"
 			/>

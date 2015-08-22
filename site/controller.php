@@ -39,7 +39,7 @@ class HBmanagerController extends JControllerLegacy
 		
 		$view = $this->getView('hboverview','html');
 		$view->setModel($model);	
-		$view->setLayout('allGames');
+		$view->setLayout('allgames');
 		$view->display();
 		
 		// Set the submenu
@@ -52,7 +52,7 @@ class HBmanagerController extends JControllerLegacy
 	
 		$view = $this->getView('hboverview','html');
 		$view->setModel($model);	
-		$view->setLayout('homeGames');
+		$view->setLayout('homegames');
 		$view->display();
 		
 		// Set the submenu

@@ -131,6 +131,45 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $result;
 	}
 	
+	function getGameDays()
+	{
+		// current games
+		$currGames = self::getCurrGames();
+		//echo __FUNCTION__."<pre>"; print_r($currGames); echo "</pre>";
+		if (!empty($currGames))
+		{
+			$gameDay = new stdClass();
+			$gameDay->games = $currGames;
+			$gameDay->shortVar = 'curr';
+			$gameDay->languageVar = 'CURRENT';
+			$gameDays[] = $gameDay;
+		}
+		// previous games
+		$prevGames = self::getPrevGames();
+		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
+		if (!empty($prevGames))
+		{
+			$gameDay = new stdClass();
+			$gameDay->games = $prevGames;
+			$gameDay->shortVar = 'prev';
+			$gameDay->languageVar = 'RECENT';
+			$gameDays[] = $gameDay;
+		}
+		// next games
+		$nextGames = self::getNextGames();
+		//echo __FUNCTION__."<pre>"; print_r($nextGames); echo "</pre>";
+		if (!empty($nextGames))
+		{
+			$gameDay = new stdClass();
+			$gameDay->games = $nextGames;
+			$gameDay->shortVar = 'next';
+			$gameDay->languageVar = 'UPCOMING';
+			$gameDays[] = $gameDay;
+		}
+		//echo __FUNCTION__."<pre>"; print_r($gameDays); echo "</pre>";
+		return $gameDays;
+	}
+	
 	function getCurrentGameDates()
 	{
 		//echo __FUNCTION__.':<pre>';print_r($this->dates->today);echo'</pre>';

@@ -23,25 +23,23 @@ class HbManagerViewHbOverview extends JViewLegacy
 		$model->setDates();
 		
 		// current games
-		$currGames = $model->getCurrGames();
-		$this->assignRef('currGames', $currGames);
-		//echo '=> view->currGames<br><pre>'; print_r($currGames);echo '</pre>';
-		
-		// previous games
-		$prevGames = $model->getPrevGames();
-		$this->assignRef('prevGames', $prevGames);
-		//echo '=> view->prevGames<br><pre>'; print_r($prevGames);echo '</pre>';
-		
-		// next games
-		$nextGames = $model->getNextGames();
-		$this->assignRef('nextGames', $nextGames);
-		//echo '=> view->nextGames<br><pre>'; print_r($nextGames);echo '</pre>';
+		$gameDays = $model->getGameDays();
+		$this->assignRef('gameDays', $gameDays);
+		//echo '=> view->gameDays<br><pre>'; print_r($gameDays);echo '</pre>';
 		
 		$teams = $model->getTeamArray();
 		$this->assignRef('teams', $teams);
 		$homegames = $model->getHomeGames();
 		$this->assignRef('homegames', $homegames);
 		//echo '=> view->$teams <br><pre>'; print_r($teams); echo '</pre>';
+		
+		// TODO time zone -> backend option
+		$timezone = false; //true: user-time, false:server-time
+		$this->assignRef('timezone', $timezone);
+		
+		// TODO show goal difference -> backend option
+		$showDiff = true;
+		$this->assignRef('showDiff', $showDiff);
 		
 		JHtml::stylesheet('com_hbmanager/site.stylesheet.css', array(), true);
 		JHtml::stylesheet('com_hbmanager/hboverview.stylesheet.css', array(), true);

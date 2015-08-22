@@ -328,7 +328,9 @@ class hbmanagerController extends JControllerAdmin
 		$model = $this->getModel('hbteammenus');
 		$post = JRequest::get('post');
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
-		$model->addMenuItems($post['hbteammenus']);
+		if (isset($post['hbteammenus'])) {
+			$model->addMenuItems($post['hbteammenus']);
+		}
 		$view = $this->getView('hbteammenus','html');
 		$view->setModel($model, true);
 		$view->display();
