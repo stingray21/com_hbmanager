@@ -281,12 +281,13 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 					$db->q('%k:%i').') AS '.$db->qn('zeit'));
 		$query->from($db->qn('hb_spiel'));
 		$teamNames = self::getTeamNames();
+		//echo __FUNCTION__."<pre>"; print_r($teamNames); echo "</pre>";
 		if (!empty($teamNames)) {
 			$query->where($db->qn('Heim').' IN '.$teamNames);
 		}
 		$query->where($db->qn('hallenNr').' IN (7005, 7014, 7003)');
 		$query->join('INNER',$db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
-		$query->join('INNER',$db->qn('hb_halle').' USING ('.$db->qn('hallenNr').')');
+		$query->join('LEFT',$db->qn('hb_halle').' USING ('.$db->qn('hallenNr').')');
 		$query->order($db->qn('datumZeit'));
 		//echo __FUNCTION__.':<pre>'.$query.'</pre>';
 		$db->setQuery($query);
