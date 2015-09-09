@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 echo "\n\n".'<h1>'.JText::_('COM_HBMANAGER_OVERVIEW_DEFAULT_TITLE').'</h1>';
 
-echo "\n\n".'<div>';
+echo "\n\n".'<div id="hboverview">';
 
 foreach ($this->gameDays as $gameDay)
 {
@@ -40,7 +40,7 @@ foreach ($this->gameDays as $gameDay)
 
 					<div>
 					<a href="<?php echo $game->hvwLink;?>" target="_BLANK" alt="zur HVW-Seite">HVW</a>
-					<a id="btnShow_curr-<?php$game->kuerzel?>" class="btnShowTable"><?php 
+					<a id="btnShow_curr-<?php echo $game->kuerzel?>" class="btnShowTable"><?php 
 						echo JText::_('COM_HBMANAGER_OVERVIEW_STANDINGS');?></a>
 					<?php
 	//				echo '<a id="report_'.$game->kuerzel.
@@ -49,7 +49,7 @@ foreach ($this->gameDays as $gameDay)
 					?>
 					</div>
 
-					<table id="standings_curr-<?php echo $game->kuerzel;?>" data-state="hidden">
+					<table id="standings_curr-<?php echo $game->kuerzel;?>" class="miniStandings" data-state="hidden">
 						<thead>			
 						<tr>
 							<th><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_RANK');?></th>

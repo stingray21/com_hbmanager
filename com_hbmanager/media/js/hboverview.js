@@ -3,6 +3,7 @@ jQuery(document).ready(function($){
 		var btnId = this.id;
 		//console.log(btnId);
 		var key = btnId.replace("btnShow", "standings");
+		//console.log(key);
         var currTable = document.getElementById(key);
 		//console.log(key);
 		if (currTable.getAttribute('data-state') === 'hidden') {
@@ -14,7 +15,7 @@ jQuery(document).ready(function($){
         }
         else {
             currTable.setAttribute('data-state', 'hidden');
-            $('#'+key).fadeOut();
+			$('#'+key).fadeOut();
             //this.innerHTML = 'Tabelle einblenden';
             //this.style.background = 'transparent'; 
             //this.style.color = '#000';
