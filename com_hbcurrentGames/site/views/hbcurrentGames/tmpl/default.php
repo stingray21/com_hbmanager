@@ -2,7 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
+$datePattern = 'D, d.m.Y, H:i \U\h\r';
+$timePattern = 'H:i \U\h\r';
 
 echo '<h1>'.JTEXT::_('COM_HBCURRENTGAMES_TITLE').'</h1>'."\n\n";
 echo "\n".'<div id="HBcurrentGames">';
@@ -15,18 +16,17 @@ if (!empty($this->prevGames))
 	foreach ($this->prevGames as $game)
 	{
 		echo "\n\t\t\t";
-		echo '<h4>';
+		echo '<dl class="currentGames">';
+		echo '<dt>';
 		echo $game->mannschaft;
-		echo '</h4>';
-		echo '<table class="currentGames">';
-		echo '<tr>';
-		echo '<td>'.$game->heim.'</td>';
-		echo '<td>'.$game->gast.'</td>';
-		echo '<td>'.$game->toreHeim.'</td>';
-		echo '<td>:</td>';
-		echo '<td>'.$game->toreGast.'</td>';
-		echo '</tr>';
-		echo '</table>';
+		echo '</dt>';
+		echo '<dd>';
+		echo '<span class="heim">'.$game->heim.'</span>';
+		echo '<span class="gast">- '.$game->gast.'</span>';
+		echo '<span class="toreHeim">'.$game->toreHeim.'</span>';
+		echo '<span class="toreGast">:'.$game->toreGast.'</span>';
+		echo '</dd>';
+		echo '</dl>';
 	}
 }
 
@@ -40,16 +40,23 @@ if (!empty($this->nextGames))
 	foreach ($this->nextGames as $game)
 	{
 		echo "\n\t\t\t";
-		echo '<h4>';
+		echo '<dl class="currentGames">';
+		echo '<dt>';
 		echo $game->mannschaft;
-		echo '</h4>';
-		echo '<table class="currentGames">';
-		echo '<tr>';
-		echo '<td>'.$game->uhrzeit.'</td>';
-		echo '<td>'.$game->heim.'</td>';
-		echo '<td>'.$game->gast.'</td>';
-		echo '</tr>';
-		echo '</table>';
+		echo '</dt>';
+		echo '<dd>';
+		echo '<span class="zeit">';
+		echo JHTML::_('date', $game->datum.' '.$game->uhrzeit , $datePattern, 'UTC');
+		echo '</span>';
+		echo '<span class="heim">'.$game->heim.'</span>';
+		echo '<span class="gast">'.$game->gast.'</span>';
+		echo '<br />'.$game->hallenName.
+			' in'.
+			//' '.$game->plz.
+			' '.$game->stadt.
+			' ('.$game->hallenNummer.')';
+		echo '</dd>';
+		echo '</dl>';
 	}
 }
 
@@ -62,23 +69,25 @@ if (!empty($this->homeGames))
 	foreach ($this->homeGames as $game)
 	{
 		echo "\n\t\t\t";
-		echo '<h4>';
+		echo '<dl class="currentGames">';
+		echo '<dt>';
 		echo $game->mannschaft;
-		echo '</h4>';
-		echo '<table class="currentGames">';
-		echo '<tr>';
-		echo '<td>'.$game->uhrzeit.'</td>';
-		echo '<td>'.$game->heim.'</td>';
-		echo '<td>'.$game->gast.'</td>';
-		echo '</tr>';
-		echo '</table>';
+		echo '</dt>';
+		echo '<dd>';
+		echo '<span class="zeit">';
+		echo JHTML::_('date', $game->uhrzeit , $timePattern, 'UTC');
+		echo '</span>';
+		echo '<span class="heim">'.$game->heim.'</span>';
+		echo '<span class="gast">'.$game->gast.'</span>';
+		echo '</dd>';
+		echo '</dl>';
 	}
 }
 
 echo '</div>'."\n";
 //[kuerzel] => mJD2
 //[spielID] => 136
-//[spielIDhvw] => 72931
+//[spielIdHvw] => 72931
 //[hallenNummer] => 7014
 //[datum] => 2014-10-03
 //[uhrzeit] => 10:00:00

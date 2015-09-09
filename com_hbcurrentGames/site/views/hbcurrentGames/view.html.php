@@ -18,15 +18,17 @@ class HBcurrentGamesViewHBcurrentGames extends JViewLegacy
 		$model = $this->getModel('hbcurrentGames');
 		//$this->assignRef('model', $model);
 
-		$prevGames = $model->getPrevGames('');
+		$prevGames = $model->getGames($model->getPrevGamesDates(), 'reihenfolge');
 		$this->assignRef('prevGames', $prevGames);
 		//echo "<pre>"; print_r($prevGames); echo "</pre>";
 		
-		$nextGames = $model->getNextGames('');
+		$nextGames = $model->getGames($model->getNextGamesDates(), 
+			['datum', 'uhrzeit']);
 		$this->assignRef('nextGames', $nextGames);
 		//echo "<pre>"; print_r($nextGames); echo "</pre>";
 		
-		$homeGames = $model->getHomeGames('');
+		$homeGames = $model->getGames($model->getHomeGamesDates(), 
+			['datum', 'uhrzeit'], true);
 		$this->assignRef('homeGames', $homeGames);
 		//echo "<pre>"; print_r($homeGames); echo "</pre>";
 		
