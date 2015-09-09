@@ -36,10 +36,11 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		$todaydate = strftime("%Y-%m-%d", time());
 		//echo $todaydate = "2014-09-16";
 
-		$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
+		$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+			.' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') BETWEEN '.
 			$db->q(self::getPrevLimit($todaydate)).
 			" AND " . $db->q($todaydate) .
-			" ORDER BY `datum` ASC LIMIT 1";
+			" ORDER BY DATE(".$db->qn('datumZeit').") ASC LIMIT 1";
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$result = $db->loadResult();
@@ -47,9 +48,10 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 			$dates['startdate'] = $result;
 		}
 		else {
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` < ".
-					$db->q(self::getPrevLimit($todaydate)).
-					" ORDER BY `datum` DESC LIMIT 1";
+			$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+				.' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') < '.
+				$db->q(self::getPrevLimit($todaydate)).
+				" ORDER BY DATE(".$db->qn('datumZeit').") DESC LIMIT 1";
 			//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 			$db->setQuery($query);
 			$result = $db->loadResult();
@@ -60,9 +62,10 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		else {
 			$dates['startdate'] = self::getPrevLimit($todaydate);
 		}
-		$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
+		$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
+				.' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$dates['startdate']. " AND " . $db->q($todaydate) . 
-				" ORDER BY `datum` DESC LIMIT 1";
+				" ORDER BY DATE(".$db->qn('datumZeit').") DESC LIMIT 1";
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$dates['enddate'] = $db->loadResult();
@@ -86,10 +89,10 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		$todaydate = strftime("%Y-%m-%d", time());
 		//echo $todaydate = "2013-10-23";
 
-		$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
+		$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') BETWEEN '.
 			$db->q($todaydate). " AND " . 
 			$db->q(self::getNextLimit($todaydate)).
-			" ORDER BY `datum` ASC LIMIT 1";
+			" ORDER BY DATE(".$db->qn('datumZeit').") ASC LIMIT 1";
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
 		$result = $db->loadResult();
@@ -97,18 +100,18 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 			$dates['startdate'] = $result;
 		}
 		else {
-			$query = "SELECT `datum` from `hb_spiel` WHERE `datum` > ".
+			$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') > '.
 					$db->q(self::getNextLimit($todaydate)).
-					" ORDER BY `datum` ASC LIMIT 1";
+					" ORDER BY DATE(".$db->qn('datumZeit').") ASC LIMIT 1";
 			//echo '=> model->$query <br><pre>".$query."</pre>';
 			$db->setQuery($query);
 			$dates['startdate'] = $db->loadResult();
 		}
-		$query = "SELECT `datum` from `hb_spiel` WHERE `datum` BETWEEN ".
+		$query = 'SELECT DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').' from `hb_spiel` WHERE DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$db->q($dates['startdate']) . " AND " . 
 				$db->q(strftime("%Y-%m-%d", strtotime('next friday', 
 					strtotime($dates['startdate'])))).
-				" ORDER BY `datum` DESC LIMIT 1";
+				" ORDER BY DATE(".$db->qn('datumZeit').") DESC LIMIT 1";
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
 		$dates['enddate'] = $db->loadResult();
@@ -123,12 +126,12 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		$todaydate = strftime("%Y-%m-%d", time());
 		//echo $todaydate = "2013-10-23";
 		
-		$query->select($db->qn('datum'));
+		$query->select('DATE('.$db->qn('datumZeit').')');
 		$query->from($db->qn('hb_spiel'));
-		$query->where($db->qn('datum').' > '.
+		$query->where('DATE('.$db->qn('datumZeit').') > '.
 			$db->q(self::getNextLimit($todaydate)), 'AND' );
-		$query->where($db->qn('hallenNummer').' = '.$db->q(7014));
-		$query->order($db->qn('datum').' ASC LIMIT 1');
+		$query->where($db->qn('hallenNr').' = '.$db->q(7014));
+		$query->order('DATE('.$db->qn('datumZeit').') ASC LIMIT 1');
 
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
@@ -136,14 +139,14 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		$dates['startdate'] = $result;
 		
 		$query = $db->getQuery(true);
-		$query->select($db->qn('datum'));
+		$query->select('DATE('.$db->qn('datumZeit').')');
 		$query->from($db->qn('hb_spiel'));
-		$query->where($db->qn('datum').' BETWEEN '.
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
 				$db->q($dates['startdate']) . " AND " . 
 				$db->q(strftime("%Y-%m-%d", strtotime('next friday', 
 					strtotime($dates['startdate'])))), 'AND' );
-		$query->where($db->qn('hallenNummer').' = '.$db->q(7014));
-		$query->order($db->qn('datum').' DESC LIMIT 1');
+		$query->where($db->qn('hallenNr').' = '.$db->q(7014));
+		$query->order('DATE('.$db->qn('datumZeit').') DESC LIMIT 1');
 		
 		//echo '=> model->$query <br><pre>".$query."</pre>';
 		$db->setQuery($query);
@@ -158,8 +161,8 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 		$query = $db->getQuery(true);
 		$query->select($db->qn('kuerzel').', '.
 			$db->qn('spielIdHvw').', '.
-			$db->qn('datum').', '.
-			$db->qn('uhrzeit').', '.  
+			'DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').', '.
+			'TIME_FORMAT('.$db->qn('datumZeit').','.$db->q('%k:%i').') AS '.$db->qn('zeit').', '.  
 			$db->qn('heim').', '.  
 			$db->qn('gast').', '. 
 			$db->qn('toreHeim').', '.
@@ -169,20 +172,20 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 			$db->qn('mannschaft').', '.
 			$db->qn('hb_mannschaft').'.'.$db->qn('name').' AS '.$db->qn('name').', '.
 			$db->qn('nameKurz').', '.
-			$db->qn('ligaKuerzel').', '.
+			'hb_spiel.'.$db->qn('ligaKuerzel').', '.
 			$db->qn('liga').', '.
 			$db->qn('geschlecht').', '.
 			$db->qn('jugend').', '.
 			$db->qn('hvwLink').', '.
-			$db->qn('hb_halle').'.'.$db->qn('name').' AS '.$db->qn('hallenName').', '.
-			$db->qn('hallenNummer').', '.
+			$db->qn('hallenName').', '.
+			$db->qn('hallenNr').', '.
 			$db->qn('kurzname').', '.
 			$db->qn('land').', '.
 			$db->qn('plz').', '.
 			$db->qn('stadt').', '.
 			$db->qn('strasse').', '.
 			$db->qn('telefon').', '.
-			$db->qn('bezirkNummer').', '.
+			$db->qn('bezirkNr').', '.
 			$db->qn('bezirk').', '.
 			$db->qn('freigabeVerband').', '.
 			$db->qn('freigabeBezirk').', '.
@@ -190,14 +193,14 @@ class HBcurrentGamesModelHBcurrentGames extends JModelLegacy
 			);
 		//$query->select('CONCAT('.$db->qn('datum').", ' ', ".$db->qn('zeit').') AS datum');
 		$query->from('hb_spiel') ;
-		$query->where($db->qn('datum').' BETWEEN '.
+		$query->where('DATE('.$db->qn('datumZeit').') BETWEEN '.
 			$db->q($dates['startdate']).' AND '.
 			$db->q($dates['enddate']));
 		if ($home) {
-			$query->where($db->qn('hallenNummer').' = '.$db->q(7014));
+			$query->where($db->qn('hallenNr').' = '.$db->q(7014));
 		}
 		$query->join('INNER',$db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
-		$query->join('LEFT',$db->qn('hb_halle').' USING ('.$db->qn('hallenNummer').')');
+		$query->join('LEFT',$db->qn('hb_halle').' USING ('.$db->qn('hallenNr').')');
 		$query->order($db->qn($order));
 		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
 		$db->setQuery($query);

@@ -23,16 +23,16 @@ class HBcurrentGamesViewHBcurrentGames extends JViewLegacy
 		//echo "<pre>"; print_r($prevGames); echo "</pre>";
 		
 		$nextGames = $model->getGames($model->getNextGamesDates(), 
-			['datum', 'uhrzeit']);
+			['datum', 'zeit']);
 		$this->assignRef('nextGames', $nextGames);
 		//echo "<pre>"; print_r($nextGames); echo "</pre>";
 		
 		$homeGames = $model->getGames($model->getHomeGamesDates(), 
-			['datum', 'uhrzeit'], true);
+			['datum', 'zeit'], true);
 		$this->assignRef('homeGames', $homeGames);
 		//echo "<pre>"; print_r($homeGames); echo "</pre>";
 		
-		JHtml::stylesheet('com_hbcurrentGames/site.stylesheet.css', array(), true);
+		JHtml::stylesheet('com_hbcurrentgames/site.stylesheet.css', array(), true);
 		
 		
 		// Check for errors.

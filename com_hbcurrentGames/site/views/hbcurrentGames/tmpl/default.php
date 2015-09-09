@@ -46,7 +46,7 @@ if (!empty($this->nextGames))
 		echo '</dt>';
 		echo '<dd>';
 		echo '<span class="zeit">';
-		echo JHTML::_('date', $game->datum.' '.$game->uhrzeit , $datePattern, 'UTC');
+		echo JHTML::_('date', $game->datum.' '.$game->zeit , $datePattern, 'UTC');
 		echo '</span>';
 		echo '<span class="heim">'.$game->heim.'</span>';
 		echo '<span class="gast">'.$game->gast.'</span>';
@@ -54,7 +54,7 @@ if (!empty($this->nextGames))
 			' in'.
 			//' '.$game->plz.
 			' '.$game->stadt.
-			' ('.$game->hallenNummer.')';
+			' ('.$game->hallenNr.')';
 		echo '</dd>';
 		echo '</dl>';
 	}
@@ -75,7 +75,7 @@ if (!empty($this->homeGames))
 		echo '</dt>';
 		echo '<dd>';
 		echo '<span class="zeit">';
-		echo JHTML::_('date', $game->uhrzeit , $timePattern, 'UTC');
+		echo JHTML::_('date', $game->zeit , $timePattern, 'UTC');
 		echo '</span>';
 		echo '<span class="heim">'.$game->heim.'</span>';
 		echo '<span class="gast">'.$game->gast.'</span>';
