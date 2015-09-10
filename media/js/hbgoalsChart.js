@@ -1,16 +1,18 @@
 jQuery(document).ready(function($){
-	console.log(teamkey);
-	console.log(season);
-	
-	d3.selection.prototype.moveToFront = function() {
-	  return this.each(function(){
-		this.parentNode.appendChild(this);
-	  });
-	};
+	// console.log(teamkey);
+	// console.log(season);
 
-	var margin = {top: 20, right: 150, bottom: 120, left: 50},
-		width = 550 - margin.left - margin.right,
-		height = 400 - margin.top - margin.bottom;
+	// dimensions
+	var margin = {top: 30, right: 150, bottom: 120, left: 50};
+	var width = parseInt(d3.select('#chartgoals').style('width'), 10);
+	var height = 400;
+	width = width - margin.left - margin.right;
+	height = height - margin.top - margin.bottom;
+	//console.log(width);
+
+	// time duration for changing dataset
+	var yDelay = 500;
+	var emphasizeDelay = 100;
 
 	var x = d3.scale.ordinal()
 		.rangePoints([0, width]);
@@ -18,422 +20,401 @@ jQuery(document).ready(function($){
 	var y = d3.scale.linear()
 		.range([height, 0]);
 
+	var color = d3.scale.category20c();
+
+	var gridColor = "#ddd";
+	var gridStroke = "2, 2";
+
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient("bottom");
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
+		.tickSize(-10, 0, 0)
 		.orient("left");
 
+	// using ticks as workaround for grid lines
 	var xGrid = d3.svg.axis()
 		.scale(x)
 		.orient("bottom")
 		.tickSize(-height, 0, 0)
 		.tickFormat("")
 		.ticks(10);
-	
+
+	// using ticks as workaround for grid lines
 	var yGrid = d3.svg.axis()
 		.scale(y)
 		.orient("left")
 		.tickSize(-width, 0, 0)
 		.tickFormat("")
 		.ticks(10);
-	
 
-	var color = d3.scale.category20c();
+	// variable as switch for what data should be displayed
+	var yMode = getYMode();
 
-	var div = d3.select("#chartgoals").append("div")   
-		.attr("class", "d3tooltip")               
-		.style("opacity", 0);
-	
-	var svg = d3.select("#chartgoals").append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-	.append("g")											// Append 'g' to the html 'body' of the web page
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // in a place that is the actual area for the graph
-
-		
+	// line, that is bound to game data
 	var valueline = d3.svg.line()
-		//.defined(function(d) { return (d[k] !== null); })
-		.x(function(d) { return x(d.game); })
-		.y(function(d) { return y(d.goals); });
-	
-	var valuelineTotal = d3.svg.line()
-		//.defined(function(d) { return (d[k] !== null); })
-		.x(function(d) { return x(d.game); })
-		.y(function(d) { return y(d.goalsTotal); });
-	
-	var url = "index.php?option=com_hbteam&task=getGoals4Chart&format=raw" 
+		.x(function(d) { return x(d.x); })
+		.y(function(d) { return y(d.y); });
+
+	// create the svg for chart
+	var chartsvg = d3.select("#chartgoals").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.style("fill", "transparent");
+
+	// svg background
+	var chartBackground = chartsvg.append("rect")
+		.attr("width", "100%")
+		.attr("height", "100%");
+
+	// Append 'g' in a place that is the actual area for the graph
+	var chart = chartsvg.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	// group for legend
+	var legend;
+
+	// url to get the chart data
+	var url = "index.php?option=com_hbteam&task=getGoals4Chart&format=raw"
 			+ "&teamkey=" + teamkey + "&season=" + season;
 	//console.log(url);
+
 	d3.json(url, function(error, data) {
 		//console.log(data);
-		
-		var keys = [];
-		for (var key in data){
-			if (data.hasOwnProperty(key) && key !== 'game') {
-				keys.push(key);
-			}
-		}
-		color.domain(keys);
-		//console.log(keys);
-		
-		
-		function getMax(y) {
-			var max = [];
-			keys.forEach(function(k) {
-				var arr = data[k];
-				max.push( Math.max.apply(null, arr.map(function(item){
-					return item[y];
-				})));
-			});
-			return d3.max(max);
-		}
-		var maxSingle = getMax("goals"); 
-		//console.log(maxSingle);
-		var maxTotal = getMax("goalsTotal"); 
-		
-		
-		
-		x.domain(data.game);
-		y.domain([0, maxSingle]);
-		// hardcoded for now, use d3.max(data, function(d) { return Math.max(d.alpha.yvalue, d.beta.yvalue, ...); })
-		
-		var legend = svg.append("g")
-			.attr("class", "legend")
-			.attr("width", 50)
-			.attr("height", 50)
-		.selectAll("g")
-			.data(color.domain().slice().reverse())
-		.enter().append("g")
-			.attr("transform", function(d, i) { return "translate(" + (width + 20) + "," + i * 15 + ")"; });
+		x.domain(data.games.map(function(game) {return game.name;}));
+		y.domain([0, getMaxY(data.players)]);
 
-		legend.append("rect")
-			.attr("width", 8)
-			.attr("height", 8)
-			.style("fill", color);
+		// draw chart
+		buildAxis();
+		buildLegend(data.players);
+		populateData(data);
 
-		legend.append("text")
-			.attr("x", 14)
-			.attr("y", 9)
-			.attr("dy", "-.25em")
-			.text(function(d) { 
-				var goalie = '';
-				if (data[d][0].goalie === "TW") goalie = " (TW)";
-				return data[d][0].name + goalie ; })
-			.on('mouseover', function(d){
-				d3.select("#pathid-"+d).transition()
-				  .duration(100)
-				  .style("stroke-width", 3); 
-				d3.selectAll(".dot."+d).transition()
-				  .duration(100)
-				  .attr("r", 4);
-				d3.selectAll(".dot.textbox."+d).transition()
-				  .duration(0)
-				  .attr("transform", "translate(0," + height + ")")
-				  .each("end",function() { 
-					  d3.select(this).transition()
-						.style("opacity", 0.9)
-						.duration(200);
-					});
-				d3.selectAll(".dot.text."+d).transition()
-				  .duration(0)
-				  .attr("transform", "translate(0," + height + ")")
-				  .each("end",function() { 
-					  d3.select(this).transition()
-						.style("opacity", 0.9)
-						.duration(200);
-					});
-				var sel = d3.selectAll("."+d);
-				sel.moveToFront();
-			})
-			.on('mouseout', function(d){
-				d3.select("#pathid-"+d).transition()
-				  .duration(100)
-				  .style("stroke-width", 1.5); 
-				d3.selectAll(".dot."+d).transition()
-				  .duration(100)
-				  .attr("r", 2);
-				d3.selectAll(".dot.textbox."+d).transition()
-				  .duration(200)
-				  .style("opacity", 0)
-				  .each("end",function() { 
-					  d3.select(this).transition()
-						.attr("transform", "translate(0,-" + height + ")")
-						.duration(0);
-					});
-				d3.selectAll(".dot.text."+d).transition()
-				  .duration(200)
-				  .style("opacity", 0)
-				  .each("end",function() { 
-					  d3.select(this).transition()
-						.attr("transform", "translate(0,-" + height + ")")
-						.duration(0);
-					});
-			});
+		// trigger to change the displayed dataset
+		// d3.selectAll("[name=mode]").on("change", function() {
+		d3.select("#hbgoalchart_chartmode").selectAll('input').on("change", function() {
+			yMode = this.value;
+			updateData(data, yDelay);
+		});
 
-		svg.append("g")
-			.attr("class", "x grid")
-			.attr("transform", "translate(0," + height + ")")
+		// resizing for responsive chart
+		d3.select(window).on('resize', function() { resize(data); });
+	});
+
+	function resize(data) {
+
+		// update width
+		var width = parseInt(d3.select('#chartgoals').style('width'), 10);
+		width = width - margin.left - margin.right;
+		// console.log(width);
+	
+		x.rangePoints([0, width]);
+		// y.range([height, 0]);
+
+		// resize the chart
+		chartsvg
+			.attr('height', (height + margin.top + margin.bottom) + 'px')
+			.attr('width', (width + margin.left + margin.right) + 'px');
+
+		// change the line
+		updateData(data, 0);
+
+		// change the x axis
+		chart.select(".x.axis")
+			.call(xAxis)
+				.selectAll("text")
+				.style("text-anchor", "end")
+				.attr("dx", "-1em")
+				.attr("dy", "-0.5em");
+
+		chart.select(".x.grid")
 			.call(xGrid);
 
-		svg.append("g")
-			.attr("class", "y grid")
-			.call(yGrid);
-		
-		// Add the X Axis
-		svg.append("g")											// append the x axis to the 'g' (grouping) element
-			.attr("class", "x axis")							// apply the 'axis' CSS styles to this path
-			.attr("transform", "translate(0," + (height) + ")")	// move the drawing point to 0,height
-			.call(xAxis)										// call the xAxis function to draw the axis
-				.selectAll("text")  
-				.style("text-anchor", "end")
-				.attr("dx", "-0.8em")
-				.attr("dy", "-0.5em")
-				.attr("transform", function(d) {
-					return "rotate(-90)" 
-					});
+		chart.select(".y.grid").transition()
+			.duration(0)
+			.call(yGrid.tickSize(-width, 0, 0));
 
+		// reposition the legend
+		legend.transition()
+			.duration(0)
+			.attr("transform", function(d, i) {
+				return "translate(" + (width + margin.left + 20) + "," + (margin.top + i * 16) + ")";
+			});
+	}
+
+	function populateData(data) {
+		players = data.players;
+		players.forEach(function(player, index) {
+
+			chart.append("path")
+					.attr("id","pathid-"+index)
+					.attr("class", "line player"+index+" "+player.alias)
+					// .attr("d", valueline(getData(player.data, yMode)))
+					.attr("stroke", color(index))
+					.style("stroke-width", 2.5)
+				.on("mouseover", function() { emphasizePlayer(index); })			
+				.on("mouseout", function() { deemphasizePlayer(index);	})
+				.append("svg:title")
+					.text(player.name);
+
+
+			chart.selectAll(".point").data(player.data)
+				.enter().append("svg:circle")
+					.attr("class","dot player"+index)
+					.attr("stroke-width", 2)
+					.attr("stroke", color(index))
+					.attr("fill", color(index))
+					// .attr("cx", function(d) { return x(d.name) })
+					// .attr("cy", function(d) { return y(d[yMode]) })
+					.attr("r", 3)
+				.on("mouseover", function(d) { emphasizePlayer(index); })			
+				.on("mouseout", function(d) { deemphasizePlayer(index);	});
+
+			chart.selectAll(".pointtextbox").data(player.data)
+				.enter().append("svg:rect")
+					.attr("class","dot textbox player"+index)
+					.attr("stroke", color(index))
+					.attr("fill", color(index))
+					// .attr("x", function(d) { return x(d.name) - 8})
+					// .attr("y", function(d) { return y(d[yMode]) - 26 })
+					.attr("height", 16 )
+					.attr("width",  16 )
+					.attr("rx", 2 )
+					.attr("ry", 2 )
+					.style("opacity", 0);
+
+			chart.selectAll(".pointtext").data(player.data)
+				.enter().append("svg:text")
+					.attr("class","dot text player"+index)
+					.attr("fill", "#222")
+					// .attr("x", function(d) { return x(d.name) })
+					// .attr("y", function(d) { return y(d[yMode]) - 14 })
+					// .text(function(d) { return d[yMode] })
+					.style("text-anchor", "middle")
+					.style("opacity", 0);
+
+		});
+		updateData(data, 0);
+	}
+
+	function updateData(data, delay) {
+		//console.log(data);
+
+		x.domain(data.games.map(function(game) {return game.name;}));
+		y.domain([0, getMaxY(data.players)]);
+
+		chart.selectAll(".line").transition()
+			.duration(delay)
+			.attr("d", function() {
+				// console.log(".line",this.id);
+				// console.log(parseInt(this.id.replace("pathid-","")));
+				return valueline(getData(data.players[parseInt(this.id.replace("pathid-",""))].data));
+				//return valueline(getData(player.data, yMode));
+			});
+
+		chart.selectAll("circle.dot").transition()
+			.duration(delay)
+			.attr("cx", function(d) { return x(d.name); })
+			.attr("cy", function(d) { return y(d[yMode]); });
+
+		chart.selectAll(".dot.textbox").transition()
+			.duration(delay)
+			.attr("x", function(d) { return x(d.name) - 8; })
+			.attr("y", function(d) { return y(d[yMode]) - 26; });
+
+		chart.selectAll(".dot.text").transition()
+			.duration(delay)
+			.attr("x", function(d) { return x(d.name); })
+			.attr("y", function(d) { return y(d[yMode]) - 14; })
+			.text(function(d) { return d[yMode] });
+
+		chart.select(".y.axis").transition()
+			.duration(delay)
+			.call(yAxis)
+				.selectAll("text")
+					.style("font-size", "10px")
+					.style("fill", "#000");
+		
+		chart.select(".y.axis").selectAll("line")
+			.style("stroke", gridColor)
+			.style("stroke-dasharray", (gridStroke));
+
+		chart.select(".y.grid").transition()
+			.duration(delay)
+			.call(yGrid)
+				.selectAll("line")
+					.style("stroke", gridColor)
+					.style("stroke-dasharray", (gridStroke));
+	}
+
+	function emphasizePlayer(player) {
+		// console.log(player);
+		d3.select("#pathid-"+player).transition()
+			.duration(emphasizeDelay)
+			.style("stroke-width", 5);
+		d3.selectAll(".dot.player"+player).transition()
+			.duration(emphasizeDelay)
+			.attr("r", 5);
+		d3.selectAll(".legendText.player"+player).transition()
+			.duration(emphasizeDelay)
+			.style("font-size", "11px")
+			.style("font-weight", 'bold');
+		d3.selectAll(".legendBox.player"+player).transition()
+			.duration(emphasizeDelay)
+			.attr("width", 10)
+			.attr("height", 10)
+			.attr("transform", "translate(-1,-1)");
+		d3.selectAll(".dot.textbox.player"+player).transition()
+			.style("opacity", 0.7)
+			.duration(2 * emphasizeDelay);
+		d3.selectAll(".dot.text.player"+player).transition()
+			.style("opacity", 0.9)
+			.duration(3 * emphasizeDelay);
+
+		d3.selectAll(".player"+player).moveToFront();
+		d3.selectAll(".dot.text.player"+player).moveToFront();
+	}
+
+	function deemphasizePlayer(player) {
+		d3.select("#pathid-"+player).transition()
+			.duration(emphasizeDelay)
+			.style("stroke-width", 2.5);
+		d3.selectAll(".dot.player"+player).transition()
+			.duration(emphasizeDelay)
+			.attr("r", 3);
+		d3.selectAll(".legendText.player"+player).transition()
+			.duration(emphasizeDelay)
+			.style("font-size", "10px")
+			.style("font-weight", 'normal');
+		d3.selectAll(".legendBox.player"+player).transition()
+			.duration(emphasizeDelay)
+			.attr("width", 8)
+			.attr("height", 8)
+			.attr("transform", "translate(0,0)");
+		d3.selectAll(".dot.textbox.player"+player).transition()
+			.style("opacity", 0)
+			.duration(emphasizeDelay);
+		d3.selectAll(".dot.text.player"+player).transition()
+			.style("opacity", 0)
+			.duration(emphasizeDelay);
+		
+		d3.selectAll(".dot.textbox,.dot.text").moveToBack();
+	}
+
+	function getMaxY(players) {
+		var maxY = d3.max(players.map(function(games) {
+			//console.log(games.data);
+			return d3.max(games.data.map(function(game) {
+				//console.log(game.goals);
+				return game[yMode];
+			}));
+		}));
+		if (maxY < 10) maxY = 10;
+		// console.log(maxY);		
+		return maxY;
+	}
+
+	function buildAxis() {
+		chart.append("g")
+			.attr("class", "x grid")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xGrid)
+				.selectAll("line")
+					.style("stroke", gridColor)
+					.style("stroke-dasharray", (gridStroke));
+
+		chart.append("g")
+			.attr("class", "y grid")
+			.call(yGrid)
+				.selectAll("line")
+					.style("stroke", gridColor)
+					.style("stroke-dasharray", (gridStroke));
+
+		// Add the X Axis
+		chart.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + (height) + ")")
+			.call(xAxis)
+				.selectAll("text")
+					.style("text-anchor", "end")
+					.style("fill", "#000")
+					.style("font-size", "10px")
+					.attr("dx", "-1em")
+					.attr("dy", "-0.5em")
+					.attr("transform", function() {	return "rotate(-90)" });
 
 		// Add the Y Axis
-		svg.append("g")											// append the y axis to the 'g' (grouping) element
-			.attr("class", "y axis")							// apply the 'axis' CSS styles to this path
-			.attr("transform", "translate(0,0)")				// move the drawing point to 0,height
-			.call(yAxis);										// call the yAxis function to draw the axis
-	
+		chart.append("g")
+			.attr("class", "y axis")
+			.attr("transform", "translate(-10,0)")
+			.call(yAxis);
+	}
+
+	function buildLegend(players) {
 		
-		var i = 0;
-		keys.forEach(function(k) {
-			// Add the valueline path.
-			//console.log("data to path",data[k]);
-			
-			svg.append("path")
-				//.data(data[k])
-				.attr("id","pathid-"+k)							// append the valueline line to the 'path' element
-				.attr("class", "line "+k)						// apply the 'line' CSS styles to this path
-				.attr("d", valueline(data[k]))					// call the 'valueline' finction to draw the line
-				.attr("stroke", color(k))
-				.append("svg:title")
-				.text(k);
-			//console.log(data[k]);
-			
-			svg.selectAll(".point").data(data[k])
-				.enter().append("svg:circle")
-				  .attr("class","dot "+k)
-				  .attr("stroke-width", 2)
-				  .attr("stroke", color(k))
-				  .attr("fill", color(k))
-				  .attr("cx", function(d, i) { return x(d.game) })
-				  .attr("cy", function(d, i) { return y(d.goals) })
-				  .attr("r", function(d, i) { return 2 })
-				  .on("mouseover", function(d) {  
-					//console.log(d);    
-					div.transition()        
-						.duration(200)      
-						.style("opacity", 0.9);      
-					div.html(function() { 
-						  //console.log(d);
-						  var tttext = '';
-						  tttext += "<b>" + d.name + "</b>";
-						  if (d.goalie === "TW") tttext += " (TW)";
-						  tttext += "<br/>" + d.goals;
-						  if (d.penalty !== null) tttext += "/" + d.penalty;
-						  if (d.goals == 1) tttext += " Tor gegen";
-						  else tttext += " Tore gegen";
-						  tttext += "<br/>" + d.game;
-						  return tttext ; } )  
-						.style("opacity", 1) 
-						.style("left", function() { return (x(d.game)+margin.left) + "px";})    
-						.style("top", function() { 
-							//console.log(d3.select("#mode-total").node().checked);	
-							//console.log(document.getElementById('mode-total').checked);
-							var yGoals = d.goals;
-							if (d3.select("#mode-total").node().checked === true) {
-								yGoals = d.goalsTotal;
-							}								
-							ypx = (y(yGoals)+margin.top-57) + "px";
-							return ypx;});   
-					d3.select("#pathid-"+k).transition()
-					  .duration(100)
-					  .style("stroke-width", 3); 
-					d3.selectAll(".dot."+k).transition()
-					  .duration(100)
-					  .attr("r", 4);
+		legend = chartsvg.append("g")
+			.attr("class", "legend")
+			.selectAll("g")
+				.data(players)
+			.enter().append("g")
+				.attr("transform", function(d, i) {
+					return "translate(" + (width + margin.left + 20) + "," + (margin.top + i * 16) + ")";
+				});
 
-					var sel = d3.selectAll("."+k);
-					sel.moveToFront();
-					})                  
-				.on("mouseout", function(d) {       
-					div.transition()        
-						.duration(500)      
-						.style("opacity", 0);
-					d3.select("#pathid-"+k).transition()
-					  .duration(100)
-					  .style("stroke-width", 1.5); 
-					d3.selectAll(".dot."+k).transition()
-					  .duration(100)
-					  .attr("r", 2);  
-					});
+		legend.append("rect")
+			.attr("class",function(d,i) { return "legendBox player"+i; } )
+			.attr("width", 8)
+			.attr("height", 8)
+			.style("fill", function(d,i) { return color(i); });
 
-			  svg.selectAll(".pointtextbox").data(data[k])
-				.enter().append("svg:rect")
-				  .attr("class","dot textbox "+k)
-				  .attr("stroke", color(k))
-				  .attr("fill", color(k))
-				  .attr("x", function(d, i) { return x(d.game) - 7})
-				  .attr("y", function(d, i) { return y(d.goals) - 21 - height })
-				  .attr("height", 14 )
-				  .attr("width",  14 )
-				  .attr("rx", 2 )
-				  .attr("ry", 2 )
-				  .style("opacity", 0) 
-				  ;
+		legend.append("text")
+			.attr("class",function(d,i) { return "legendText player"+i; } )
+			.attr("x", 14)
+			.attr("y", 4.5)
+			.attr("dy", ".35em")
+			.style("font-size", "10px")
+			.style("fill", "black")
+			.style("cursor", "default")
+			.style("text-anchor", "start")
+			.text(function(d) {
+				return d.name;
+			})
+			.on('mouseover', function(d,i){ emphasizePlayer(i); })
+			.on('mouseout', function(d,i){ deemphasizePlayer(i); });
+	}
 
-			  svg.selectAll(".pointtext").data(data[k])
-				.enter().append("svg:text")
-				  .attr("class","dot text "+k)
-				  .attr("fill", "#222")
-				  .attr("x", function(d, i) { return x(d.game) })
-				  .attr("y", function(d, i) { return y(d.goals) - 10 - height })
-				  .text(function(d, i) { return d.goals })
-				  .style("text-anchor", "middle") 
-				  .style("opacity", 0) 
-				  ;
 
-			i++;
+	function getData(player) {
+		data = player.map(function(game) {
+			return {x:game['name'], y:game[yMode]};;
+		})
+		//console.log(data);
+		return data;
+	}
+
+	function getYMode() {
+		// return d3.selectAll("[name=mode]")
+		return d3.select("#hbgoalchart_chartmode").selectAll('input')
+			.filter(function() {
+				return this.checked == true;
+			})[0][0].value;
+	}
+
+	d3.selection.prototype.moveToFront = function() {
+		// console.log("move '" + this[0][0].textContent + "' to front");
+		return this.each(function(){
+			this.parentNode.appendChild(this);
 		});
-		
-		
-		
-		
-		d3.selectAll("input").on("change", change);
+	};
 
+	d3.selection.prototype.moveToBack = function() { 
+		return this.each(function() { 
+			var firstChild = this.parentNode.firstChild; 
+			if (firstChild) { 
+				this.parentNode.insertBefore(this, firstChild); 
+			} 
+		}); 
+	};
 
-		function change() {
-		  if (this.value === "single") transitionSingle();
-		  else transitionTotal();
-		}	
-
-		function transitionSingle() {
-			y.domain([0, maxSingle]);
-			curNameCirc = '';
-			iPlusCirc = 0;
-			svg.selectAll("circle.dot").transition()
-				.duration(function(d,i) {
-					if (curNameCirc !== d.name) {
-						curNameCirc = d.name;
-						iPlusCirc += 200;
-					}
-					//console.log(".circle",(iPlusCirc), d.name);
-					//return 500;
-					return (iPlusCirc); 
-				})
-				.attr("cy", function(d) {
-					//console.log(y(d.goalsTotal));
-					return y(d.goals); 
-				});
-			svg.selectAll("rect.dot").transition()
-				.duration(function(d,i) {
-					return (200); 
-				})
-				.attr("y", function(d) {
-					//console.log(y(d.goalsTotal));
-					return y(d.goals) - 21 - height; 
-				});
-			svg.selectAll("text.dot").transition()
-				.duration(function(d,i) {
-					//console.log(".line",(500+i*100));
-					return (200); 
-				})
-				.attr("y", function(d) {
-					//console.log("text.dot",d);
-					//console.log(y(d.goalsTotal));
-					return y(d.goals) - 10 - height; 
-				});
-			
-			//valueline.y(function(d) { return y(d.goalsTotal); });
-			svg.selectAll(".line").transition()
-				.duration(function(d,i) {
-					//console.log(".line",(200+i*200));
-					//return 500;
-					return (200+i*200); 
-				})
-				.attr("d", function() {
-					//console.log(".line",this.textContent);
-					return valueline(data[this.textContent]); 
-				});
-			
-			svg.selectAll(".y.axis").transition()
-				.duration(500)
-				//.attr("fill", "red")
-				.call(yAxis);
-			svg.selectAll(".y.grid").transition()
-				.duration(500)
-				//.attr("fill", "red")
-				.call(yGrid);
-		}
-
-		function transitionTotal() {
-			y.domain([0, Math.ceil(maxTotal / 10) * 10]);
-			
-			curNameCirc = '';
-			iPlusCirc = 0;
-			svg.selectAll("circle.dot").transition()
-				.duration(function(d,i) {
-					if (curNameCirc !== d.name) {
-						curNameCirc = d.name;
-						iPlusCirc += 200;
-					}
-					//console.log(".circle",(iPlusCirc), d.name);
-					//return 500;
-					return (iPlusCirc); 
-				})
-				.attr("cy", function(d) {
-					//console.log(y(d.goalsTotal));
-					return y(d.goalsTotal); 
-				});
-			svg.selectAll("rect.dot").transition()
-				.duration(function(d,i) {
-					//console.log(".line",(500+i*100));
-					return (200); 
-				})
-				.attr("y", function(d) {
-					//console.log(y(d.goalsTotal));
-					return y(d.goalsTotal) - 21 - height; 
-				});
-			svg.selectAll("text.dot").transition()
-				.duration(function(d,i) {
-					//console.log(".line",(500+i*100));
-					return (200); 
-				})
-				.attr("y", function(d) {
-					//console.log("text.dot",d);
-					//console.log(y(d.goalsTotal));
-					return y(d.goalsTotal) - 10 - height; 
-				});
-			
-			//valueline.y(function(d) { return y(d.goalsTotal); });
-			svg.selectAll(".line").transition()
-				.duration(function(d,i) {
-					//console.log(".line",(200+i*200));
-					//return 500;
-					return (200+i*200); 
-				})
-				.attr("d", function() {
-					//console.log(".line",this.textContent);
-					return valuelineTotal(data[this.textContent]); 
-				});
-			
-			svg.selectAll(".y.axis").transition()
-				.duration(500)
-				//.attr("fill", "red")
-				.call(yAxis);
-			svg.selectAll(".y.grid").transition()
-				.duration(500)
-				//.attr("fill", "red")
-				.call(yGrid);
-		}
-	});
-	
 });

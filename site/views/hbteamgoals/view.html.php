@@ -17,10 +17,10 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$model = $this->getModel('hbteamgoals');
 		// add meta tag
 		$document->setMetaData('og:site_name', "TSV Geislingen - Abt. Handball");
-		$document->setMetaData('og:title', "TSV Geislingen - Männer Mannschaft: Torschützen");
+		$document->setMetaData('og:title', "TSV Geislingen - Handball: Torschützen");
 		$document->setMetaData('og:type', "article");
 		$document->setMetaData('og:image', JURI::Root().'media/com_hbteam/images/goalchart_dummy.png');
-		$document->setMetaData('og:url', JURI::Root().'index.php/aktive/'.$model->teamkey.'/'.$model->teamkey.'-goals');
+		$document->setMetaData('og:url', JURI::Root().'index.php/aktive/'.$model->teamkey.'/'.$model->teamkey.'-tore');
 		$document->setMetaData('og:description', "Statistik der Torschützen dieser Saison");
 		
 		
@@ -40,7 +40,10 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');
 		
-		
+		// Assign config params data to the view
+		$chartmodes = JComponentHelper::getParams('com_hbteam')->get('chartsettings');
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($chartmodes); echo '</pre>';
+		$this->assignRef('chartmodes', $chartmodes);
 				
 		$team = $model->getTeam();
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
@@ -58,8 +61,7 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		//echo '=> view->players<br><pre>'; print_r($players); echo '</pre>';
 		$this->assignRef('players', $players);
 		
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');
+		JHtml::stylesheet('com_hbteam/goals.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);

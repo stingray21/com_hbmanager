@@ -20,13 +20,21 @@ class hbteamViewHBteamPlayers extends JViewLegacy
 		$team = $model->getTeam();
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
 		$this->assignRef('team', $team);
-
-		$players = $model->getPlayers();
-		//echo '=> view->players<br><pre>'; print_r($players); echo '</pre>';
-		$this->assignRef('players', $players);
 		
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');
+		if (empty($team)) {
+			$noTeamMessage = JText::_('COM_HBTEAM_NOTEAM');
+			$this->assignRef('noTeamMessage', $noTeamMessage);
+		} else {
+			$players = $model->getPlayers();
+			//echo '=> view->players<br><pre>'; print_r($players); echo '</pre>';
+			$this->assignRef('players', $players);
+
+			// TODO backend / dymanic
+			$picPath = JURI::Root().'hbdata/images/player/'.strtolower($team->kuerzel).'/';
+			$this->assignRef('picPath', $picPath);
+		}
+
+		JHtml::stylesheet('com_hbteam/players.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);

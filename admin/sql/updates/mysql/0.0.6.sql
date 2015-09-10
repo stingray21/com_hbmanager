@@ -93,9 +93,8 @@ CREATE TABLE IF NOT EXISTS `hb_mannschaft_spieler` (
 
 CREATE TABLE IF NOT EXISTS `hb_mannschaft_trainer` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `mannschaftID` int(6) DEFAULT NULL,
   `kuerzel` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `trainerID` int(6) DEFAULT NULL,
+  `alias` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `rangfolge` int(2) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -108,7 +107,6 @@ CREATE TABLE IF NOT EXISTS `hb_mannschaft_trainer` (
 
 CREATE TABLE IF NOT EXISTS `hb_mannschaft_training` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `mannschaftID` int(6) DEFAULT NULL,
   `kuerzel` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `trainingID` int(6) DEFAULT NULL,
   PRIMARY KEY (`ID`)
@@ -197,18 +195,6 @@ CREATE TABLE IF NOT EXISTS `hb_tabelle` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hb_trainer`
---
-
-CREATE TABLE IF NOT EXISTS `hb_trainer` (
-  `trainerID` int(3) NOT NULL AUTO_INCREMENT,
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
-  PRIMARY KEY (`trainerID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `hb_training`
 --
 
@@ -218,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `hb_training` (
   `beginn` time NOT NULL,
   `ende` time NOT NULL,
   `bemerkung` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `hallenNummer` int(7) DEFAULT NULL,
+  `hallenNr` int(7) DEFAULT NULL,
   `sichtbar` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`trainingID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

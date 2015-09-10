@@ -35,23 +35,6 @@
 				label="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_LABEL"
 				description="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_DESC"
 				/>
-			<field
-				name="trainer"
-				type="text"
-				size="30"
-				label="Trainer"
-				description="Trainer eingeben"
-				/>
-			<field 
-				name="teamImage" 
-				type="imagelist" 
-				default="" 
-				label="COM_HBTEAM_HBTEAM_FIELD_TEAMIMAGE_LABEL" 
-				description="COM_HBTEAM_HBTEAM_FIELD_TEAMIMAGE_DESC" 
-				directory="hbdata/images/teams" 
-				exclude="" 
-				stripext="" 
-				/>
 		</fieldset>
 	</fields>
   

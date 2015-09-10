@@ -4,14 +4,14 @@
 
 	<name>HB Team</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
-	<creationDate>February 10 2013</creationDate>
+	<creationDate>2015-09-09</creationDate>
 	<author>Jochen Stehle</author>
 	<authorEmail>stingray21@gmx.de</authorEmail>
 	<authorUrl></authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>0.0.7</version>
+	<version>0.1.1</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Component to show an overview of a team</description>
 
@@ -43,9 +43,11 @@
 		<filename>controller.php</filename>
 		<folder>views</folder>
 		<folder>models</folder>
-		<!-- language files section -->
-		<folder>language</folder>
 	</files>
+	
+	<languages folder="site/language">
+		<language tag="de-DE">de-DE.com_hbteam.ini</language>
+	</languages>
 	
 	<media destination="com_hbteam" folder="media">
 		<filename>index.html</filename>
@@ -71,10 +73,12 @@
 			<folder>tables</folder>
 			<!-- models files section -->
 			<folder>models</folder>
-			<!-- language files section -->
-			<folder>language</folder>
 		</files>
+		
+		<languages folder="admin/language">
+			<language tag="de-DE">de-DE.com_hbteam.ini</language>
+			<language tag="de-DE">de-DE.com_hbteam.sys.ini</language>
+		</languages>
 	</administration>
 
 </extension>
-

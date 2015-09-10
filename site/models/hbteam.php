@@ -127,29 +127,25 @@ class hbteamModelhbteam extends JModelLegacy
 		$pic->filename = $pictureInfo->dateiname;
 		$pic->saison = $pictureInfo->saison;
 		$pic->comment = $pictureInfo->kommentar;
-		$pic->caption = self::buildCaption($pictureInfo);
+		$pic->caption = self::getCaption($pictureInfo);
 		return $pic;
 	}
 	
-	function buildCaption($pic)
+	function getCaption($pictureInfo)
 	{	
-		$pic = (array) $pic;
-		$caption = '';
+		//echo __FILE__.__LINE__.'<pre>'; print_r($pictureInfo); echo '</pre>';
+		$captionData = (array) $pictureInfo;
+		$caption = null;
 		for ($i = 1; $i <= 4; $i++) { 
-			if (!empty($pic['untertitel_dt'.$i]) AND 
-					!empty($pic['untertitel_dd'.$i])) {
-				$caption .= '<dt>'.$pic['untertitel_dt'.$i].'</dt>'."\n";
-			}
-			if (!empty($pic['untertitel_dd'.$i])) {
-				$caption .= '<dd>'.$pic['untertitel_dd'.$i].'</dd>'."\n";
+			if (!empty($captionData['untertitel_dd'.$i]) AND 
+					!empty($captionData['untertitel_dd'.$i])) {
+				$caption[$i] = new stdClass();
+				$caption[$i]->headline = $captionData['untertitel_dt'.$i];
+				$caption[$i]->content = $captionData['untertitel_dd'.$i];
 			}
 		}
-		if (!empty($caption)) {
-			$caption = '<dl class="teampic_caption">'."\n".$caption;
-			$caption = $caption."\n".'</dl>'."\n";
-			return $caption;
-		}
-		return null;
+		//echo __FILE__.__LINE__.'<pre>'; print_r($caption); echo '</pre>';
+		return $caption;
 	}
 	
 }

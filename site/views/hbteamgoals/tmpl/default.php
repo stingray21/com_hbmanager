@@ -4,29 +4,39 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div class="hbteam">
+<div>
 <h1><?php echo $this->team->mannschaft; ?>
-<span><?php echo $this->team->liga; ?></span></h1>
-
-	<h3>Torschützen</h3>	
-
-
+ <span><?php echo $this->team->liga; ?></span></h1>
 	
-<div id="scorerTable" data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">	
-	<table class="goals">
+	<div>
+	
+		<h3><?php echo JText::_('COM_HBTEAM_GOALS_SCORER');?></h3>	
+
+
+		<div>
+<div data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">	
+	<table>
 		<thead><tr>
-				<th class="name">Name</th>
+				<th><?php echo JText::_('COM_HBTEAM_GOALS_NAME');?></th>
 				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Tore im ausgewählten Spiel', 'Tore', '', 'T');?>
+				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_DESC'), 
+						JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_NAME'), '', 
+						JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_SHORT'));?>
 				</th>
 				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Anzahl der gespielten Spiele (bis zum ausgewählten Spiel)', 'Spiele', '', 'S');?>
+				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_DESC'),
+						JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_NAME'), '', 
+						JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_SHORT'));?>
 				</th>
 				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Anzahl der insgesamt erzielten Tore (bis zum ausgewählten Spiel)', 'Gesamt-Tore', '', 'G');?>
+				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_DESC'),
+						JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_NAME'), '', 
+						JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_SHORT'));?>
 				</th>
 				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip('Durchschnittliche Anzahl der Tore pro Spiel (bis zum ausgewählten Spiel)', 'Tore/Spiel', '', 'T/S');?>
+				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_DESC'), 
+						JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_NAME'), '', 
+						JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_SHORT'));?>
 				</th>
 			</tr>
 		</thead>
@@ -36,25 +46,17 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->players as $player) 
 {
 	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($player); echo'</pre>';
-	echo '<tr';
-	if ($player->tore === null)echo ' class="notPlayed"';
-	echo '><td class="name">';
-	echo $player->name;
-	if ($player->tw == true or $player->twposition) {
-		echo ' (TW)';
-	}
-	echo '</td><td class="goals">';
-	echo $player->tore;
-	if ($player->tore7m != null) {
-		echo '/'.$player->tore7m;
-	}
-	echo '</td><td>';
-	echo $player->spiele;
-	echo '</td><td>';
-	echo $player->toregesamt;
-	echo '</td><td>';
-	echo $player->quote;
-	echo '</td></tr>';
+	?>
+			<tr <?php echo ($player->tore === null) ? ' class="notPlayed"' : '';?>>
+				<td class="name"><?php echo $player->name;
+					echo ($player->tw == true or $player->twposition) ? ' (TW)' : '';?></td>
+				<td class="goals"><?php echo $player->tore;
+					echo ($player->tore7m != 0) ? '/'.$player->tore7m : '';?></td>
+				<td><?php echo $player->spiele; ?></td>
+				<td><?php echo $player->toregesamt;?></td>
+				<td><?php echo $player->quote;?></td>
+			</tr>
+				<?php 
 }
 ?>
 	</tbody>
@@ -62,46 +64,67 @@ foreach ($this->players as $player)
 </div>
 
 
-<div class="moreGames">
+<div >
 	<div data-teamkey="<?php echo $this->teamkey;?>" style="display: hidden"></div>
-	<div class="dataSaison" id="<?php echo $this->season;?>" style="display: hidden"></div>
+	<div id="<?php echo $this->season;?>" style="display: hidden"></div>
 	
-	<table id="moreGames">
+	<table>
 <?php
 foreach ($this->games as $game) 
 {
 	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($game); echo'</pre>';
 	?>
-	<tr class="gamebutton<?php
-	if ($game->spielIdHvw === $this->gameId) echo ' selected';
-		?>" id="<?php echo $game->spielIdHvw;?>">
-		<td class="date"><?php 
-		echo JHtml::_('date', $game->datum, 'd. M.', false);
-		//echo JHtml::_('date', $game->datum, 'd.m.y', false);
+	<tr id="<?php echo $game->spielIdHvw;?>" class="gamebutton<?php 
+			echo ($game->spielIdHvw === $this->gameId) ? ' selected' : '';?>" >
+		<td><?php echo JHtml::_('date', $game->datum, 'd. M.', false);
 		?></td>
-		<td class="moreGamesTeams"><?php 
-		echo $game->gameName;
-		?></td>
-		<td><span class="moreGamesResult"><?php 
-		echo $game->toreHeim;
-		echo ':';
-		echo $game->toreGast;
-		?></span></td>
+		<td><?php echo $game->gameName;?></td>
+		<td><?php echo $game->toreHeim.':'.$game->toreGast;?></td>
 	</tr>
 	<?php
 }
+
 ?>
 	</table>
 </div>
+		
+		</div>
+
+
+<div class="clr"></div>
+<?php 
+	//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->chartmodes); echo '</pre>';
+	if ($this->chartmodes != null) {
+?>
 	
-	<div class="clr"></div>
 	<form class="goalchart">
-		<input type="radio" id="mode-single" name="mode" value="single" checked><label>Tore pro Spiel</label>
-		<input type="radio" id="mode-total" name="mode" value="total"><label>Tore aller Spiele</label>
+	
+		<label id="hbgoalchart_chartmode-lbl" for="hbgoalchart_chartmode" class="">
+			<?php echo JText::_('COM_HBTEAM_GOALCHART_TITLE'); ?>
+		</label>
+		<fieldset id="hbgoalchart_chartmode" class="radio" >
+		<?php 
+			foreach($this->chartmodes as $mode) {
+				echo "\t\t\t".'<input type="radio" id="hbgoalchart_chartmode_'.$mode.
+						'" name="hbgoalchart_mode" value="'.$mode.'"'.
+						' checked="checked"'.
+						' />'."\n";
+				echo '<label for="hbgoalchart_mode_'.$mode.'" >'.
+						JText::_('COM_HBTEAM_GOALCHART_MODE_'.strtoupper($mode)).'</label>';
+			}
+		?>
+		</fieldset>	
+
 	</form>
-	<div class="clr"></div>
+	
 	<div id="chartgoals">
 	
 	</div>
+<?php
+} else {
+	echo '<p>'.JText::_('COM_HBTEAM_GOALCHART_NODATA').'</p>';
+}
+?>
 	
+</div>
 </div>

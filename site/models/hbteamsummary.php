@@ -28,8 +28,7 @@ class hbteamModelHBteamSummary extends JModelLegacy
 			$this->saison = $menuparams->get('saison');
 			$this->showHomeGym = $menuparams->get('showhomegym');
 			
-			if ($this->youth) $this->link = 'jugend';
-			else $this->link = 'aktive';
+			$this->link = ($this->youth) ? 'jugend' : 'aktiv';
 			
 			$this->items = array('email','mobile','telephone');
 			$this->global_show = self::getGlobalContactSettings();
@@ -145,7 +144,7 @@ class hbteamModelHBteamSummary extends JModelLegacy
 		$query->where('kuerzel = '.$db->Quote($teamkey));
 		$query->leftJoin('hb_trainer USING (trainerID)');
 		$query->leftJoin('#__contact_details USING (alias)');
-		$query->order('IF(ISNULL(`rangfolge`),1,0),`rangfolge`');
+		$query->order('IF(ISNULL(`rangfolge`),1,0),`rangfolge` DESC');
 		$db->setQuery($query);
 		$trainer = $db->loadObjectList ();
 		//display and convert to HTML when SQL error

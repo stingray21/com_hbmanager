@@ -25,8 +25,11 @@ class hbteamViewHBteamSummary extends JViewLegacy
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
 		$this->assignRef('link', $link);
 		
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base() . 'media/com_hbteam/css/site.stylesheet.css');
+		// TODO dymnamic path
+		$picPath = JURI::Root().'hbdata/images/teams/2014-2015/250px/';
+		$this->assignRef('picPath', $picPath);
+		
+		JHtml::stylesheet('com_hbteam/summary.stylesheet.css', array(), true);
 		
 		// Display the view
 		parent::display($tpl);

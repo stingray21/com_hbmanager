@@ -45,12 +45,27 @@ class hbteamController extends JControllerLegacy
 		$jinput = JFactory::getApplication()->input;
 		
 		$teamkey = $jinput->get('teamkey');
+		//echo __FILE__.' - '.__LINE__.'<pre>'.$teamkey.'</pre>';
+		$season = $jinput->get('season');
+		//echo __FILE__.' - '.__LINE__.'<pre>'.$season.'</pre>';
+		$model = $this->getModel('hbteamgoals');
+		
+		$data = $model->getChartData($teamkey);
+		echo json_encode($data);
+	}
+	
+	function testData()
+	{
+		$jinput = JFactory::getApplication()->input;
+		
+		$teamkey = $jinput->get('teamkey');
 		$season = $jinput->get('season');
 		//echo __FILE__.' - '.__LINE__.'<pre>'.$teamkey.'</pre>';
 		//echo __FILE__.' - '.__LINE__.'<pre>'.$season.'</pre>';
 		$model = $this->getModel('hbteamgoals');
 		
 		$data = $model->getChartData($teamkey);
-		echo json_encode($data);
+		
+		//echo __FILE__.' - '.__LINE__.'<pre>'; print_r($data); echo '</pre>';
 	}
 }

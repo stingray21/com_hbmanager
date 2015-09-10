@@ -28,7 +28,7 @@ class hbteamModelHBteamPlayers extends JModelLegacy
 				$menuparams = $menu->getParams($menuitemid);
 			}
 			$this->teamkey = $menuparams->get('teamkey');
-			$this->saison = $menuparams->get('saison');
+			$this->season = $menuparams->get('saison');
 	}
 	
 	function getTeam($teamkey = "non")
@@ -57,12 +57,14 @@ class hbteamModelHBteamPlayers extends JModelLegacy
 		$query->select('*, hb_mannschaft.name AS mannschaftsname,'.
 			' TIMESTAMPDIFF(YEAR, geburtstag, CURDATE()) AS '.$db->qn('alter'));
 		$query->from('hb_mannschaft_spieler');
-		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey).
-				' AND '.$db->qn('saison').' = '.$db->q($this->saison));
+		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey), 'AND');
+		// TODO Season 
+		//$query->where($db->qn('saison').' = '.$db->q($this->season));
 		$query->leftJoin($db->qn('hb_spieler').' USING ('.$db->qn('alias').')');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.$db->qn('kuerzel').')');
 		$query->leftJoin($db->qn('#__contact_details').' USING ('.$db->qn('alias').')');
-
+		$query->order($db->qn('trikotNr'));
+		
 		//echo '=> model->$query <br><pre>'; echo $query; echo '</pre>';
 		$db->setQuery($query);
 		$players = $db->loadObjectList();
@@ -119,7 +121,7 @@ class hbteamModelHBteamPlayers extends JModelLegacy
 		//echo '=> model->pictureInfo<br><pre>'; print_r($pictureInfo); echo '</pre>';
 		$pic = new stdClass();
 		$pic->filename = $pictureInfo->dateiname;
-		$pic->saison = $pictureInfo->saison;
+		$pic->season = $pictureInfo->season;
 		$pic->comment = $pictureInfo->kommentar;
 		$pic->caption = self::buildCaption($pictureInfo);
 		return $pic;
