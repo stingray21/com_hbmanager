@@ -1,0 +1,433 @@
+div.hbteam h1 {
+	margin-bottom: 1em;
+}
+
+div.hbteam h1 span {
+	color: #999999;
+	font-size: 0.7em;
+	padding: 0 0 0 1em;
+}
+
+div.hbteam h3 {
+	margin-bottom: 1em;
+}
+
+div.teampic a,
+div.teampic a:link,
+div.teampic a:hover,
+div.teampic a:active,
+div.teampic a:visited
+{
+	padding: 0;
+	background: transparent;
+}
+
+
+div.teampic img {
+	width: 94%;
+	border: 0.5px solid #ddd;
+	box-shadow: 2px 2px 5px #aaa;
+	padding: 10px;
+	margin: 0 1%;
+	background: #fafafa;
+}
+
+dl.teampic_caption {
+	width: 94%;
+	margin: 2px 3% 1.5em;
+}
+
+dl.teampic_caption dt {
+	float: left;
+	font-weight: bold;
+}
+
+dl.teampic_caption dt:after {
+	content: ":\00a0";
+}
+
+dl.teampic_caption dd {
+	//margin-left: 9em;
+}
+
+div.player {
+}
+
+div.playerpic {
+	//margin: 1em;
+	clear: both;
+}
+
+div.playerpic img {
+	width: 200px;
+	min-height: 200px;
+	border: 0.5px solid #ddd;
+	box-shadow: 2px 2px 5px #aaa;
+	padding: 10px;
+	margin: 1em 2em 1em 1em;
+	background: #fafafa;
+	float: left;
+}
+
+a.playername {
+	font-size: 1.5em;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	padding-top: 2em;
+	color: #0044CC;
+}
+
+div.jerseyNr {
+	color: #DDDDDD;
+	float: right;
+	font-size: 8em;
+	font-weight: bold;
+	padding: 0.5em 0.25em;
+}
+
+
+dl.player {
+	width: 94%;
+	//margin: 2px 3% 1.5em;
+	padding: 2em;
+}
+
+dl.player dt {
+	float: left;
+	font-weight: bold;
+}
+
+dl.player dt:after {
+	content: ":\00a0";
+}
+
+dl.player dd {
+	//margin-left: 9em;
+}
+
+
+div.hbteam a {
+	text-decoration: none;
+}
+
+div.hbteam h3 {
+	padding: 1em 0 0 0;
+	color: #0044CC;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+div.hbteam h3 span {
+	color: #999999;
+	font-weight: normal;
+	//font-size: 0.7em;
+	padding: 0;
+}
+
+div.hbteam h3 span:before {
+	//content: "-\00a0";
+	 content:"\A";
+  white-space: pre;
+}
+
+div.teamsummary {
+}
+
+div.teamsummaryinfo {
+	margin-left: 310px;
+}
+
+div.teamsummarypic {
+	//margin: 1em;
+	clear: both;
+}
+
+div.teamsummarypic img {
+	width: 250px;
+	min-height: 100px;
+	border: 0.5px solid #ddd;
+	box-shadow: 2px 2px 5px #aaa;
+	padding: 10px;
+	margin: 10px 20px 10px 10px;
+	background: #fafafa;
+	float: left;
+}
+
+div.teamsummary dl.training dt {
+	font-weight: bold;
+}
+
+div.teamsummary span.trainerName {
+	
+}
+
+div.teamsummary span.trainerContact {
+	margin-left: 1em;
+	display: block;
+	color: #999;
+	//font-size: 0.9em;
+}
+
+div.teamsummary span.trainerContact:hover {
+	color: #444;
+}
+
+div.teamsummary dt.times {
+	color: #444;
+}
+
+div.teamsummary dl.training table {
+	border: 0;
+	margin-left: 1em;
+}
+
+div.teamsummary dl.training table td {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+div.teamsummary dl.training table td.weekday {
+	width: 2em;
+}
+
+div.teamsummary dl.training table td.begin {
+	width: 3em;
+}
+
+div.teamsummary dl.training table td.end {
+	width: 6em;
+}
+
+div#scorerTable
+{
+	margin: 2px 20px 10px 0px;
+	float: left;
+}
+
+
+table.goals 
+{
+	width: auto;
+	margin: 0px;
+}
+
+table.goals tr.notPlayed
+{
+	color: #bbb;
+}
+
+table.goals th,
+table.goals td
+{
+	padding: 0.2em 0.2em;
+	text-align: center;
+	width: 2em;
+}
+
+table.goals .goals
+{
+	font-weight: bold;
+}
+
+table.goals .name
+{
+	text-align: left;
+	width: 12em;
+}
+
+
+div.moreGames
+{
+	margin: 0px 10px 0 20px;
+	float: left;
+}
+
+div.moreGames table#moreGames
+{
+	border: none;
+	border-spacing: 0 2px;
+	border-collapse: separate;
+	width: auto;
+}
+
+div.moreGames table#moreGames tr
+{
+	background: #eee;
+	border: none;
+}
+
+div.moreGames table#moreGames tr.gamebutton
+{
+	background: #eee;
+	border: none;
+	cursor: pointer;
+}
+
+
+
+div.moreGames table#moreGames td
+{
+	padding: 0.2em 0.2em;
+	border: none;
+}
+
+div.moreGames table#moreGames td.date
+{
+	color: #aaa;
+}
+
+div.moreGames table#moreGames td
+{
+	color: #aaa;
+	font-size: 0.8em;
+}
+
+
+div.moreGames table#moreGames td.moreGamesTeams
+{
+	color: #aaa;
+	padding: 0.2em 0.2em;
+	min-width: 11em;
+}
+
+div.moreGames table#moreGames tr.selected td
+{
+	color: #fff;
+}
+
+div.moreGames table#moreGames tr.gamebutton:hover td,
+div.moreGames table#moreGames tr.gamebutton:hover td.moreGamesTeams,
+div.moreGames table#moreGames tr.selected:hover td,
+div.moreGames table#moreGames tr.selected:hover td.moreGamesTeams
+{
+	color: #000;
+}
+
+div.moreGames table#moreGames tr.selected td.moreGamesTeams
+{
+	color: #fff;
+	font-weight: bold;
+}
+
+div.moreGames table#moreGames tr.gamebutton td.moreGamesTeams
+{
+	color: #04c;
+	font-weight: bold;
+	//font-size: 1.2em;
+	//font-weight: bold;
+}
+
+div.moreGames tr.gamebutton span.moreGamesResult
+{
+	color: #000;
+	//font-weight: bold;
+}
+
+div.moreGames table#moreGames tr.selected
+{
+	background: #04c;
+	color: #fff;
+	border: none;
+	cursor: default;
+}
+
+div.moreGames table#moreGames tr.selected td.moreGamesTeams,
+div.moreGames table#moreGames tr.selected span.moreGamesResult
+{
+	color: #fff;
+}
+
+/* CHART */
+
+form.goalchart 
+{   
+    float: right;
+    margin: 0px;
+ }
+
+form.goalchart label{   
+    padding: 0;
+    margin: 0;
+ }
+
+form.goalchart input[type='radio']
+{   
+	margin: 0.2em 0.5em 0 2em;
+	vertical-align: baseline;
+}
+
+div#chartgoals {
+	position: relative;
+	//border: 1px solid red;
+}
+
+
+path {
+	//stroke: steelblue;
+	stroke-width: 1.5;
+	fill: none;
+}
+ 
+line {
+    stroke: black;
+}
+ 
+text {
+    font-family: Arial;
+    font-size: 9pt;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #ddd;
+	opacity: 0.7;
+	stroke-dasharray: 2,2;
+	shape-rendering: crispEdges;
+}
+
+.axis path.domain {
+	stroke-width: 0;
+}
+
+/*.x.axis path {
+  display: none;
+}*/
+
+.grid .tick line{
+	stroke: #ddd;
+	opacity: 0.7;
+	stroke-dasharray: 2,2;
+}
+.grid path {
+	stroke-width: 0;
+}
+
+.legend text {
+  font: 10px sans-serif;
+  cursor: pointer;//default;
+}
+
+text.dottext {
+  cursor: default;
+}
+
+div.d3tooltip {   
+  position: absolute;           
+  text-align: center;           
+  //width: 60px;                  
+  //height: 28px;                 
+  padding: 3px;             
+  font: 12px sans-serif;   
+  color: #555;
+  background: lightgrey;   
+  border: 0px;      
+  border-radius: 5px !important;           
+  pointer-events: none;         
+}
