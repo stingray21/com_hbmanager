@@ -6,7 +6,7 @@ $tz = false; //true: user-time, false:server-time
 
 echo '<h3>'.JText::_('COM_HBMANAGER_OVERVIEW_HOME_TITLE').'</h3>';
 
-echo '<div id="hboverview">';
+echo '<div id="hboverview-all">';
 if (!empty($this->homegames)) 
 {
 	foreach ($this->homegames as $dayKey => $day)

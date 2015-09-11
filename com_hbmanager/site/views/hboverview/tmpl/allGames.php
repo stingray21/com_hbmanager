@@ -8,7 +8,7 @@ $tz = false; //true: user-time, false:server-time
 
 echo '<h3>'.JText::_('COM_HBMANAGER_OVERVIEW_ALL_TITLE').'</h3>';
 
-echo '<div id="hboverview">';
+echo '<div id="hboverview-all">';
 foreach ($this->teams as $team)
 {
 	echo '<h4><b>'.$team->mannschaft.' </b>';

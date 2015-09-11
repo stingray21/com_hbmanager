@@ -1,3 +1,127 @@
+div#hboverview h3 {
+	margin-top: 2em;
+}
+
+div#hboverview h2 + h3 {
+	margin-top: 0.5em;
+}
+
+div#hboverview h3 + div {
+	margin-left: 1em;
+}
+
+div#hboverview h4 {
+	display: inline-block;
+	min-width: 13em;
+	margin-top: 1em;
+}
+
+div#hboverview h4 + div {
+	//background:red;
+	display: inline-block;
+}
+
+div#hboverview a.hvwlink,
+div#hboverview a.btnShowTable {
+	display: inline-block;
+	margin: 0.1em 1em 0.1em 0;
+	color: #333;
+	font-weight:bold;
+	opacity: 0.4;
+	cursor: pointer;
+}
+
+div#hboverview a.hvwlink:hover,
+div#hboverview a.btnShowTable:hover  {
+	opacity: 1;
+}
+
+div#hboverview a.hvwlink {
+	background-image: url("../images/hvw-50x18.png");
+	background-position: 0 2px;
+	background-repeat: no-repeat;
+	padding-left: 55px;
+	text-indent: -9999px;
+}
+
+div#hboverview a.btnShowTable {
+	background-image: url("../images/standings_18px.png");
+	background-repeat: no-repeat;
+	padding-left: 2em;
+	text-indent: -9999px;
+}
+
 div#hboverview table.miniStandings {
+	margin: 1em 0.5em 1em 1em;
 	display: none;	
+	text-align: center;
+}
+
+div#hboverview table.miniStandings td {
+	padding: 0.2em 0.3em;
+}
+
+div#hboverview table.miniStandings th.textteam,
+div#hboverview table.miniStandings td.textteam{
+	text-align: left;
+}
+
+div#hboverview table.miniStandings td.negPoints,
+div#hboverview table.miniStandings td.goalsCon {
+	text-align: left;
+}
+
+div#hboverview table.miniStandings td.points,
+div#hboverview table.miniStandings td.goals{
+	text-align: right;
+}
+
+div#hboverview table.miniStandings td.sepaDots{
+	padding-left: 0;
+	padding-right: 0;
+}
+
+
+
+div#hboverview div.gameInfo {
+	//background: red;
+}
+
+div#hboverview div.gameInfo span {
+	//background: green;
+}
+
+div#hboverview div.gameInfo span:first-child {
+	margin-left: 0.5em;
+}
+
+div#hboverview div.gameInfo span.team {
+	//background: cyan;
+	display: inline-block;
+	min-width: 12em;
+}
+
+div#hboverview div.gameInfo span.team.home {
+	text-align: right;
+}
+
+/* Overview ALL and HOME */
+
+div#hboverview-all h4,
+div#hboverview-all p {
+	padding: 0;
+	margin: 0;
+	}
+
+div#hboverview-all table.HBschedule tr.odd{
+	background: #eee;
+	}
+
+div#hboverview-all table.HBschedule th,
+div#hboverview-all table.HBschedule td{
+	padding: 0.1em 0.5em;
+	}
+
+div#hboverview-all table.HBschedule td.heim {
+	font-weight: bold;
 	}
