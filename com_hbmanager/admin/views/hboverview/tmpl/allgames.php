@@ -44,7 +44,7 @@ foreach ($this->teams as $team)
 		$background = false;
 		echo "\n\t<table class=\"HBschedule HBhighlight\">\n";
 		echo "\t\t<thead>\n";
-		echo "\t\t<tr><th colspan=\"3\">Wann</th><th>Halle</th><th class=\"rightalign\">Heim</th><th></th><th class=\"leftalign\">Gast</th><th colspan=\"3\">Ergebnis</th><th>Bemerkung</th>";
+		echo "\t\t<tr><th></th><th>Wann</th><th></th><th>Halle</th><th class=\"rightalign\">Heim</th><th></th><th class=\"leftalign\">Gast</th><th colspan=\"3\">Ergebnis</th><th>Bemerkung</th>";
 		echo "</tr>\n";
 		echo "\t\t</thead>\n\n";
 	
