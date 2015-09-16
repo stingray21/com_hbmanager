@@ -1,0 +1,12 @@
+div.hbteam h3 {
+	margin-top: 1.5em;
+}
+
+div.hbteam div.team-table {
+	padding: 0.5em 1em;
+}
+
+div.hbteam div.team-table table {
+	min-width: 100%;
+}
+
