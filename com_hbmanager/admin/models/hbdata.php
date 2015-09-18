@@ -87,10 +87,10 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		self::setSeason($source['headline']);
 		
-//		if (self::updateGamesInDB($teamkey, $source['schedule'])
-//				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
-//				&& self::updateDetailedStandingsInDB($teamkey) )
-		if (self::updateGamesInDB($teamkey, $source['schedule']) )
+		if (self::updateGamesInDB($teamkey, $source['schedule'])
+				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
+				&& self::updateDetailedStandingsInDB($teamkey) )
+//		if (self::updateGamesInDB($teamkey, $source['schedule']) )
 		{
 			self::updateTimestamp ($teamkey);
 			$this->updated[] = $teamkey;
