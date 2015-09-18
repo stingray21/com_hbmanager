@@ -87,9 +87,10 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		self::setSeason($source['headline']);
 		
-		if (self::updateGamesInDB($teamkey, $source['schedule'])
-				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
-				&& self::updateDetailedStandingsInDB($teamkey) )
+//		if (self::updateGamesInDB($teamkey, $source['schedule'])
+//				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
+//				&& self::updateDetailedStandingsInDB($teamkey) )
+		if (self::updateGamesInDB($teamkey, $source['schedule']) )
 		{
 			self::updateTimestamp ($teamkey);
 			$this->updated[] = $teamkey;
@@ -324,12 +325,15 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$value['kuerzel'] = $db->q($teamkey);
 		$value['ligaKuerzel'] = $db->q($data[0]);
 		// HallenNummer
-		if (trim($data[3]) != '') $value['hallenNummer'] = (int)$data[3];
+		if (trim($data[3]) != '') $value['hallenNr'] = (int)$data[3];
 				else  $value['hallenNr'] = "NULL";
 		// Datum & Uhrzeit
 		if (trim($data[2]) != '') {	
-				$date = JFactory::getDate($data[2], 'Europe/Berlin' )->toSql();
-				//echo '<p>HVW:'.$data[3].' '.$data[4].' -> in DB: '.$date."</p>";
+				$dls = date("I", strtotime($data[2])); // day light savings
+				// time stamp with corrected removed days light savings
+				$dlsTimestamp = strtotime($data[2])+($dls-1)*3600;
+				$date = JFactory::getDate($dlsTimestamp, 'Europe/Berlin' )->toSql();
+				//echo '<p>HVW:'.$data[2].' -> in DB: '.$date.'   SZ '.$dls."</p>";
 				$value['datumzeit'] = $db->q($date);
 		}
 		else  $value['datumzeit'] = "NULL";
@@ -381,7 +385,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 	protected function setSeason($string)
     {
 		$season = preg_replace('/.*(\d{4})\/(\d{4}).*/', '$1-$2', $string);
-		
+		$season = '2015-2016';
 		$this->season = $season;
     }
 
@@ -613,7 +617,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$query = "SELECT 
 			mannschaft,
 			
-			COUNT(IF(s.hWertung IS NOT NULL, s.hWertung, 0)) spiele, 
+			SUM(IF(w='H' OR w='A', 1, 0)) spiele, 
 			SUM(IF(w='H', 1, 0)) spieleH, 
 			SUM(IF(w='A', 1, 0)) spieleA, 
 
@@ -864,8 +868,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 			DATE(s1.datumZeit) datum,
 			s1.heim mannschaft, 
 			s1.gast gegner, 
-			s1.toreHeim tore, 
-			s1.toreGast gtore
+			s1.wertungHeim tore, 
+			s1.wertungGast gtore
 			FROM hb_spiel s1 
 			WHERE heim=".$db->q($team->mannschaft)."
 			AND gast=".$db->q($opponent->mannschaft)."
@@ -879,8 +883,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 			DATE(s2.datumZeit) datum,
 			s2.gast mannschaft, 
 			s2.heim gegner, 
-			s2.toreGast tore, 
-			s2.toreHeim gTore 
+			s2.wertungGast tore, 
+			s2.wertungHeim gTore 
 			FROM hb_spiel s2 
 			WHERE gast=".$db->q($team->mannschaft)."
 			AND heim=".$db->q($opponent->mannschaft)."
