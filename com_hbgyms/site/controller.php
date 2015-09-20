@@ -15,7 +15,8 @@ class HBGymsController extends JControllerLegacy
 	{
 		// set default view if not set
 		JRequest::setVar('view', JRequest::getCmd('view', 'hbgyms'));
-
+		
+		
 		parent::display($cachable);
 	}
 	

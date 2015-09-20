@@ -52,9 +52,9 @@ function displayResult(gyms) {
 		var row=table.insertRow(-1);
 		row.className=rowlabel;
 		var cellNr=row.insertCell(0);
-		cellNr.innerHTML=element['hallenNummer'];
+		cellNr.innerHTML=element['hallenNr'];
 		var cellName=row.insertCell(1);
-		cellName.innerHTML=element['name'] + 
+		cellName.innerHTML=element['hallenName'] + 
 				'<br />(' + element['kurzname'] + ')';
 		var cellAdr=row.insertCell(2);
 		cellAdr.innerHTML= '<a href="' + link + '" target="_BLANK">'
@@ -118,12 +118,12 @@ function addGyms(gyms) {
     var geocoder = new google.maps.Geocoder();
 	for (var i = 0; i < gyms.length; ++i) {
         (function(gym) {
-            var address = gym['name'] + ", " + gym['strasse'] + ", " + gym['plz'] + " " + gym['stadt'];
+            var address = gym['hallenName'] + ", " + gym['strasse'] + ", " + gym['plz'] + " " + gym['stadt'];
 			//console.log(address);
 			geocoder.geocode({
                 'address': address
             }, function(results) {
-                //console.log('=> ' + address +  ' -> ' +results);
+                console.log('=> ' + address +  ' -> ' +results);
 				var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,

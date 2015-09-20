@@ -46,7 +46,7 @@
 	</files>
 	
 	<languages folder="site">
-		<language tag="de-DE">language/de-DE/de-DE.com_hbgyms.ini</language>
+		<language tag="de-DE">language/de-DE.com_hbgyms.ini</language>
 	</languages>
 	
 	<media destination="com_hbgyms" folder="media">
@@ -77,8 +77,8 @@
 		</files>
 		
 		<languages folder="admin">
-			<language tag="de-DE">language/de-DE/de-DE.com_hbgyms.ini</language>
-			<language tag="de-DE">language/de-DE/de-DE.com_hbgyms.sys.ini</language>
+			<language tag="de-DE">language/de-DE.com_hbgyms.ini</language>
+			<language tag="de-DE">language/de-DE.com_hbgyms.sys.ini</language>
 		</languages>
 	</administration>
 

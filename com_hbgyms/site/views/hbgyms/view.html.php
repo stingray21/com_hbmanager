@@ -39,12 +39,26 @@ class HBGymsViewHBGyms extends JViewLegacy
 		$this->assignRef('gyms', $gyms);
 		//echo "<pre>"; print_r($gyms); echo "</pre>";
 		
+		// TODO backend option
+		$start = 'Schloßparkhalle, Schloßplatz, Geislingen, Deutschland';
+		$this->assignRef('start', $start);
+		
 		//$post = JRequest::get('post');
 		//echo "<pre>"; print_r($post); echo "</pre>";
 		//$this->assignRef('post', $post);
 		
-		JHtml::stylesheet('com_hbgyms/site.stylesheet.css', array(), true);
+		$jinput = JFactory::getApplication()->input;
+		$focus = $jinput->get('focus', '');
+		$this->assignRef('focus', $focus);
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$focus.'</pre>';
 		
+//		$style = '#gym'.$focus.' {
+//			background-color:#900;
+//			}';
+//		$document->addStyleDeclaration( $style );
+		
+		//$document->addStyleSheet('./com_hbgyms/site.stylesheet.css', array(), true);
+		JHtml::stylesheet('com_hbgyms/site.stylesheet.css', array(), true);
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
