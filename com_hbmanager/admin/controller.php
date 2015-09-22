@@ -340,6 +340,35 @@ class hbmanagerController extends JControllerAdmin
 		hbhelper::addSubmenu('hbteammenus');
 	}
 	
+	function showGoalsInput()
+	{
+		$model = $this->getModel('hbgoalsinput');
+		$view = $this->getView('hbgoalsinput','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbgoalsinput');
+	}
+	
+	function addGoals()
+	{
+		$model = $this->getModel('hbgoalsinput');
+		$post = JRequest::get('post');
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+		if (isset($post['hbgoals'])) {
+			$model->addGoals($post['hbgoals']);
+		}
+		$view = $this->getView('hbgoalsinput','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbgoalsinput');
+	}
+	
 	function showPictures()
 	{
 //		$jinput = JFactory::getApplication()->input;

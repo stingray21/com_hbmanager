@@ -289,3 +289,27 @@ table.HBschedule td.heim {
 table.HBhomeSchedule td{
 	padding: 0.1em 0.5em;
 	}
+
+/* GoalsInput */
+
+dl.confirmImport dt {
+	display: inline-block;
+}
+dl.confirmImport dd {
+	display: inline-block;
+	margin-right: 3em;
+}
+
+table#goalsConfirm {
+	margin: 2em;
+	}
+	
+table#goalsConfirm th,
+table#goalsConfirm td{
+	padding: 0.1em 0.5em;
+	}
+	
+table#goalsConfirm tr {
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+	}
