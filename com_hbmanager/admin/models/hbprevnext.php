@@ -307,6 +307,8 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->from('hb_spiel');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');
+		$query->leftJoin($db->qn('hb_halle').' USING ('.
+				$db->qn('hallenNr').')');
 		if ($previews) {	
 			$query->leftJoin($db->qn('hb_spielvorschau').
 				' USING ('.$db->qn('spielIdHvw').')');

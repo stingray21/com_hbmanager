@@ -163,10 +163,12 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 								$game->ligaKuerzel.")\n";
 						$currTeam = $game->mannschaft;
 					}
+					$data['games'][$i] .= "&nbsp;&nbsp;".$game->hallenName.' '.$game->stadt."\n";
 					$data['games'][$i] .= "&nbsp;&nbsp;";
 					$data['games'][$i] .= JHtml::_('date', $game->zeit, 'H:i', $this->tz)." Uhr ".
 							"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 				}
+				
 			}
 		}
 		$data['games'] = self::formatTeamNames($data['games']);
@@ -216,6 +218,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 				//$data[$i]['headline'] .= '('.$report->ligaKuerzel.')';
 				$data[$i]['result'] = "{$report->heim} - {$report->gast}".
 						"&nbsp;&nbsp;\t{$report->toreHeim}:{$report->toreGast}";
+				$data[$i]['result'] .= ($report->halbzeitstand != '') ? ' ('.$report->halbzeitstand.')' : '';
 				$data[$i]['text'] = $report->bericht;
 				if (!empty($report->spielerliste)) {
 					$data[$i]['lineup'] = $report->spielerliste;
@@ -287,8 +290,8 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 		if ($link)
 		{
 			$data['link'] = "Aktuellere und ausführlichere Informationen "
-					. "auf unserer Homepage: \n";
-			$data['link'] .= "www.handball.tsv-geislingen.de";
+					. "auf: \n";
+			$data['link'] .= "handball.tsv-geislingen.de oder www.hkog.de";
 		}
 		
 		return $data;
