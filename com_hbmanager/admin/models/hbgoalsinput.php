@@ -90,12 +90,20 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 	
 	private function getAlias($name) {	
 		// TODO: Look-up in DB instead
+		//echo __FUNCTION__.' <pre>';print_r($name); echo'</pre>';
+//		$encoding = mb_detect_encoding($name);
+//		echo __FUNCTION__.' <pre>';print_r($encoding); echo'</pre>';
 		
-		$lowercaseName = strtolower($name);
-		$search	 = array("ä", "ö", "ü", "ß", " ");
-		$replace = array("ae", "oe", "ue", "ss", "-");
+		$search	 = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", " ");
+		$replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "-");
+//		$cleanedName = str_replace($search, $replace, $name);
+//		echo __FUNCTION__.' <pre>';print_r($cleanedName); echo'</pre>';
+//		$lowercaseName = strtolower($cleanedName);
+//		echo __FUNCTION__.' <pre>';print_r($lowercaseName); echo'</pre>';
+		//$name = utf8_decode($name);
 		
-		$alias = str_replace($search, $replace, $lowercaseName);
+		$alias = strtolower(str_replace($search, $replace, $name));
+		//echo __FUNCTION__.' <pre>';print_r($alias); echo'</pre>';
 		return $alias;
 	}
 			
