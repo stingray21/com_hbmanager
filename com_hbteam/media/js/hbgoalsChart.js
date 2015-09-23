@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
-	// console.log(teamkey);
-	// console.log(season);
+	//console.log(teamkey);
+	//console.log(season);
 
 	// dimensions
 	var margin = {top: 30, right: 150, bottom: 120, left: 50};

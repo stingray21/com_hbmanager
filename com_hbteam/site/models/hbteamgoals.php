@@ -310,7 +310,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('name');
+		//$query->select('name');
+		$query->select('nameKurz');
 		$query->from('hb_mannschaft');
 		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
