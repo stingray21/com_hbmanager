@@ -27,6 +27,15 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		
 		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
 		$this->assignRef('model', $model);
+		$this->assignRef('teamkey', $model->teamkey);
+		$this->assignRef('season', $model->season);
+		$this->assignRef('gameId', $model->gameId);
+		$this->assignRef('futureGames', $model->futureGames);
+		
+		 
+		$defaultChartMode = 'goals'; 
+		$defaultChartMode = 'total'; 
+		$this->assignRef('defaultChartMode', $defaultChartMode);
 		
 		// local jquery
 		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);
@@ -34,14 +43,25 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$document->addScriptDeclaration('
 			var teamkey = \''.$model->teamkey.'\';
 			var season = \''.$model->season.'\';
+			var futureGames = '.$model->futureGames.';
 			//console.log(teamkey);
 		');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoals.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');
 		
+		$jinput = JFactory::getApplication()->input;
 		// Assign config params data to the view
-		$chartmodes = JComponentHelper::getParams('com_hbteam')->get('chartsettings');
+		$menuitemid = $jinput->get('Itemid');	
+		//echo '=> model->gameId<br><pre>'; print_r($menuitemid); echo '</pre>';
+		if ($menuitemid)
+		{
+			$menu = JFactory::getApplication()->getMenu();
+			$menuparams = $menu->getParams($menuitemid);
+			$chartmodes = $menuparams->get('chartsettings');
+		} else {
+			$chartmodes = array('goals','total','penalties','twoMin','twoMinTotal');
+		}
 		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($chartmodes); echo '</pre>';
 		$this->assignRef('chartmodes', $chartmodes);
 				
@@ -49,10 +69,7 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		//echo '=> view->team<br><pre>'; print_r($team); echo '</pre>';
 		$this->assignRef('team', $team);
 		
-		$this->assignRef('teamkey', $model->teamkey);
-		$this->assignRef('season', $model->season);
-		$this->assignRef('gameId', $model->gameId);
-
+		
 		$games = $model->getGames();
 		//echo '=> view->games<br><pre>'; print_r($games); echo '</pre>';
 		$this->assignRef('games', $games);

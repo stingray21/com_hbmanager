@@ -34,20 +34,40 @@
 				size="1"
 				label="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_LABEL"
 				description="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_DESC"
-				/>
+			/>
 			<field 
 				name="season" 
-				type="list" 
-				default="" 
+				type="sql"
 				label="COM_HBTEAM_HBTEAM_FIELD_SAISON_LABEL" 
-				description="COM_HBTEAM_HBTEAM_FIELD_SAISON_DESC">
-				<option value="2012">2012/2013</option>
-				<option value="2013">2013/2014</option>
-				<option value="2014">2014/2015</option>
-				<option value="2015">2015/2016</option>
+				description="COM_HBTEAM_HBTEAM_FIELD_SAISON_DESC"
+				query="SELECT DISTINCT saison FROM hb_spiel" 
+				key_field="saison" 
+				value_field="saison" 
+				required="true">
 			</field>
-			
+			<field 
+				name="chartsettings" 
+				type="checkboxes" 
+				label="COM_HBTEAM_CONFIG_GOALCHART_SETTINGS_LABEL"
+				description="COM_HBTEAM_CONFIG_GOALCHART_SETTINGS_DESC"
+				default="goals,total,penalties,twoMin,twoMinTotal"
+			>
+				<option value="goals">COM_HBTEAM_GOALCHART_MODE_GOALS</option>
+				<option value="total">COM_HBTEAM_GOALCHART_MODE_TOTAL</option>
+				<option value="penalties">COM_HBTEAM_GOALCHART_MODE_PENALTIES</option>
+				<option value="twoMin">COM_HBTEAM_GOALCHART_MODE_TWOMIN</option>
+				<option value="twoMinTotal">COM_HBTEAM_GOALCHART_MODE_TWOMINTOTAL</option>
+			</field>
+			<field
+				name="futureGames"
+				type="list"
+				default="1"
+				label="COM_HBTEAM_HBTEAM_FUTUREGAMES_LABEL"
+				description="COM_HBTEAM_HBTEAM_FUTUREGAMES_DESC">
+				<option	value="1">JYES</option>
+				<option	value="0">JNO</option>
+			</field>
 		</fieldset>
 	</fields>
-  
+
 </metadata>

@@ -103,12 +103,12 @@ foreach ($this->games as $game)
 			<?php echo JText::_('COM_HBTEAM_GOALCHART_TITLE'); ?>
 		</label>
 		<fieldset id="hbgoalchart_chartmode" class="radio" >
-		<?php 
+		<?php
 			foreach($this->chartmodes as $mode) {
 				echo "\t\t\t".'<input type="radio" id="hbgoalchart_chartmode_'.$mode.
-						'" name="hbgoalchart_mode" value="'.$mode.'"'.
-						' checked="checked"'.
-						' />'."\n";
+						'" name="hbgoalchart_mode" value="'.$mode.'"';
+				if ($this->defaultChartMode == $mode)	echo ' checked="checked"';
+				echo ' />'."\n";
 				echo '<label for="hbgoalchart_mode_'.$mode.'" >'.
 						JText::_('COM_HBTEAM_GOALCHART_MODE_'.strtoupper($mode)).'</label>';
 			}

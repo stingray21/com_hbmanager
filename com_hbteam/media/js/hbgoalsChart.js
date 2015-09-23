@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
 	//console.log(teamkey);
 	//console.log(season);
+	//console.log(futureGames);
 
 	// dimensions
 	var margin = {top: 30, right: 150, bottom: 120, left: 50};
@@ -78,7 +79,7 @@ jQuery(document).ready(function($){
 
 	// url to get the chart data
 	var url = "index.php?option=com_hbteam&task=getGoals4Chart&format=raw"
-			+ "&teamkey=" + teamkey + "&season=" + season;
+			+ "&teamkey=" + teamkey + "&season=" + season + "&futureGames=" + futureGames;
 	//console.log(url);
 
 	d3.json(url, function(error, data) {

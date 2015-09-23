@@ -18,6 +18,8 @@ class hbteamViewHbTeamGoals extends JViewLegacy
 		$this->assignRef('gameId', $gameId);
 		$teamkey = $jinput->get('teamkey');
 		$season = $jinput->get('season');
+		$season = $jinput->get('season');
+		echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teamkey); echo '</pre>';
 		
 		$model = $this->getModel('hbteamgoals');
 		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';

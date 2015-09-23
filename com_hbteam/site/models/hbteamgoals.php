@@ -19,32 +19,48 @@ class hbteamModelHBteamGoals extends JModelLegacy
 	public $gameId;
 	public $gameDate;
 	private $chartGames = array();
+	public $futureGames;
 	
 	function __construct() 
 	{
 		parent::__construct();
 		
-		//request the selected teamkey
-		$jinput = JFactory::getApplication()->input;
-		//echo '=> model->gameId<br><pre>'; print_r($jinput); echo '</pre>';
-		$menuitemid = $jinput->get('Itemid');	
-			//echo '=> model->gameId<br><pre>'; print_r($menuitemid); echo '</pre>';
-			if ($menuitemid)
-			{
-				$menu = JFactory::getApplication()->getMenu();
-				$menuparams = $menu->getParams($menuitemid);
-				$this->teamkey = $menuparams->get('teamkey');
-				$this->season = $menuparams->get('season');
-			}
-			else {
-				$this->teamkey = $jinput->get('teamkey');
-				$this->season = $jinput->get('season');
-			}
-			$game = self::getRecentGame();
-			if (!empty($game)) {
-				$this->gameId = $game->spielIdHvw;
-				$this->gameDate = $game->datum;
-			}
+		$app = JFactory::getApplication();
+		$menuitem   = $app->getMenu()->getActive(); 
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($menuitem); echo '</pre>';
+		if (!is_null($menuitem)) {
+			$params = $menuitem->params; // get the params
+
+			$this->futureGames = $params->get('futureGames', true);
+			//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->futureGames); echo '</pre>';
+			$this->teamkey = $params->get('teamkey');
+			$this->season = $params->get('season');
+			//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->season); echo '</pre>';
+		} else {
+			
+		}
+		$game = self::getRecentGame();
+		if (!empty($game)) {
+			$this->gameId = $game->spielIdHvw;
+			$this->gameDate = $game->datum;
+		}
+			
+	}
+
+	
+	function setChartData($teamkey = null, $season = null, $futureGames = 1) 
+	{
+		$this->futureGames = $futureGames;
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->futureGames); echo '</pre>';
+		$this->teamkey = $teamkey;
+		$this->season = $season;
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->season); echo '</pre>';
+		
+		$game = self::getRecentGame();
+		if (!empty($game)) {
+			$this->gameId = $game->spielIdHvw;
+			$this->gameDate = $game->datum;
+		}
 			
 	}
 	
@@ -153,7 +169,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			. ' ROUND(sum(tore) / count(tore), 1) AS quote');
 		$totalQuery->from('hb_spiel_spieler');
 		$totalQuery->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIdHvw').')');
-		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($season.'/'.($season+1)));
+		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($season));
 		$totalQuery->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
 		$totalQuery->where($db->qn('trikotNr').' NOT IN ('.$db->q('A').','.$db->q('B').','
 			. $db->q('C').','.$db->q('D').')');
@@ -217,8 +233,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			$positionskurz = array();
 			
 			$positionKeys = array('trainer', 'TW', 'LA', 'RL', 'RM', 'RR', 'RA', 'KM');
-			$positionNames = array('Trainer', 'Torwart', 'LinksauÃŸen', 'RÃ¼ckraum-Links',
-				'RÃ¼ckraum-Mitte', 'RÃ¼ckraum-Rechts', 'RechtsauÃŸen', 'Kreis');
+			$positionNames = array('Trainer', 'Torwart', 'Linksaußen', 'Rückraum-Links',
+				'Rückraum-Mitte', 'Rückraum-Rechts', 'Rechtsaußen', 'Kreis');
 			$positionAbrv = array('TR', 'TW', 'LA', 'RL', 'RM', 'RR', 'RA', 'KM');
 			
 			foreach ($positionKeys as $i => $key)
@@ -277,15 +293,17 @@ class hbteamModelHBteamGoals extends JModelLegacy
                         $db->qn('heim').', '.$db->qn('gast'));
 		$query->from('hb_spiel');
 		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
-		$query->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
+		if (!$this->futureGames) {
+			$query->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
+		}
 		$query->where($db->qn('eigenerVerein').' = 1');
 		$query->order($db->qn('datumZeit').' ASC');
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();
 		$games = self::addGameName($games);
-                //echo __FILE__.' - '.__LINE__.'<pre>'; print_r($games); echo '</pre>';
-                $this->chartGames = $games;
+		//echo __FILE__.' - '.__LINE__.'<pre>'; print_r($games); echo '</pre>';
+		$this->chartGames = $games;
 		return $games;
 	}
 	
