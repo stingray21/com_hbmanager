@@ -67,6 +67,19 @@
 				<option	value="1">JYES</option>
 				<option	value="0">JNO</option>
 			</field>
+			<field
+				name="defaultChartMode"
+				type="list"
+				default="goals"
+				label="COM_HBTEAM_HBTEAM_DEFAULTCHARTMODE_LABEL"
+				description="COM_HBTEAM_HBTEAM_DEFAULTCHARTMODE_DESC"
+			>
+				<option value="goals">COM_HBTEAM_GOALCHART_MODE_GOALS</option>
+				<option value="total">COM_HBTEAM_GOALCHART_MODE_TOTAL</option>
+				<option value="penalties">COM_HBTEAM_GOALCHART_MODE_PENALTIES</option>
+				<option value="twoMin">COM_HBTEAM_GOALCHART_MODE_TWOMIN</option>
+				<option value="twoMinTotal">COM_HBTEAM_GOALCHART_MODE_TWOMINTOTAL</option>
+			</field>
 		</fieldset>
 	</fields>
 

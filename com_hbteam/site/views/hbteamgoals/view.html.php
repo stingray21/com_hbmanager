@@ -31,11 +31,7 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$this->assignRef('season', $model->season);
 		$this->assignRef('gameId', $model->gameId);
 		$this->assignRef('futureGames', $model->futureGames);
-		
-		 
-		$defaultChartMode = 'goals'; 
-		$defaultChartMode = 'total'; 
-		$this->assignRef('defaultChartMode', $defaultChartMode);
+		$this->assignRef('defaultChartMode', $model->defaultChartMode);
 		
 		// local jquery
 		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);

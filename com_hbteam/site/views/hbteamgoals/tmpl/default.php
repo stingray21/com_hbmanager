@@ -9,11 +9,11 @@ defined('_JEXEC') or die('Restricted access');
  <span><?php echo $this->team->liga; ?></span></h1>
 	
 	<div>
+		
+		<div id="goals-player">
 	
 		<h3><?php echo JText::_('COM_HBTEAM_GOALS_SCORER');?></h3>	
-
-
-		<div>
+		
 <div data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">	
 	<table>
 		<thead><tr>
@@ -62,9 +62,9 @@ foreach ($this->players as $player)
 	</tbody>
 	</table>
 </div>
+</div>
 
-
-<div >
+<div id="goals-games">
 	<div data-teamkey="<?php echo $this->teamkey;?>" style="display: hidden"></div>
 	<div id="<?php echo $this->season;?>" style="display: hidden"></div>
 	
@@ -75,7 +75,8 @@ foreach ($this->games as $game)
 	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($game); echo'</pre>';
 	?>
 	<tr id="<?php echo $game->spielIdHvw;?>" class="gamebutton<?php 
-			echo ($game->spielIdHvw === $this->gameId) ? ' selected' : '';?>" >
+			echo ($game->spielIdHvw === $this->gameId) ? ' selected' : '';
+			echo ($game->show = 0) ? ' grayout' : '';?>" >
 		<td><?php echo JHtml::_('date', $game->datum, 'd. M.', false);
 		?></td>
 		<td><?php echo $game->gameName;?></td>
@@ -88,7 +89,7 @@ foreach ($this->games as $game)
 	</table>
 </div>
 		
-		</div>
+		
 
 
 <div class="clr"></div>
@@ -105,12 +106,12 @@ foreach ($this->games as $game)
 		<fieldset id="hbgoalchart_chartmode" class="radio" >
 		<?php
 			foreach($this->chartmodes as $mode) {
-				echo "\t\t\t".'<input type="radio" id="hbgoalchart_chartmode_'.$mode.
+				echo "\t\t\t<div>".'<input type="radio" id="hbgoalchart_chartmode_'.$mode.
 						'" name="hbgoalchart_mode" value="'.$mode.'"';
 				if ($this->defaultChartMode == $mode)	echo ' checked="checked"';
 				echo ' />'."\n";
 				echo '<label for="hbgoalchart_mode_'.$mode.'" >'.
-						JText::_('COM_HBTEAM_GOALCHART_MODE_'.strtoupper($mode)).'</label>';
+						JText::_('COM_HBTEAM_GOALCHART_MODE_'.strtoupper($mode)).'</label></div>';
 			}
 		?>
 		</fieldset>	

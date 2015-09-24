@@ -20,6 +20,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 	public $gameDate;
 	private $chartGames = array();
 	public $futureGames;
+	public $defaultChartModel;
 	
 	function __construct() 
 	{
@@ -30,7 +31,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($menuitem); echo '</pre>';
 		if (!is_null($menuitem)) {
 			$params = $menuitem->params; // get the params
-
+			
+			$this->defaultChartMode = $params->get('defaultChartMode', 'goals');
 			$this->futureGames = $params->get('futureGames', true);
 			//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($this->futureGames); echo '</pre>';
 			$this->teamkey = $params->get('teamkey');
@@ -109,13 +111,26 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		}
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*, DATE(`datumZeit`) AS `datum`');
+		$query->select($db->qn('spielIdHvw').', '.
+			$db->qn('saison').', '.
+			$db->qn('ligaKuerzel').', '.
+			$db->qn('kuerzel').', '.
+			$db->qn('hallenNr').', '.
+			//$db->qn('datumZeit').', '.
+			$db->qn('heim').', '.
+			$db->qn('gast').', '.
+			$db->qn('toreHeim').', '.
+			$db->qn('toreGast').', '.
+			' DATE('.$db->qn('datumZeit').') AS `datum`, '.
+		//		$db->qn('toreHeim').' IS NOT NULL AS `show`');
+				$db->qn('tw').' IS NOT NULL AS `show`');
 		$query->from('hb_spiel');
-		$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIdHvw').')');
+		$query->leftJoin($db->qn('hb_spiel_spieler').' USING ('.$db->qn('spielIdHvw').','.
+				$db->qn('saison').','.$db->qn('kuerzel').')');
 		$query->where('hb_spiel.'.$db->qn('kuerzel').' = '.$db->q($teamkey));
-		$query->where('hb_spiel.'.$db->qn('toreHeim').' IS NOT NULL');
+		//$query->where('hb_spiel.'.$db->qn('toreHeim').' IS NOT NULL');
 		$query->where($db->qn('eigenerVerein').' = 1');
-		$query->where('DATE('.$db->qn('datumZeit').') < NOW() ');
+		//$query->where('DATE('.$db->qn('datumZeit').') < NOW() ');
 		$query->order($db->qn('datumZeit').' ASC');
 		$query->group('spielIdHvw');
 		//echo '=> model->$query <br><pre>"; print_r($query); echo "</pre>';

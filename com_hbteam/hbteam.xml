@@ -4,14 +4,14 @@
 
 	<name>HB Team</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
-	<creationDate>2015-09-22</creationDate>
+	<creationDate>2015-09-23</creationDate>
 	<author>Jochen Stehle</author>
 	<authorEmail>stingray21@gmx.de</authorEmail>
 	<authorUrl></authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>0.1.4</version>
+	<version>0.1.5</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>Component to show an overview of a team</description>
 
