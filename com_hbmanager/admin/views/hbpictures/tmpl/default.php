@@ -29,30 +29,37 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 		$i = 0;
 		foreach ($this->teams as $key => $value)
 		{
-			echo '<div class="teampic">'."\n";
+			?>
+			<div class="team pic">
 
-				echo '<h4 class="teampic">'.$value->mannschaft.'</h4>'."\n";
-				?>
-				<table class="teampic">
+				<h4 class="teampic"> <?php echo $value->mannschaft ?></h4>
 				
-				<tr>
-					<td class="picture">
-						<img src="../hbdata/images/teams/2014-2015/250px/<?php 
-						echo $value->dateiname;
-						?>" id="teampic_<?php
-						echo $value->kuerzel;
-						?>" class="teampic" alt="Mannschaftsbild <?php
-						echo $value->mannschaft;
-						?>" />
-					</td>
-					<td>
+				<div class="picture">
+					<?php
+					// echo '<p>'.$value->dateiname.'</p>';
+					?>
+					<img src="../<?php 
+					echo $value->dateiname;
+					?>" id="teampic_<?php
+					echo $value->kuerzel;
+					?>" class="teampic" alt="Mannschaftsbild <?php
+					echo $value->mannschaft;
+					?>" />
+				</div>
 				<?php	
 				
-				echo hbhelper::formatInput($form->getInput('id', 'hbpictures', $value->id), $i);
+				//echo hbhelper::formatInput($form->getInput('id', 'hbpictures', $value->id), $i);
 				echo hbhelper::formatInput($form->getInput('kuerzel', 'hbpictures', $value->kuerzel), $i);
+				?>
+				<div class="btn-group">
+				<a class="btn" href="index.php/?option=com_hbmanager&task=addpicture&teamkey=m-1" title="<?php 
+						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?>" ><?php
+						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?></a>
+				</div>
 				
-				echo $form->getLabel('dateiname', 'hbpictures');
-				echo hbhelper::formatInput($form->getInput('dateiname', 'hbpictures', $value->dateiname), $i);
+				<?php
+				//echo $form->getLabel('dateiname', 'hbpictures');
+				//echo hbhelper::formatInput($form->getInput('dateiname', 'hbpictures', $value->dateiname), $i);
 				
 				echo $form->getLabel('saison', 'hbpictures');
 				echo hbhelper::formatInput($form->getInput('saison', 'hbpictures', $value->saison), $i);
@@ -77,18 +84,17 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				echo hbhelper::formatInput($form->getInput('untertitel_dd4', 'hbpictures', $value->untertitel_dd4), $i);
 				
 				?>
-				</td>
-				<td>
-					<input class="submit" type="submit" name="update_button" id="update_button" value="speichern" />
-				</td>
-			</tr>
-			</table>
+			
+				<input class="submit" type="submit" name="update_button" id="update_button" value="<?php
+						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?>" />
+			
+			</div> <!-- div team -->
+			
+			<div class="clearfix"> </div>
 			<?php
 			//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value);echo'</pre>';
 
 			$i++;
-
-			
 		}	
 	
 ?>

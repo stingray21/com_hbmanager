@@ -386,11 +386,35 @@ class hbmanagerController extends JControllerAdmin
 			//echo "=> update button<br>";
 			$model->updateDB($pics);
 		}
+		if (isset($post['update_pic_button'])) {
+			//echo "=> update pic button<br>";
+			$model->updateDB(array($pics));
+		}
 		
 		$view = $this->getView('hbpictures','html');
 		$view->setModel($model, true);
 		$view->display();
 		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbpictures');
+	}
+	
+	function addPicture()
+	{
+		$model = $this->getModel('hbpictures');
+		
+		$jinput = JFactory::getApplication()->input;
+		$teamkey = $jinput->get('teamkey', null);
+		$teamkey = 'm-1';
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($teamkey);echo'</pre>';
+		$model->setTeamkey($teamkey);
+		
+		$view = $this->getView('hbpictures','html');
+		$view->setModel($model);
+		$view->setLayout('addpicture');
+	
+		$view->display();
 		
 		// Set the submenu
 		hbhelper::addSubmenu('hbpictures');

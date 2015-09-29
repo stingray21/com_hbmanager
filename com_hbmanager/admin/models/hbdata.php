@@ -385,7 +385,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 	protected function setSeason($string)
     {
 		$season = preg_replace('/.*(\d{4})\/(\d{4}).*/', '$1-$2', $string);
-		$season = '2015-2016';
+		//$season = '2015-2016';
 		$this->season = $season;
     }
 

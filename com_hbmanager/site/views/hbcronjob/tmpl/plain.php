@@ -6,6 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 $datePattern = 'D, d.m.Y - H:i:s \U\h\r (e)';
 
 if (is_array($this->result)) {
+	echo "Success!";
 	foreach ($this->result as $team)
 	{
 		echo "\n";
@@ -14,6 +15,7 @@ if (is_array($this->result)) {
 	}
 }
 elseif ($this->result === "no update") {
+	echo "Success!\n";
 	echo 'Kein Update';
 }
 

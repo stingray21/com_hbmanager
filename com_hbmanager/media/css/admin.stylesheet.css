@@ -238,7 +238,7 @@ div.teampic td  {
 }
 
 div.teampic label {
-	float: left;
+	//float: left;
 	clear: both;
 	min-width: 5em;
 }
