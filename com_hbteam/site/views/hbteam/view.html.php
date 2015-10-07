@@ -31,6 +31,7 @@ class hbteamViewhbteam extends JViewLegacy
 			return false;
 		}
 */		
+		
 		$picture = $model->getPicture();
 		//echo '=> view->picture<br><pre>'; print_r($picture); echo '</pre>';
 		$this->assignRef('picture', $picture);

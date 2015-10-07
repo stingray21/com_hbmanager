@@ -2,8 +2,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 $pic = $this->picture;
-$picPath = './hbdata/images/teams/2014-2015/600px/';
-$picPathFull = './hbdata/images/teams/2014-2015/3000px/';
 ?>
 <div class="hbteam">
 
@@ -11,25 +9,27 @@ $picPathFull = './hbdata/images/teams/2014-2015/3000px/';
  <span><?php echo $this->team->liga; ?></span></h1>
 <?php
 
-if (!empty($pic->filename) AND file_exists($picPath.$pic->filename))
+//echo __FILE__.__LINE__.'<a href="'.$this->model->getImage('500').'">'.$this->model->getImage('500').'</a>';
+
+if (!empty($this->model->getImage('500')) AND file_exists($this->model->getImage('1200')))
 {
 ?>
 <div>
-	<a href="<?php echo $picPathFull.$pic->filename ?>" target="_BLANK">
-	<img src="<?php echo $picPath.$pic->filename?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
+	<a href="<?php echo $this->model->getImage('1200') ?>" target="_BLANK">
+	<img src="<?php echo $this->model->getImage('500')?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
 	</a>
 	
 	<?php 
-	if (!empty($pic->caption))
+	if (!empty($this->team->liste))
 	{
 		?>
 		<dl>
 			<?php 
-			foreach ($pic->caption as $caption)
+			foreach ($this->team->liste as $line)
 			{
 				?>
-				<dt><?php echo $caption->headline;?></dt>
-				<dd><?php echo $caption->content;?></dd>
+				<dt><?php echo $line['titel'];?></dt>
+				<dd><?php echo $line['namen'];?></dd>
 				<?php
 			}
 			?>

@@ -16,19 +16,23 @@ class hbteamModelhbteam extends JModelLegacy
 	 */
 	protected $messages;
 	protected $teamkey;
+	protected $team;
+	protected $pictureInfo;
 	
 	function __construct() 
 	{
 		parent::__construct();
 		
 		//request the selected teamkey
-			$menuitemid = JRequest::getInt('Itemid');
-			if ($menuitemid)
-			{
-				$menu = JFactory::getApplication()->getMenu();
-				$menuparams = $menu->getParams($menuitemid);
-			}
-			$this->teamkey = $menuparams->get('teamkey');
+		$menuitemid = JRequest::getInt('Itemid');
+		if ($menuitemid)
+		{
+			$menu = JFactory::getApplication()->getMenu();
+			$menuparams = $menu->getParams($menuitemid);
+		}
+		$this->teamkey = $menuparams->get('teamkey');
+		//$this->team = self::getTeam($this->teamkey);
+		$this->pictureInfo = self::getPictureInfo();
 	}
 	
 	/**
@@ -85,14 +89,30 @@ class hbteamModelhbteam extends JModelLegacy
 		if ($teamkey === "non"){
 			$teamkey = $this->teamkey;
 		}
+		
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*');
+		$query->select($db->qn('kuerzel').', '.
+			$db->qn('reihenfolge').', '.$db->qn('mannschaft').', '.
+			$db->qn('name').', '.$db->qn('nameKurz').', '.
+			$db->qn('ligaKuerzel').', '.$db->qn('liga').', '.
+			$db->qn('geschlecht').', '.$db->qn('jugend').', '.
+			$db->qn('saison').', '.
+			$db->qn('spielerliste').', '.$db->qn('kommentar') );
 		$query->from('hb_mannschaft');
-		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
-		//echo __FILE__.__LINE__.'=> model->$query <br><pre>'.$query.'</pre>';
+		$query->leftJoin($db->qn('hb_mannschaftsfoto').' USING ('.
+				$db->qn('kuerzel').')');
+		if ($this->teamkey !== null) {
+			$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
+		}
+		$query->order('ISNULL('.$db->qn('reihenfolge').'), '.
+					$db->qn('reihenfolge').' ASC');
+		// Zur Kontrolle
+//		echo __FILE__.' ('.__LINE__.'<pre>'; echo $query; echo "</pre>";
 		$db->setQuery($query);
-		$team = $db->loadObject();
+		$team = $db->loadObject();	
+		$team = self::getPlayersList($team);
+		
 		if (empty($team)){
 			$team = new stdClass();
 			$team->mannschaft = 'Mannschaft';
@@ -100,9 +120,11 @@ class hbteamModelhbteam extends JModelLegacy
 			$team->nameKurz = '';
 		}
 
-		//echo __FILE__.__LINE__.'<pre>'; print_r($team); echo '</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($team); echo '</pre>';
+		
 		return $team;
 	}
+	
 	
 	function getPictureInfo()
 	{
@@ -120,32 +142,51 @@ class hbteamModelhbteam extends JModelLegacy
 	
 	function getPicture()
 	{
-		$pictureInfo = self::getPictureInfo();
-		if (empty($pictureInfo)) return null;
+		if (empty($this->pictureInfo)) return null;
 		//echo '=> model->pictureInfo<br><pre>'; print_r($pictureInfo); echo '</pre>';
 		$pic = new stdClass();
-		$pic->filename = $pictureInfo->dateiname;
-		$pic->saison = $pictureInfo->saison;
-		$pic->comment = $pictureInfo->kommentar;
-		$pic->caption = self::getCaption($pictureInfo);
+		$pic->saison = $this->pictureInfo->saison;
+		$pic->comment = $this->pictureInfo->kommentar;
 		return $pic;
 	}
 	
-	function getCaption($pictureInfo)
-	{	
-		//echo __FILE__.__LINE__.'<pre>'; print_r($pictureInfo); echo '</pre>';
-		$captionData = (array) $pictureInfo;
-		$caption = null;
-		for ($i = 1; $i <= 4; $i++) { 
-			if (!empty($captionData['untertitel_dd'.$i]) AND 
-					!empty($captionData['untertitel_dd'.$i])) {
-				$caption[$i] = new stdClass();
-				$caption[$i]->headline = $captionData['untertitel_dt'.$i];
-				$caption[$i]->content = $captionData['untertitel_dd'.$i];
-			}
+	public function getImage($res)
+	{
+		if (empty($this->pictureInfo)) return null;
+		$season = self::getCurrentSeason();
+		//echo '=> model->pictureInfo<br><pre>'; print_r($pictureInfo); echo '</pre>';
+		$path = './images/handball/teams/'.$season.'/team_'.$this->pictureInfo->kuerzel.'_'
+				.$season.'_'.$res.'px.png';
+		return $path;
+	}
+	
+	private function getCurrentSeason() 
+	{
+		$year = strftime('%Y');
+		if (strftime('%m') < 8) {
+			$year = $year-1;
 		}
-		//echo __FILE__.__LINE__.'<pre>'; print_r($caption); echo '</pre>';
-		return $caption;
+		return $currentSeason = $year.'-'.($year+1);
+	}
+
+	
+	protected function getPlayersList($team) {
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($team);echo'</pre>';
+		//$list = unserialize($team->spielerliste);
+		$list = json_decode($team->spielerliste);
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($list);echo'</pre>';
+		for($i = 0 ; $i < count($list); $i++) {
+	//			for($i = 1 ; $i <= count($list); $i++) {
+			//echo __FILE__.'('.__LINE__.')'.$i.':<pre>';print_r($list[$i-1]);echo'</pre>';
+	//				$team->{'untertitel_dt'.$i} = $list[$i-1]['heading'];
+	//				$team->{'untertitel_dd'.$i} = $list[$i-1]['list'];
+
+			$team->liste[$i]['titel'] = (isset($list[$i]->heading )) ? $list[$i]->heading : '';
+			$team->liste[$i]['namen'] = (isset($list[$i]->list )) ? $list[$i]->list : '';
+		}
+		
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($team);echo'</pre>';
+		return $team;
 	}
 	
 }
