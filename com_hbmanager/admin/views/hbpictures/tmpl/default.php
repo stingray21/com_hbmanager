@@ -29,6 +29,7 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 		$i = 0;
 		foreach ($this->teams as $key => $value)
 		{
+			//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value);echo'</pre>';
 			?>
 			<div class="team pic">
 
@@ -36,10 +37,14 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				
 				<div class="picture">
 					<?php
-					// echo '<p>'.$value->dateiname.'</p>';
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value->dateiname);echo'</pre>'; 
+					$res = 500; //resolution
+					$filename = 'team_'.$value->kuerzel.'_'.$value->saison.'_'.$res.'px';
+					$file = '../'.$this->picFolder.'/'.$value->saison.'/'.$filename.'.png';
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($file);echo'</pre>';
 					?>
-					<img src="../<?php 
-					echo $value->dateiname;
+					<img src="<?php 
+					echo $file;
 					?>" id="teampic_<?php
 					echo $value->kuerzel;
 					?>" class="teampic" alt="Mannschaftsbild <?php
@@ -67,26 +72,18 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				echo $form->getLabel('kommentar', 'hbpictures');
 				echo hbhelper::formatInput($form->getInput('kommentar', 'hbpictures', $value->kommentar), $i);
 				
-				echo $form->getLabel('untertitel_dt1', 'hbpictures');
-				echo hbhelper::formatInput($form->getInput('untertitel_dt1', 'hbpictures', $value->untertitel_dt1), $i);
-				echo hbhelper::formatInput($form->getInput('untertitel_dd1', 'hbpictures', $value->untertitel_dd1), $i);
-				
-				echo $form->getLabel('untertitel_dt2', 'hbpictures');
-				echo hbhelper::formatInput($form->getInput('untertitel_dt2', 'hbpictures', $value->untertitel_dt2), $i);
-				echo hbhelper::formatInput($form->getInput('untertitel_dd2', 'hbpictures', $value->untertitel_dd2), $i);
-				
-				echo $form->getLabel('untertitel_dt3', 'hbpictures');
-				echo hbhelper::formatInput($form->getInput('untertitel_dt3', 'hbpictures', $value->untertitel_dt3), $i);
-				echo hbhelper::formatInput($form->getInput('untertitel_dd3', 'hbpictures', $value->untertitel_dd3), $i);
-				
-				echo $form->getLabel('untertitel_dt4', 'hbpictures');
-				echo hbhelper::formatInput($form->getInput('untertitel_dt4', 'hbpictures', $value->untertitel_dt4), $i);
-				echo hbhelper::formatInput($form->getInput('untertitel_dd4', 'hbpictures', $value->untertitel_dd4), $i);
+				//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value->liste);echo'</pre>';
+				foreach ($value->liste as $nr => $line) {
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($line);echo'</pre>';
+					echo $form->getLabel('titel'.($nr+1), 'hbpictures');
+					echo hbhelper::formatInput($form->getInput('titel'.($nr+1), 'hbpictures', $line['titel']), $i);
+					echo hbhelper::formatInput($form->getInput('namen'.($nr+1), 'hbpictures', $line['namen']), $i);
+				}
 				
 				?>
 			
 				<input class="submit" type="submit" name="update_button" id="update_button" value="<?php
-						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?>" />
+						echo JText::_('COM_HBMANAGER_PICTURES_SAVE_BUTTON');?>" />
 			
 			</div> <!-- div team -->
 			

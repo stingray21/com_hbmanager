@@ -22,6 +22,10 @@ class HBmanagerViewHbpictures extends JViewLegacy
 		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teams); echo '</pre>';
 		$this->assignRef('teams', $teams);
 		
+		$picFolder = $model->picFolder;
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($picFolder); echo '</pre>';
+		$this->assignRef('picFolder', $picFolder);
+		
 		$post = JRequest::get('post');
 		//echo '=> view->post<br><pre>'; print_r($post); echo '</pre>';
 		$this->assignRef('post', $post);

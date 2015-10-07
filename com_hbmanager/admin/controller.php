@@ -388,6 +388,7 @@ class hbmanagerController extends JControllerAdmin
 		}
 		if (isset($post['update_pic_button'])) {
 			//echo "=> update pic button<br>";
+			$model->saveImage($pics);
 			$model->updateDB(array($pics));
 		}
 		

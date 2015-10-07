@@ -32,6 +32,24 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 
 				<h4 class="teampic"> <?php echo $value->mannschaft ?></h4>
 				
+				<div class="picture">
+					<?php
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value->dateiname);echo'</pre>'; 
+					$res = 500; //resolution
+					$filename = 'team_'.$value->kuerzel.'_'.$value->saison.'_'.$res.'px';
+					$file = '../'.$this->picFolder.'/'.$value->saison.'/'.$filename.'.png';
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($file);echo'</pre>';
+					// echo '<a href="'<?php echo '.$file.'">test</a>';
+					?>
+					<img src="<?php 
+					echo $file;
+					?>" id="teampic_<?php
+					echo $value->kuerzel;
+					?>" class="teampic" alt="Mannschaftsbild <?php
+					echo $value->mannschaft;
+					?>" />
+				</div>
+				
 				<?php	
 				//echo $form->getInput('id', 'hbpictures', $value->id);
 				echo $form->getInput('kuerzel', 'hbpictures', $value->kuerzel);
@@ -46,21 +64,13 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				echo $form->getLabel('kommentar', 'hbpictures');
 				echo $form->getInput('kommentar', 'hbpictures', $value->kommentar);
 				
-				echo $form->getLabel('untertitel_dt1', 'hbpictures');
-				echo $form->getInput('untertitel_dt1', 'hbpictures', $value->untertitel_dt1);
-				echo $form->getInput('untertitel_dd1', 'hbpictures', $value->untertitel_dd1);
-				
-				echo $form->getLabel('untertitel_dt2', 'hbpictures');
-				echo $form->getInput('untertitel_dt2', 'hbpictures', $value->untertitel_dt2);
-				echo $form->getInput('untertitel_dd2', 'hbpictures', $value->untertitel_dd2);
-				
-				echo $form->getLabel('untertitel_dt3', 'hbpictures');
-				echo $form->getInput('untertitel_dt3', 'hbpictures', $value->untertitel_dt3);
-				echo $form->getInput('untertitel_dd3', 'hbpictures', $value->untertitel_dd3);
-				
-				echo $form->getLabel('untertitel_dt4', 'hbpictures');
-				echo $form->getInput('untertitel_dt4', 'hbpictures', $value->untertitel_dt4);
-				echo $form->getInput('untertitel_dd4', 'hbpictures', $value->untertitel_dd4);
+				//echo __FILE__.'('.__LINE__.'):<pre>';print_r($value->liste);echo'</pre>';
+				foreach ($value->liste as $nr => $line) {
+					//echo __FILE__.'('.__LINE__.'):<pre>';print_r($line);echo'</pre>';
+					echo $form->getLabel('titel'.($nr+1), 'hbpictures');
+					echo $form->getInput('titel'.($nr+1), 'hbpictures', $line['titel']);
+					echo $form->getInput('namen'.($nr+1), 'hbpictures', $line['namen']);
+				}
 				
 				?>
 			

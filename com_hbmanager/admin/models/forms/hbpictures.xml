@@ -25,7 +25,7 @@
 				name="dateiname" 
 				label="Foto" 
 				type="media" 
-				directory="handball" />
+				directory="handball/teams/" />
 			<field
 				name="untertitel"
 				type="editor"
@@ -58,69 +58,90 @@
 				label="bis Spieltag"
 			/> 
 			<field
-				name="untertitel_dt1"
+				name="titel1"
 				type="text"
 				label="Zeile 1" 
-				description="Untertitel Ziele 1"
+				description="Untertitel"
 				default=""
 				size="20"
 			/>
 			<field
-				name="untertitel_dd1"
+				name="namen1"
 				type="textarea"
 				label="Zeile 1" 
-				description="Untertitel Ziele 1"
+				description="Untertitel"
 				default=""
 				cols="45"
 				rows="1"
 			/>
+			
 			<field
-				name="untertitel_dt2"
+				name="titel2"
 				type="text"
 				label="Zeile 2" 
-				description="Untertitel Ziele 2"
+				description="Untertitel"
 				default=""
 				size="20"
 			/>
 			<field
-				name="untertitel_dd2"
+				name="namen2"
 				type="textarea"
 				label="Zeile 2" 
-				description="Untertitel Ziele 2"
+				description="Untertitel"
 				default=""
 				cols="45"
 				rows="1"
 			/>
+			
 			<field
-				name="untertitel_dt3"
+				name="titel3"
 				type="text"
 				label="Zeile 3" 
-				description="Untertitel Ziele 3"
+				description="Untertitel"
 				default=""
 				size="20"
 			/>
 			<field
-				name="untertitel_dd3"
+				name="namen3"
 				type="textarea"
 				label="Zeile 3" 
-				description="Untertitel Ziele 3"
+				description="Untertitel"
 				default=""
 				cols="45"
 				rows="1"
 			/>
+			
 			<field
-				name="untertitel_dt4"
+				name="titel4"
 				type="text"
 				label="Zeile 4" 
-				description="Untertitel Ziele 4"
+				description="Untertitel"
 				default=""
 				size="20"
 			/>
 			<field
-				name="untertitel_dd4"
+				name="namen4"
 				type="textarea"
 				label="Zeile 4" 
-				description="Untertitel Ziele 4"
+				description="Untertitel"
+				default=""
+				cols="45"
+				rows="1"
+			/>
+			
+			<field
+				name="titel5"
+				type="text"
+				label="Zeile 5" 
+				description="Untertitel"
+				default=""
+				size="20"
+			/>
+			<field
+				name="namen5"
+				type="textarea"
+				label="Zeile 5" 
+				description="Untertitel"
 				default=""
 				cols="45"
 				rows="1"
