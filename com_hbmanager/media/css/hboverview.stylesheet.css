@@ -36,6 +36,11 @@ div#hboverview a.btnShowTable:hover  {
 	opacity: 1;
 }
 
+div#hboverview hr {
+	margin: 2em 0 4em 0;
+	border: 1px solid #ddd;
+}
+
 div#hboverview a.hvwlink {
 	background-image: url("../images/hvw-50x18.png");
 	background-position: 0 2px;
@@ -85,25 +90,97 @@ div#hboverview table.miniStandings td.sepaDots{
 
 div#hboverview div.gameInfo {
 	//background: red;
+	padding: 0 0.5em;
+	max-width: 36em;
+	display: flex;
+	flex-direction: row;
+	//align-items: flex-start;
 }
 
-div#hboverview div.gameInfo span {
+div#hboverview div.gameInfo > span {
 	//background: green;
+	display: inline-block;
 }
 
-div#hboverview div.gameInfo span:first-child {
-	margin-left: 0.5em;
+div#hboverview div.gameInfo span.time {
+	width: 6em;
+	flex-grow: 1;
 }
 
 div#hboverview div.gameInfo span.team {
-	//background: cyan;
-	display: inline-block;
-	min-width: 12em;
+	width: 22em;
+	flex-grow: 4;
+	//background: orange;
+	display:flex;		
+	justify-content: space-around;
 }
 
-div#hboverview div.gameInfo span.team.home {
+div#hboverview div.gameInfo span.team span {
+	width: 10em;
+	padding: 0 0.5em;
+	flex-grow: 4;
+}
+
+div#hboverview div.gameInfo span.gameResult {
+	width: 7em;
+	flex-grow: 1;
+	display:flex;
+}
+
+div#hboverview div.gameInfo span span {
+	padding: 0 0.5em;
+}
+
+div#hboverview div.gameInfo span span.indicator {
+	display: inline-block;
+	padding: 0;
+	width:20px;
+	height: 20px;
+	opacity: 0.7;
+	background-image: url('../images/balls_20px.png');
+}
+
+div#hboverview div.gameInfo span span.indicator.win {
+	background-position: 0px 20px;
+}
+
+div#hboverview div.gameInfo span span.indicator.tied {
+	background-position: 0px 40px;
+}
+
+div#hboverview div.gameInfo span span.indicator.loss {
+	background-position: 0px 60px;
+}
+
+
+
+div#hboverview div.gameInfo span.home {
 	text-align: right;
 }
+
+
+@media (max-width: 767px) {
+	
+	div#hboverview div.gameInfo {
+		flex-direction: column;
+		align-items: flex-start;
+		line-height: 1.5;
+	}
+
+	div#hboverview div.gameInfo span.team,
+	div#hboverview div.gameInfo span.gameResult {
+		display: inline-block;
+	}	
+	
+	div#hboverview div.gameInfo span.gameResult  {
+		width: 8em;
+	}	
+	
+	div#hboverview div.gameInfo span.gameResult .indicator  {
+		margin: -4px;
+	}
+}
+
 
 /* Overview ALL and HOME */
 

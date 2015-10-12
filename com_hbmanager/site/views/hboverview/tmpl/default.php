@@ -52,20 +52,22 @@ foreach ($this->gameDays as $gameDay)
 				?>
 				<div class="gameInfo">
 				<span class="time"><?php echo JHtml::_('date', $game->zeit, 'H:i', $this->timezone);?> Uhr </span>
-				<span class="team home<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->heim;?></span>
-				 - <span class="team away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
+				<span class="team">
+					<span class="home<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->heim;?></span>
+					 - <span class="away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
+				</span>
+				<span class="gameResult">
 				<?php
 				if ($game->toreHeim !== null)
 				{
 					?>
-					<span class="gameResult">
 						<span class="<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->toreHeim;?></span>
 						 - <span class="<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->toreGast;?></span>
 						<span class="indicator <?php echo $game->anzeige;?>"></span>
-					</span>
 					<?php
 				}
 				?>
+				</span>
 				</div>
 				<?php
 				$nextTeam = ($i < count($games)-1) ? $games[$i+1]->mannschaft : null;
@@ -122,6 +124,7 @@ foreach ($this->gameDays as $gameDay)
 			<?php
 		}
 		echo "\n\n".'</div>'; // games
+		echo '<hr>';
 	}
 }
 

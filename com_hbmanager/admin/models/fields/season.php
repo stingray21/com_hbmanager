@@ -16,6 +16,7 @@ class JFormFieldSeason extends JFormFieldList
 
     public $type = 'season';
 
+	// TODO set default to current season
 
 	protected function getOptions()
     {

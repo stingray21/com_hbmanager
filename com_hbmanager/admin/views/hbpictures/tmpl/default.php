@@ -57,7 +57,7 @@ $form = JForm::getInstance('myformpics', JPATH_COMPONENT_ADMINISTRATOR.
 				echo hbhelper::formatInput($form->getInput('kuerzel', 'hbpictures', $value->kuerzel), $i);
 				?>
 				<div class="btn-group">
-				<a class="btn" href="index.php/?option=com_hbmanager&task=addpicture&teamkey=m-1" title="<?php 
+				<a class="btn" href="index.php/?option=com_hbmanager&task=addpicture&teamkey=<?php echo $value->kuerzel; ?>" title="<?php 
 						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?>" ><?php
 						echo JText::_('COM_HBMANAGER_PICTURES_CHANGE_BUTTON');?></a>
 				</div>

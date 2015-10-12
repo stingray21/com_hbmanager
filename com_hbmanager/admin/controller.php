@@ -407,7 +407,6 @@ class hbmanagerController extends JControllerAdmin
 		
 		$jinput = JFactory::getApplication()->input;
 		$teamkey = $jinput->get('teamkey', null);
-		$teamkey = 'm-1';
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($teamkey);echo'</pre>';
 		$model->setTeamkey($teamkey);
 		

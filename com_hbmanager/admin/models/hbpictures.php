@@ -33,7 +33,7 @@ class hbmanagerModelHbpictures extends JModelLegacy
 			$db->qn('name').', '.$db->qn('nameKurz').', '.
 			$db->qn('ligaKuerzel').', '.$db->qn('liga').', '.
 			$db->qn('geschlecht').', '.$db->qn('jugend').', '.
-			$db->qn('saison').', '.
+			$db->qn('dateiname').', '.$db->qn('saison').', '.
 			$db->qn('spielerliste').', '.$db->qn('kommentar') );
 		$query->from('hb_mannschaft');
 		$query->leftJoin($db->qn('hb_mannschaftsfoto').' USING ('.
@@ -78,11 +78,12 @@ class hbmanagerModelHbpictures extends JModelLegacy
 								0,					//$height             = 0
 								true,				//$proportional       = false
 								$output,			//$output             = 'file'
-								true,				//$delete_original    = true
+								false,				//$delete_original    = true
 								false,				//$use_linux_commands = false
 								90					//$quality = 100
 							   );
 		}
+		//unlink($file); //delete file
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($result);echo'</pre>';
 		return $result;
 	}
@@ -136,7 +137,7 @@ class hbmanagerModelHbpictures extends JModelLegacy
 		$teams = self::formatPlayersList($teams);
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
 		$table = 'hb_mannschaftsfoto';
-		$columns = array('kuerzel', 'saison', 'spielerliste', 'kommentar');
+		$columns = array('kuerzel', 'saison', 'dateiname', 'spielerliste', 'kommentar');
 		
 		$values = null;
 		
@@ -174,6 +175,7 @@ class hbmanagerModelHbpictures extends JModelLegacy
 		 
 		$value['kuerzel'] = $db->q($data['kuerzel']);
 		$value['saison'] = (!empty($data['saison'])) ? $db->q($data['saison']) : 'NULL';
+		$value['dateiname'] = (!empty($data['dateiname'])) ? $db->q($data['dateiname']) : 'NULL';
 		//$value['spielerliste'] = (!empty($data['list'])) ? $db->q(serialize($data['list'])) : 'NULL';//unserialize()
 		$value['spielerliste'] = (!empty($data['list'])) ? $db->q(json_encode($data['list'])) : 'NULL'; //json_decode()
 		$value['kommentar'] = (!empty($data['kommentar'])) ? $db->q($data['kommentar']) : 'NULL';
