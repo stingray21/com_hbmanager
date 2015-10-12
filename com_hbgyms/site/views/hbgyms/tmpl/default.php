@@ -5,6 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <h1><?php echo JText::_('COM_HBGYMS_TITLE');?></h1>
 
+<div id="hbgyms">
 <?php
 if ($this->showMap == true) {
 	echo '<div id="map-canvas"></div>'."\n";
@@ -63,3 +64,5 @@ foreach ($this->gyms as $gym)
 ?>	
 	</tbody>
 </table>
+
+</div>
