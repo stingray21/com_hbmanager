@@ -124,8 +124,8 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 			$ownAway = ($game->eigeneMannschaft === 2) ? ' own' : '';
 			
 			$content .= '<div class="gameInfo'.$ind.'">'."\n";
-			$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
-				'<span class="team">'.
+			//$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
+			$content .= '<span class="team">'.
 					'<span class="home'.$ownHome.'">'.$game->heim.'</span>'.
 					'<span class="dash">-</span> <span class="away'.$ownAway.'">'.$game->gast.'</span>'.
 				'</span>'.

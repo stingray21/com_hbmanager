@@ -24,7 +24,7 @@ div#hboverview h4 + div {
 
 div#hboverview div.team-set {
 	border-bottom: 1px solid #ddd;
-	padding: 0em 0em 0.5em 0.5em;
+	padding: 0em 0em 1em 0.5em;
 }
 
 div#hboverview div.team-set:first-child {
@@ -52,7 +52,7 @@ div#hboverview hr {
 
 div#hboverview a.hvwlink {
 	background-image: url("../images/hvw-50x18.png");
-	background-position: 0 2px;
+	background-position: 0 1px;
 	background-repeat: no-repeat;
 	padding-left: 50px;
 	text-indent: -9999px;
@@ -70,13 +70,6 @@ div#hboverview table.miniStandings {
 	min-width: 33em;
 	display: none;	
 	text-align: center;
-}
-
-@media (max-width: 600px) {
-	div#hboverview table.miniStandings {
-		font-size: 0.9em;
-		min-width: auto;
-	}
 }
 
 div#hboverview table.miniStandings td {
@@ -141,7 +134,7 @@ div#hboverview div.gameInfo span.team span {
 
 div#hboverview div.gameInfo span.team span.dash {
 	min-width: auto;
-	padding: 0 0;
+	padding: 0 0.2em;
 	//background: lightgreen;
 }
 
@@ -153,7 +146,7 @@ div#hboverview div.gameInfo span.gameResult {
 
 div#hboverview div.gameInfo span.gameResult span.dash {
 	//background: lightyellow;
-	padding: 0 0;
+	padding: 0 0.1em;
 }
 
 div#hboverview div.gameInfo.indicator span.gameResult {
@@ -192,6 +185,20 @@ div#hboverview div.gameInfo span.home {
 
 @media (max-width: 600px) {
 	
+	div#hboverview h2 {
+		margin-bottom: 0.5em;
+	}
+	
+	div#hboverview h3 {
+		margin-top: 1.5em;
+		margin-bottom: 0.5em;
+	}
+	
+	div#hboverview table.miniStandings {
+		font-size: 0.9em;
+		min-width: auto;
+	}
+	
 	div#hboverview h4 {
 		min-width :auto;
 		margin-right: 5px;
@@ -213,6 +220,7 @@ div#hboverview div.gameInfo span.home {
 	
 	div#hboverview #nextGames div.gameInfo span.time {
 		min-width: auto;
+		width: 3.5em;
 	}	
 	
 	div#hboverview h4 + div a {
@@ -223,6 +231,9 @@ div#hboverview div.gameInfo span.home {
 		text-align: left;
 	}	
 	
+	div#hboverview div.gameInfo span.team span.dash {
+		padding: 0 0em;
+	}
 	
 	div#hboverview div.gameInfo span.team,
 	div#hboverview div.gameInfo span.gameResult {
@@ -253,35 +264,47 @@ div#hboverview div.gameInfo span.home {
 	
 	div#hboverview div.gameInfo.indicator span.team {
 		position: relative;
-		padding-left: 25px;
+		padding-left: 20px;
 	}
 	
 	div#hboverview div.gameInfo.indicator span.team::before {
 		content: "";
 		display: inline-block;
 		padding: 0px;
-		width: 18px;
-		height: 18px;
+		width: 15px;
+		height: 15px;
 		opacity: 0.6;
 		position: absolute;
 		top: 2px;
 		left: 0px;
+		background-size: 15px;
 		background-image: url('../images/balls_18px.png');
 	}
 	
 	div#hboverview div.gameInfo.indicator.win span.team::before  {
-		background-position: 0px 18px;
+		background-position: 0px 15px;
 	}
 
 	div#hboverview div.gameInfo.indicator.tied span.team::before {
-		background-position: 0px 36px;
+		background-position: 0px 30px;
 	}
 
 	div#hboverview div.gameInfo.indicator.loss span.team::before {
-		background-position: 0px 54px;
+		background-position: 0px 45px;
 	}
 }
 
+
+@media (max-width: 480px) {
+	
+	div#hboverview {
+		font-size: 0.9em;
+	}
+	
+	div#hboverview table.miniStandings {
+		font-size: 1em;
+	}
+}
 
 /* Overview ALL and HOME */
 

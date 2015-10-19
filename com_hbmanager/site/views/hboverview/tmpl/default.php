@@ -52,7 +52,7 @@ foreach ($this->gameDays as $gameDay)
 				}
 				?>
 				<div class="gameInfo <?php echo ($game->toreHeim !== null) ? ' indicator '.$game->anzeige : '';	?>">
-				<span class="time"><?php echo JHtml::_('date', $game->zeit, 'H:i', $this->timezone);?> Uhr </span>
+					<span class="time"><?php echo JHtml::_('date', $game->zeit, 'H:i', $this->timezone);?> <span class="lesser4mobile">Uhr </span></span>
 				<span class="team">
 					<span class="home<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->heim;?></span>
 					<span class="dash">-</span> <span class="away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
@@ -62,8 +62,9 @@ foreach ($this->gameDays as $gameDay)
 				if ($game->toreHeim !== null)
 				{
 					?>
-						<span class="<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->toreHeim;?></span>
-						<span class="dash">:</span> <span class="<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->toreGast;?></span>
+						<span class="<?php echo ($game->eigeneMannschaft === 1) ? 'own' : '';?>"><?php echo $game->toreHeim;
+						?></span><span class="dash">:</span><span class="<?php echo ($game->eigeneMannschaft === 2) ? 'own' : '';
+						?>"><?php echo $game->toreGast;?></span>
 						<span class="indicator "></span>
 					<?php
 				}
