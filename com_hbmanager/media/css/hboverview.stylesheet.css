@@ -7,13 +7,14 @@ div#hboverview h2 + h3 {
 }
 
 div#hboverview h3 + div {
-	margin-left: 1em;
+	margin-left: 0em;
 }
 
 div#hboverview h4 {
 	display: inline-block;
-	min-width: 13em;
-	margin-top: 1em;
+	min-width: 12em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 div#hboverview h4 + div {
@@ -21,13 +22,21 @@ div#hboverview h4 + div {
 	display: inline-block;
 }
 
-div#hboverview a.hvwlink,
-div#hboverview a.btnShowTable {
+div#hboverview div.team-set {
+	border-bottom: 1px solid #ddd;
+	padding: 0em 0em 0.5em 0.5em;
+}
+
+div#hboverview div.team-set:first-child {
+	border-top: 1px solid #ddd;
+}
+
+div#hboverview h4 + div a {
 	display: inline-block;
-	margin: 0.1em 1em 0.1em 0;
+	margin: 0.1em 0.5em 0.1em 0;
 	color: #333;
 	font-weight:bold;
-	opacity: 0.4;
+	opacity: 0.6;
 	cursor: pointer;
 }
 
@@ -37,7 +46,7 @@ div#hboverview a.btnShowTable:hover  {
 }
 
 div#hboverview hr {
-	margin: 2em 0 4em 0;
+	margin: 3em 0 3em 0;
 	border: 1px solid #ddd;
 }
 
@@ -45,21 +54,29 @@ div#hboverview a.hvwlink {
 	background-image: url("../images/hvw-50x18.png");
 	background-position: 0 2px;
 	background-repeat: no-repeat;
-	padding-left: 55px;
+	padding-left: 50px;
 	text-indent: -9999px;
 }
 
 div#hboverview a.btnShowTable {
 	background-image: url("../images/standings_18px.png");
 	background-repeat: no-repeat;
-	padding-left: 2em;
+	padding-left: 22px;
 	text-indent: -9999px;
 }
 
 div#hboverview table.miniStandings {
-	margin: 1em 0.5em 1em 1em;
+	margin: 1em 0.5em;
+	min-width: 33em;
 	display: none;	
 	text-align: center;
+}
+
+@media (max-width: 600px) {
+	div#hboverview table.miniStandings {
+		font-size: 0.9em;
+		min-width: auto;
+	}
 }
 
 div#hboverview table.miniStandings td {
@@ -89,95 +106,179 @@ div#hboverview table.miniStandings td.sepaDots{
 
 
 div#hboverview div.gameInfo {
-	//background: red;
+	//background: lightgray;
 	padding: 0 0.5em;
 	max-width: 36em;
-	display: flex;
-	flex-direction: row;
-	//align-items: flex-start;
+}
+
+div#hboverview div.gameInfo .own {
+	font-weight: bold;
 }
 
 div#hboverview div.gameInfo > span {
-	//background: green;
 	display: inline-block;
+}
+
+div#hboverview div.gameInfo span > span {
+	//padding: 0 0.5em;
 }
 
 div#hboverview div.gameInfo span.time {
 	width: 6em;
-	flex-grow: 1;
+	//background: cyan;
 }
 
 div#hboverview div.gameInfo span.team {
-	width: 22em;
-	flex-grow: 4;
+	min-width: 22em;
 	//background: orange;
-	display:flex;		
-	justify-content: space-around;
 }
 
 div#hboverview div.gameInfo span.team span {
-	width: 10em;
-	padding: 0 0.5em;
-	flex-grow: 4;
+	display: inline-block;
+	min-width: 10em;
+	//background: lightgreen;
+}
+
+div#hboverview div.gameInfo span.team span.dash {
+	min-width: auto;
+	padding: 0 0;
+	//background: lightgreen;
 }
 
 div#hboverview div.gameInfo span.gameResult {
-	width: 7em;
-	flex-grow: 1;
-	display:flex;
+	min-width: 4em;
+	//background: lightsteelblue;
+	position: relative;
 }
 
-div#hboverview div.gameInfo span span {
-	padding: 0 0.5em;
+div#hboverview div.gameInfo span.gameResult span.dash {
+	//background: lightyellow;
+	padding: 0 0;
 }
 
-div#hboverview div.gameInfo span span.indicator {
+div#hboverview div.gameInfo.indicator span.gameResult {
+	padding-right: 25px;	
+	}
+
+div#hboverview div.gameInfo.indicator span.gameResult:last-child::after {
+	content: "";
 	display: inline-block;
-	padding: 0;
-	width:20px;
-	height: 20px;
-	opacity: 0.7;
-	background-image: url('../images/balls_20px.png');
+	padding: 0px;
+	width: 18px;
+	height: 18px;
+	opacity: 0.6;
+	position: absolute;
+	top: 1px;
+	right: 0px;
+	background-image: url('../images/balls_18px.png');
 }
 
-div#hboverview div.gameInfo span span.indicator.win {
-	background-position: 0px 20px;
+div#hboverview div.gameInfo.indicator.win span.gameResult:last-child::after  {
+	background-position: 0px 18px;
 }
 
-div#hboverview div.gameInfo span span.indicator.tied {
-	background-position: 0px 40px;
+div#hboverview div.gameInfo.indicator.tied span.gameResult:last-child::after {
+	background-position: 0px 36px;
 }
 
-div#hboverview div.gameInfo span span.indicator.loss {
-	background-position: 0px 60px;
+div#hboverview div.gameInfo.indicator.loss span.gameResult:last-child::after {
+	background-position: 0px 54px;
 }
-
-
 
 div#hboverview div.gameInfo span.home {
 	text-align: right;
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 600px) {
+	
+	div#hboverview h4 {
+		min-width :auto;
+		margin-right: 5px;
+	}
 	
 	div#hboverview div.gameInfo {
-		flex-direction: column;
-		align-items: flex-start;
 		line-height: 1.5;
 	}
-
+	
+	div#hboverview div.gameInfo span.time {
+		min-width: 20em;
+	}	
+	
+	div#hboverview #prevGames div.gameInfo span.time {
+		min-width: 0;
+		width: 0;
+		display: none;
+	}	
+	
+	div#hboverview #nextGames div.gameInfo span.time {
+		min-width: auto;
+	}	
+	
+	div#hboverview h4 + div a {
+		margin-right: 2px;
+	}
+	
+	div#hboverview div.gameInfo span.home {
+		text-align: left;
+	}	
+	
+	
 	div#hboverview div.gameInfo span.team,
 	div#hboverview div.gameInfo span.gameResult {
+		min-width: unset;
+		text-align: left;
+	}	
+	
+	div#hboverview div.gameInfo span.team span  {
+		min-width: 8em;
+	}	
+	
+	div#hboverview div.gameInfo.indicator span.gameResult {
+		padding-right: 0px;	
+		}
+
+	div#hboverview div.gameInfo.indicator span.gameResult:last-child::after {
+		content: "";
 		display: inline-block;
-	}	
+		padding: 0px;
+		width: 18px;
+		height: 18px;
+		opacity: 0.6;
+		position: absolute;
+		top: 1px;
+		right: 0px;
+		background-image: none;
+	}
 	
-	div#hboverview div.gameInfo span.gameResult  {
-		width: 8em;
-	}	
+	div#hboverview div.gameInfo.indicator span.team {
+		position: relative;
+		padding-left: 25px;
+	}
 	
-	div#hboverview div.gameInfo span.gameResult .indicator  {
-		margin: -4px;
+	div#hboverview div.gameInfo.indicator span.team::before {
+		content: "";
+		display: inline-block;
+		padding: 0px;
+		width: 18px;
+		height: 18px;
+		opacity: 0.6;
+		position: absolute;
+		top: 2px;
+		left: 0px;
+		background-image: url('../images/balls_18px.png');
+	}
+	
+	div#hboverview div.gameInfo.indicator.win span.team::before  {
+		background-position: 0px 18px;
+	}
+
+	div#hboverview div.gameInfo.indicator.tied span.team::before {
+		background-position: 0px 36px;
+	}
+
+	div#hboverview div.gameInfo.indicator.loss span.team::before {
+		background-position: 0px 54px;
 	}
 }
 

@@ -18,8 +18,8 @@ foreach ($this->gameDays as $gameDay)
 		{
 			?>
 			<h3><?php echo JHtml::_('date', $date, 'l, j. F Y', $this->timezone)?></h3>
-			<div>
-				
+			<div class="gameday">
+			
 			<?php
 			foreach ($games as $i => $game)
 			{
@@ -27,6 +27,7 @@ foreach ($this->gameDays as $gameDay)
 				$lastTeam = ($i > 0) ? $games[$i-1]->mannschaft : null;
 				if ($lastTeam != $game->mannschaft) {
 					?>
+					<div class="team-set">
 					<h4><a href="<?php 
 						echo JURI::base().'index.php/';
 						echo ($game->jugend === 'aktiv') ? 'aktive' : 'jugend';
@@ -50,11 +51,11 @@ foreach ($this->gameDays as $gameDay)
 					<?php
 				}
 				?>
-				<div class="gameInfo">
+				<div class="gameInfo <?php echo ($game->toreHeim !== null) ? ' indicator '.$game->anzeige : '';	?>">
 				<span class="time"><?php echo JHtml::_('date', $game->zeit, 'H:i', $this->timezone);?> Uhr </span>
 				<span class="team">
 					<span class="home<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->heim;?></span>
-					 - <span class="away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
+					<span class="dash">-</span> <span class="away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
 				</span>
 				<span class="gameResult">
 				<?php
@@ -62,8 +63,8 @@ foreach ($this->gameDays as $gameDay)
 				{
 					?>
 						<span class="<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->toreHeim;?></span>
-						 - <span class="<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->toreGast;?></span>
-						<span class="indicator <?php echo $game->anzeige;?>"></span>
+						<span class="dash">:</span> <span class="<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->toreGast;?></span>
+						<span class="indicator "></span>
 					<?php
 				}
 				?>
@@ -83,7 +84,7 @@ foreach ($this->gameDays as $gameDay)
 							<th><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_TIES');?></th>
 							<th><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_LOSSES');?></th>
 							<th colspan="3"><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_GOALS');?></th>
-							<?php echo ($this->showDiff) ? '<th>'.JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_DIFFERENCE').'</th>' : '';?>
+							<?php echo ($this->showDiff) ? '<th class="less4mobile">'.JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_DIFFERENCE').'</th>' : '';?>
 							<th colspan="3"><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_POINTS');?></th>
 						</tr>
 						</thead>
@@ -103,7 +104,7 @@ foreach ($this->gameDays as $gameDay)
 								<td class="goals"><?php echo $row->tore;?></td>
 								<td class="sepaDots">:</td>
 								<td class="goalsCon"><?php echo $row->gegenTore;?></td>
-								<?php echo ($this->showDiff) ? '<td>'.$row->torDiff.'</td>' : '';?>
+								<?php echo ($this->showDiff) ? '<td class="less4mobile">'.$row->torDiff.'</td>' : '';?>
 								<td class="points"><?php echo $row->punkte;?></td>
 								<td class="sepaDots">:</td>
 								<td class="negPoints"><?php echo $row->minusPunkte;?></td>
@@ -113,6 +114,8 @@ foreach ($this->gameDays as $gameDay)
 					?>
 					</tbody>
 					</table>
+				
+				</div> <!-- div team-set -->
 				<?php
 					$currTeam = $game->mannschaft;
 				}

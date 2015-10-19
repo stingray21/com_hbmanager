@@ -243,21 +243,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		return $this->currGames = $games;
 	}
 	
-	protected function addCssInfo($gameDays)
-	{
-		foreach ($gameDays as $date => $games)
-		{
-			foreach ($games as $game)
-			{
-				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
-				$game->ergebnis = self::getGameResult($game);
-				$game->eigeneMannschaft = self::getOwnTeam($game);
-				$game->anzeige = self::getIndicator($game);			
-			}
-		}
-		return $gameDays;
-	}
-	
+		
 	protected function addStandings($gameDays)
 	{
 		foreach ($gameDays as $date => $games)
@@ -313,59 +299,11 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	function getPrevGames($arrange = true, $combined = false, $reports = false, $all = false) 
 	{
 		$prevGames = parent::getPrevGames(1,0,1,1);
+		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
 		$prevGames = self::addCssInfo($prevGames);
 		$prevGames = self::addStandings($prevGames);
 		//echo __FUNCTION__."<pre>"; print_r($prevGames); echo "</pre>";
 		return $this->prevGames = $prevGames;
-	}
-	
-	protected function getGameResult($game)
-	{
-		if ($game->wertungHeim > $game->wertungGast) {
-			$result = 1;
-		} 
-		elseif ($game->wertungHeim < $game->wertungGast) {
-			$result = 2;
-		} 
-		elseif ($game->wertungHeim == $game->wertungGast && $game->wertungHeim !== null ) {
-			$result = 0;
-		}
-		else {
-			$result = null;
-		}
-		return $result;
-	}	
-	
-	protected function getOwnTeam($game)
-	{
-		if ($game->heim == $game->nameKurz) {
-			$ownTeam = 1;
-		}
-		elseif ($game->gast == $game->nameKurz) {
-			$ownTeam = 2;
-		}
-		else {
-			$ownTeam = null;
-		}
-		return $ownTeam;
-	}
-	
-	protected function getIndicator($game) {
-		if ($game->ergebnis === $game->eigeneMannschaft && 
-				$game->ergebnis !== null) {
-			$indicator = 'win';
-		}
-		elseif ($game->ergebnis !== $game->eigeneMannschaft && 
-				$game->ergebnis !== null && $game->ergebnis !== 0) {
-			$indicator = 'loss';
-		}
-		elseif ($game->ergebnis === 0) {
-			$indicator = 'tied';
-		}
-		else {
-			$indicator = 'blank';
-		}
-		return $indicator;
 	}
 	
 	function getNextGames($arrange = true, $combined = false, $reports = false) 
