@@ -8,7 +8,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/hbarticle.php';
 
 class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 {	
-	
+	// TODO time zone -> backend option
+	protected $timezone = false; //true: user-time, false:server-time
+		
 	function __construct() 
 	{
 		parent::__construct();
@@ -70,6 +72,7 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 		// content article
 		$games = self::getPrevGames(false,true,true);
 		//echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		$games = self::addCssInfo($games);
 		
 		if (!empty($games))
 		{
@@ -99,7 +102,7 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 	{
 		$prevTeam = NULL;
 		$content = null;
-		$content .= '<div class="newsspieltag">';
+		$content .= '<div class="newsspieltag">'."\n";
 		foreach ($games as $game)
 		{	
 			if ($prevTeam !== $game->mannschaft)
@@ -110,34 +113,40 @@ class HBmanagerModelHbprevgames extends HBmanagerModelHbprevnext
 				$content .= '/'.strtolower($game->kuerzel).'">'.
 						$game->mannschaft.' <span class="liga">'.$game->liga
 						.' ('.$game->ligaKuerzel.')</span></a>'.
-						'</h4>';
+						'</h4>'."\n";
 			}
 			$prevTeam = $game->mannschaft;
 
 			$content .= '<div>';
-			$content .= '<table class="ergebnis">'.
-							'<tbody>'.
-								'<tr>'.
-									'<td class="text">'.$game->heim.'</td>'.
-									'<td class="symbol">-</td>'.
-									'<td class="text">'.$game->gast.'</td>'.
-									'<td class="figure">'.$game->toreHeim.'</td>'.
-									'<td class="symbol">:</td>'.
-									'<td class="figure">'.$game->toreGast.
-									'</td>'.
-								'</tr>'.
-							'</tbody>'.
-						'</table>';
+			
+			$ind = ($game->toreHeim !== null) ? ' indicator '.$game->anzeige : '';
+			$ownHome = ($game->eigeneMannschaft === 1) ? ' own' : '';
+			$ownAway = ($game->eigeneMannschaft === 2) ? ' own' : '';
+			
+			$content .= '<div class="gameInfo'.$ind.'">'."\n";
+			$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
+				'<span class="team">'.
+					'<span class="home'.$ownHome.'">'.$game->heim.'</span>'.
+					'<span class="dash">-</span> <span class="away'.$ownAway.'">'.$game->gast.'</span>'.
+				'</span>'.
+				'<span class="gameResult">';
+			if ($game->toreHeim !== null)
+			{
+					$content .= ' <span class="'.$ownHome.'">'.$game->toreHeim.'</span>'.
+					'<span class="dash">:</span> <span class="'.$ownAway.'">'.$game->toreGast.'</span>'.
+					'<span class="indicator "></span>';
+			}
+			$content .= '</span>'.
+				'</div>'."\n";
+				
 			if (!empty($game->bericht))
 				$content .= '<p class="spielbericht">'.$game->bericht.'</p>';
-			if (!empty($game->bericht))
-				$content .= '<p class="spielerliste">'.
-					'<span>Es spielten:</span><br />'.
-					$game->spielerliste.'</p>';
+			if (!empty($game->spielerliste))
+				$content .= '<p class="spielerliste">'.'<span>Es spielten:</span><br />'.$game->spielerliste.'</p>';
 			if (!empty($game->zusatz))
-				$content .= '<p class="zusatz">'.
-					$game->zusatz.'</p>';
-			$content .= '</div>';
+				$content .= '<p class="zusatz">'.$game->zusatz.'</p>';
+			
+			$content .= '</div>'."\n\n";
 		}
 		$content .= '</div>';
 		//echo __FUNCTION__.':<pre>';print_r($content);echo'</pre>';

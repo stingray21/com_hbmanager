@@ -384,6 +384,83 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		return $titledate;
 	}
 	
+	protected function addCssInfo($gameDays)
+	{
+		
+		if (preg_match('/\d{4}-\d{2}-\d{2}/' , key($gameDays))) {
+			//echo "DATES";
+			foreach ($gameDays as $date => $games)
+			{
+				foreach ($games as $game)
+				{
+					//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+					$game->ergebnis = self::getGameResult($game);
+					$game->eigeneMannschaft = self::getOwnTeam($game);
+					$game->anzeige = self::getIndicator($game);			
+				}
+			}
+		} else {
+			//echo "NO DATES";
+			foreach ($gameDays as $game)
+			{
+				//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+				$game->ergebnis = self::getGameResult($game);
+				$game->eigeneMannschaft = self::getOwnTeam($game);
+				$game->anzeige = self::getIndicator($game);			
+			}
+		}
+		return $gameDays;
+	}
+	
+	
+	protected function getGameResult($game)
+	{
+		if ($game->wertungHeim > $game->wertungGast) {
+			$result = 1;
+		} 
+		elseif ($game->wertungHeim < $game->wertungGast) {
+			$result = 2;
+		} 
+		elseif ($game->wertungHeim == $game->wertungGast && $game->wertungHeim !== null ) {
+			$result = 0;
+		}
+		else {
+			$result = null;
+		}
+		return $result;
+	}	
+	
+	protected function getOwnTeam($game)
+	{
+		if ($game->heim == $game->nameKurz) {
+			$ownTeam = 1;
+		}
+		elseif ($game->gast == $game->nameKurz) {
+			$ownTeam = 2;
+		}
+		else {
+			$ownTeam = null;
+		}
+		return $ownTeam;
+	}
+	
+	protected function getIndicator($game) {
+		if ($game->ergebnis === $game->eigeneMannschaft && 
+				$game->ergebnis !== null) {
+			$indicator = 'win';
+		}
+		elseif ($game->ergebnis !== $game->eigeneMannschaft && 
+				$game->ergebnis !== null && $game->ergebnis !== 0) {
+			$indicator = 'loss';
+		}
+		elseif ($game->ergebnis === 0) {
+			$indicator = 'tied';
+		}
+		else {
+			$indicator = 'blank';
+		}
+		return $indicator;
+	}
 }
 
 

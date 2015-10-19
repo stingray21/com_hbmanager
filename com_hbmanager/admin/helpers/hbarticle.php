@@ -22,7 +22,7 @@ abstract class HbArticle
 				// for text that appears by clicking on 'more'
 				//'fulltext' => '',
 				'state' => 1,
-				'catid' => 8,
+				'catid' => 2,
 				'featured' => 1,
 				'language' => '*'
 		);
