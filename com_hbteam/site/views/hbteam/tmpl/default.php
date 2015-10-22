@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 $pic = $this->picture;
 ?>
-<div class="hbteam">
+<div id="hbteam">
 
 <h1><?php echo $this->team->mannschaft; ?>
  <span><?php echo $this->team->liga; ?></span></h1>
@@ -11,12 +11,12 @@ $pic = $this->picture;
 
 //echo __FILE__.__LINE__.'<a href="'.$this->model->getImage('500').'">'.$this->model->getImage('500').'</a>';
 
-if (!empty($this->model->getImage('500')) AND file_exists($this->model->getImage('1200')))
+if (!empty($this->model->getImage('800')) AND file_exists($this->model->getImage('1200')))
 {
 ?>
-<div>
+<div id="teampic">
 	<a href="<?php echo $this->model->getImage('1200') ?>" target="_BLANK">
-	<img src="<?php echo $this->model->getImage('500')?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
+	<img src="<?php echo $this->model->getImage('800')?>" id="teampic_image" alt="<?php echo $pic->comment ?>"  />
 	</a>
 	
 	<?php 

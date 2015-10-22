@@ -4,12 +4,33 @@ jQuery(document).ready(function($){
 	//console.log(futureGames);
 
 	// dimensions
-	var margin = {top: 30, right: 150, bottom: 120, left: 50};
-	var width = parseInt(d3.select('#chartgoals').style('width'), 10);
-	var height = 400;
-	width = width - margin.left - margin.right;
-	height = height - margin.top - margin.bottom;
-	//console.log(width);
+	var margin = {top: 30, right: 20, bottom: 140, left: 50};	
+	var height = 300;
+	var widthLegend = 150; 
+	var legendElementHeight = 16;
+	
+	var width;
+	var divHeight;
+	var legendPosX;
+	var legendPosY;
+	
+	var divWidth = parseInt(d3.select('#chartgoals').style('width'), 10);
+	//console.log(divWidth);
+
+	if (divWidth > 480) { 
+		width = divWidth - margin.left - margin.right - widthLegend;
+		//height = divWidth / 2;
+		divHeight = height + margin.top + margin.bottom;
+		legendPosX = divWidth - widthLegend;
+		legendPosY = margin.top;
+	} else {
+		width = divWidth - margin.left - margin.right;
+		//height = divWidth / 2;
+		divHeight = height + margin.top + margin.bottom + 300;
+		legendPosX = margin.left;
+		legendPosY = height + margin.top + margin.bottom;
+	}
+	
 
 	// time duration for changing dataset
 	var yDelay = 500;
@@ -61,9 +82,9 @@ jQuery(document).ready(function($){
 
 	// create the svg for chart
 	var chartsvg = d3.select("#chartgoals").append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.style("fill", "transparent");
+			.attr("width", divWidth)
+			.attr("height", divHeight)
+			.style("fill", "none");
 
 	// svg background
 	var chartBackground = chartsvg.append("rect")
@@ -86,11 +107,26 @@ jQuery(document).ready(function($){
 		//console.log(data);
 		x.domain(data.games.map(function(game) {return game.name;}));
 		y.domain([0, getMaxY(data.players)]);
-
+		
+//		if (divWidth > 480) { 
+//			width = divWidth - margin.left - margin.right - widthLegend;
+//			//height = divWidth / 2;
+//			divHeight = height + margin.top + margin.bottom;
+//			legendPosX = divWidth - widthLegend;
+//			legendPosY = margin.top;
+//		} else {
+//			width = divWidth - margin.left - margin.right;
+//			//height = divWidth / 2;
+//			divHeight = height + margin.top + margin.bottom + legendElementHeight * data.players.length;
+//			legendPosX = margin.left;
+//			legendPosY = height + margin.top + margin.bottom;
+//		}
+		
 		// draw chart
 		buildAxis();
 		buildLegend(data.players);
 		populateData(data);
+		resize(data);
 
 		// trigger to change the displayed dataset
 		// d3.selectAll("[name=mode]").on("change", function() {
@@ -106,17 +142,30 @@ jQuery(document).ready(function($){
 	function resize(data) {
 
 		// update width
-		var width = parseInt(d3.select('#chartgoals').style('width'), 10);
-		width = width - margin.left - margin.right;
-		// console.log(width);
-	
+		divWidth = parseInt(d3.select('#chartgoals').style('width'), 10);
+		console.log(divWidth);
+		
+		if (divWidth > 480) { 
+			width = divWidth - margin.left - margin.right - widthLegend;
+			//height = divWidth / 2;
+			divHeight = height + margin.top + margin.bottom;
+			legendPosX = divWidth - widthLegend;
+			legendPosY = margin.top;
+		} else {
+			width = divWidth - margin.left - margin.right;
+			//height = divWidth / 2;
+			divHeight = height + margin.top + margin.bottom + legendElementHeight * data.players.length;
+			legendPosX = margin.left;
+			legendPosY = height + margin.top + margin.bottom;
+		}
+		
 		x.rangePoints([0, width]);
 		// y.range([height, 0]);
 
 		// resize the chart
 		chartsvg
-			.attr('height', (height + margin.top + margin.bottom) + 'px')
-			.attr('width', (width + margin.left + margin.right) + 'px');
+			.attr('height', divHeight + 'px')
+			.attr('width', divWidth + 'px');
 
 		// change the line
 		updateData(data, 0);
@@ -139,9 +188,7 @@ jQuery(document).ready(function($){
 		// reposition the legend
 		legend.transition()
 			.duration(0)
-			.attr("transform", function(d, i) {
-				return "translate(" + (width + margin.left + 20) + "," + (margin.top + i * 16) + ")";
-			});
+			.attr("transform", "translate(" + legendPosX + "," + legendPosY + ")");
 	}
 
 	function populateData(data) {
@@ -356,20 +403,22 @@ jQuery(document).ready(function($){
 		
 		legend = chartsvg.append("g")
 			.attr("class", "legend")
-			.selectAll("g")
+			.attr("transform", "translate(" + legendPosX + "," + legendPosY + ")");
+	
+		legendElement = legend.selectAll("g")
 				.data(players)
 			.enter().append("g")
 				.attr("transform", function(d, i) {
-					return "translate(" + (width + margin.left + 20) + "," + (margin.top + i * 16) + ")";
+					return "translate(" + 0 + "," + (i * legendElementHeight) + ")";
 				});
 
-		legend.append("rect")
+		legendElement.append("rect")
 			.attr("class",function(d,i) { return "legendBox player"+i; } )
 			.attr("width", 8)
 			.attr("height", 8)
 			.style("fill", function(d,i) { return color(i); });
 
-		legend.append("text")
+		legendElement.append("text")
 			.attr("class",function(d,i) { return "legendText player"+i; } )
 			.attr("x", 14)
 			.attr("y", 4.5)
@@ -383,6 +432,7 @@ jQuery(document).ready(function($){
 			})
 			.on('mouseover', function(d,i){ emphasizePlayer(i); })
 			.on('mouseout', function(d,i){ deemphasizePlayer(i); });
+	
 	}
 
 
