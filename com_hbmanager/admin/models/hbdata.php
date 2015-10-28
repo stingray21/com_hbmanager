@@ -343,7 +343,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		if (trim($data[2]) != '') {	
 			$sqlDateTime = JFactory::getDate($data[2], 'Europe/Berlin' )->toSql();
 			//echo '<p>HVW: <b>'.$datetime.'</b> -> in DB: <b>'.$sqlDateTime.'</b></p>";
-			$value['datumzeit'] = $db->q(self::getDateTime($sqlDateTime));
+			$value['datumzeit'] = $db->q($sqlDateTime);
 		}
 		else  $value['datumzeit'] = "NULL";
 
