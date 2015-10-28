@@ -47,6 +47,10 @@ if (!empty($this->model->getImage('800')) AND file_exists($this->model->getImage
 		echo JModuleHelper::renderModule($module);
 	}
 	
-?>
+
+if ($this->standingsChart) {
+	echo '<div id="chart"></div>';
+}
+?>	
 </div>
 

@@ -72,4 +72,21 @@ class hbteamController extends JControllerLegacy
 		
 		//echo __FILE__.' - '.__LINE__.'<pre>'; print_r($data); echo '</pre>';
 	}
+	
+	function getStandings4Chart()
+	{
+		$jinput = JFactory::getApplication()->input;
+		
+		$teamkey = $jinput->get('teamkey');
+		//echo __FILE__.' - '.__LINE__.'<pre>'.$teamkey.'</pre>';
+		$season = $jinput->get('season');
+		//echo __FILE__.' - '.__LINE__.'<pre>'.$season.'</pre>';
+		
+		$model = $this->getModel('hbteam');
+		$model->setTeamkey($teamkey);
+		$model->setSeason($season);
+		
+		$data = $model->getStandingsGraphData();
+		echo $data;
+	}
 }

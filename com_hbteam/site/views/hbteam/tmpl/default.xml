@@ -35,7 +35,22 @@
 				label="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_LABEL"
 				description="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_DESC"
 				/>
+				
+			<field 
+				name="email" 
+				type="list" 
+				label="COM_HBTEAM_MENUSETTINGS_EMAIL_DISPLAY_LABEL"
+				description="COM_HBTEAM_MENUSETTINGS_EMAIL_DISPLAY_DESC"
+				default="component"
+			>
+				<option value="component">COM_HBTEAM_EMAIL_DISPLAY_COMPONENT</option>
+				<option value="none">COM_HBTEAM_EMAIL_DISPLAY_NONE</option>
+				<option value="personal">COM_HBTEAM_EMAIL_DISPLAY_PERSONAL</option>
+				<option value="alias">COM_HBTEAM_EMAIL_DISPLAY_ALIAS</option>
+			</field>
 		</fieldset>
+		
+		
 	</fields>
   
 </metadata>

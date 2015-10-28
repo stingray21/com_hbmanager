@@ -13,6 +13,8 @@ class hbteamViewhbteam extends JViewLegacy
 	// Overwriting JView display method
 	function display($tpl = null)
 	{
+		$document = JFactory::getDocument();
+		
 		$model = $this->getModel('hbteam');
 		//echo '=> view->post<br><pre>'; print_r($this); echo '</pre>';
 		$this->assignRef('model', $model);
@@ -31,6 +33,20 @@ class hbteamViewhbteam extends JViewLegacy
 			return false;
 		}
 */		
+		$standingsChart = ($team->jugend === 'aktiv');
+		//echo '=> view->team<br><pre>'; print_r($standingsChart); echo '</pre>';
+		$this->assignRef('standingsChart', $standingsChart);
+		
+		if ($standingsChart) {
+			JHtml::_('jquery.framework');
+			$document->addScriptDeclaration('
+				var teamkey = \''.$model->getTeamkey().'\';
+				var season = \''.$model->getSeason().'\';
+				//console.log(teamkey);
+			');
+			$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
+			$document->addScript(JURI::Root().'/media/com_hbteam/js/hbstandingsChart.js');
+		}
 		
 		$picture = $model->getPicture();
 		//echo '=> view->picture<br><pre>'; print_r($picture); echo '</pre>';

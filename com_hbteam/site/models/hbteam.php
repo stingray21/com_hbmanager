@@ -18,19 +18,26 @@ class hbteamModelhbteam extends JModelLegacy
 	protected $teamkey;
 	protected $team;
 	protected $pictureInfo;
-	
+	protected $season;
+			
 	function __construct() 
 	{
 		parent::__construct();
 		
 		//request the selected teamkey
 		$menuitemid = JRequest::getInt('Itemid');
+		$teamkey = null;
+		$season = null;
+		
 		if ($menuitemid)
 		{
 			$menu = JFactory::getApplication()->getMenu();
 			$menuparams = $menu->getParams($menuitemid);
+			$teamkey = $menuparams->get('teamkey');
+			$season = $menuparams->get('season');
 		}
-		$this->teamkey = $menuparams->get('teamkey');
+		self::setTeamkey($teamkey);
+		self::setSeason($season);
 		//$this->team = self::getTeam($this->teamkey);
 		$this->pictureInfo = self::getPictureInfo();
 	}
@@ -71,6 +78,7 @@ class hbteamModelhbteam extends JModelLegacy
 			}
 			$teamkey = $menuparams->get('teamkey');
 			
+			
 			// Get a Tablehbteam instance
 			$table = $this->getTable();
 
@@ -83,6 +91,42 @@ class hbteamModelhbteam extends JModelLegacy
 
 		return $this->messages[$teamkey];
 	}
+	
+	public function setSeason($season = null)
+    {
+		//echo __FILE__.' ('.__LINE.')<pre>'; print_r($season); echo '</pre>';
+		if ($season === null) {
+			// current season
+			$year = strftime('%Y');
+			if (strftime('%m') < 8) {
+				$year = $year-1;
+			}
+			$season = $year.'-'.($year+1);
+		}
+		$this->season = $season;		
+    }
+	
+	public function getSeason()
+    {
+		return $this->season;	
+    }
+	
+	public function setTeamkey($teamkey = null)
+    {
+		//echo __FILE__.' ('.__LINE.')<pre>'; print_r($teamkey); echo '</pre>';
+		if ($teamkey === null) {
+			// TODO
+		}
+		$this->teamkey = $teamkey;		
+    }
+	
+
+	
+	public function getTeamkey()
+    {
+		return $this->teamkey;		
+    }
+	
 	
 	function getTeam($teamkey = "non")
 	{
@@ -124,7 +168,6 @@ class hbteamModelhbteam extends JModelLegacy
 		
 		return $team;
 	}
-	
 	
 	function getPictureInfo()
 	{
@@ -187,6 +230,22 @@ class hbteamModelhbteam extends JModelLegacy
 		
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($team);echo'</pre>';
 		return $team;
+	}
+	
+	function getStandingsGraphData()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('tabellenGraph');
+		$query->from('hb_mannschaftsdetails');
+		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
+		$query->where($db->qn('saison').' = '.$db->q($this->season));
+		// Zur Kontrolle
+		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$standings = $db->loadResult();
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($standings);echo'</pre>';
+		return $standings;
 	}
 	
 }

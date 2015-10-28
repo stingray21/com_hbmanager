@@ -21,6 +21,8 @@ class HBteamViewHBteam extends JViewLegacy
 //		//echo '=> view->post<br><pre>'; print_r($post); echo '</pre>';
 //		$this->assignRef('post', $post);
 		
+		JToolBarHelper::title(JText::_('COM_HBMANAGER_DATA_TITLE'),'hblogo');
+		
 //		JHtml::stylesheet('com_hbmanager/hbteam.stylesheet.css', array(), true);
 		
 		// Display the view

@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset
-		name="settings"
+		name="teamsettings"
+		label="COM_HBTEAM_CONFIG_TEAM_LABEL"
+		description="COM_HBTEAM_CONFIG_TEAM_DESC"
+	>
+					
+		<field 
+			name="email" 
+			type="list" 
+			label="COM_HBTEAM_CONFIG_EMAIL_DISPLAY_LABEL"
+			description="COM_HBTEAM_CONFIG_EMAIL_DISPLAY_DESC"
+			default="none"
+		>
+			<option value="none">COM_HBTEAM_EMAIL_DISPLAY_NONE</option>
+			<option value="personal">COM_HBTEAM_EMAIL_DISPLAY_PERSONAL</option>
+			<option value="alias">COM_HBTEAM_EMAIL_DISPLAY_ALIAS</option>
+		</field>
+
+	</fieldset>
+	
+	
+	<fieldset
+		name="goalsettings"
 		label="COM_HBTEAM_CONFIG_TEAMGOALS_LABEL"
 		description="COM_HBTEAM_CONFIG_TEAMGOALS_DESC"
 	>

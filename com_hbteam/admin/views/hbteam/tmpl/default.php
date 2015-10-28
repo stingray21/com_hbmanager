@@ -2,6 +2,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+JToolBarHelper::preferences('com_hbteam');
 
 // get the JForm object
 $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
