@@ -6,6 +6,8 @@ echo "\n\n".'<h1>'.JText::_('COM_HBMANAGER_OVERVIEW_DEFAULT_TITLE').'</h1>';
 
 echo "\n\n".'<div id="hboverview">';
 
+//echo __FILE__."<pre>"; print_r($this->gameDays); echo "</pre>";
+
 foreach ($this->gameDays as $gameDay)
 {
 	if (!empty($gameDay->games))
@@ -39,7 +41,7 @@ foreach ($this->gameDays as $gameDay)
 
 					<div>
 					<a href="<?php echo $game->hvwLink;?>" target="_BLANK" alt="zur HVW-Seite" class="hvwlink">HVW</a>
-					<a id="btnShow_curr-<?php echo $game->kuerzel?>" class="btnShowTable"><?php 
+					<a id="btnShow_curr-<?php echo JHtml::_('date', $date, 'Ymd-', $this->timezone).$game->kuerzel?>" class="btnShowTable"><?php 
 						echo JText::_('COM_HBMANAGER_OVERVIEW_STANDINGS');?></a>
 					<?php
 	//				echo '<a id="report_'.$game->kuerzel.
@@ -52,7 +54,7 @@ foreach ($this->gameDays as $gameDay)
 				}
 				?>
 				<div class="gameInfo <?php echo ($game->toreHeim !== null) ? ' indicator '.$game->anzeige : '';	?>">
-					<span class="time"><?php echo JHtml::_('date', $game->zeit, 'H:i', $this->timezone);?> <span class="lesser4mobile">Uhr </span></span>
+					<span class="time"><?php echo JHtml::_('date', $game->datumZeit, 'H:i', $this->timezone);?> <span class="lesser4mobile">Uhr </span></span>
 				<span class="team">
 					<span class="home<?php echo ($game->eigeneMannschaft === 1) ? ' own' : '';?>"><?php echo $game->heim;?></span>
 					<span class="dash">-</span> <span class="away<?php echo ($game->eigeneMannschaft === 2) ? ' own' : '';?>"><?php echo $game->gast;?></span>
@@ -75,7 +77,7 @@ foreach ($this->gameDays as $gameDay)
 				$nextTeam = ($i < count($games)-1) ? $games[$i+1]->mannschaft : null;
 				if ($nextTeam != $game->mannschaft) {
 					?>
-					<table id="standings_curr-<?php echo $game->kuerzel;?>" class="miniStandings" data-state="hidden">
+					<table id="standings_curr-<?php echo JHtml::_('date', $date, 'Ymd-', $this->timezone).$game->kuerzel;?>" class="miniStandings" data-state="hidden">
 						<thead>			
 						<tr>
 							<th><?php echo JText::_('COM_HBMANAGER_OVERVIEW_MINITABLE_RANK');?></th>

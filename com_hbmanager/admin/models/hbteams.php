@@ -494,6 +494,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 			if (isset($data['includeTeam'])) {
 				$teamkey = self::getNewTeamKey($data['staffel']);
 				$age = self::getNewAge($data['staffelName']);
+				$email = self::generateEmailAlias($teamkey, $age);
 				$gender = self::getNewGender($data['staffelName']);
 				$number = self::getNewNumber($data['mannschaftenTabelle']);
 				$league = self::getNewLeague($data['staffelName']);
@@ -508,14 +509,15 @@ class hbmanagerModelHbteams extends JModelLegacy
 				$value['liga'] = $db->q($league);
 				$value['geschlecht'] = $db->q($gender);
 				$value['jugend'] = $db->q($age);
-				$value['hvwLink'] = $db->q($data['url']);
+				$value['hvwLink'] = $db->q($data['url']);				
+				$value['email'] = $db->q($email);
 				$values[] = implode(', ', $value);
 			}
 		}
 		$table = 'hb_mannschaft';
 		$columns = array('kuerzel', 'reihenfolge', 'mannschaft', 'name', 
 					'nameKurz', 'ligaKuerzel', 'liga', 'geschlecht', 
-					'jugend', 'hvwLink');
+					'jugend', 'hvwLink', 'email');
 		
 		// Prepare the insert query.
 		$query = $db->getQuery(true);
@@ -638,5 +640,15 @@ class hbmanagerModelHbteams extends JModelLegacy
 			$name .= $number;
 		}
 		return $name;
+	}
+	
+	protected function generateEmailAlias ($teamkey, $age = null) {
+		if ($age != 'aktiv') {
+			$teamkey = preg_replace('/-1$/', '', $teamkey);
+		}
+		$teamkey = preg_replace('/-/', '', $teamkey);
+		
+		$email = 'trainer.'.strtolower($teamkey);
+		return $email;
 	}
 }

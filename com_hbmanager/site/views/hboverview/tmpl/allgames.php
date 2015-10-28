@@ -44,13 +44,13 @@ foreach ($this->teams as $team)
 			// row in HBschedule table
 			echo "\t\t\t<tr class=\"".$row->background."\">";
 			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->datum, 'D', $tz);
+			echo JHtml::_('date', $row->datumZeit, 'D', $tz);
 			echo "</td>";
 			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->datum, 'd.m.y', $tz);
+			echo JHtml::_('date', $row->datumZeit, 'd.m.y', $tz);
 			echo "</td>";
 			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->zeit, 'H:i', $tz);
+			echo JHtml::_('date', $row->datumZeit, 'H:i', $tz);
 			echo " Uhr</td>";
 			echo "<td>{$row->hallenNr}</td>";
 			echo "<td class=\"rightalign";

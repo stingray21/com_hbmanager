@@ -31,7 +31,7 @@ if (!empty($this->homegames))
 				//echo JHtml::_('date', $row->datum, 'd.m.y', false);
 				//echo "</td>";
 				echo "<td class=\"wann leftalign\">";
-				echo JHtml::_('date', $row->zeit, 'H:i', $tz);
+				echo JHtml::_('date', $row->datumZeit, 'H:i', $tz);
 				echo " Uhr</td>";
 				//echo "<td>{$row->ligaKuerzel}</td>";
 				//echo "<td>{$row->hallenNummer}</td>";

@@ -37,7 +37,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.'/models'.
 					<?php 
 echo '<th>'.$form->getLabel('deleteTeam','hbDeleteTeam').'</th>'."\n";
 $fields = array('reihenfolge', 'kuerzel', 'mannschaft', 'name', 'nameKurz', 
-		'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink');
+		'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink', 'email');
 //echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->teams); echo'</pre>';
 foreach ($fields as $key) {
 	echo '<th>';

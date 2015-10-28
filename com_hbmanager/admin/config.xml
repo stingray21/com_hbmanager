@@ -43,6 +43,15 @@
 		/>
 		
 		<field 
+			name="emaildomain" 
+			type="text" 
+			default="" 
+			label="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_EMAIL_DOMAIN_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_EMAIL_DOMAIN_DESC" 
+			size="15"
+		/>
+		
+		<field 
 			name="urlstartdate" 
 			type="calendar" 
 			default="2015-10-01" 
@@ -61,7 +70,8 @@
 			name="menuActive" 
 			type="sql" 
 			default="" 
-			label="Select a menu for adult teams" 
+			label="COM_HBMANAGER_CONFIG_TEAMMENU_SETTINGS_ADULT_TEAMS_LABEL" 
+			description="COM_HBMANAGER_CONFIG_TEAMMENU_SETTINGS_ADULT_TEAMS_DESC"
 			query="SELECT `id`, `alias`, `title` FROM #__menu WHERE `level` &lt;= 2 AND `access` = 1" 
 			key_field="id" 
 			value_field="title"
@@ -73,7 +83,8 @@
 			name="menuYouth" 
 			type="sql" 
 			default="ONLY1" 
-			label="Select a menu for Youth teams" 
+			label="COM_HBMANAGER_CONFIG_TEAMMENU_SETTINGS_YOUTH_TEAMS_LABEL" 
+			description="COM_HBMANAGER_CONFIG_TEAMMENU_SETTINGS_YOUTH_TEAMS_DESC"
 			query="SELECT `id`, `alias`, `title` FROM #__menu WHERE `level` &lt;= 2 AND `access` = 1" 
 			key_field="id" 
 			value_field="title"

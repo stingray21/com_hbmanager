@@ -3,11 +3,12 @@
 defined('_JEXEC') or die('Restricted access');
  
 jimport('joomla.application.component.modeladmin');
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/hbdatastandings.php';	
 
 class hbmanagerModelHbdata extends JModelLegacy
 {	
     private $updated = array();
-	private $season;
+	protected $season;
 	private $names = array();
 
     function __construct() 
@@ -84,6 +85,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 	
     function updateTeam($teamkey) 
     {
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teamkey); echo '</pre>';
 		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		self::setSeason($source['headline']);
 		
@@ -92,6 +94,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 				&& self::updateDetailedStandingsInDB($teamkey) )
 //		if (self::updateGamesInDB($teamkey, $source['schedule']) )
 		{
+			//TODO find better place for updating Standings Chart data
+			self::updateStandingsChartData($teamkey);
+		
 			self::updateTimestamp ($teamkey);
 			$this->updated[] = $teamkey;
 			self::updateLog('schedule', $teamkey);
@@ -99,7 +104,14 @@ class hbmanagerModelHbdata extends JModelLegacy
 		}
 		return false;
     }
-
+	
+	
+	private function updateStandingsChartData ($teamkey) {
+		$chartModel = new HBmanagerModelHbdatastandings();
+		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teamkey); echo '</pre>';
+		$chartModel->updateStandingsChart($teamkey);
+	}
+	
     protected function getHvwLink ($teamkey)
     {
 		//echo '=> model->$updated <br><pre>'; print_r($teamkey); echo '</pre>';
@@ -329,12 +341,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 				else  $value['hallenNr'] = "NULL";
 		// Datum & Uhrzeit
 		if (trim($data[2]) != '') {	
-				$dls = date("I", strtotime($data[2])); // day light savings
-				// time stamp with corrected removed days light savings
-				$dlsTimestamp = strtotime($data[2])+($dls-1)*3600;
-				$date = JFactory::getDate($dlsTimestamp, 'Europe/Berlin' )->toSql();
-				//echo '<p>HVW:'.$data[2].' -> in DB: '.$date.'   SZ '.$dls."</p>";
-				$value['datumzeit'] = $db->q($date);
+			$sqlDateTime = JFactory::getDate($data[2], 'Europe/Berlin' )->toSql();
+			//echo '<p>HVW: <b>'.$datetime.'</b> -> in DB: <b>'.$sqlDateTime.'</b></p>";
+			$value['datumzeit'] = $db->q(self::getDateTime($sqlDateTime));
 		}
 		else  $value['datumzeit'] = "NULL";
 
@@ -364,7 +373,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		//echo '=> model<br><pre>'; print_r($value);echo '</pre>';
 		return $value;
     }
-	
+
 	protected function checkIfOwnTeamIsPlaying($home, $away)
 	{
 		if (in_array($home, $this->names)) {
@@ -382,11 +391,21 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $saison;
     }
 	
-	protected function setSeason($string)
+	protected function setSeason($string = null)
     {
-		$season = preg_replace('/.*(\d{4})\/(\d{4}).*/', '$1-$2', $string);
-		//$season = '2015-2016';
-		$this->season = $season;
+		//echo __FILE__.' ('.__LINE.')<pre>'; print_r($string); echo '</pre>';
+		if ($string !== null) {
+			$season = preg_replace('/.*(\d{4})\/(\d{4}).*/', '$1-$2', $string);
+			//$season = '2015-2016';
+		} else {
+			// current season
+			$year = strftime('%Y');
+			if (strftime('%m') < 8) {
+				$year = $year-1;
+			}
+			$season = $year.'-'.($year+1);
+		}
+		$this->season = $season;		
     }
 
     protected function updateTimestamp ($teamkey)
@@ -611,9 +630,13 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $value;
     }
 	
-	protected function getDetailedStandingsData ($teamkey)		
+	protected function getDetailedStandingsData ($teamkey, $date = null)		
 	{
 		$db = JFactory::getDBO();
+		
+		//$noDateOption = ($date === null) ? 1 : 0 ;
+		$dateOption = ($date !== null) ? " AND DATE(`datumZeit`) <= ".$db->q($date) : '';
+		
 		$query = "SELECT 
 			mannschaft,
 			
@@ -706,13 +729,13 @@ class hbmanagerModelHbdata extends JModelLegacy
 				s1.gast gegner, 
 				s1.toreHeim hTore, 
 				s1.toreGast gTore,
-				s1.wertungHeim hWertung, 
+				s1.wertungHeim hWertung,	 
 				s1.wertungGast gWertung
 				FROM hb_spiel s1 
 				WHERE s1.wertungHeim IS NOT NULL  
 					AND kuerzel = ".$db->q($teamkey)."
 					AND saison=".$db->q($this->season)." 
-
+					".$dateOption."
 				UNION 
 
 				SELECT 
@@ -728,14 +751,15 @@ class hbmanagerModelHbdata extends JModelLegacy
 				WHERE s2.wertungHeim IS NOT NULL 
 					AND kuerzel = ".$db->q($teamkey)."
 					AND saison=".$db->q($this->season)." 
+					".$dateOption."
 			) AS s USING (mannschaft)
 
 			GROUP BY mannschaft 
 			ORDER BY punkte DESC, siege DESC, torDifferenz DESC";
-		//echo "<a>ModelHB->query: </a><pre>"; echo $query; echo "</pre>";
+		//echo  __FILE__.' ('.__LINE__.')<pre>'; echo $query; echo "</pre>";
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		//echo '<pre>';print_r($result);echo'</pre>';
+//		echo __FILE__.' ('.__LINE__.')<pre>'; print_r($result); echo '</pre>';
 		return $result;
 	}
 

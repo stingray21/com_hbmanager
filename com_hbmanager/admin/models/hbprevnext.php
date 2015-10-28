@@ -8,6 +8,9 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 {	
 	protected $prevGames = array();
 	protected $nextGames = array();
+	protected $timezone = 'Europe/Berlin';
+	
+	// TODO use CONVERT_TZ in MySQL for date
 	
 	// dates
 	protected $dates = null;
@@ -22,7 +25,8 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$this->dates->nextEnd = null;	
 		
 		$this->dates->today = strftime("%Y-%m-%d", time());
-//		$this->dates->today = "2014-12-08";
+		
+		//$this->dates->today = "2015-10-24"; echo '<div><b>TESTING: date set to '.$this->dates->today.'</b></div>';
 //		echo '<pre>'.strftime("%A %w, %Y-%m-%d", strtotime($this->dates->today)).'</pre>';
 		//self::setDates();
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
@@ -115,7 +119,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			$offset = $this->dates->today;
 		}
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
-		$db = $this->getDbo();
+		$db = $this->getDbo();  
 		
 		$query = $db->getQuery(true);
 		$query->select('MAX(DATE('.$db->qn('datumZeit').')) AS '
@@ -224,9 +228,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			$select = self::getCombinedSelect();
 		}
 		else {
-			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%i').') AS '.$db->qn('zeit'); 
+			$select = '*'; 
 		}
 		// %H:%m hour with leading 0
 		$query->select($select);
@@ -246,7 +248,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			$query->group($db->qn('kuerzel').',DATE('.$db->qn('datumZeit').')'
 				.', '.$db->qn('heim').', '.$db->qn('gast') );
 		}
-		$query->order($db->qn('datum').', '.$db->qn('reihenfolge').' ASC');
+		$query->order($db->qn('datumZeit').', '.$db->qn('reihenfolge').' ASC');
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();		
@@ -261,9 +263,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 	function getCombinedSelect()
 	{
 		$db = $this->getDbo();
-		$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum').
-				', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%i').') AS '.$db->qn('zeit').',
+		$select = '*,
 					CASE 
 					WHEN (SUBSTRING('.$db->qn('kuerzel').',1,3) = '
 						.$db->q('gJE').') THEN
@@ -301,9 +301,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$db = $this->getDbo();
 	
 		$query = $db->getQuery(true);
-		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%i').') AS '.$db->qn('zeit'));
+		$query->select('*');
 		$query->from('hb_spiel');
 		$query->leftJoin($db->qn('hb_mannschaft').' USING ('.
 				$db->qn('kuerzel').')');
@@ -337,7 +335,8 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		// arrange games by date
 		$arranged = array();
 		foreach ($games as $game){
-			$arranged[$game->datum][] = $game;
+			$date = JHtml::_('date', $game->datumZeit , 'Y-m-d', $this->timezone);
+			$arranged[$date][] = $game;
 		}
 		//echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
 		return $arranged;
@@ -351,7 +350,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$maxDate = strtotime($maxDateStr);
 		if ($minDate === $maxDate)
 		{
-			$titledate = JHtml::_('date', $minDate, 'D, j. M.', 'Europe/Berlin');
+			$titledate = JHtml::_('date', $minDate, 'D, j. M.', $this->timezone);
 		}
 		// back to back days and weekend
 		elseif (strftime("%j", $minDate)+1 == strftime("%j", $maxDate) AND
@@ -360,25 +359,25 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 			// if same month
 			if (strftime("%m", $minDate) == strftime("%m", $maxDate))
 			{
-				$date = JHTML::_('date', $minDate , 'j.', 'Europe/Berlin').
-					JHTML::_('date', $maxDate , '/j. M.', 'Europe/Berlin');
+				$date = JHTML::_('date', $minDate , 'j.', $this->timezone).
+					JHTML::_('date', $maxDate , '/j. M.', $this->timezone);
 			}
 			else
 			{
-				$date = JHTML::_('date', $minDate , 'j. F.', 'Europe/Berlin').
-					JHTML::_('date', $maxDate , ' / j. F.', 'Europe/Berlin');
+				$date = JHTML::_('date', $minDate , 'j. F.', $this->timezone).
+					JHTML::_('date', $maxDate , ' / j. F.', $this->timezone);
 			}
 			$titledate = 'Wochenende '.$date;
 		}
 		else
 		{
-			$titledate = JHtml::_('date', $minDate, 'j. ', 'Europe/Berlin');
+			$titledate = JHtml::_('date', $minDate, 'j. ', $this->timezone);
 			if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
-				$titledate .= JHtml::_('date', $minDate, 'F. ', 'Europe/Berlin');
+				$titledate .= JHtml::_('date', $minDate, 'F. ', $this->timezone);
 			}
 			$titledate .= 'bis ';
 			$titledate .= JHtml::_('date', $maxDate, 'j. F.', 
-				'Europe/Berlin');
+				$this->timezone);
 		}
 		
 		return $titledate;

@@ -506,5 +506,19 @@ class hbmanagerController extends JControllerAdmin
 //		}
 	}
 	
+	function test()
+	{
+		$jinput = JFactory::getApplication()->input;
+		
+		$model = $this->getModel('hbdatastandings');
+		
+		$view = $this->getView('hbtest','html');
+		$view->setModel($model);
+		
+		$view->display();
+		
+		// Set the submenu
+		//hbhelper::addSubmenu('hbdata');
+	}
 	
 } 

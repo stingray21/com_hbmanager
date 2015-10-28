@@ -19,7 +19,7 @@
 				default="" 
 				label="Kürzel" 
 				description="" 
-				size="7" 
+				size="6" 
 			/>
 			<field 
 				name="mannschaft" 
@@ -27,7 +27,7 @@
 				default="" 
 				label="Mannschaft" 
 				description="" 
-				size="25" 
+				size="19" 
 			/>
 			<field 
 				name="name" 
@@ -51,7 +51,7 @@
 				default="" 
 				label="Liga Kürzel" 
 				description="" 
-				size="10" 
+				size="8" 
 			/>
 			<field 
 				name="liga" 
@@ -59,7 +59,7 @@
 				default="" 
 				label="Liga" 
 				description="" 
-				size="20" 
+				size="14" 
 			/>	
 			<field 
 				name="geschlecht" 
@@ -95,9 +95,18 @@
 				default="" 
 				label="http://www.hvw-online.org/..." 
 				description="Link" 
-				size="47" 
+				size="40" 
 			/>		
 			<!--label="HVW Link Extension &lt;br&gt;(http://www.hvw-online.org/...)" -->	
+			
+			<field 
+				name="email" 
+				type="text" 
+				default="" 
+				label="Email-Alias" 
+				description="" 
+				size="20" 
+			/>	
 		</fieldset>
 	</fields>
 	
@@ -190,7 +199,6 @@
 				>
 					<option value="leer">auswaehlen</option>
 			</field>
-			
 			
 		</fieldset>
 	</fields>

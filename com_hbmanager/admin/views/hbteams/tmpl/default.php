@@ -38,7 +38,7 @@ $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 				
 				<?php 
 			$fields = array('reihenfolge', 'kuerzel', 'mannschaft', 'name', 'nameKurz', 
-					'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink');
+					'ligaKuerzel', 'liga', 'geschlecht', 'jugend', 'hvwLink', 'email');
 			//echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->teams); echo'</pre>';
 			echo '<tr>';
 			foreach ($fields as $key) {

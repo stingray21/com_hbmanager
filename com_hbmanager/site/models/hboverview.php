@@ -9,6 +9,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 {	
 	protected $currGames = array();
 	private $season;
+	protected $timezoneMode;
 	
 	function __construct() 
 	{
@@ -16,6 +17,9 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		
 		$this->dates->currStart = null;
 		$this->dates->currEnd = null;
+		
+		// TODO time zone -> backend option
+		$this->timezoneMode = false; //true: user-time, false:server-time
 		
 		self::setSeason();
 	}
@@ -62,7 +66,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 			$this->dates->currEnd = $dates->ende;
 		}
 		
-		//echo __FUNCTION__.':<pre>';print_r($this->dates);echo'</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->dates);echo'</pre>';
 	}
 	
 	function getSchedule($team)
@@ -70,9 +74,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		// getting schedule of the team from the DB
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '
-				. $db->q('%k:%i').') AS '.$db->qn('zeit').', '
+		$query->select('*, '
 				.'IF('.$db->qn('heim').' IN '.self::getTeamNames().',1,2) '.
 					'AS mark');
 		$query->from($db->qn('hb_spiel'));
@@ -135,7 +137,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 	{
 		// current games
 		$currGames = self::getCurrGames();
-		//echo __FUNCTION__."<pre>"; print_r($currGames); echo "</pre>";
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($currGames);echo'</pre>';
 		if (!empty($currGames))
 		{
 			$gameDay = new stdClass();
@@ -213,9 +215,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 			$select = self::getCombinedSelect();
 		}
 		else {
-			$select = '*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%i').') AS '.$db->qn('zeit'); 
+			$select = '*'; 
 		}
 		// %H:%m hour with leading 0
 		$query->select($select);
@@ -230,7 +230,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 			$query->group($db->qn('kuerzel').',DATE('.$db->qn('datumZeit').')'
 				.', '.$db->qn('heim').', '.$db->qn('gast') );
 		}
-		$query->order($db->qn('datum').', '.$db->qn('zeit').' ASC');
+		$query->order($db->qn('datumZeit').' ASC');
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();		
@@ -262,9 +262,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		// getting schedule of the team from the DB
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*, DATE('.$db->qn('datumZeit').') AS '.$db->qn('datum')
-				.', TIME_FORMAT('.$db->qn('datumZeit').', '.
-					$db->q('%k:%i').') AS '.$db->qn('zeit'));
+		$query->select('*');
 		$query->from($db->qn('hb_spiel'));
 		$teamNames = self::getTeamNames();
 		//echo __FUNCTION__."<pre>"; print_r($teamNames); echo "</pre>";
@@ -290,7 +288,8 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$rows = '';
 		foreach ($inputRows as $value)
 		{
-			$rows[$value->datum][$value->hallenNr][] = $value;
+			$date = JHtml::_('date', $value->datumZeit, 'H:i', $this->timezoneMode);
+			$rows[$date][$value->hallenNr][] = $value;
 		}
 		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
 		return $rows;
