@@ -17,7 +17,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 	public $teamkey;
 	public $season;
 	public $gameId;
-	public $gameDate;
+	public $recentGameId;
+	public $recentGameDate;
 	private $chartGames = array();
 	public $futureGames;
 	public $defaultChartModel;
@@ -42,9 +43,11 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			
 		}
 		$game = self::getRecentGame();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($game);echo'</pre>';
 		if (!empty($game)) {
 			$this->gameId = $game->spielIdHvw;
-			$this->gameDate = $game->datum;
+			$this->recentGameId = $game->spielIdHvw;
+			$this->recentGameDate = $game->datum;
 		}
 			
 	}
@@ -61,7 +64,8 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$game = self::getRecentGame();
 		if (!empty($game)) {
 			$this->gameId = $game->spielIdHvw;
-			$this->gameDate = $game->datum;
+			$this->recentGameId = $game->spielIdHvw;
+			$this->recentGameDate = $game->datum;
 		}
 			
 	}
@@ -100,7 +104,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$game = $db->loadObject();
-		//echo '=> model->gameId<br><pre>'; print_r($game); echo '</pre>';
+		
 		return $game;
 	}
 	
@@ -179,12 +183,25 @@ class hbteamModelHBteamGoals extends JModelLegacy
 	public function getStartGame($gamesJSON) {
 		$games = json_decode($gamesJSON);
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($games);echo'</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->recentGameId);echo'</pre>';
 		foreach($games as $key => $game) {
-			if ($game->id == $this->gameId) {
+			if ($game->id == $this->recentGameId) {
 				return $key;
 			}
 		}
 		return 0;
+	}
+	
+	public function getPlayers4AllGamesJSON ($teamkey = null, $season = null) {
+		
+		$games = self::getGames($teamkey);
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($games);echo'</pre>';
+		foreach ($games as $key => $game) {
+			$data[$key] = new stdClass();
+			$data[$key]->game = $game->spielIdHvw;
+			$data[$key]->players = json_decode(self::getPlayersJSON($game->spielIdHvw, $teamkey, $season));
+		}
+		return json_encode($data);
 	}
 	
 	public function getPlayersJSON ($gameId = null, $teamkey = null, $season = null) {
@@ -196,26 +213,22 @@ class hbteamModelHBteamGoals extends JModelLegacy
 			//echo __FILE__.' ('.__LINE__.')<pre>';print_r($player);echo'</pre>';
 			$playersJSON[$key]['alias'] = $player->alias;
 			$playersJSON[$key]['name'] = $player->name;
-			$playersJSON[$key]['gameId'] = $player->spielIdHvw;
-			$playersJSON[$key]['goalie'] = $player->tw;
-			$playersJSON[$key]['games'] = $player->spiele;
-			$playersJSON[$key]['goalsTotal'] = $player->toregesamt;
-			$playersJSON[$key]['ratio'] = $player->quote;
-			$playersJSON[$key]['goals'] = $player->tore;
-			$playersJSON[$key]['penalties'] = $player->tore7m;
-			$playersJSON[$key]['yellow'] = $player->gelb;
-			$playersJSON[$key]['red'] = $player->rot;
-			$playersJSON[$key]['min1'] = $player->zweimin1;
-			$playersJSON[$key]['min2'] = $player->zweimin2;
-			$playersJSON[$key]['min3'] = $player->zweimin3;
-			$playersJSON[$key]['age'] = $player->groesse;
-			$playersJSON[$key]['birthday'] = $player->geburtstag;
-			//$playersJSON[$key]['home'] = $player->heim;
-			//$playersJSON[$key]['away'] = $player->gast;
-			//$playersJSON[$key]['goalsHome'] = $player->toreHeim;
-			//$playersJSON[$key]['goalsAway'] = $player->toreGast;
+			
+			$playersJSON[$key]['gk'] = $player->tw;
+			$playersJSON[$key]['ga'] = $player->spiele;
+			$playersJSON[$key]['g'] = $player->tore;
+			$playersJSON[$key]['p'] = $player->tore7m;
+			$playersJSON[$key]['t'] = $player->toregesamt;
+			$playersJSON[$key]['r'] = $player->quote;
+			$playersJSON[$key]['ye'] = $player->gelb;
+			$playersJSON[$key]['re'] = $player->rot;
+			$playersJSON[$key]['m'] = ($player->zweimin1 != '') ? 1 : 0 ;
+			$playersJSON[$key]['m'] += ($player->zweimin2 != '') ? 1 : 0 ;
+			$playersJSON[$key]['m'] += ($player->zweimin3 != '') ? 1 : 0 ;
 		}
-		return json_encode($playersJSON);
+		$playersJSON = json_encode($playersJSON);
+		$playersJSON = str_replace ( 'null' , '""' , $playersJSON);
+		return $playersJSON;
 	}
 	
 	function getPlayers($gameId = null, $teamkey = null, $season = null)
@@ -283,7 +296,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$totalQuery->leftJoin($db->qn('hb_spiel').' USING ('.$db->qn('spielIdHvw').')');
 		$totalQuery->where('hb_spiel_spieler.'.$db->qn('saison').' = '.$db->q($this->season));
 		// TODO where id in details 
-		$totalQuery->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
+		$totalQuery->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->recentGameDate));
 		$totalQuery->where($db->qn('trikotNr').' NOT IN ('.$db->q('A').','.$db->q('B').','
 			. $db->q('C').','.$db->q('D').')');
 		$totalQuery->group('alias');
@@ -362,7 +375,7 @@ class hbteamModelHBteamGoals extends JModelLegacy
 		$query->from('hb_spiel');
 		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
 		if (!$this->futureGames) {
-			$query->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->gameDate));
+			$query->where('DATE('.$db->qn('datumZeit').') <= '.$db->q($this->recentGameDate));
 		}
 		$query->where($db->qn('eigenerVerein').' = 1');
 		$query->order($db->qn('datumZeit').' ASC');

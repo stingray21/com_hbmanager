@@ -5,6 +5,7 @@ var log = console.log.bind(console);
 jQuery(document).ready(function($){
 	
 	//log(gamesJSON);
+	log(startGame);
 	
 	var gameSelect = new Vue({
 		el: '#playertable',
@@ -15,7 +16,7 @@ jQuery(document).ready(function($){
 			tempGame: startGame,
 			selectedGame: startGame,
 			games: gamesJSON,
-			players: playersJSON
+			players: playersJSON[startGame].players
 		},
 		methods: {
 			selectGame: function (i) {
@@ -27,8 +28,7 @@ jQuery(document).ready(function($){
 				if (this.games[i].show == 1) {
 					this.selectedGame = i;
 					this.tempGame = i;
-					//log(this.games[i]);
-					loadData(this.games[i]);
+					this.players = playersJSON[i].players;
 					//log(this.players);
 				}
 			},
@@ -56,19 +56,6 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
-
-	function loadData ( game ) {
-		
-		//log("loadData", id);
-		$.getJSON("./index.php?option=com_hbteam&task=getGoalsJSON&format=raw" 
-				+ "&teamkey=" + game.teamkey 
-				+ "&season=" + game.season 
-				+ "&gameId=" + game.id,
-			function(data) {
-				//log(data);
-				gameSelect.players =  data;
-		});
-	}
 	
 	$( window ).resize(function() {
 		

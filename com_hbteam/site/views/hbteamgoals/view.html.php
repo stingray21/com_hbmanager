@@ -38,9 +38,8 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		
 		$gamesJSON = $model->getGamesJSON();
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gamesJSON);echo'</pre>';
-		$playersJSON = $model->getPlayersJSON();
+		$playersJSON = $model->getPlayers4AllGamesJSON();
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gamesJSON);echo'</pre>';
-		
 		
 		
 		JHtml::_('jquery.framework');

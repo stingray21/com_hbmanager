@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 					<ul v-show="showSelectionFlag">
 						<li v-repeat="game : games">
-							<div class="game" v-class="played: (game.result != null), show: (game.show == 1)" v-on="click: selectGame($index), mouseover: indicateGame($index), mouseout: removeIndication($index)"> <span class="date">{{game.date}}</span>
+							<div class="game" v-class="played: (game.result != null), show: (game.show == 1), selected: ($index == selectedGame)" v-on="click: selectGame($index), mouseover: indicateGame($index), mouseout: removeIndication($index)"> <span class="date">{{game.date}}</span>
 			 <span class="gameName">{{game.game}}</span>
 			 <span class="result">{{game.result}}</span>
 
@@ -58,12 +58,12 @@ defined('_JEXEC') or die('Restricted access');
 						</tr>
 					</thead>
 					<tbody>
-						<tr  v-repeat="player: players" v-class="notPlayed: player.tore === null">
+						<tr  v-repeat="player: players" v-class="notPlayed: player.g == ''">
 							<td class="name">{{ player.name }}</td>
-							<td class="goals">{{ player.goals }}</td>
-							<td>{{ player.games }}</td>
-							<td>{{ player.goalsTotal }}</td>
-							<td>{{ player.ratio }}</td>
+							<td class="goals">{{ player.g }}</td>
+							<td>{{ player.ga }}</td>
+							<td>{{ player.t }}</td>
+							<td>{{ player.r }}</td>
 						</tr>
 				</tbody>
 				</table>

@@ -37,7 +37,8 @@ class hbteamController extends JControllerLegacy
 		$season = $jinput->get('season');
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($season);echo'</pre>';
 		
-		$players = $model->getPlayersJSON($gameId, $teamkey, $season);
+		//$players = $model->getPlayersJSON($gameId, $teamkey, $season);
+		$players = $model->getPlayers4AllGamesJSON($teamkey, $season);
 		
 		echo $players;
 	}
