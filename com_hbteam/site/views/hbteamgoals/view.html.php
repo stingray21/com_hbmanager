@@ -34,14 +34,27 @@ class hbteamViewHBteamGoals extends JViewLegacy
 		$this->assignRef('defaultChartMode', $model->defaultChartMode);
 		
 		// local jquery
-		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);
+		//$document->addScript(JURI::Root().'/media/com_hbmanager/js/jquery-2.0.3.js);		
+		
+		$gamesJSON = $model->getGamesJSON();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gamesJSON);echo'</pre>';
+		$playersJSON = $model->getPlayersJSON();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gamesJSON);echo'</pre>';
+		
+		
+		
 		JHtml::_('jquery.framework');
 		$document->addScriptDeclaration('
 			var teamkey = \''.$model->teamkey.'\';
 			var season = \''.$model->season.'\';
 			var futureGames = '.$model->futureGames.';
+			var gamesJSON = '.$gamesJSON.';
+			var playersJSON = '.$playersJSON.';
+			var startGame = '.$model->getStartGame($gamesJSON).';
 			//console.log(teamkey);
 		');
+		
+		$document->addScript(JURI::Root().'/media/com_hbteam/js/vue.min.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoals.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/d3.js');
 		$document->addScript(JURI::Root().'/media/com_hbteam/js/hbgoalsChart.js');

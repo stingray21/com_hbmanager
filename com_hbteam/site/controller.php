@@ -24,20 +24,22 @@ class hbteamController extends JControllerLegacy
 		$view->display();
 	}
 	
-	function getGoals2()
+	function getGoalsJSON()
 	{
 		
 		$model = $this->getModel('hbteamgoals');
 		
 		$jinput = JFactory::getApplication()->input;
 		$gameId = $jinput->get('gameId');
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gameId);echo'</pre>';
 		$teamkey = $jinput->get('teamkey');
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($teamkey);echo'</pre>';
 		$season = $jinput->get('season');
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($season);echo'</pre>';
 		
-		$players = $model->getPlayers($gameId, $teamkey, $season);
+		$players = $model->getPlayersJSON($gameId, $teamkey, $season);
 		
-		$data = array('gameId' => $gameId, 'player' =>  $players);
-		echo json_encode($data);
+		echo $players;
 	}
 	
 	function getGoals4Chart()

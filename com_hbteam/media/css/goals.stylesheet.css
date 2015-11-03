@@ -14,3 +14,83 @@ fieldset#hbgoalchart_chartmode div {
 div#chartgoals {
 	
 }
+
+#playertable > div {
+	float: left;
+}
+
+#playertable .menu {
+    /*background: blue;*/
+    display: table;
+    padding-bottom: 1em;
+	margin-right: 2em;
+	color: #333;
+}
+
+#playertable .game.selectedGame {
+	font-weight: bold;
+	color: #333;
+}
+
+#playertable ul {
+    /*background: lightgray;*/
+    padding: 0;
+    width: 20em;
+    margin: 0;
+}
+
+#playertable li {
+    list-style-type: none;
+    /*background: red;*/
+    /*width: 21em;*/
+}
+
+#playertable li:hover {
+    background: lightgray;
+	font-weight: bold;
+}
+
+#playertable .game {
+    /*background: lightblue;*/
+    width: 20em;
+    padding: 0.25em;
+	color: #aaa;
+	border-bottom: 1px solid #333;
+}
+
+#playertable .game.played {
+    /*color: #333;*/
+}
+
+#playertable .game.show {
+    color: #333;
+}
+
+#playertable .game > span {
+    display: inline-block;
+}
+
+#playertable .game .date {
+    width: 4em;
+    /*background: lightyellow;*/
+}
+
+#playertable .game .gameName {
+    /*background: lightcyan;*/
+    width: 12em;
+}
+
+#playertable .game .result {
+    width: 3em;
+    /*background: lightgreen;*/
+}
+
+@media (max-width: 480px) {
+	#playertable .menu {
+		position: relative;
+	}
+	
+	#playertable ul {
+		position: absolute;
+	}
+}

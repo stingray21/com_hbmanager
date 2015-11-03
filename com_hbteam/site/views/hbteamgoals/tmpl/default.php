@@ -9,87 +9,68 @@ defined('_JEXEC') or die('Restricted access');
  <span><?php echo $this->team->liga; ?></span></h1>
 	
 	<div>
-		
-		<div id="goals-player">
 	
-		<h3><?php echo JText::_('COM_HBTEAM_GOALS_SCORER');?></h3>	
-		
-<div data-teamkey="<?php echo $this->teamkey;?>" data-season="<?php echo $this->season;?>">	
-	<table>
-		<thead><tr>
-				<th><?php echo JText::_('COM_HBTEAM_GOALS_NAME');?></th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_DESC'), 
-						JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_NAME'), '', 
-						JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_SHORT'));?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_DESC'),
-						JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_NAME'), '', 
-						JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_SHORT'));?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_DESC'),
-						JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_NAME'), '', 
-						JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_SHORT'));?>
-				</th>
-				<th><?php JHTML::_('behavior.tooltip');
-				echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_DESC'), 
-						JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_NAME'), '', 
-						JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_SHORT'));?>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-<?php
+		<h3><?php echo JText::_('COM_HBTEAM_GOALS_SCORER'); ?></h3>	
 
-foreach ($this->players as $player) 
-{
-	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($player); echo'</pre>';
-	?>
-			<tr <?php echo ($player->tore === null) ? ' class="notPlayed"' : '';?>>
-				<td class="name"><?php echo $player->name;
-					echo ($player->tw == true or $player->twposition) ? ' (TW)' : '';?></td>
-				<td class="goals"><?php echo $player->tore;
-					echo ($player->tore7m != 0) ? '/'.$player->tore7m : '';?></td>
-				<td><?php echo $player->spiele; ?></td>
-				<td><?php echo $player->toregesamt;?></td>
-				<td><?php echo $player->quote;?></td>
-			</tr>
-				<?php 
-}
-?>
-	</tbody>
-	</table>
-</div>
-</div>
 
-<div id="goals-games">
-	<div data-teamkey="<?php echo $this->teamkey;?>" style="display: hidden"></div>
-	<div id="<?php echo $this->season;?>" style="display: hidden"></div>
-	
-	<table>
-<?php
-foreach ($this->games as $game) 
-{
-	//echo __FILE__.' - '.__LINE__.'<pre>';print_r($game); echo'</pre>';
-	?>
-	<tr id="<?php echo $game->spielIdHvw;?>" class="gamebutton<?php 
-			echo ($game->spielIdHvw === $this->gameId) ? ' selected' : '';
-			echo ($game->show = 0) ? ' grayout' : '';?>" >
-		<td><?php echo JHtml::_('date', $game->datum, 'd. M.', false);
-		?></td>
-		<td><?php echo $game->gameName;?></td>
-		<td><?php echo $game->toreHeim.':'.$game->toreGast;?></td>
-	</tr>
-	<?php
-}
+		<div id="playertable">
+			
+			<div id="gameSelect">
+				<div v-on="mouseover: showSelection(), mouseout: hideSelection()" class="menu">
+					<div class="game selectedGame" v-show="showSelectorFlag"> 
+						<span class="date">{{games[selectedGame].date}}</span>
+						<span class="gameName">{{games[selectedGame].game}}</span>
+						<span class="result">{{games[selectedGame].result}}</span>
+					</div>
+					<ul v-show="showSelectionFlag">
+						<li v-repeat="game : games">
+							<div class="game" v-class="played: (game.result != null), show: (game.show == 1)" v-on="click: selectGame($index), mouseover: indicateGame($index), mouseout: removeIndication($index)"> <span class="date">{{game.date}}</span>
+			 <span class="gameName">{{game.game}}</span>
+			 <span class="result">{{game.result}}</span>
 
-?>
-	</table>
-</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		
-		
+			<div>	
+				<table>
+					<thead><tr>
+							<?php JHTML::_('bootstrap.tooltip');?>
+							<th><?php echo JText::_('COM_HBTEAM_GOALS_NAME');?></th>
+							<th><?php echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_DESC'), 
+									JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_NAME'), '', 
+									JText::_('COM_HBTEAM_GOALS_TABLE_GOALS_SHORT'));?>
+							</th>
+							<th><?php echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_DESC'),
+									JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_NAME'), '', 
+									JText::_('COM_HBTEAM_GOALS_TABLE_GAMES_SHORT'));?>
+							</th>
+							<th><?php echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_DESC'),
+									JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_NAME'), '', 
+									JText::_('COM_HBTEAM_GOALS_TABLE_TALLY_SHORT'));?>
+							</th>
+							<th><?php echo JHTML::tooltip(JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_DESC'), 
+									JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_NAME'), '', 
+									JText::_('COM_HBTEAM_GOALS_TABLE_AVERAGE_SHORT'));?>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr  v-repeat="player: players" v-class="notPlayed: player.tore === null">
+							<td class="name">{{ player.name }}</td>
+							<td class="goals">{{ player.goals }}</td>
+							<td>{{ player.games }}</td>
+							<td>{{ player.goalsTotal }}</td>
+							<td>{{ player.ratio }}</td>
+						</tr>
+				</tbody>
+				</table>
+			</div>
+
+			
+		</div>
 
 
 <div class="clr"></div>

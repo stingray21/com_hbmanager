@@ -104,7 +104,7 @@ jQuery(document).ready(function($){
 	//console.log(url);
 
 	d3.json(url, function(error, data) {
-		console.log(data);
+		//console.log(data);
 		x.domain(data.games.map(function(game) {return game.name;}));
 		y.domain([0, getMaxY(data.players)]);
 		
@@ -143,7 +143,7 @@ jQuery(document).ready(function($){
 
 		// update width
 		divWidth = parseInt(d3.select('#chartgoals').style('width'), 10);
-		console.log(divWidth);
+		//console.log(divWidth);
 		
 		if (divWidth > 480) { 
 			width = divWidth - margin.left - margin.right - widthLegend;

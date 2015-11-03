@@ -67,12 +67,16 @@
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
 			<filename>hbteam.php</filename>
+			<filename>controller.php</filename>
+			<filename>config.xml</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
 			<!-- tables files section -->
 			<folder>tables</folder>
 			<!-- models files section -->
 			<folder>models</folder>
+			<!-- views files section -->
+			<folder>views</folder>
 		</files>
 		
 		<languages folder="admin/language">
