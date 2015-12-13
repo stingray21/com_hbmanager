@@ -17,14 +17,22 @@ class HbmanagerViewHbgoalsinput extends JViewLegacy
 			
 		$model = $this->getModel('hbgoalsinput');
 		$this->assignRef('model', $model);
+				
+		//$teams = $model->getTeams();
+		//$this->assignRef('teams', $teams);
+		// echo '=> view->teams<br><pre>'; print_r($teams); echo '</pre>';
 		
 		$confirmation = $model->getConfirmation();
 		$this->assignRef('confirmation', $confirmation);
-		//echo __FILE__.' ('.__LINE__.')'.'<pre>';print_r($confirmation); echo'</pre>';
+//		echo __FILE__.' ('.__LINE__.')'.'<pre>';print_r($confirmation); echo'</pre>';
 		
-//		$post = JRequest::get('post');
-//		//echo '=> view->post<br><pre>'; print_r($post); echo '</pre>';
-//		$this->assignRef('post', $post);
+		$inputData = $model->getInputData();
+		$this->assignRef('inputData', $inputData);
+//		echo __FILE__.' ('.__LINE__.')'.'<pre>';print_r($inputData); echo'</pre>';
+		
+		$links = $model->getLinks();
+		$this->assignRef('links', $links);
+//		echo __FILE__.' ('.__LINE__.')'.'<pre>';print_r($links); echo'</pre>';
 		
 		//$teams = $model->getTeams();
 		//$this->assignRef('teams', $teams);

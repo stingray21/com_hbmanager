@@ -2,12 +2,25 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = 'Europe/Berlin';
 
 // get the JForm object
 $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
 		'/models/forms/hbgoals.xml');
 
-
+echo '<table>';
+foreach ($this->links as $link) {
+	
+	echo '<tr><td>'.JHtml::_('date', $link->datumZeit, 'D, d.m.y', $tz).'<td>';
+	echo '<td><a href="'.$link->hvwLink.'" target="_BLANK">'.$link->mannschaft.'</a></td>';
+	echo '<td><a href="'.
+			'http://www.hvw-online.org/misc/sboPublicReports.php?sGID='.$link->berichtLink.
+			'" target="_BLANK">'.'pdf'.'</a></td>';		
+	echo '</tr>';
+}
+echo '</table>';
+		
+		
 if (!empty($this->confirmation)) {
 	//echo __FILE__.' ('.__LINE__.')'.'<pre>';print_r($this->confirmation); echo'</pre>';
 	
@@ -91,7 +104,7 @@ if (!empty($this->confirmation)) {
 			
 			<input class="submit" type="submit" name="addGoals_button" id="addGoals_button" value="<?php 
 				echo JText::_('COM_HBMANAGER_GOALSINPUT_SUBMIT_ADDGOALS') ?>" />
-		
+		</fieldset>
 	
 	</div>
 </form>	

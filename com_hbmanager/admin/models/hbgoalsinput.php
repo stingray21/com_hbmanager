@@ -6,6 +6,8 @@ jimport('joomla.application.component.modeladmin');
 $test = JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 //echo __FILE__.'<pre>';print_r( $test); echo'</pre>';
 		
+// Register all files in the /libraries/mylib folder as classes with a name like:  MyLib<Filename>
+JLoader::discover('HBlib', JPATH_LIBRARIES . '/hblib');
 
 class HbmanagerModelHbgoalsinput extends JModelLegacy
 {	
@@ -14,9 +16,11 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 	private $season = null;
 	private $teamkey = null;
 	private $goalkeeper = array();
+	private $inputData = array();
 	
 	function __construct() 
 	{
+		
 		parent::__construct();
 	}
 	
@@ -38,37 +42,75 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 		$this->season = $info->saison;
 	}
 	
+	public function checkGame($gameId) {
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($gameId);echo'</pre>';
+		$db = $this->getDbo();
+		
+		$query = $db->getQuery(true);
+		//$query->select('*');
+		$query->select('COUNT(spielIdHvw)');
+		$query->from('hb_spiel_spieler');
+		$query->where($db->qn('spielIdHvw').' = '.$db->q($gameId));
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$info = $db->loadResult();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($info);echo'</pre>';
+		return (boolean) $info;
+	}
 	
-	function addGoals($input)
-	{
-		//echo __FUNCTION__.'<pre>';print_r($input); echo'</pre>';
-		//$input['datum'] 
+	function updateGoals ($input, $update = true){
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($input);echo'</pre>';
+		
 		self::setGameInfo($input['gameId']);
 		self::setGoalkeeper($this->teamkey);
 		//echo __FUNCTION__.'<pre>';print_r($this->goalkeeper); echo'</pre>';
-		//parse the rows
-		$goalsCsv = self::removeHeader(trim($input['goalsCsv']));
-		if (!empty($goalsCsv)) {
-			$values = self::getValues($goalsCsv);
 		
+		self::setInputData($input);
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->inputData);echo'</pre>';
+		
+		if ($update) {
+			self::addGoals($input);
+		}
+		
+	}
+
+	function addGoals()
+	{
+		if (!empty($this->inputData)) {
+			//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->inputData);echo'</pre>';
 			$table = JTable::getInstance('Goals','HbmanagerTable');
 //			$tablekey = $table->getKeyName(true);
 //			echo __FUNCTION__.__LINE__.'<pre>';print_r($tablekey); echo'</pre>';
-			foreach ($values as $value) {
+
+			foreach ($this->inputData as $value) {
 				$table->bind($value);
 				$table->store();
 			}
 		}
-		$this->importedGameId = $input['gameId'];
+		self::addMissingPlayers();
 	}
 
+	private function setInputData($input) {
+		//parse the rows
+		$goalsCsv = self::removeHeader(trim($input['goalsCsv']));
+		if (!empty($goalsCsv)) {
+			$rows = str_getcsv($goalsCsv, "\n"); 
+			//parse the items in rows
+			foreach($rows as &$row) {
+				$row = str_getcsv($row, ",", '"',"\\" );
+			}
+		}
+		$rows = self::getValues($rows);
+		$this->inputData = $rows;
+	}
 	
-	private function getValues($goalsCsv) {
-		$rows = str_getcsv($goalsCsv, "\n"); 
+	public function getInputData() {
+		return $this->inputData;
+	}
+	
+	private function getValues($rows) {
 		//parse the items in rows
 		foreach($rows as &$row) {
-			$row = str_getcsv($row, ",", '"',"\\" );
-			
 			$value = self::formatValues($row);
 			
 			if (!empty($value['alias'])) {
@@ -155,6 +197,7 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 		//echo __FUNCTION__.'<pre>';print_r($row); echo'</pre>';
 		$value = array();
 		$value['spielIdHvw'] = $this->gameId;
+		$value['name'] = $row[1];
 		$alias = self::getAlias($row[1]);
 		$value['alias'] = $alias;
 		//$birthday = $row[2];
@@ -192,5 +235,69 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 		$info = $db->loadAssocList();
 		//echo __FUNCTION__.'<pre>';print_r($info); echo'</pre>';
 		return $info;
+	}
+	
+	public function getLinks() {
+		$games = new HblibGame('70001');
+		$links = $games->getGameInfo();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($links);echo'</pre>';
+		return $links;
+	}
+	
+	private function addMissingPlayers() {	
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('DISTINCT alias');
+		$query->from('hb_spiel_spieler');
+		$query->leftJoin($db->qn('#__contact_details').' USING ('.
+				$db->qn('alias').')');
+		$query->where($db->qn('spielIdHvw').' = '.$db->q($this->gameId));
+		$query->where($db->qn('saison').' = '.$db->q($this->season));
+		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
+		$query->where($db->qn('name').' IS NULL');
+		$query->order('('.$db->qn('trikotNr').'*1 = 0) ,'.$db->qn('trikotNr').'*1, '.$db->qn('trikotNr') );
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$missing = $db->loadColumn();
+		//echo __FUNCTION__.'<pre>';print_r($missing); echo'</pre>';
+		if (count($missing) > 0)  {
+			self::addPlayersToDB($missing);
+		}
+	}
+	
+	function addPlayersToDB($missing)
+	{
+		$values = self::getMissingPlayerValues($missing);
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($values);echo'</pre>';
+		$table = JTable::getInstance('Contacts','HbmanagerTable');
+//			$tablekey = $table->getKeyName(true);
+//			echo __FUNCTION__.__LINE__.'<pre>';print_r($tablekey); echo'</pre>';
+			foreach ($values as $value) {
+				$table->bind($value);
+				$table->store();
+			}
+	}
+	
+	private function getMissingPlayerValues($missing) {
+		$names = self::getMissingPlayerNames();
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($names);echo'</pre>';
+		$rows = $this->inputData;
+		foreach ($missing as $key => $player) {
+			$values[$key]['alias'] = $player;
+			$values[$key]['name'] = $names[$player];
+		}
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($values);echo'</pre>';
+		return $values;
+	}
+	
+	private function getMissingPlayerNames() {
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->inputData);echo'</pre>';
+		foreach ($this->inputData as $row) {
+			if (!empty($row['alias'])) {
+				$players[$row['alias']] = $row['name'];
+			}
+		}
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($players);echo'</pre>';
+		return $players;
 	}
 }

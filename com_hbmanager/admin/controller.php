@@ -356,12 +356,28 @@ class hbmanagerController extends JControllerAdmin
 	{
 		$model = $this->getModel('hbgoalsinput');
 		$post = JRequest::get('post');
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
-		if (isset($post['hbgoals'])) {
-			$model->addGoals($post['hbgoals']);
-		}
+		
 		$view = $this->getView('hbgoalsinput','html');
 		$view->setModel($model, true);
+		
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+		if (isset($post['hbgoals'])) {
+			$input = $post['hbgoals'];
+			if (!empty($input['gameId'])) {
+				
+				$update = (isset($input['update'])) ? 1 : 0;
+				
+				if ($model->checkGame($input['gameId']) && !$update) {
+					$view->setLayout('updatedata');
+					$update = 0;
+				}
+				
+				if (!empty($input['goalsCsv'])) {
+					$model->updateGoals($input, $update);
+				}
+			}
+		}
+		
 		$view->display();
 		//self::display();
 		

@@ -166,10 +166,17 @@ class hbmanagerModelHbdata extends JModelLegacy
 
     protected function getScheduleData($source)
     {
+		// insert dividers 
 		$searchMarker = array('</td>', '</tr>',"\n" ,"\t");
 		$replaceMarker = array('||', '&&', '', '');
 		$source = str_replace($searchMarker, $replaceMarker ,$source);
 		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($source); echo '</pre>';
+		
+		// remove link tag for game report 
+		// <a href="/misc/sboPublicReports.php?sGID=54233" target="_blank">PI</a>
+		$source = preg_replace('#<a href="(/misc/sboPublicReports\.php\?sGID=\d{4,7})" target="_blank">PI</a>\s?#', '$1', $source);
+		
+		
 		$source = strip_tags($source);
 
 		// split date field
@@ -185,6 +192,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 
     protected function explode2D ($source)
     {
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($source);echo'</pre>';
 		$data = explode('&&',$source);
 		foreach ($data as $key => $value) 
 		{
@@ -195,7 +203,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 
     protected function formatScheduleData($data)
     {
-		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($data); echo '</pre>';
+		//echo '=> '.__FILE__.'('.__LINE__.')<br><pre>'; print_r($data); echo '</pre>';
 		foreach ($data as $key => $value) 
 		{
 			//if ($value[1] ==  73568) {echo '=> '.__FUNCTION__.'<br><pre>'; print_r($value); echo '</pre>';}
@@ -219,16 +227,28 @@ class hbmanagerModelHbdata extends JModelLegacy
 			unset($value[8]);
 			unset($value[11]);
 			$judging = self::getJudging($value[10],$value[7],$value[9]);
-			$value[] = $judging['home']; 
-			$value[] = $judging['away'];
+			$value[13] = $judging['home']; 
+			$value[14] = $judging['away'];
+			
+			// add game report link
+			if (preg_match('#(/misc/sboPublicReports\.php\?sGID=(\d{4,7}))#', $value[10], $matches) ) {
+				//print_r($matches);
+				$value[10] = '';
+				//$value[15] = $matches[0]; // complete link
+				$value[15] = $matches[2]; // just ID
+			} else {
+				$value[15] = null;
+			}
+			
 			$value = array_values($value);
+			//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
 			$data[$key] = $value;
 		}
 		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($data); echo '</pre>';
 		//exit();
 		return $data;
     }
-
+	
 	protected function getJudging($comment, $scoreHome, $scoreAway)
     {
 		switch (trim($comment))
@@ -291,7 +311,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$columns = array('saison',  'spielIdHvw', 'kuerzel', 
 				'ligaKuerzel', 'hallenNr', 'datumZeit', 
 				'heim', 'gast', 'toreHeim', 'toreGast', 'bemerkung',
-				'wertungHeim', 'wertungGast', 'eigenerVerein');
+				'wertungHeim', 'wertungGast', 'eigenerVerein', 'berichtLink');
 
 		$saison = self::getSeason();
 
@@ -369,8 +389,12 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$ownTeam = self::checkIfOwnTeamIsPlaying($data[4], $data[5]);
 		if ($ownTeam) $value['eigenerVerein'] = $ownTeam;
 				else  $value['eigenerVerein'] = "NULL";		
+				
+		// BerichtLink
+		if (trim($data[10]) != '') $value['berichtLink'] = $db->q($data[11]);
+				else  $value['berichtLink'] = "NULL";
 
-		//echo '=> model<br><pre>'; print_r($value);echo '</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
 		return $value;
     }
 

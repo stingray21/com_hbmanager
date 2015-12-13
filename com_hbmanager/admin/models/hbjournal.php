@@ -165,7 +165,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 					}
 					$data['games'][$i] .= "&nbsp;&nbsp;".$game->hallenName.' '.$game->stadt."\n";
 					$data['games'][$i] .= "&nbsp;&nbsp;";
-					$data['games'][$i] .= JHtml::_('date', $game->zeit, 'H:i', $this->tz)." Uhr ".
+					$data['games'][$i] .= JHtml::_('date', $game->datumZeit, 'H:i', $this->tz)." Uhr ".
 							"&nbsp;&nbsp;"."\t".$game->heim." - ".$game->gast."\n";
 				}
 				
@@ -244,7 +244,7 @@ class HBmanagerModelHbjournal extends HBmanagerModelHbprevnext
 			' USING ('.$db->qn('kuerzel').')');
 		$query->leftJoin($db->qn('hb_spielvorschau').
 			' USING ('.$db->qn('spielIdHvw').')');
-		$query->where('( DATE('.$db->qn('datumZeit').') BETWEEN '.
+		$query->where('( datumZeit BETWEEN '.
 				$db->q($this->dates->nextStart).' AND '.
 				$db->q($this->dates->nextEnd).')'
 			.' AND ('.$db->qn('vorschau').' IS NOT NULL)');
