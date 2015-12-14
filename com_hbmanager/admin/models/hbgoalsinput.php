@@ -274,7 +274,7 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 //			echo __FUNCTION__.__LINE__.'<pre>';print_r($tablekey); echo'</pre>';
 			foreach ($values as $key => $value) {
 				//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
-				JTable::reset();
+				//$table->reset();
 				$table->bind($value);
 				$table->store();
 			}
@@ -285,7 +285,7 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($names);echo'</pre>';
 		$rows = $this->inputData;
 		foreach ($missing as $key => $player) {
-			$values[$key]['id'] = ''; // needed, otherwise only 1 entry gets stored in loop
+			$values[$key]['id'] = ''; // needed, otherwise only 1 entry gets stored in 
 			$values[$key]['alias'] = $player;
 			$values[$key]['name'] = $names[$player];
 		}
