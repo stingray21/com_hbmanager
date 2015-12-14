@@ -365,9 +365,9 @@ class hbmanagerController extends JControllerAdmin
 			$input = $post['hbgoals'];
 			if (!empty($input['gameId'])) {
 				
-				$update = (isset($input['update'])) ? 1 : 0;
+				$update = 1;
 				
-				if ($model->checkGame($input['gameId']) && !$update) {
+				if ($model->checkGame($input['gameId']) && !isset($input['update'])) {
 					$view->setLayout('updatedata');
 					$update = 0;
 				}
