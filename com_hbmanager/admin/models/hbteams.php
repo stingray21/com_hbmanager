@@ -170,7 +170,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
 		// TODO check out regex possessive quantifier (-> performance)
 		$pattern = '|&&+'.
-				'(?P<url>\?A=g_class&id=\d{1,2}&orgID=\d{1,2}&score=\d{4,6})">'.
+				'(?P<url>\?A=g_class&id=\d{1,2}&orgID=\d{1,2}&score=\d{4,6})&nm=15">'.
 				'(?P<league>[\w\d\-\/\+]{3,10})<\/a>|';
 		preg_match_all($pattern, $source, $leagueSource, PREG_SET_ORDER);
 		//echo __FILE__.'<pre>';print_r($leagueSource); echo'</pre>';
