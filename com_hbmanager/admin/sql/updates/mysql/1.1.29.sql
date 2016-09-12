@@ -24,3 +24,8 @@ CREATE TABLE IF NOT EXISTS `hb_spiel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `hb_spiel` ADD PRIMARY KEY( `saison`, `spielIdHvw`);
+
+
+
+ALTER TABLE `hb_spiel_spieler`
+  DROP PRIMARY KEY,   ADD PRIMARY KEY(`spielIdHvw`, `alias`, `saison`, `trikotNr`);

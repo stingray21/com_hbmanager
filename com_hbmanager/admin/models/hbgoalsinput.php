@@ -69,11 +69,25 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($this->inputData);echo'</pre>';
 		
 		if ($update) {
+			self::cleanDB();
 			self::addGoals($input);
 		}
 		
 	}
-
+	
+	public function cleanDB() {	
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->delete('hb_spiel_spieler');
+		$query->where($db->qn('spielIdHvw').' = '.$db->q($this->gameId));
+		$query->where($db->qn('saison').' = '.$db->q($this->season));
+		$query->where($db->qn('kuerzel').' = '.$db->q($this->teamkey));
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$result = $db->execute();
+		//echo __FUNCTION__.'<pre>';print_r($result); echo'</pre>';
+	}
+	
 	function addGoals()
 	{
 		if (!empty($this->inputData)) {
