@@ -197,8 +197,9 @@ class hbmanagerModelHbteams extends JModelLegacy
 									'age' => $age), $data);
 				//return $leagues; // for single test, only first league
 			}
+			//break; // for testing: only 1
 		}
-		//echo __FUNCTION__.'<pre>';print_r($leagues); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagues); echo'</pre>';
 		return $leagues;
 	}
 	
@@ -250,15 +251,14 @@ class hbmanagerModelHbteams extends JModelLegacy
 		$pattern = "/(?P<name>.*) - Hallenrunde ". 
 					"(?P<season>20\d{2}\/20\d{2})<\/h1>/";
 		preg_match($pattern, $source['title'], $match);
-		//echo __FUNCTION__.'<pre>';print_r($match); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($match); echo'</pre>';
 		$data['name'] = $match['name'];
 		$data['season'] = $match['season'];
 		
 		// Standings team names
-		$pattern = "/(<td class=\"gac\">)+(<b>\d{1,2}<\/b>)?".
-					"<\/td>\s+".
+		$pattern = "/(<td class=\"gac\">)+(<b>\d{1,2}<\/b>|&#160;)?"."<\/td>\s+".
 					"<td>.+<\/td>\s+".
-					"<td>(.+)<\/td>/";
+					"<td><a.+>(.+)<\/a><\/td>/";
 		preg_match_all($pattern, $source['standings'], $standings, 
 				PREG_SET_ORDER);
 		unset($source['standings']);
@@ -266,7 +266,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 			$standings[$key] = $value[3];
 		}
 		sort($standings);
-		//echo __FUNCTION__.'<pre>';print_r($standings); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($standings); echo'</pre>';
 		$data['standings'] = $standings;
 		
 		// Schedule team names
@@ -281,8 +281,8 @@ class hbmanagerModelHbteams extends JModelLegacy
 		sort($schedule);
 		//echo __FUNCTION__.'<pre>';print_r($schedule); echo'</pre>';
 		$data['schedule'] = $schedule;
-		
-		//echo __FUNCTION__.'<pre>';print_r($data); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
+		//die;
 		return $data;
 	}
 	
@@ -314,6 +314,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 	
 	protected function updateLeaguesInDb($leagues)
     {
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagues); echo'</pre>';
 		$table = 'hb_staffel';
 		$columns = array('staffel', 'staffelName', 'url', 
 						'geschlecht', 'jugend', 'saison', 
