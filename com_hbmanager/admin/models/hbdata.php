@@ -146,20 +146,33 @@ class hbmanagerModelHbdata extends JModelLegacy
 		// returns sourcecode of a website with the address $address as string
 		$sourcecode = file_get_contents($address);
 		
+        $sourcecode = str_replace('&#160;', ' ' ,$sourcecode);
+		
 		// shortens strings to relevant part for headline
 		preg_match('/<h1>.*\d{4}\/\d{4}<\/h1>/', $sourcecode, $matches);
 		//print_r($matches);
 		$source['headline'] = $matches[0];
-
+//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($sourcecode);echo'</pre>';
+//		die;
+//		
 		// shortens strings to relevant part for standings
 		$start = strpos($sourcecode,">Punkte</th></tr>")+17;
 		$end = strpos($sourcecode,"</tr></TABLE></div>",$start);
-		$source['standings'] = substr($sourcecode,$start,($end-$start));
-
+		$source['standings'] = '';
+		if ($start+$end > 17) {
+			$source['standings'] = substr($sourcecode,$start,($end-$start));
+		}
+//		echo __FILE__.' ('.__LINE__.')<pre>'.$start.' -> '.$end.'</pre>';
+//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['standings']);echo'</pre>';
+//		die;
+		
 		// shortens strings to relevant part for schedule
 		$start = strpos($sourcecode,'<th align="center">Bem.</th>')+34;
 		$end = strpos($sourcecode,'</table>',$start)-8;
-		$source['schedule'] = substr($sourcecode,$start,($end-$start));
+		$source['schedule'] = '';
+		if ($start+$end > 26) {
+			$source['schedule'] = substr($sourcecode,$start,($end-$start));
+		}
 
 		return $source;
     }
@@ -184,8 +197,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 		//$replace = array('||');
 		//$source = str_replace($search, $replace ,$source);
 
-		//echo $source;
-
+		//echo '=> '.__FUNCTION__.' - '.__LINE__.'<br><pre>'; print_r($source); echo '</pre>';
+		//die;
 		$scheduleData = self::explode2D($source);
 		return self::formatScheduleData($scheduleData);
     }
@@ -302,7 +315,7 @@ class hbmanagerModelHbdata extends JModelLegacy
     protected function updateGamesInDB($teamkey, $source)
     {
 		$scheduleData = self::getScheduleData($source);
-		//echo '=> model<br><pre>'; print_r($scheduleData);echo '</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($scheduleData);echo'</pre>'; die;
 		self::deleteOldData ('hb_spiel', $teamkey);
 
 		$db = $this->getDbo();
@@ -328,7 +341,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$query .= self::getOnDublicate($columns);
-		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
 		$result = $db->execute();
 		
@@ -349,7 +362,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 
     protected function formatGamesValues($data, $teamkey)
     {
-		//echo '=> model<br><pre>'; print_r($data);echo '</pre>';
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($data);echo'</pre>';die;
 		$db = $this->getDbo();
 
 		$value['saison'] = $db->q(self::getSeason());
@@ -493,17 +506,20 @@ class hbmanagerModelHbdata extends JModelLegacy
     
     protected function getStandingsData($source)
     {
-        $searchMarker = array('</td>', '</tr>',"\n" ,"\t");
+//        echo __FILE__.' ('.__LINE__.')<pre>';print_r($source);echo'</pre>';
+//		die;
+		$searchMarker = array('</td>', '</tr>',"\n" ,"\t");
         $replaceMarker = array('||', '&&', '', '');
         $source = str_replace($searchMarker, $replaceMarker ,$source);
 
         $source = strip_tags($source);
-
+		
         $search = array('|| ||', '||||', '||:||', '||&&');
         $replace = array('||', '||', '||', '&&');
         $source = str_replace($search, $replace ,$source);
 
-        //echo $source;
+        //echo '=> '.__FUNCTION__.' - '.__LINE__.'<br><pre>'; print_r($source); echo '</pre>';
+		//die;
 
         return $standingsData = self::explode2D($source);
     }
@@ -535,6 +551,11 @@ class hbmanagerModelHbdata extends JModelLegacy
 	
 	protected function updateHvwStandingsInDb($teamkey, $source)
     {
+		if (empty($source)) {
+			return true; 
+			// TODO: more info - notice on screen
+		}
+		
 		$table = 'hb_tabelle';
 		$columns = array('saison','kuerzel','platz','mannschaft','spiele',
 				's','u','n','tore','gegenTore',
