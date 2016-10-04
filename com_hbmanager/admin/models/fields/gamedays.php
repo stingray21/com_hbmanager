@@ -55,7 +55,8 @@ class JFormFieldGamedays extends JFormFieldList
 
         	foreach ($items as $item)
             {
-                $date = JHTML::_('date', $item->datum , 'D, d.m.Y',
+                //$date = JHTML::_('date', $item->datum , 'D, d.m.Y
+				$date = JHTML::_('date', $item->datum , 'Y-m-d',
 						'Europe/Berlin');
 //				$date = JFactory::getDate($item->datum, 'Europe/Berlin' )
 //						->format('D, d.m.Y', true);
