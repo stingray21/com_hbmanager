@@ -173,7 +173,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 		if ($start+$end > 26) {
 			$source['schedule'] = substr($sourcecode,$start,($end-$start));
 		}
-
+//		echo __FILE__.' ('.__LINE__.')<pre>'.$start.' -> '.$end.'</pre>';
+		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['schedule']);echo'</pre>';
+		die;
 		return $source;
     }
 

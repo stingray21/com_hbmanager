@@ -56,7 +56,7 @@ class hbmanagerController extends JControllerAdmin
 		$updateHvw = $jinput->get('getHvwData', false);
 		if ($updateHvw)
 		{
-			set_time_limit(150);
+			set_time_limit(180);
 			$model->updateLeagues();
 		}
 		

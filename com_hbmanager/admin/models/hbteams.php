@@ -101,11 +101,11 @@ class hbmanagerModelHbteams extends JModelLegacy
 		
 		//self::getAddress();
 		$leagueSource = self::getSource(self::getAddress());
-		//echo __FUNCTION__.'<pre>';print_r($leagueSource); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagueSource); echo'</pre>';
 		$leagues = self::formatSource($leagueSource);
 		//self::storeVar($leagues);
 		//$leagues = self::retrieveVar();
-		//echo __FUNCTION__.'<pre>';print_r($leagues); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagues); echo'</pre>';
 		
 		$time_post = microtime(true);
 		$exec_time = $time_post - $time_pre;
@@ -170,7 +170,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
 		// TODO check out regex possessive quantifier (-> performance)
 		$pattern = '|&&+'.
-				'(?P<url>\?A=g_class&id=\d{1,2}&orgID=\d{1,2}&score=\d{4,6})&nm=15">'.
+				'(?P<url>\?(A=g_class&)?id=\d{1,2}&org(Grp)?ID=\d{1,2}&score=\d{4,6})&nm=15">'.
 				'(?P<league>[\w\d\-\/\+]{3,10})<\/a>|';
 		preg_match_all($pattern, $source, $leagueSource, PREG_SET_ORDER);
 		//echo __FILE__.'<pre>';print_r($leagueSource); echo'</pre>';
@@ -334,7 +334,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 	
 	protected function formatLeagueValues($data)
     {
-		//echo __FUNCTION__.'<pre>';print_r($data); echo'</pre>';
+		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
 		$db = $this->getDbo();
 		
 		$value['staffel'] = $db->q($data['league']);
@@ -366,7 +366,8 @@ class hbmanagerModelHbteams extends JModelLegacy
 			->insert($db->qn($table)) 
 			->columns($db->qn($columns))
 			->values($values);
-		//echo __FUNCTION__.'<pre>';print_r($query); echo'</pre>';
+		//echo __FUNCTION__.'<pre>'.$query.'</pre>';
+		//die;
 		$db->setQuery($query);
 		$result = $db->execute();
 		//echo __FUNCTION__.'<pre>';print_r($result); echo'</pre>';

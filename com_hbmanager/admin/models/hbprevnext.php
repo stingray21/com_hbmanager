@@ -106,7 +106,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 	{
 		$date = self::setPrevEndDate($offset);
 		if (empty($date)) {
-			$date = strftime("%Y-%m-%d",strtotime('next Sunday', 
+			$date = strftime("%Y-%m-%d",strtotime('next Monday', 
 					strtotime('last Friday', strtotime($this->dates->today))));
 		}
 		$this->dates->prevEnd = $date;
@@ -127,7 +127,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->from('hb_spiel');
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') <= '.
-					$db->q(strftime("%Y-%m-%d", strtotime('next Sunday', 
+					$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
 						strtotime('last Friday', strtotime($offset))
 					))) 
 				);
@@ -165,7 +165,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 	{
 		$date = self::setNextStartDate($offset);
 		if (empty($date)) {
-			$date = strftime("%Y-%m-%d",strtotime('next Monday', 
+			$date = strftime("%Y-%m-%d",strtotime('next Tuesday', 
 					strtotime('last Friday', strtotime($this->dates->today))));
 		}
 		$this->dates->nextStart = $date;
@@ -186,7 +186,7 @@ class HBmanagerModelHbprevnext extends JModelLegacy
 		$query->from('hb_spiel');
 		$query->where($db->qn('eigenerVerein').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('datumZeit').') >= '.
-					$db->q(strftime("%Y-%m-%d", strtotime('next Monday', 
+					$db->q(strftime("%Y-%m-%d", strtotime('next Tuesday', 
 						strtotime('last Friday', strtotime($offset))
 					))) 
 				);
