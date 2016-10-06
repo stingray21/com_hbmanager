@@ -395,7 +395,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		$table = 'hb_mannschaft';
 		$columns = array('kuerzel', 'reihenfolge', 'mannschaft', 'name', 
 					'nameKurz', 'ligaKuerzel', 'liga', 'geschlecht', 
-					'jugend', 'hvwLink');
+					'jugend', 'hvwLink', 'email');
 		
 		$values = null;
 		foreach($teams as $row) {
@@ -448,7 +448,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		else {
 			$value['hvwLink'] = 'NULL';
 		}
-
+		$value['email'] = $db->q($data['email']);
 		//echo __FUNCTION__.'<pre>';print_r($value); echo'</pre>';
 		return $value;
     }
