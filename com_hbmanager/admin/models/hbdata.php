@@ -174,8 +174,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$source['schedule'] = substr($sourcecode,$start,($end-$start));
 		}
 //		echo __FILE__.' ('.__LINE__.')<pre>'.$start.' -> '.$end.'</pre>';
-		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['schedule']);echo'</pre>';
-		die;
+//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['schedule']);echo'</pre>';
+//		die;
 		return $source;
     }
 
@@ -189,7 +189,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 		
 		// remove link tag for game report 
 		// <a href="/misc/sboPublicReports.php?sGID=54233" target="_blank">PI</a>
-		$source = preg_replace('#<a href="(/misc/sboPublicReports\.php\?sGID=\d{4,7})" target="_blank">PI</a>\s?#', '$1', $source);
+		// new 2016/2017 <a href="http://spo.handball4all.de/misc/sboPublicReports.php?sGID=150354" target="_blank">PI</a>
+		$source = preg_replace('#<a href="(http://spo\.handball4all\.de/misc/sboPublicReports\.php\?sGID=(\d{4,7}))" target="_blank">PI</a>\s?#', '$2', $source);
 		
 		
 		$source = strip_tags($source);
@@ -246,11 +247,11 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$value[14] = $judging['away'];
 			
 			// add game report link
-			if (preg_match('#(/misc/sboPublicReports\.php\?sGID=(\d{4,7}))#', $value[10], $matches) ) {
-				//print_r($matches);
+			//echo __FILE__.' ('.__LINE__.')<pre>->';print_r($value[10]);echo'<-</pre>';
+			if (preg_match('/\d{4,7}/', trim($value[10]))) {
+				//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value[10]);echo'</pre>';
+				$value[15] = trim($value[10]);
 				$value[10] = '';
-				//$value[15] = $matches[0]; // complete link
-				$value[15] = $matches[2]; // just ID
 			} else {
 				$value[15] = null;
 			}

@@ -14,7 +14,9 @@ foreach ($this->links as $link) {
 	echo '<tr><td>'.JHtml::_('date', $link->datumZeit, 'D, d.m.y', $tz).'<td>';
 	echo '<td><a href="'.$link->hvwLink.'" target="_BLANK">'.$link->mannschaft.'</a></td>';
 	echo '<td><a href="'.
-			'http://www.hvw-online.org/misc/sboPublicReports.php?sGID='.$link->berichtLink.
+			//'http://www.hvw-online.org/misc/sboPublicReports.php?sGID='.$link->berichtLink.
+			// Saison 2016/2017
+			'http://spo.handball4all.de/misc/sboPublicReports.php?sGID='.$link->berichtLink.
 			'" target="_BLANK">'.'pdf'.'</a></td>';		
 	echo '</tr>';
 }
