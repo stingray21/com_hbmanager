@@ -288,7 +288,7 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$rows = '';
 		foreach ($inputRows as $value)
 		{
-			$date = JHtml::_('date', $value->datumZeit, 'H:i', $this->timezoneMode);
+			$date = JHtml::_('date', $value->datumZeit, 'Y-m-d', $this->timezoneMode);
 			$rows[$date][$value->hallenNr][] = $value;
 		}
 		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";

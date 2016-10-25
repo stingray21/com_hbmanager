@@ -46,11 +46,24 @@ class HBmanagerController extends JControllerLegacy
 		//hbhelper::addSubmenu('hboverview');
 	}
 	
-	function showHomeGames()
+	function showHomeGames4Booklet()
 	{
 		$model = $this->getModel('hboverview');
 	
 		$view = $this->getView('hboverview','html');
+		$view->setModel($model);	
+		$view->setLayout('homegames');
+		$view->display();
+		
+		// Set the submenu
+		//hbhelper::addSubmenu('hboverview');
+	}
+	
+	function showHomeGames()
+	{
+		$model = $this->getModel('hboverview');
+	
+		$view = $this->getView('hbhomegames','html');
 		$view->setModel($model);	
 		$view->setLayout('homegames');
 		$view->display();
