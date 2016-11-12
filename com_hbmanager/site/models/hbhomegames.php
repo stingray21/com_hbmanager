@@ -14,4 +14,19 @@ class hbmanagerModelHbhomegames extends HBmanagerModelHboverview
 		
 	}
 	
+	public function getNextGameday () {
+		$homeGames = parent::getHomeGames();
+		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($homeGames);echo '</pre';
+		$today = date('Y-m-d');
+		$beforeToday = true;
+		foreach ($homeGames as $key => $value) {
+			$nextGameday[$key] = false;
+			if ($beforeToday && ($today<$key)) {
+				$nextGameday[$key] = true;
+				$beforeToday = false;
+			}
+		}
+		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($showTable);echo '</pre';
+		return $nextGameday;
+	}
 }

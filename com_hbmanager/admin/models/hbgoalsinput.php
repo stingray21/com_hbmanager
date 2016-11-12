@@ -138,9 +138,7 @@ class HbmanagerModelHbgoalsinput extends JModelLegacy
 	
 	private function removeHeader($goalsCsv) {
 		//echo __FUNCTION__.' with Header <pre>';print_r($goalsCsv); echo'</pre>';
-		//$headerString = "Nr.,Name,Jahrgang,M,R,Tore\r\n(ges),7m/\r\nTore,Verw.,Hinausstellungen,,,Disq.,Ber.,Team-\r\nZstr.\r\n,,,,,,,,1.,2.,3.,,,\r\n"; // old tabula
-		// TODO make more flexible (regex?)
-		$headerString = "Nr.,Name,Jahrgang,M,R,Tore\r\n(ges),7m/\r\nTore,Verw.,Hinausstellungen,Disq.,Ber.,Team-\r\nZstr.,,\r\n,,,,,,,,1.,2.,3.,,,\r\n";
+		$headerString = "Nr.,Name,Jahrgang,M,R,Tore\r\n(ges),7m/\r\nTore,Verw.,Hinausstellungen,,,Disq.,Ber.,Team-\r\nZstr.\r\n,,,,,,,,1.,2.,3.,,,\r\n";
 		$goalsCsv = str_replace($headerString, '', $goalsCsv);
 		//echo __FUNCTION__.' without Header <pre>';print_r($goalsCsv); echo'</pre>';
 		return $goalsCsv;

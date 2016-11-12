@@ -15,10 +15,10 @@ class HbManagerViewHbHomegames extends JViewLegacy
 		
 		$document = JFactory::getDocument();
 //		// local jquery
-//		//JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
-//		JHtml::_('jquery.framework');
-//		$document->addScript(JURI::Root().'/media/com_hbmanager/js/hboverview.js');
-//		
+		// JHTML::script('jquery-2.0.3.js', 'media/com_hbmanager/js/');
+		JHtml::_('jquery.framework');
+		$document->addScript(JURI::Root().'/media/com_hbmanager/js/hbhomegames.js');
+		
 		$model = $this->getModel('HBHomegames');
 		$model->setDates();
 //		
@@ -31,17 +31,19 @@ class HbManagerViewHbHomegames extends JViewLegacy
 		$this->assignRef('teams', $teams);
 		$homegames = $model->getHomeGames();
 		$this->assignRef('homegames', $homegames);
+		$nextGameday = $model->getNextGameday();
+		$this->assignRef('nextGameday', $nextGameday);
 		//echo '=> view->$teams <br><pre>'; print_r($teams); echo '</pre>';
-//		
-//		// TODO time zone -> backend option
-//		$timezone = false; //true: user-time, false:server-time
-//		$this->assignRef('timezone', $timezone);
-//		
-//		// TODO show goal difference -> backend option
-//		$showDiff = true;
-//		$this->assignRef('showDiff', $showDiff);
-//		
-//		JHtml::stylesheet('com_hbmanager/site.stylesheet.css', array(), true);
+		
+		// TODO time zone -> backend option
+		$timezone = false; //true: user-time, false:server-time
+		$this->assignRef('timezone', $timezone);
+		
+		// TODO show goal difference -> backend option
+		$showDiff = true;
+		$this->assignRef('showDiff', $showDiff);
+		
+		JHtml::stylesheet('com_hbmanager/site.stylesheet.css', array(), true);
 //		JHtml::stylesheet('com_hbmanager/hboverview.stylesheet.css', array(), true);
 		
 		// Display the view

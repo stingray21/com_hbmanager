@@ -1,0 +1,43 @@
+// _hbhomegames.scss
+
+div#hbhomegames {
+
+	div.gamedaytag {
+		
+		margin-left: 1em;;
+
+		h4 {
+			margin-left: 1.5em;
+		}
+
+		table.HBhomeSchedule {
+			display: none;
+			margin-left: 2em;
+		}
+		
+		.daybullet {
+			float: left;
+			margin-right: 10px;
+			margin-top: 0.25em;
+		}
+
+		.arrow-down {
+			width: 0; 
+			height: 0; 
+			margin-top: 0.5em;
+			border-left: 7px solid transparent;
+			border-right: 7px solid transparent;
+			border-top: 7px solid #444;
+		}
+
+		.arrow-right {
+			width: 0; 
+			height: 0; 
+			margin-top: 0.25em;
+			margin-left: 4px;
+			border-top: 7px solid transparent;
+			border-bottom: 7px solid transparent;
+			border-left: 7px solid #444;
+		}
+	}
+}
