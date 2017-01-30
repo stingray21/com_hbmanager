@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: hbmanager.xml 51 2013-03-19 16:34:21Z stingray21 $ -->
+<extension type="component" version="2.5.0" method="upgrade">
+
+	<name>COM_HBMANAGER</name>
+	<!-- The following elements are optional and free of formatting 
+	conttraints -->
+	<creationDate>2015-09-23</creationDate>
+	<author>Jochen Stehle</author>
+	<authorEmail>joshsteele21@gmail.com</authorEmail>
+	<authorUrl></authorUrl>
+	<copyright>Copyright Info</copyright>
+	<license>License Info</license>
+	<!--  The version string is recorded in the components table -->
+	<version>0.1.11</version>
+	<!-- The description is optional and defaults to the name -->
+	<description>COM_HBMANAGER_DESCRIPTION</description>
+
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	
+	<update> <!-- Runs on update; New in 2.5 -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>hbmanager.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+	</files>
+	
+	<languages folder="site/language">
+		<language tag="de-DE">de-DE.com_hbmanager.ini</language>
+	</languages>
+	
+	<media destination="com_hbmanager" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+	
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu link="option=com_hbmanager&amp;task=showTeams" img="../media/com_hbmanager/images/hblogo-16x16.png">COM_HBMANAGER_MENU</menu>
+		<submenu>
+			<menu link="option=com_hbmanager&amp;task=showTeams">COM_HBMANAGER_TEAMS_SUBMENU</menu>
+			<menu link="option=com_hbmanager&amp;task=showData">COM_HBMANAGER_DATA_SUBMENU</menu>
+			<menu link="option=com_hbmanager&amp;task=showPrevGames">COM_HBMANAGER_PREVGAMES_SUBMENU</menu>
+			<menu link="option=com_hbmanager&amp;task=showNextGames">COM_HBMANAGER_NEXTGAMES_SUBMENU</menu>
+			<menu link="option=com_hbmanager&amp;task=showJournal">COM_HBMANAGER_JOURNAL_SUBMENU</menu>
+			<menu link="option=com_hbmanager&amp;task=showGoalsInput">COM_HBMANAGER_GOALSINPUT_SUBMENU</menu>
+		</submenu>
+		
+		<files folder="admin">
+			<!-- Admin Main File Copy Section -->
+			<filename>index.html</filename>
+			<filename>controller.php</filename>
+			<filename>config.xml</filename>
+			<filename>hbmanager.php</filename>
+			<!-- views files section -->
+			<folder>views</folder>
+			<!-- tables files section -->
+			<folder>tables</folder>
+			<!-- models files section -->
+			<folder>models</folder>
+			<!-- helper section -->
+			<folder>helpers</folder>
+			<!-- SQL files section -->
+			<folder>sql</folder>
+		</files>
+		
+		<languages folder="admin/language">
+			<language tag="de-DE">de-DE.com_hbmanager.ini</language>
+			<language tag="de-DE">de-DE.com_hbmanager.sys.ini</language>
+		</languages>
+	</administration>
+
+</extension>
+

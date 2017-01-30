@@ -16,12 +16,12 @@ if (!empty($this->homegames))
 	{
 		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($day);echo '</pre';
 		foreach ($day as $gym): ?>
-			<div id="tag_<?php echo $dayKey."_".$gym[0]->hallenNr ?>" class="gamedaytag">
-				<div class="daybullet <?php echo ($this->nextGameday[$dayKey]) ? 'arrow-down' : 'arrow-right';?>"></div>
+			<div id="tag_<?php echo $dayKey."_".$gym[0]->hallenNr ?>" class="gamedaytag<?php echo ($this->nextGameday[$dayKey]) ? ' showDay' : '' ?>">
+				<div class="daybullet"></div>
 				<h4 class="btnShowGameDay"><?php echo JHtml::_('date', $dayKey, 'D, d.m.Y', $tz) ?>
 					<span> <?php echo $gym[0]->hallenName.', '.$gym[0]->stadt.' ('.$gym[0]->hallenNr.')'; ?> </span>
 				</h4>
-				<table id="table_<?php echo $dayKey."_".$gym[0]->hallenNr ?>" class="HBhomeSchedule" data-state="<?php echo ($this->nextGameday[$dayKey]) ? 'hidden' : 'visible';?>" <?php echo ($this->nextGameday[$dayKey]) ? ' style="display: table;"' : ''?>>
+				<table id="table_<?php echo $dayKey."_".$gym[0]->hallenNr ?>" class="HBhomeSchedule">
 			<?php foreach ($gym as $row): 
 				// row in HBschedule table ?>
 				<tr class="<?php echo $row->background ?>">

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: hbhallenvz.xml 51 2013-02-10 18:14:21Z stingray21 $ -->
+<extension type="component" version="2.5.0" method="upgrade">
+
+	<name>HB Officials</name>
+	<!-- The following elements are optional and free of formatting conttraints -->
+	<creationDate>May 7 2014</creationDate>
+	<author>Jochen Stehle</author>
+	<authorEmail>stingray21@gmx.de</authorEmail>
+	<authorUrl></authorUrl>
+	<copyright>Copyright Info</copyright>
+	<license>License Info</license>
+	<!--  The version string is recorded in the components table -->
+	<version>0.9</version>
+	<!-- The description is optional and defaults to the name -->
+	<description>Komponente für Funktionaere</description>
+
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	
+	<update> <!-- Runs on update; New in 2.5 -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<!-- Site Main File Copy Section -->
+	<!-- Note the folder attribute: This attribute describes the folder
+		to copy FROM in the package to install therefore files copied
+		in this section are copied from /site/ in the package -->
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>hbofficials.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+	</files>
+	
+	<languages folder="site">
+		<language tag="de-DE">language/de-DE.com_hbofficials.ini</language>
+	</languages>
+	
+	<media destination="com_hbofficials" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+	</media>
+
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu link="option=com_hbofficials" img="">COM_HBOFFICIALS_MENU</menu>
+		
+		<!-- Administration Main File Copy Section -->
+		<!-- Note the folder attribute: This attribute describes the folder
+			to copy FROM in the package to install therefore files copied
+			in this section are copied from /admin/ in the package -->
+		<files folder="admin">
+			<!-- Admin Main File Copy Section -->
+			<filename>index.html</filename>
+			<filename>hbofficials.php</filename>
+			<!-- SQL files section -->
+			<folder>sql</folder>
+			<!-- models files section -->
+			<folder>models</folder>
+			<!-- views files section -->
+			<folder>views</folder>
+		</files>
+		
+		<languages folder="admin">
+			<language tag="de-DE">language/de-DE.com_hbofficials.ini</language>
+			<language tag="de-DE">language/de-DE.com_hbofficials.sys.ini</language>
+		</languages>
+	</administration>
+
+</extension>
+

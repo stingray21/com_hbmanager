@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="hbreports">
+		<fieldset name="hbreports">
+
+			<field 
+				name="game" 
+				type="game" 
+				default="" 
+				class="" 
+				label="Spiel auswaehlen"
+			/> 
+		</fieldset>
+	</fields>
+</form>

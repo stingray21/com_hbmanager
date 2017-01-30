@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_HBTEAM_HBTEAM_VIEW_DEFAULT_TITLE">
+		<message>COM_HBTEAM_HBTEAM_VIEW_DEFAULT_DESC</message>
+	</layout>
+
+
+	<fields
+		name="request"
+		addfieldpath="/administrator/components/com_hbteam/models/fields"
+		>
+		<fieldset name="request">
+			<field
+				name="show_team"
+				type="list"
+				label="COM_HBTEAM_HBTEAM_SHOW_TEAM_LABEL"
+				description="COM_HBTEAM_HBTEAM_SHOW_TEAM_DESC">
+				<option	value="">JGLOBAL_USE_GLOBAL</option>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBTEAM_HBTEAM_FIELD_TEAM_SETTINGS_LABEL">
+			<field
+				name="teamkey"
+				type="hbteam"
+				size="1"
+				label="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_LABEL"
+				description="COM_HBTEAM_HBTEAM_FIELD_TEAMKEY_DESC"
+				/>
+				
+			<field 
+				name="email" 
+				type="list" 
+				label="COM_HBTEAM_MENUSETTINGS_EMAIL_DISPLAY_LABEL"
+				description="COM_HBTEAM_MENUSETTINGS_EMAIL_DISPLAY_DESC"
+				default="component"
+			>
+				<option value="component">COM_HBTEAM_EMAIL_DISPLAY_COMPONENT</option>
+				<option value="none">COM_HBTEAM_EMAIL_DISPLAY_NONE</option>
+				<option value="personal">COM_HBTEAM_EMAIL_DISPLAY_PERSONAL</option>
+				<option value="alias">COM_HBTEAM_EMAIL_DISPLAY_ALIAS</option>
+			</field>
+		</fieldset>
+		
+		
+	</fields>
+  
+</metadata>

@@ -1,22 +1,43 @@
+div#hbhomegames div.button {
+  padding: 10px;
+  display: inline-block;
+  background: #229;
+  color: white;
+  cursor: pointer; }
+div#hbhomegames div.hideGym {
+  background: #ccc;
+  color: 999; }
 div#hbhomegames div.gamedaytag {
   margin-left: 1em; }
   div#hbhomegames div.gamedaytag h4 {
-    margin-left: 1.5em; }
+    margin: 1em 0.5em 0.5em 1.5em;
+    cursor: pointer; }
   div#hbhomegames div.gamedaytag table.HBhomeSchedule {
-    display: none;
+    visibility: collapse;
+    opacity: 0;
+    transition: opacity 0.5s linear;
     margin-left: 2em; }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .teamname {
+      width: 13em; }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .team {
+      width: 9em; }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .indicator span {
+      display: inline-block;
+      padding: 0px;
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+      background-image: url("../images/balls_18px.png"); }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .indicator.win span {
+      background-position: 0px 18px; }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .indicator.tied span {
+      background-position: 0px 36px; }
+    div#hbhomegames div.gamedaytag table.HBhomeSchedule .indicator.loss span {
+      background-position: 0px 54px; }
   div#hbhomegames div.gamedaytag .daybullet {
     float: left;
     margin-right: 10px;
-    margin-top: 0.25em; }
-  div#hbhomegames div.gamedaytag .arrow-down {
-    width: 0;
-    height: 0;
-    margin-top: 0.5em;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid #444; }
-  div#hbhomegames div.gamedaytag .arrow-right {
+    margin-top: 0.25em;
     width: 0;
     height: 0;
     margin-top: 0.25em;
@@ -24,5 +45,18 @@ div#hbhomegames div.gamedaytag {
     border-top: 7px solid transparent;
     border-bottom: 7px solid transparent;
     border-left: 7px solid #444; }
+div#hbhomegames div.gamedaytag.showDay table.HBhomeSchedule {
+  visibility: visible;
+  opacity: 1; }
+div#hbhomegames div.gamedaytag.showDay .daybullet {
+  width: 0;
+  height: 0;
+  margin-left: 0px;
+  margin-top: 0.5em;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #444; }
+div#hbhomegames div.gamedaytag.hiddenGym {
+  display: none; }
 
 /*# sourceMappingURL=_hbhomegames.css.map */
