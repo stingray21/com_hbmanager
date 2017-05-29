@@ -1,0 +1,28 @@
+{
+  "name": "com_hbmanager",
+  "version": "1.1.48",
+  "description": "Joomla! component hbmanager",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/stingray21/com_hbmanager.git"
+  },
+  "keywords": [
+    "handball",
+    "joomla"
+  ],
+  "author": "Jochen Stehle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stingray21/com_hbmanager/issues"
+  },
+  "homepage": "https://github.com/stingray21/com_hbmanager#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-joomla-packager": "0.1.0-b10"
+  }
+}
