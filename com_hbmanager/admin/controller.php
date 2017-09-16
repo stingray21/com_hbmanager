@@ -48,6 +48,7 @@ class hbmanagerController extends JControllerAdmin
 		// Set the submenu
 		hbhelper::addSubmenu('hbteams');
 	}
+
 	function addTeams()
 	{
 		$model = $this->getModel('hbteams');
@@ -351,7 +352,68 @@ class hbmanagerController extends JControllerAdmin
 		// Set the submenu
 		hbhelper::addSubmenu('hbgoalsinput');
 	}
-	
+
+	function showReportInput()
+	{
+		$model = $this->getModel('hbreportinput');
+
+		$view = $this->getView('hbreportinput','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbreportinput');
+	}
+
+	function importReport()
+	{
+		$model = $this->getModel('hbreportinput');
+		$view = $this->getView('hbreportconfirm','html');
+
+		$jinput = JFactory::getApplication()->input;
+		$gameId = $jinput->get('gameId', 0);
+		
+		$model->setGameInfo($gameId);
+
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbreportinput');
+	}
+
+	function addReport()
+	{
+		$model = $this->getModel('hbreportinput');
+
+		$jinput = JFactory::getApplication()->input;
+		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($jinput);echo '</pre>';
+		$hbreport = $jinput->get('hbreport', 'no data','RAW');
+		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($hbreport);echo '</pre>';
+
+		if ($hbreport !== 'no data') {
+			$added = $model->addReportToDB($hbreport['dataString']);
+
+			if ($added === true) {
+				JFactory::getApplication()->enqueueMessage($model->getMessage(), 'message');
+			} else  {
+				JFactory::getApplication()->enqueueMessage($model->getMessage(), 'error');
+			}
+		} else {
+			JFactory::getApplication()->enqueueMessage('no data', 'error');
+		}
+
+		$view = $this->getView('hbreportinput','html');
+		$view->setModel($model, true);
+		$view->display();
+		//self::display();
+		
+		// Set the submenu
+		hbhelper::addSubmenu('hbreportinput');
+	}	
+
 	function addGoals()
 	{
 		$model = $this->getModel('hbgoalsinput');

@@ -37,6 +37,9 @@ abstract class HbHelper
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_GOALSINPUT_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showGoalsInput',
 				$submenu == 'hbgoalsinput');
+		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_REPORTINPUT_SUBMENU'), 
+				'index.php?option=com_hbmanager&task=showReportInput',
+				$submenu == 'hbreportinput');
 		JSubMenuHelper::addEntry(JText::_('COM_HBMANAGER_TEAMMENUS_SUBMENU'), 
 				'index.php?option=com_hbmanager&task=showTeamMenus',
 				$submenu == 'hbteammenus');
