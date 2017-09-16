@@ -3,27 +3,28 @@ jQuery(document).ready(function($){
         console.log("Show Game Day");
 		var btnId = this.parentElement.id;
 		console.log(btnId);
-		var key = btnId.replace("tag", "table");
-		// console.log(key);
-        var bullet = this.parentElement.getElementsByClassName('daybullet')[0];
-        // console.log(bullet);
-        var currTable = document.getElementById(key);
-		// console.log(currTable);
-		if (currTable.getAttribute('data-state') === 'hidden') {
-            currTable.setAttribute('data-state', 'visible');
-          $('#'+key).fadeIn();
-            bullet.className = "daybullet arrow-down";
-            //this.innerHTML = 'Tabelle ausblenden';
-            //this.style.background = '#04c'; 
-            //this.style.color = '#fff';
-        }
-        else {
-            currTable.setAttribute('data-state', 'hidden');
-			$('#'+key).fadeOut();
-            bullet.className = "daybullet arrow-right";
-            //this.innerHTML = 'Tabelle einblenden';
-            //this.style.background = 'transparent'; 
-            //this.style.color = '#000';
+        var btnClass = this.parentElement.className;
+        console.log(btnClass);
+		if (btnClass.includes("showDay")) {
+            //this.parentElement.removeClass = "gamedaytag";
+            $('#'+btnId).removeClass("showDay");
+        } else {
+            // this.parentElement.className = "gamedaytag showDay";
+            $('#'+btnId).addClass("showDay");
         }
 	});
+
+    $('.gymButton').click(function(){
+        var gymId = this.id.replace('buttonGym','');
+        console.log("Show "+gymId);
+        var gymClass = this.className;
+        if (gymClass.includes("hideGym")) {
+            $('#buttonGym'+gymId).removeClass("hideGym");
+            $(".gym"+gymId).removeClass("hiddenGym");
+        } else {
+            $('#buttonGym'+gymId).addClass("hideGym");
+            $(".gym"+gymId).addClass("hiddenGym");
+        }
+        
+    });
 });

@@ -39,6 +39,7 @@ $form = JForm::getInstance('myform',
 			</legend>
 			
 			<?php 
+// echo __FILE__.' - '.__LINE__.'<pre>';print_r($this->leagues); echo'</pre>';
 if (!empty($this->leagues)) 
 {
 	echo "\n\n".'<table id="teamstable" name="teamstable">'."\n";
@@ -63,7 +64,7 @@ if (!empty($this->leagues))
 		
 		echo '<td>';
 		echo hbhelper::formatInput($form->getInput('includeTeam', 'hbAddTeam', 
-					$team->select['mannschaftenTabelle'] !== false), $i);
+					$team->select['mannschaftenSpielplan'] !== false), $i);
 		echo '</td>';
 		
 		$team =  (array) $team;

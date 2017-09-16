@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = false; //true: user-time, false:server-time
+
 JToolBarHelper::preferences('com_hbmanager');
 
 
@@ -35,7 +37,11 @@ foreach ($this->teams as $team)
 		echo 'keine HVW Daten';
 	}
 	else {
-		echo '<a href="'.$team->hvwLink.'">'.$team->hvwLink.'</a>';
+		// TODO store different in DB
+		//http://spo.handball4all.de/service/if_g_json.php?ca=1&cl=29109&cmd=ps&og=3
+		$linkId = preg_replace('/.*ca=1&cl=(\d{4,6})&cmd=.*/', '$1', $team->hvwLink);
+		$link = 'http://www.hvw-online.org/spielbetrieb/ergebnissetabellen/#/league?ogId=3&lId='.$linkId.'&allGames=1';
+		echo '<a href="'.$link.'">'.$link.'</a>';
 	}
 	echo '</p>';
 	
@@ -44,7 +50,8 @@ foreach ($this->teams as $team)
 		$background = false;
 		echo "\n\t<table class=\"HBschedule HBhighlight\">\n";
 		echo "\t\t<thead>\n";
-		echo "\t\t<tr><th></th><th>Wann</th><th></th><th>Halle</th><th class=\"rightalign\">Heim</th><th></th><th class=\"leftalign\">Gast</th><th colspan=\"3\">Ergebnis</th><th>Bemerkung</th>";
+		echo "\t\t<tr><th></th><th>Datum</th><th>Zeit</th><th class=\"rightalign\">Heim</th><th></th><th class=\"leftalign\">Gast</th>";
+		//echo "<th colspan=\"3\">Ergebnis</th><th>Bemerkung</th>";
 		echo "</tr>\n";
 		echo "\t\t</thead>\n\n";
 	
@@ -54,27 +61,30 @@ foreach ($this->teams as $team)
 			// row in HBschedule table
 			echo "\t\t\t<tr class=\"".$row->background."\">";
 			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->datum, 'D', false);
+			echo JHtml::_('date', $row->datumZeit, 'D', $tz);
 			echo "</td>";
 			echo "<td class=\"wann leftalign\">";
-			echo JHtml::_('date', $row->datum, 'd.m.y', false);
+			echo JHtml::_('date', $row->datumZeit, 'd.m.Y', $tz);
 			echo "</td>";
-			echo "<td class=\"wann leftalign\">".$row->zeit." Uhr</td>";
-			echo "<td>{$row->hallenNr}</td>";
+			echo "<td class=\"wann leftalign\">";
+			echo JHtml::_('date', $row->datumZeit, 'H:i', $tz);
+			echo " Uhr</td>";
+			//echo "<td>{$row->hallenNr}</td>";
 			echo "<td class=\"rightalign";
 			if ($row->mark === 1) echo ' heim';
 			echo "\">{$row->heim}</td><td>-</td>";
 			echo "<td class=\"leftalign";
 			if ($row->mark === 2) echo ' heim';
 			echo "\">{$row->gast}</td>";
-			echo "<td class=\"rightalign";
-			if ($row->mark === 1) echo ' heim';
-			echo "\">{$row->toreHeim}</td><td>:</td>";
-			echo "<td class=\"leftalign";
-			if ($row->mark === 2) echo ' heim';
-			echo "\">{$row->toreGast}</td>";
-			echo "<td>{$row->bemerkung}</td>";
-			echo "</td></tr>\n";
+//			echo "<td class=\"rightalign";
+//			if ($row->mark === 1) echo ' heim';
+//			echo "\">{$row->toreHeim}</td><td>:</td>";
+//			echo "<td class=\"leftalign";
+//			if ($row->mark === 2) echo ' heim';
+//			echo "\">{$row->toreGast}</td>";
+//			echo "<td>{$row->bemerkung}</td>";
+//			echo "</td>";
+			echo "</tr>\n";
 		}
 		echo "\t\t</tbody>\n\n";
 		echo "\t</table>\n\n";

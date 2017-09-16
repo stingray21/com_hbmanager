@@ -100,8 +100,9 @@ class hbmanagerModelHbteams extends JModelLegacy
 		$time_pre = microtime(true);
 		
 		//self::getAddress();
-		$leagueSource = self::getSource(self::getAddress());
-		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagueSource); echo'</pre>';
+		$leagueSource = self::getJSONdata(self::getAddress());
+		$leagueSource = $leagueSource[0]['content']['classes'];
+		// echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($leagueSource); echo'</pre>';
 		$leagues = self::formatSource($leagueSource);
 		//self::storeVar($leagues);
 		//$leagues = self::retrieveVar();
@@ -139,15 +140,14 @@ class hbmanagerModelHbteams extends JModelLegacy
 //				'?id=39&orgID=11&A=g_org&nm=0&do='.
 //				$year.'-10-01';
 		
-		$params = JComponentHelper::getParams( 'com_hbmanager' );
-		$url = $params->get( 'urlhvw' );
-		$urlstartdate = $params->get( 'urlstartdate' ); 
-		$urlyear = $params->get( 'urlyear' );
+		// $params = JComponentHelper::getParams( 'com_hbmanager' );
+		// $url = $params->get( 'urlhvw' );
+		// $urlstartdate = $params->get( 'urlstartdate' ); 
+		// $urlyear = $params->get( 'urlyear' );
 		//echo __FILE__.'<pre>';print_r($params); echo'</pre>';
 		
-		$address = 'http://www.hvw-online.org/index.php'.
-				'?id=39&orgID=11&A=g_org&nm=0&do='.
-				$urlstartdate;
+		$address = 'http://spo.handball4all.de/service/if_g_json.php?'
+			.'cmd=po&o=11&og=3';
 		
 		
 		// local, for testing
@@ -155,45 +155,60 @@ class hbmanagerModelHbteams extends JModelLegacy
 		return $address;
 	}
 
-	protected function getSource($address)
+	// protected function getSource($address)
+	// {
+	// 	// returns sourcecode of a website with the address $address as string
+	// 	$source = file_get_contents($address);
+	// 	$leagueSource = null;
+	// 	// shortens strings to relevant part
+	// 	$start = strpos($source,'<th align="center">Bem.</th>')+28;
+	// 	$end = strpos($source,'</table>',$start);
+	// 	$source = substr($source,$start,($end-$start));
+	// 	//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
+		
+	// 	$source = str_replace('<td class="gal"><a href="', '&&',$source);
+	// 	//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
+	// 	// TODO check out regex possessive quantifier (-> performance)
+	// 	$pattern = '|&&+'.
+	// 			'(?P<url>\?(A=g_class&)?id=\d{1,2}&org(Grp)?ID=\d{1,2}&score=\d{4,6})&nm=15">'.
+	// 			'(?P<league>[\w\d\-\/\+]{3,10})<\/a>|';
+	// 	preg_match_all($pattern, $source, $leagueSource, PREG_SET_ORDER);
+	// 	//echo __FILE__.'<pre>';print_r($leagueSource); echo'</pre>';
+
+	// 	return $leagueSource;
+	// }
+
+	protected function getJSONdata($address)
 	{
 		// returns sourcecode of a website with the address $address as string
-		$source = file_get_contents($address);
-		$leagueSource = null;
-		// shortens strings to relevant part
-		$start = strpos($source,'<th align="center">Bem.</th>')+28;
-		$end = strpos($source,'</table>',$start);
-		$source = substr($source,$start,($end-$start));
-		//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
+		// echo __FILE__.'<pre>';print_r($address); echo'</pre>';
+		$json = file_get_contents($address);
+		// $json = substr($json, 1, -1);
+		// echo __FILE__.'<pre>';print_r($json); echo'</pre>';
+		$obj = json_decode($json, true);
 		
-		$source = str_replace('<td class="gal"><a href="', '&&',$source);
-		//echo __FILE__.'<pre>';print_r($source); echo'</pre>';
-		// TODO check out regex possessive quantifier (-> performance)
-		$pattern = '|&&+'.
-				'(?P<url>\?(A=g_class&)?id=\d{1,2}&org(Grp)?ID=\d{1,2}&score=\d{4,6})&nm=15">'.
-				'(?P<league>[\w\d\-\/\+]{3,10})<\/a>|';
-		preg_match_all($pattern, $source, $leagueSource, PREG_SET_ORDER);
-		//echo __FILE__.'<pre>';print_r($leagueSource); echo'</pre>';
+		// echo __FILE__.'<pre>';print_r($obj); echo'</pre>';
 
-		return $leagueSource;
+		return $obj;
 	}
 	
 	protected function formatSource($source)
 	{
 		$leagues = array();
 		foreach ($source as $key => $value) {
-			//echo __FUNCTION__.'<pre>';print_r($value); echo'</pre>';
+			// echo __FUNCTION__.'<pre>';print_r($value); echo'</pre>';
 			
-			$league = $value['league'];
-			$url = 'http://www.hvw-online.org/'.$value['url'].'&all=1';
+			$league = $value['gClassSname'];
+			$leagueId = $value['gClassID'];
+			$url = 'http://spo.handball4all.de/service/if_g_json.php?ca=1&cl='.$leagueId.'&cmd=ps&og=3';
 			$gender = self::getGender($league);
 			$age = self::getAge($league);
 			$cup = self::checkIfCup($league);
 			if (!$cup) {
 				$data = self::getTeamData($url);
-			
+				// $data = array();
 				$leagues[] = array_merge( array('league' => $league, 
-									'url' => $url, 'gender' => $gender, 
+									'leagueId' => $leagueId, 'url' => $url, 'gender' => $gender, 
 									'age' => $age), $data);
 				//return $leagues; // for single test, only first league
 			}
@@ -244,72 +259,68 @@ class hbmanagerModelHbteams extends JModelLegacy
 	}
 	
 	protected function getTeamData($url) {
-		$source = self::getTeamSource($url);
-		//echo __FUNCTION__.'<pre>';print_r($source); echo'</pre>';
+		$source = self::getTeamJSON($url);
+		// echo __FUNCTION__.'<pre>';print_r($source); echo'</pre>';
 		
 		// Name and Saison
-		$pattern = "/(?P<name>.*) - Hallenrunde ". 
-					"(?P<season>20\d{2}\/20\d{2})<\/h1>/";
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($source['title']); echo'</pre>';
+		$pattern = "/(?P<name>.*) - Hallenrunde ".
+					"(?P<season>20\d{2}\/20\d{2})/";
 		preg_match($pattern, $source['title'], $match);
-		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($match); echo'</pre>';
-		$data['name'] = $match['name'];
+		// echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($match); echo'</pre>';
+		// $data['name'] = $match['name'];
 		$data['season'] = $match['season'];
 		
+		$data['name'] = $source['name'];
+		$data['leagueKey'] = $source['leagueKey'];
+
 		// Standings team names
-		$pattern = "/(<td class=\"gac\">)+(<b>\d{1,2}<\/b>|&#160;)?"."<\/td>\s+".
-					"<td>.+<\/td>\s+".
-					"<td><a.+>(.+)<\/a><\/td>/";
-		preg_match_all($pattern, $source['standings'], $standings, 
-				PREG_SET_ORDER);
-		unset($source['standings']);
-		foreach ($standings as $key => $value) {
-			$standings[$key] = $value[3];
+		$standings = array();
+		foreach ($source['standings'] as $value) {
+			$standings[] = $value['tabTeamname'];
 		}
 		sort($standings);
-		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($standings); echo'</pre>';
+		// echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($standings); echo'</pre>';
 		$data['standings'] = $standings;
 		
 		// Schedule team names
-		$pattern = "/<\/td><td class=\"gal\">(.+)<\/td><td>-<\/td>/";
-		preg_match_all($pattern, $source['schedule'], $schedule, 
-				PREG_SET_ORDER);
-		unset($source);
-		foreach ($schedule as $key => $value) {
-			$schedule[$key] = $value[1];
+		$schedule = array();
+		foreach ($source['schedule'] as $value) {
+			$schedule[] = $value['gHomeTeam'];
 		}
 		$schedule = array_unique($schedule);
 		sort($schedule);
 		//echo __FUNCTION__.'<pre>';print_r($schedule); echo'</pre>';
 		$data['schedule'] = $schedule;
-		//echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
-		//die;
+		// echo __FUNCTION__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
+		// die;
 		return $data;
 	}
 	
-	protected function getTeamSource($url) {
-		$source = file_get_contents($url);
-		//echo __FUNCTION__.'<pre>';print_r($source); echo'</pre>';
+	protected function getTeamJSON($url) {
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($url); echo'</pre>';
+		$json = file_get_contents($url);
+		// $json = substr($json, 1, -1);
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($json); echo'</pre>';
+		$obj = json_decode($json, true);
+		
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($obj); echo'</pre>';
 		
 		// Title
-		$start1 = strpos($source,'<h1>Neckar-Zollern<br>')+22;
-		$end1 = strpos($source,'<!-- * ScoreTable() * Start ****',$start1);
-		$title = substr($source,$start1,($end1-$start1));
-		//echo __FUNCTION__.'<pre>';print_r($title); echo'</pre>';
-		
+		$data['title'] = $obj[0]['head']['headline2'];
+		$data['name'] = $obj[0]['head']['name'];
+		$data['leagueKey'] = $obj[0]['head']['sname'];
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
+
 		// Standings
-		$start2 = strpos($source,'<td class="gac"><b>1</b></td>');
-		$end2 = stripos($source,'</tr></TABLE>',$start2);
-		$standings = substr($source,$start2,($end2-$start2));
-		//echo __FUNCTION__.'<pre>';print_r($standings); echo'</pre>';
+		$data['standings'] = $obj[0]['content']['score'];
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data['standings']); echo'</pre>';
 
 		// Schedule
-		$start3 = strpos($source,'<th align="center">Bem.</th>')+28;
-		$end3 = strpos($source,'</table>',$start3);
-		$schedule = substr($source,$start3,($end3-$start3));
-		//echo __FUNCTION__.'<pre>';print_r($schedule); echo'</pre>';
+		$data['schedule'] = $obj[0]['content']['futureGames']['games'];
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data['schedule']); echo'</pre>';
 		
-		return array('title' => $title, 'standings' => $standings,
-			'schedule' => $schedule);
+		return $data;
 	}
 	
 	protected function updateLeaguesInDb($leagues)
@@ -442,8 +453,7 @@ class hbmanagerModelHbteams extends JModelLegacy
 		$value['geschlecht'] = $db->q($data['geschlecht']);
 		$value['jugend'] = $db->q($data['jugend']);
 		if (!empty($data['hvwLink'])) {
-			$value['hvwLink'] = $db->q('http://www.hvw-online.org/'.
-					$data['hvwLink']);
+			$value['hvwLink'] = $db->q($data['hvwLink']);
 		}
 		else {
 			$value['hvwLink'] = 'NULL';
@@ -494,18 +504,23 @@ class hbmanagerModelHbteams extends JModelLegacy
 		foreach ($newTeams as $data)
 		{
 			if (isset($data['includeTeam'])) {
+				// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
 				$teamkey = self::getNewTeamKey($data['staffel']);
 				$age = self::getNewAge($data['staffelName']);
 				$email = self::generateEmailAlias($teamkey, $age);
 				$gender = self::getNewGender($data['staffelName']);
-				$number = self::getNewNumber($data['mannschaftenTabelle']);
+				// TODO check if $data['mannschaftenTabelle']) is empty (for E-Jgd) 
+				if (isset($data['mannschaftenTabelle']))  $number = self::getNewNumber($data['mannschaftenTabelle']);
+				else $number = self::getNewNumber($data['mannschaftenSpielplan']);
 				$league = self::getNewLeague($data['staffelName']);
 				$teamName = self::getNewTeamName($age, $gender, $number);
 				//echo __FUNCTION__.'<pre>';print_r($teamName); echo'</pre>';
 				$value['kuerzel'] = $db->q($teamkey);
 				$value['reihenfolge'] = 'null';
 				$value['mannschaft'] = $db->q($teamName);
-				$value['name'] = $db->q($data['mannschaftenTabelle']);
+				// TODO check if $data['mannschaftenTabelle']) is empty (for E-Jgd) 
+				if (isset($data['mannschaftenTabelle']))  $value['name'] = $db->q($data['mannschaftenTabelle']);
+				else $value['name'] = $db->q($data['mannschaftenSpielplan']);
 				$value['nameKurz'] = $db->q($data['mannschaftenSpielplan']);
 				$value['ligaKuerzel'] = $db->q($data['staffel']);
 				$value['liga'] = $db->q($league);

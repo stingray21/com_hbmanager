@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$tz = false; //true: user-time, false:server-time
+
 JToolBarHelper::preferences('com_hbmanager');
 
 
@@ -24,8 +26,8 @@ if (!empty($this->homegames))
 {
 	foreach ($this->homegames as $dayKey => $day)
 	{
-		echo "<h4>".JHtml::_('date', $dayKey, $datePattern, false)."</h4>";
-
+		echo "<h4>".JHtml::_('date', $dayKey, 'D, d.m.Y', $tz)."</h4>";
+		// echo __FILE__.' ('.__LINE__.')<pre>';print_r($day);echo'</pre>';die;
 		foreach ($day as $gym)
 		{
 			echo '<h5>';
@@ -36,14 +38,17 @@ if (!empty($this->homegames))
 			{
 				// row in HBschedule table
 				echo "\t\t\t<tr class=\"".$row->background."\">";
-				echo "<td>{$row->mannschaft}</td>";
+				// echo "<td>{$row->mannschaft}</td>";
+				echo "<td>{$row->ligaKuerzel}</td>";
 				//echo "<td class=\"wann leftalign\">";
 				//echo JHtml::_('date', $row->datum, 'D', false);
 				//echo "</td>";
 				//echo "<td class=\"wann leftalign\">";
 				//echo JHtml::_('date', $row->datum, 'd.m.y', false);
 				//echo "</td>";
-				echo "<td class=\"wann leftalign\">".$row->zeit." Uhr</td>";
+				echo "<td class=\"wann leftalign\">";
+				echo JHtml::_('date', $row->datumZeit, 'H:i', $tz);
+				echo " Uhr</td>";
 				//echo "<td>{$row->ligaKuerzel}</td>";
 				//echo "<td>{$row->hallenNummer}</td>";
 				echo "<td class=\"rightalign";

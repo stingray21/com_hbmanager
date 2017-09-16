@@ -89,7 +89,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
 		self::setSeason($source['headline']);
 		
-		if (self::updateGamesInDB($teamkey, $source['schedule'])
+		if (self::updateGamesInDB($teamkey, $source['schedule'], $source['leagueKey'])
 				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
 				&& self::updateDetailedStandingsInDB($teamkey) )
 //		if (self::updateGamesInDB($teamkey, $source['schedule']) )
@@ -141,70 +141,32 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $result;
     }
 
-    protected function getSourceFromHVW($address)
-    {
-		// returns sourcecode of a website with the address $address as string
-		$sourcecode = file_get_contents($address);
+    protected function getSourceFromHVW($url) {
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($url); echo'</pre>';
+		$json = file_get_contents($url);
+		// $json = substr($json, 1, -1);
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($json); echo'</pre>';
+		$obj = json_decode($json, true);
 		
-        $sourcecode = str_replace('&#160;', ' ' ,$sourcecode);
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($obj); echo'</pre>';
 		
-		// shortens strings to relevant part for headline
-		preg_match('/<h1>.*\d{4}\/\d{4}<\/h1>/', $sourcecode, $matches);
-		//print_r($matches);
-		$source['headline'] = $matches[0];
-//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($sourcecode);echo'</pre>';
-//		die;
-//		
-		// shortens strings to relevant part for standings
-		$start = strpos($sourcecode,">Punkte</th></tr>")+17;
-		$end = strpos($sourcecode,"</tr></TABLE></div>",$start);
-		$source['standings'] = '';
-		if ($start+$end > 17) {
-			$source['standings'] = substr($sourcecode,$start,($end-$start));
-		}
-//		echo __FILE__.' ('.__LINE__.')<pre>'.$start.' -> '.$end.'</pre>';
-//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['standings']);echo'</pre>';
-//		die;
-		
-		// shortens strings to relevant part for schedule
-		$start = strpos($sourcecode,'<th align="center">Bem.</th>')+34;
-		$end = strpos($sourcecode,'</table>',$start)-8;
-		$source['schedule'] = '';
-		if ($start+$end > 26) {
-			$source['schedule'] = substr($sourcecode,$start,($end-$start));
-		}
-//		echo __FILE__.' ('.__LINE__.')<pre>'.$start.' -> '.$end.'</pre>';
-//		echo __FILE__.' ('.__LINE__.')<pre>';print_r($source['schedule']);echo'</pre>';
-//		die;
-		return $source;
-    }
+		// Title
+		$data['headline'] = $obj[0]['head']['headline2'];
+		$data['name'] = $obj[0]['head']['name'];
+		$data['leagueKey'] = $obj[0]['head']['sname'];
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data); echo'</pre>';
 
-    protected function getScheduleData($source)
-    {
-		// insert dividers 
-		$searchMarker = array('</td>', '</tr>',"\n" ,"\t");
-		$replaceMarker = array('||', '&&', '', '');
-		$source = str_replace($searchMarker, $replaceMarker ,$source);
-		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($source); echo '</pre>';
-		
-		// remove link tag for game report 
-		// <a href="/misc/sboPublicReports.php?sGID=54233" target="_blank">PI</a>
-		// new 2016/2017 <a href="http://spo.handball4all.de/misc/sboPublicReports.php?sGID=150354" target="_blank">PI</a>
-		$source = preg_replace('#<a href="(http://spo\.handball4all\.de/misc/sboPublicReports\.php\?sGID=(\d{4,7}))" target="_blank">PI</a>\s?#', '$2', $source);
-		
-		
-		$source = strip_tags($source);
+		// Standings
+		$data['standings'] = $obj[0]['content']['score'];
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($data['standings']); echo'</pre>';
 
-		// split date field
-		//$search = array(', ');
-		//$replace = array('||');
-		//$source = str_replace($search, $replace ,$source);
+		// Schedule
+		$data['schedule'] = $obj[0]['content']['futureGames']['games'];
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($data['schedule']); echo'</pre>';
+		
+		return $data;
+	}
 
-		//echo '=> '.__FUNCTION__.' - '.__LINE__.'<br><pre>'; print_r($source); echo '</pre>';
-		//die;
-		$scheduleData = self::explode2D($source);
-		return self::formatScheduleData($scheduleData);
-    }
 
     protected function explode2D ($source)
     {
@@ -215,79 +177,33 @@ class hbmanagerModelHbdata extends JModelLegacy
 			$data[$key] = explode('||',$value);
 		}
 		return $data;
-    }
-
-    protected function formatScheduleData($data)
-    {
-		//echo '=> '.__FILE__.'('.__LINE__.')<br><pre>'; print_r($data); echo '</pre>';
-		foreach ($data as $key => $value) 
-		{
-			//if ($value[1] ==  73568) {echo '=> '.__FUNCTION__.'<br><pre>'; print_r($value); echo '</pre>';}
-			
-			//format date time
-			$pattern = "/\w{2}, (?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{2})(, (?P<time>\d{2}:\d{2})h)?/";
-			
-			//TODO
-			// try(maybe in formatGamesValues())
-			// $date = "6.1.2009 13:00+01:00";
-			// print_r(date_parse_from_format("j.n.Y H:iP", $date));
-			
-			
-			preg_match($pattern, $value[2], $match);
-			//echo __FUNCTION__.'<pre>';print_r($match); echo'</pre>';
-			$value[2] = '20'.$match['year'].$match['month'].$match['day'];
-			if (!isset($match['time'])) $match['time'] = '00:00';
-			$value[2] .= ' '.$match['time'].":00";
-			
-			unset($value[5]);
-			unset($value[8]);
-			unset($value[11]);
-			$judging = self::getJudging($value[10],$value[7],$value[9]);
-			$value[13] = $judging['home']; 
-			$value[14] = $judging['away'];
-			
-			// add game report link
-			//echo __FILE__.' ('.__LINE__.')<pre>->';print_r($value[10]);echo'<-</pre>';
-			if (preg_match('/\d{4,7}/', trim($value[10]))) {
-				//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value[10]);echo'</pre>';
-				$value[15] = trim($value[10]);
-				$value[10] = '';
-			} else {
-				$value[15] = null;
-			}
-			
-			$value = array_values($value);
-			//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
-			$data[$key] = $value;
-		}
-		//echo '=> '.__FUNCTION__.'<br><pre>'; print_r($data); echo '</pre>';
-		//exit();
-		return $data;
-    }
+	}
 	
-	protected function getJudging($comment, $scoreHome, $scoreAway)
-    {
-		switch (trim($comment))
-		{
-			case '(2:0)':
-			case '(0:2)':
-				$judging['home'] = (int) preg_replace('/^\((\d):(\d)\)$/',
-					'$1',$comment);
-				$judging['away'] = (int) preg_replace('/^\((\d):(\d)\)$/',
-					'$2',$comment);
-				break;
-			case 'ausg..':
-			case 'n.g.':
-				$judging['home'] = '';
-				$judging['away'] = '';
-			default:
-				$judging['home'] = $scoreHome;
-				$judging['away'] = $scoreAway;
-				break;
-		}
-		//echo '=> model->$data <br><pre>'; print_r($data); echo '</pre>';
-		return $judging;
-    }
+
+	// probably ...goals_1 field
+	// protected function getJudging($comment, $scoreHome, $scoreAway)
+    // {
+	// 	switch (trim($comment))
+	// 	{
+	// 		case '(2:0)':
+	// 		case '(0:2)':
+	// 			$judging['home'] = (int) preg_replace('/^\((\d):(\d)\)$/',
+	// 				'$1',$comment);
+	// 			$judging['away'] = (int) preg_replace('/^\((\d):(\d)\)$/',
+	// 				'$2',$comment);
+	// 			break;
+	// 		case 'ausg..':
+	// 		case 'n.g.':
+	// 			$judging['home'] = '';
+	// 			$judging['away'] = '';
+	// 		default:
+	// 			$judging['home'] = $scoreHome;
+	// 			$judging['away'] = $scoreAway;
+	// 			break;
+	// 	}
+	// 	//echo '=> model->$data <br><pre>'; print_r($data); echo '</pre>';
+	// 	return $judging;
+    // }
 	
     function getUpdateStatus()
     {
@@ -315,10 +231,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $result;
     }
 
-    protected function updateGamesInDB($teamkey, $source)
+    protected function updateGamesInDB($teamkey, $source, $leagueKey)
     {
-		$scheduleData = self::getScheduleData($source);
-		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($scheduleData);echo'</pre>'; die;
+		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($source);echo'</pre>'; die;
 		self::deleteOldData ('hb_spiel', $teamkey);
 
 		$db = $this->getDbo();
@@ -331,9 +246,9 @@ class hbmanagerModelHbdata extends JModelLegacy
 
 		$saison = self::getSeason();
 
-		foreach($scheduleData as $row) {
+		foreach($source as $row) {
 			$values[] = implode(', ', 
-			self::formatGamesValues($row, $teamkey, $saison));
+			self::formatGamesValues($row, $teamkey, $leagueKey));
 		}
 
 		// Prepare the insert query.
@@ -344,7 +259,8 @@ class hbmanagerModelHbdata extends JModelLegacy
 
 		//echo '=> model->$query <br><pre>'.$query.'</pre>';
 		$query .= self::getOnDublicate($columns);
-		//echo __FILE__.' ('.__LINE__.')<pre>'.$query.'</pre>';die;
+		// echo __FILE__.' ('.__LINE__.')<pre>'.$query.'</pre>';die;
+		
 		$db->setQuery($query);
 		$result = $db->execute();
 		
@@ -363,63 +279,87 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $query .= implode(",\n", $dublicates);
 	}
 
-    protected function formatGamesValues($data, $teamkey)
+    protected function formatGamesValues($data, $teamkey, $leagueKey)
     {
-		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($data);echo'</pre>';die;
+		// echo __FILE__.' ('.__LINE__.')<pre>';print_r($data);echo'</pre>';
 		$db = $this->getDbo();
 
 		$value['saison'] = $db->q(self::getSeason());
-		$value['spielIdHvw'] = $db->q($data[1]);
+		$value['spielIdHvw'] = $db->q($data['gNo']);
 		$value['kuerzel'] = $db->q($teamkey);
-		$value['ligaKuerzel'] = $db->q($data[0]);
+		$value['ligaKuerzel'] = $db->q($leagueKey);
 		// HallenNummer
-		if (trim($data[3]) != '') $value['hallenNr'] = (int)$data[3];
-				else  $value['hallenNr'] = "NULL";
+		if (trim($data['gGymnasiumNo']) != '') $value['hallenNr'] = (int) $data['gGymnasiumNo'];
+				else  $value['gGymnasiumNo'] = "NULL";
+		// if (trim($data['gGymnasiumID']) != '') $value['hallenID'] = (int) $data['gGymnasiumID'];
+		// 		else  $value['gGymnasiumID'] = "NULL";
+
 		// Datum & Uhrzeit
-		if (trim($data[2]) != '') {	
-			$sqlDateTime = JFactory::getDate($data[2], 'Europe/Berlin' )->toSql();
-			//echo '<p>HVW: <b>'.$datetime.'</b> -> in DB: <b>'.$sqlDateTime.'</b></p>";
+		$dateStr = $data['gDate'].'-'.$data['gTime'];
+		// echo __FILE__.' - '.__LINE__.'<p>'.$dateStr.'</b></p>';	
+		$pattern = '/(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{2})-(?P<hour>\d{2}):(?P<min>\d{2})/';
+		// $pattern = '/\d{2}\.\d{2}\.\d{2}-\d{2}:\d{2}/';
+		if (preg_match($pattern, $dateStr, $matches)) {	
+			// echo __FILE__.' - '.__LINE__.'<pre>';print_r($matches); echo'</pre>';
+			$dateTime = '20'.$matches['year'].'-'.$matches['month'].'-'.$matches['day'].' '.
+				$matches['hour'].':'.$matches['min'].':00';
+			// echo __FILE__.' - '.__LINE__.'<p>'.$dateTime.'</b></p>';	
+			$sqlDateTime = JFactory::getDate($dateTime, 'Europe/Berlin' )->toSql();
+			// echo __FILE__.' - '.__LINE__.'<p>HVW: <b>'.$dateStr.'</b> -> in DB: <b>'.$sqlDateTime.'</b></p>';
 			$value['datumzeit'] = $db->q($sqlDateTime);
 		}
 		else  $value['datumzeit'] = "NULL";
 
-		$value['heim'] = $db->q(addslashes($data[4]));
-		$value['gast'] = $db->q(addslashes($data[5]));
+		$value['heim'] = $db->q(addslashes($data['gHomeTeam']));
+		$value['gast'] = $db->q(addslashes($data['gGuestTeam']));
 		// ToreHeim
-		if (trim($data[6]) != '') $value['toreHeim'] = (int)$data[6];
+		if (trim($data['gHomeGoals']) != '') $value['toreHeim'] = (int) $data['gHomeGoals'];
 				else  $value['toreHeim'] = "NULL";
 		// ToreGast
-		if (trim($data[7]) != '') $value['toreGast'] = (int)$data[7];
+		if (trim($data['gGuestGoals']) != '') $value['toreGast'] = (int) $data['gGuestGoals'];
 				else  $value['toreGast'] = "NULL";
 		// Bemerkung
-		if (trim($data[8]) != '') $value['bemerkung'] = $db->q($data[8]);
+		if (trim($data['gComment']) != '') $value['bemerkung'] = $db->q($data['gComment']);
 				else  $value['bemerkung'] = "NULL";
 		// WertungHeim
-		if (trim($data[9]) != '') $value['wertungHeim'] = (int)$data[9];
+		if (trim($data['gHomeGoals_1']) != '') $value['wertungHeim'] = (int)$data['gHomeGoals_1'];
 				else  $value['wertungHeim'] = "NULL";
 		// WertungGast
-		if (trim($data[10]) != '') $value['wertungGast'] = (int)$data[10];
+		if (trim($data['gGuestGoals_1']) != '') $value['wertungGast'] = (int)$data['gGuestGoals_1'];
 				else  $value['wertungGast'] = "NULL";
+
+
+		// not used yet
+		// "gID": "2367089",
+		// "sGID": 0,
+		// "live": true,
+		// "gHomePoints": " ",
+		// "gGuestPoints": " ",
+		// "gComment": " ",
+		// "gReferee": " "
 		
 		// Team of own club
-		$ownTeam = self::checkIfOwnTeamIsPlaying($data[4], $data[5]);
+		$ownTeam = self::checkIfOwnTeamIsPlaying($data['gHomeTeam'], $data['gGuestTeam']);
 		if ($ownTeam) $value['eigenerVerein'] = $ownTeam;
 				else  $value['eigenerVerein'] = "NULL";		
 				
 		// BerichtLink
-		if (trim($data[10]) != '') $value['berichtLink'] = $db->q($data[11]);
-				else  $value['berichtLink'] = "NULL";
+		// if (trim($data[10]) != '') $value['berichtLink'] = $db->q($data[11]);
+		// 		else  $value['berichtLink'] = "NULL";
+		$value['berichtLink'] = $db->q("add in hbdata model");
 
-		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';die;
 		return $value;
     }
 
 	protected function checkIfOwnTeamIsPlaying($home, $away)
 	{
-		if (in_array($home, $this->names)) {
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($home); echo'</pre>';
+		if (in_array(stripcslashes($home), $this->names)) {
 			return true;
 		}
-		if (in_array($away, $this->names)) {
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($away); echo'</pre>';
+		if (in_array(stripcslashes($away), $this->names)) {
 			return true;
 		}
 		return false;
@@ -507,25 +447,6 @@ class hbmanagerModelHbdata extends JModelLegacy
     
 // methods for ranking
     
-    protected function getStandingsData($source)
-    {
-//        echo __FILE__.' ('.__LINE__.')<pre>';print_r($source);echo'</pre>';
-//		die;
-		$searchMarker = array('</td>', '</tr>',"\n" ,"\t");
-        $replaceMarker = array('||', '&&', '', '');
-        $source = str_replace($searchMarker, $replaceMarker ,$source);
-
-        $source = strip_tags($source);
-		
-        $search = array('|| ||', '||||', '||:||', '||&&');
-        $replace = array('||', '||', '||', '&&');
-        $source = str_replace($search, $replace ,$source);
-
-        //echo '=> '.__FUNCTION__.' - '.__LINE__.'<br><pre>'; print_r($source); echo '</pre>';
-		//die;
-
-        return $standingsData = self::explode2D($source);
-    }
 	
 	protected function updateStandingsInDb($teamkey, $table, $columns, $values)
 	{
@@ -544,7 +465,7 @@ class hbmanagerModelHbdata extends JModelLegacy
 			->columns($db->qn($columns))
 			->values($values);
 
-		//echo '=> model->$query <br><pre>'.$query.'</pre>';
+		// echo '=> model->$query <br><pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
 		$result = $db->execute();
 
@@ -563,18 +484,13 @@ class hbmanagerModelHbdata extends JModelLegacy
 		$columns = array('saison','kuerzel','platz','mannschaft','spiele',
 				's','u','n','tore','gegenTore',
 				'torDiff','punkte','minuspunkte');
-		$standingsData = self::getStandingsData($source);
 		//echo '=> model<br><pre>'; print_r($standingsData);echo '</pre>';
 		
-		$prevRank = 1; // in case no rank in HVW --> same as previous team
 		$values = null;
-		foreach($standingsData as $row) {
-			if (trim($row[0]) == '') {
-				$row[0] = $prevRank;
-			}
+		$source = self::addRanking($source);
+		foreach($source as $row) {
 			$values[] = implode(', ', 
 					self::formatStandingsValues($row, $teamkey));
-			$prevRank = $row[0];
 		}
 		
 		$result = self::updateStandingsInDb($teamkey, $table, $columns, $values);
@@ -582,7 +498,20 @@ class hbmanagerModelHbdata extends JModelLegacy
 		return $result;
     }
 	
-	
+	protected function addRanking($source)
+    {
+		// echo '=> model<br><pre>'; print_r($source);echo '</pre>';
+		$prevRank = 1; // in case no rank in HVW --> same as previous team
+		foreach($source as &$row) {
+			if (trim($row['tabScore']) == '') {
+				$row['tabScore'] = $prevRank;
+			}
+			$prevRank = $row['tabScore'];
+		}
+		// echo '=> model<br><pre>'; print_r($source);echo '</pre>';die;
+		return $source;	
+	}
+
 	protected function formatStandingsValues($data, $teamkey)
     {
 		//echo '=> model<br><pre>'; print_r($data);echo '</pre>';
@@ -590,21 +519,24 @@ class hbmanagerModelHbdata extends JModelLegacy
 
 		$value['saison'] = $db->q(self::getSeason());
 		$value['kuerzel'] = $db->q($teamkey);
-		
+		// not used yet
+		// "tabTeamID": "398157",
+		// "liveTeam": true,
+
 		// Platz
-		$value['platz'] = $data[0];
+		$value['platz'] = $data['tabScore'];
 		// Verein
-		$value['mannschaft'] = $db->q($data[1]);
+		$value['mannschaft'] = $db->q($data['tabTeamname']);
 		
-		$value['spiele'] = $data[2];
-		$value['s'] = $data[3];
-		$value['u'] = $data[4];
-		$value['n'] = $data[5];
-		$value['tore'] = $data[6];
-		$value['gegenTore'] = $data[7];
-		$value['torDiff'] = $data[6]-$data[7];
-		$value['punkte'] = $data[8];
-		$value['minusPunkte'] = $data[9];
+		$value['spiele'] = $data['numPlayedGames'];
+		$value['s'] = $data['numWonGames'];
+		$value['u'] = $data['numEqualGames'];
+		$value['n'] = $data['numLostGames'];
+		$value['tore'] = $data['numGoalsShot'];
+		$value['gegenTore'] = $data['numGoalsGot'];
+		$value['torDiff'] = $data['numGoalsShot'] - $data['numGoalsGot'];
+		$value['punkte'] = $data['pointsPlus'];
+		$value['minusPunkte'] = $data['pointsMinus'];
 		
 		//echo '=> model<br><pre>'; print_r($value);echo '</pre>';
 		return $value;

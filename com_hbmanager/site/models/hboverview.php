@@ -277,21 +277,24 @@ class hbmanagerModelHbOverview extends HBmanagerModelHbprevnext
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 		$rows = self::addRowColor($rows);
-		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
+		// echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";die;
 		$arangedRows = self::arangeGames($rows);
-		//echo __FUNCTION__."<pre>"; print_r($arangedRows); echo "</pre>";
+		// echo __FUNCTION__."<pre>"; print_r($arangedRows); echo "</pre>";die;
 		return $arangedRows;
 	}
 	
 	function arangeGames($inputRows)
 	{
-		$rows = '';
+		// echo __FUNCTION__."<pre>"; print_r($inputRows); echo "</pre>";
+		$rows = [];
 		foreach ($inputRows as $value)
-		{
+		{	
+			// echo __FUNCTION__."<pre>"; print_r($value); echo "</pre>";
 			$date = JHtml::_('date', $value->datumZeit, 'Y-m-d', $this->timezoneMode);
 			$rows[$date][$value->hallenNr][] = $value;
+			// echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
 		}
-		//echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";
+		// echo __FUNCTION__."<pre>"; print_r($rows); echo "</pre>";die;
 		return $rows;
 	}
 	
