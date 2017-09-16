@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         'string-replace': {
             version: {
                 files: {
-                    './<%= ext.name %>/': './<%= ext.name %>/<%= ext.name %>.xml',    // 'a': 'b' means b is source file and a is destination file 
+                    './<%= ext.name %>/': './<%= ext.name %>/*.xml',    // 'a': 'b' means b is source file and a is destination file 
                 },
                 options: {
                     replacements: [{
@@ -87,34 +87,30 @@ module.exports = function(grunt) {
     grunt.registerTask('import', ['run-grunt', 'sync:source']);
 
 
-    grunt.registerTask('build_sub', 'Build Joomla extension', function(build) {
+    grunt.registerTask('build', 'Build Joomla extension', function(build, importflag) {
         if (build === undefined) {
             // grunt.warn('Building patch (build:patch)');
             grunt.log.writeln('Building patch (build:patch)');
             build = 'patch';
         }
         grunt.log.writeln('Build ' + build + ' version');
-            
-        grunt.task.run('bumpup:' + build);
-        grunt.task.run('string-replace:version');
-        grunt.task.run('compress');
-    });
-
-
-    grunt.registerTask('build', 'Import and build Joomla extension', function(build) {
-        if (build === undefined) {
-            // grunt.warn('Building patch (build:patch)');
-            grunt.log.writeln('Building patch (build:patch)');
-            build = 'patch';
+        // importflag = 'yes';
+        if (importflag === undefined || importflag === 'yes') {
+            grunt.log.writeln('Import files from local joomla');
+            grunt.task.run('import');    
+        } else {
+            if (importflag === 'no') grunt.log.writeln('No new import of files'); 
         }
-        grunt.log.writeln('Build ' + build + ' version');
-        
-        grunt.task.run('import');    
         grunt.task.run('bumpup:' + build);
-        grunt.task.run('string-replace:version');
+        grunt.task.run('update-manifest');
         grunt.task.run('compress');
     });
 
+
+    grunt.registerTask('update-manifest', 'Update Joomla manifest files', function() {
+        grunt.log.writeln('Building patch (build:patch)');
+        grunt.task.run('string-replace:version');
+    });
 
 
     // run grunt file in joomla folder
@@ -124,7 +120,7 @@ module.exports = function(grunt) {
         var cb = this.async();
         var child = grunt.util.spawn({
             grunt: true,
-            args: ['build_' + ext.name],
+            args: ['package:' + ext.name],
             opts: {
                 cwd: ext.joomla
                 }
