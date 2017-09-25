@@ -88,12 +88,12 @@ module.exports = function(grunt) {
 
 
     grunt.registerTask('build', 'Build Joomla extension', function(build, importflag) {
+        var ext = require('./ext.json');
         if (build === undefined) {
             // grunt.warn('Building patch (build:patch)');
             grunt.log.writeln('Building patch (build:patch)');
             build = 'patch';
         }
-        grunt.log.writeln('Build ' + build + ' version');
         // importflag = 'yes';
         if (importflag === undefined || importflag === 'yes') {
             grunt.log.writeln('Import files from local joomla');
@@ -101,14 +101,21 @@ module.exports = function(grunt) {
         } else {
             if (importflag === 'no') grunt.log.writeln('No new import of files'); 
         }
-        grunt.task.run('bumpup:' + build);
+
+        if (build !== 'no') {
+            grunt.log.writeln('Build ' + build + ' version');
+            grunt.task.run('bumpup:' + build);
+        }
         grunt.task.run('update-manifest');
+
+        // not actual file name (seconds might be different)
+        grunt.log.writeln('Compress file (' + ext.name + '_' + grunt.template.today('yyyymmdd_HHMMss') + '.zip)');
         grunt.task.run('compress');
     });
 
 
     grunt.registerTask('update-manifest', 'Update Joomla manifest files', function() {
-        grunt.log.writeln('Building patch (build:patch)');
+        grunt.log.writeln('Update manifest XML file');
         grunt.task.run('string-replace:version');
     });
 

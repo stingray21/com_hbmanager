@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="settings"
+		label="COM_HBTEAM_CONFIG_TEAMGOALS_LABEL"
+		description="COM_HBTEAM_CONFIG_TEAMGOALS_DESC"
+	>
+					
+		<field 
+			name="chartsettings" 
+			type="checkboxes" 
+			label="COM_HBTEAM_CONFIG_GOALCHART_SETTINGS_LABEL"
+			description="COM_HBTEAM_CONFIG_GOALCHART_SETTINGS_DESC"
+			default="goals,total,penalties,twoMin,twoMinTotal"
+		>
+			<option value="goals">COM_HBTEAM_GOALCHART_MODE_GOALS</option>
+			<option value="total">COM_HBTEAM_GOALCHART_MODE_TOTAL</option>
+			<option value="penalties">COM_HBTEAM_GOALCHART_MODE_PENALTIES</option>
+			<option value="twoMin">COM_HBTEAM_GOALCHART_MODE_TWOMIN</option>
+			<option value="twoMinTotal">COM_HBTEAM_GOALCHART_MODE_TWOMINTOTAL</option>
+		</field>
+
+	</fieldset>
+</config>

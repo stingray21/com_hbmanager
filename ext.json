@@ -1,5 +1,5 @@
 {
-	"joomla": "/home/josh/lamp/public_html/handball/hb_joomla3/",
+	"joomla": "D:/xampp/htdocs/handball/hb_joomla3/",
 	"package": "zzz_packages/",
 	"name": "com_hbmanager"
 }
