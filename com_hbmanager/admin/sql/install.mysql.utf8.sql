@@ -22,7 +22,8 @@ CREATE TABLE `#__hb_gym` (
 
 DROP TABLE IF EXISTS `#__hb_team`;
 CREATE TABLE `#__hb_team` (
-  `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `id` int(11) NOT NULL,
+  `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `order` int(3) DEFAULT NULL,
   `team` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -34,8 +35,7 @@ CREATE TABLE `#__hb_team` (
   `hvwLink` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `update` datetime DEFAULT NULL,
   `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`teamkey`),
-  UNIQUE KEY `teamkey` (`teamkey`)
+  PRIMARY KEY (`teamkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
