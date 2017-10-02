@@ -38,34 +38,13 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_TEAM', 'team', $listDirn, $listOrder); ?>
 			</th>
 			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ORDER', 'order', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_TEAMKEY', 'teamkey', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_NAME', 'name', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_SHORTNAME', 'shortName', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_LEAGUE', 'league', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_SEX', 'sex', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_YOUTH', 'youth', $listDirn, $listOrder); ?>
-			</th>
-			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_HVWLINK', 'hvwLink', $listDirn, $listOrder); ?>
 			</th>
 			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_UPDATE', 'update', $listDirn, $listOrder); ?>
 			</th>
 			<th width="">
-				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_EMAIL', 'email', $listDirn, $listOrder); ?>
+				<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE'); ?>
 			</th>
 			<th width="2%">
 				<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'id', $listDirn, $listOrder); ?>
@@ -90,25 +69,18 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 						</td>
 
-						<td>
-							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_HBMANAGER_TEAM_EDIT'); ?>">
-								<?php echo $row->team; ?>
-							</a>
-						</td>
-						<td><?php echo $row->order; ?></td>
-						<td><?php echo $row->teamkey; ?></td>
-						<td><?php echo $row->name; ?></td>
-						<td><?php echo $row->shortName; ?></td>
-						<td><?php echo $row->league.'('.$row->leagueKey.')'; ?></td>
-						<td><?php echo $row->sex; ?></td>
-						<td><?php echo $row->youth; ?></td>
+						<td><?php echo $row->team.' ('.$row->leagueKey.')'; ?></td>
 						<td>
 							<a href="<?php echo $rwo->hvwLink; ?>" title="<?php echo $row->hvwLink;  ?>">
 								<?php echo JText::_('COM_HBMANAGER_TEAMS_HVWLINK_TEXT');; ?>
 							</a>
 						</td>
 						<td><?php echo $row->update; ?></td>
-						<td><?php echo $row->email; ?></td>
+						<td align="center">
+							<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="console.log('test')" title="" data-original-title="Update team">
+								<span class="icon-arrow-down-4" aria-hidden="true"></span>
+							</a>		
+						</td>
 						<td align="center">
 							<?php echo $row->id; ?>
 						</td>

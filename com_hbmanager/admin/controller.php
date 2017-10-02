@@ -19,7 +19,7 @@ class hbmanagerController extends JControllerLegacy
 	 * @since 12.2
 	 */
 	// protected $default_view = 'hbmanager';
-	protected $default_view = 'teams';
+	protected $default_view = 'teamdata';
 	
 	
 } 

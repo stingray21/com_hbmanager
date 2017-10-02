@@ -54,7 +54,7 @@ module.exports = function(grunt) {
         compress: {
             main: {
                 options: {
-                  archive: '../Releases/<%= ext.name %>_' + grunt.template.today('yyyymmdd_HHMMss') + '.zip'
+                  archive: '../Releases/<%= ext.name %>_' + grunt.template.today('yyyymmdd_HHMMss') + '_<%= pkg.version %>' + '.zip'
                 },
                 files: [
                     {
