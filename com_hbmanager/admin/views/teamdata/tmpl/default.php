@@ -10,6 +10,34 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 
+// $inipath = php_ini_loaded_file();
+// if ($inipath) {
+//     echo 'Loaded php.ini: ' . $inipath;
+// } else {
+//     echo 'A php.ini file is not loaded';
+// }
+
+// JHTML data expects input time as UTC --> use 'now' instead of date()
+echo 'Joomla with date(...):<pre>';print_r(JHTML::_('date', date("Y-m-d H:i:s"), 'Y-m-d H:i:s e', true));echo'</pre>';
+echo 'Joomla with \'now\':<pre>';print_r(JHTML::_('date', 'now', 'Y-m-d H:i:s e', true));echo'</pre>';
+
+$tz = true; //true: user-time, false:server-time
+echo 'date()<pre>';print_r(date("Y-m-d H:i:s e"));echo'</pre>';
+// echo 'php:<pre>';print_r(date_default_timezone_get());echo'</pre>'; 
+// echo 'ini:<pre>';print_r(ini_get('date.timezone'));echo'</pre>'; 
+// $user   = JFactory::getUser();
+// echo 'user:<pre>';print_r($user->params);echo'</pre>';
+$usertime = JHTML::_('date', 'now', 'Y-m-d H:i:s e', true);
+echo 'Joomla user:<pre>';print_r($usertime);echo'</pre>';
+// $config = JFactory::getConfig();
+// echo 'Joomla:<pre>';print_r($config['offset']);echo'</pre>';
+$servertime = JHTML::_('date', 'now', 'Y-m-d H:i:s e', false);
+echo 'Joomla server:<pre>';print_r($servertime);echo'</pre>';
+// $costumtime = JHTML::_('date', date("Y-m-d H:i:s"), 'Y-m-d H:i:s e', 'UTC');
+// echo 'Joomla custom:<pre>';print_r($customtime);echo'</pre>';
+$date = JFactory::getDate('now', 'UTC');
+echo 'JFactory now:<pre>';print_r($date);echo'</pre>';
+
 JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder     = $this->escape($this->filter_order);
