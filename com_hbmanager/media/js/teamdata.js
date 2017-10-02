@@ -2,20 +2,21 @@ function updateTeamBtn(teamkey)
 {
 	console.log('Update ' + teamkey);
 
-	document.getElementById("update-team-"+teamkey).classList.add("spinner");
+	document.getElementById("update-team-"+teamkey).getElementsByClassName("updateBtn")[0].classList.add("spinner");
 	
 	updateTeamData(teamkey, function (response) {
-			document.getElementById("update-team-"+teamkey).classList.remove("spinner");
-			document.getElementById("date-"+teamkey).innerHTML = response.date;
+			document.getElementById("update-team-"+teamkey).getElementsByClassName("updateBtn")[0].classList.remove("spinner");
+			document.getElementById("update-team-"+teamkey).getElementsByClassName("date")[0].innerHTML = response.date;
 		});
 
 }	
 
 function updateTeamData(teamkey, callback)
 {
+	// console.log('Loading ' + teamkey);
 	var url = 'index.php?option=com_hbmanager&task=updateTeamData&format=raw';
 	
-	httpRequest = new XMLHttpRequest();
+	var httpRequest = new XMLHttpRequest();
 
 	if (!httpRequest) {
 		alert('Giving up :( Cannot create an XMLHTTP instance');
@@ -41,4 +42,26 @@ function updateTeamData(teamkey, callback)
 	httpRequest.open('POST', url);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	httpRequest.send('teamkey=' + encodeURIComponent(teamkey));
+}
+
+function updateTeams()
+{
+	var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
+	// console.log(checkedBoxes);
+
+	var teamkeys = [];
+	for (var i=0; i<checkedBoxes.length; i++) {
+		if (checkedBoxes[i].name != "checkall-toggle") 
+		{
+			var teamkey = checkedBoxes[i].parentElement.parentElement.id;
+			teamkey = teamkey.replace('update-team-', '');
+
+			updateTeamBtn(teamkey);
+
+			teamkeys.push(teamkey);
+		}
+    }
+    // console.log(teamkeys);
+	
+	return true;
 }

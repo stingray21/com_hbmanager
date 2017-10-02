@@ -66,7 +66,9 @@ class hbmanagerViewTeamdata extends JViewLegacy
 		}
 
 		JToolBarHelper::title($title, 'teamdata');
+		JToolBarHelper::custom('teamdata.update', 'arrow-down-4', 'arrow-down-4',  JText::_('COM_HBMANAGER_TEAMDATA_TOOLBAR_UPDATE'), true);
 	}
+
 	/**
 	 * Method to set up the document properties
 	 *
@@ -75,7 +77,8 @@ class hbmanagerViewTeamdata extends JViewLegacy
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.stylesheet.css' );
+		$document->addScript( JUri::root() . 'media/com_hbmanager/js/teamdata.js' );
+		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/admin.css' );
 		$document->setTitle(JText::_('COM_HBMANAGER_TEAMDATA_TITLE'));
 	}
 }

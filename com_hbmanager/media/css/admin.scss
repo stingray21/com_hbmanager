@@ -1,6 +1,39 @@
 // hbmanager css admin
 
+
 .icon-arrow-down-4::before {
     color: #398137;
 }
 
+// span.icon-update {
+// 	background-image: url(../images/update.png);
+// }
+
+div#teamdata {
+
+	@keyframes spinner {
+		to {transform: rotate(360deg);}
+	}
+
+	.spinner { 
+		position: relative; 
+
+		.btn {
+			display: none;
+		}
+	}
+	 
+	.spinner:before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		width: 15px;
+		height: 15px;
+		margin-left: 7px;
+		border-radius: 50%;
+		border: 2px solid #ccc;
+		border-top-color: #333;
+		animation: spinner .6s linear infinite;
+	}
+
+}

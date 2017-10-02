@@ -45,7 +45,7 @@ class JFormFieldTeam extends JFormFieldList
 		{
 			foreach ($teams as $team)
 			{
-				$options[] = JHtml::_('select.option', $team->id, $team->team);
+				$options[] = JHtml::_('select.option', $team->teamId, $team->team);
 			}
 		}
 

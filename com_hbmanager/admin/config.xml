@@ -1,5 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <config>
+	<fieldset
+		name="hvwinfo"
+		label="COM_HBMANAGER_CONFIG_SETTINGS_LABEL"
+		description="COM_HBMANAGER_CONFIG_SETTINGS_DESC"
+	>
+		<field 
+			name="hvwurl-page" 
+			type="url" 
+			class="url-input"
+			default="http://www.hvw-online.org/spielbetrieb/ergebnissetabellen/#/league?ogId=3&amp;lId=__ID__&amp;allGames=1" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_DESC" 
+			size="100" 
+		/>
+
+		<field 
+			name="hvwurl-json" 
+			type="url" 
+			class="url-input"
+			default="http://spo.handball4all.de/service/if_g_json.php?ca=1&amp;cl=__ID__&amp;cmd=ps&amp;og=3" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_DESC" 
+			size="100" 
+		/>
+		
+		<field 
+			name="clubindicator" 
+			type="text" 
+			default="Geisl" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_CLUB_INDICATOR_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_CLUB_INDICATORURL_DESC" 
+			size="10"
+		/>
+		
+		<field 
+			name="urlyear" 
+			type="text" 
+			default="2017" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_URL_YEAR_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_URL_YEAR_DESC" 
+			size="10"
+		/>
+		
+		<field 
+			name="emaildomain" 
+			type="text" 
+			default="" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_EMAIL_DOMAIN_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_EMAIL_DOMAIN_DESC" 
+			size="15"
+		/>
+		
+		<field 
+			name="urlstartdate" 
+			type="calendar" 
+			default="2015-10-01" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_URL_STARTDATE_LABEL" 
+			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_STARTDATE_DESC" 
+			format="%Y-%m-%d" 
+		/>
+	</fieldset>
 	
+	<fieldset
+		name="teammenus"
+		label="COM_HBMANAGER_CONFIG_TEAMMENU_LABEL"
+		description="COM_HBMANAGER_CONFIG_TEAMMENU_DESC"
+	>
+		<field 
+			name="menuActive" 
+			type="sql" 
+			default="" 
+			label="COM_HBMANAGER_CONFIG_TEAMMENU_ADULT_TEAMS_LABEL" 
+			description="COM_HBMANAGER_CONFIG_TEAMMENU_ADULT_TEAMS_DESC"
+			query="SELECT `id`, `alias`, `title` FROM #__menu WHERE `level` &lt;= 2 AND `access` = 1" 
+			key_field="id" 
+			value_field="title"
+		>
+			<option value="">Please select your option</option>
+		</field>
+		
+		<field 
+			name="menuYouth" 
+			type="sql" 
+			default="ONLY1" 
+			label="COM_HBMANAGER_CONFIG_TEAMMENU_YOUTH_TEAMS_LABEL" 
+			description="COM_HBMANAGER_CONFIG_TEAMMENU_YOUTH_TEAMS_DESC"
+			query="SELECT `id`, `alias`, `title` FROM #__menu WHERE `level` &lt;= 2 AND `access` = 1" 
+			key_field="id" 
+			value_field="title"
+		>
+			<option value="ONLY1">ONLY_ONE</option>
+		</field>
+	</fieldset>
 </config>

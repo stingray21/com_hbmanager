@@ -2,7 +2,7 @@
 <form>
 	<fieldset>
 		<field
-				name="id"
+				name="teamId"
 				type="hidden"
 				/>
 		<field
@@ -87,7 +87,7 @@
 				default=""
 				/>
 		<field
-				name="hvwLink"
+				name="leagueIdHvw"
 				type="text"
 				label="COM_HBMANAGER_TEAM_HVWLINK_LABEL"
 				description="COM_HBMANAGER_TEAM_HVWLINK_DESC"

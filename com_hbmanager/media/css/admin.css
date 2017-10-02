@@ -1,4 +1,23 @@
 .icon-arrow-down-4::before {
   color: #398137; }
 
+@keyframes spinner {
+  to {
+    transform: rotate(360deg); } }
+div#teamdata .spinner {
+  position: relative; }
+  div#teamdata .spinner .btn {
+    display: none; }
+div#teamdata .spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  margin-left: 7px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  animation: spinner .6s linear infinite; }
+
 /*# sourceMappingURL=admin.css.map */

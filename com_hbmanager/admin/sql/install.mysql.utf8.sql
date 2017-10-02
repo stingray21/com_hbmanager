@@ -21,8 +21,8 @@ CREATE TABLE `#__hb_gym` (
 -- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `#__hb_team`;
-CREATE TABLE `#__hb_team` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `zhkog_hb_team` (
+  `teamId` int(11) NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `order` int(3) DEFAULT NULL,
   `team` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -30,12 +30,13 @@ CREATE TABLE `#__hb_team` (
   `shortName` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `leagueKey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `league` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `leagueIdHvw` int(10) DEFAULT NULL,
   `sex` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `youth` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `hvwLink` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `update` datetime DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`teamkey`)
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
+  PRIMARY KEY (`teamId`),
+  UNIQUE(`teamkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

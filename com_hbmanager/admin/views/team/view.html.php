@@ -47,7 +47,6 @@ class HbmanagerViewTeam extends JViewLegacy
 			return false;
 		}
 
-
 		// Set the toolbar
 		$this->addToolBar();
 
@@ -73,7 +72,7 @@ class HbmanagerViewTeam extends JViewLegacy
 		$input->set('hidemainmenu', true);
 
 		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($input);echo'</pre>';
-		$isNew = ($this->item->id == 0);
+		$isNew = ($this->item->teamId == 0);
 
 		if ($isNew)
 		{
@@ -98,7 +97,7 @@ class HbmanagerViewTeam extends JViewLegacy
 	 */
 	protected function setDocument() 
 	{
-		$isNew = ($this->item->id < 1);
+		$isNew = ($this->item->teamId < 1);
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HBMANAGER_TEAM_CREATING') :
                 JText::_('COM_HBMANAGER_TEAM_EDITING'));
