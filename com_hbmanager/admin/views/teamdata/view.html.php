@@ -67,8 +67,8 @@ class hbmanagerViewTeamdata extends JViewLegacy
 			$title .= "<span style='font-size: 0.5em; vertical-align: middle;'> (" . $this->pagination->total . ")</span>";
 		}
 
-		JToolBarHelper::title($title, 'teamdata');
-		JToolBarHelper::custom('teamdata.update', 'arrow-down-4', 'arrow-down-4',  JText::_('COM_HBMANAGER_TEAMDATA_TOOLBAR_UPDATE'), true);
+		JToolBarHelper::title($title, 'hb-ball');
+		JToolBarHelper::custom('teamdata.update', 'loop updateTeams', 'loop updateTeams',  JText::_('COM_HBMANAGER_TEAMDATA_TOOLBAR_UPDATE'), true);
 	}
 
 	/**

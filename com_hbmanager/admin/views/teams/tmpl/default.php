@@ -16,7 +16,10 @@ $listOrder     = $this->escape($this->filter_order);
 $listDirn      = $this->escape($this->filter_order_Dir);
 ?>
 <div id="j-sidebar-container" class="span2">
-    <?php echo JHtmlSidebar::render(); ?>
+    <?php 
+	echo JHtmlSidebar::render(); 
+	JToolBarHelper::preferences('com_hbmanager');
+	?>
 </div>
 <div id="j-main-container" class="span10">
 	<form action="index.php?option=com_hbmanager&view=teams" method="post" id="adminForm" name="adminForm">

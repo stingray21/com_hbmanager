@@ -1,7 +1,10 @@
 // hbmanager css admin
 
+@import 'icohb';
 
-.icon-arrow-down-4::before {
+
+#teamdata .icon-loop::before,
+.updateTeams .icon-loop::before {
     color: #398137;
 }
 

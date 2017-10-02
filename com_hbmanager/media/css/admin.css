@@ -1,4 +1,48 @@
-.icon-arrow-down-4::before {
+@font-face {
+  font-family: 'icohb';
+  src: url("fonts/icohb.eot?e4u2ud");
+  src: url("fonts/icohb.eot?e4u2ud#iefix") format("embedded-opentype"), url("fonts/icohb.ttf?e4u2ud") format("truetype"), url("fonts/icohb.woff?e4u2ud") format("woff"), url("fonts/icohb.svg?e4u2ud#icohb") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+[class^="icon-hb"]::before, [class*=" icon-hb"]::before {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icohb' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-hb-ball::before {
+  content: "\e900"; }
+
+.icon-hb-image::before {
+  content: "\e90d"; }
+
+.icon-hb-images::before {
+  content: "\e90e"; }
+
+.icon-hb-profile::before {
+  content: "\e923"; }
+
+.icon-hb-file-empty::before {
+  content: "\e924"; }
+
+.icon-hb-files-empty::before {
+  content: "\e925"; }
+
+.icon-hb-file-text2::before {
+  content: "\e926"; }
+
+.icon-hb-file-picture::before {
+  content: "\e927"; }
+
+#teamdata .icon-loop::before,
+.updateTeams .icon-loop::before {
   color: #398137; }
 
 @keyframes spinner {

@@ -28,11 +28,15 @@ JHtml::_('formbehavior.chosen', 'select');
 $listOrder     = $this->escape($this->filter_order);
 $listDirn      = $this->escape($this->filter_order_Dir);
 ?>
-<div id="j-sidebar-container" class="span2">
-	<?php echo JHtmlSidebar::render(); ?>
-</div>
-<div id="j-main-container" class="span10">
-	<div id="teamdata">
+<div id="teamdata">
+	<div id="j-sidebar-container" class="span2 ">
+		<?php 
+		echo JHtmlSidebar::render(); 
+		JToolBarHelper::preferences('com_hbmanager');
+		?>
+	</div>
+	<div id="j-main-container" class="span10">
+	
 		<form action="index.php?option=com_hbmanager&view=teamdata" method="post" id="adminForm" name="adminForm">
 			<div class="row-fluid">
 				<div class="span6">
@@ -106,7 +110,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 								<td align="center">
 									<div class="updateBtn">
 										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">
-											<span class="icon-arrow-down-4" aria-hidden="true"></span>
+											<span class="icon-loop" aria-hidden="true"></span>
 										</a>		
 									</div>
 								</td>
