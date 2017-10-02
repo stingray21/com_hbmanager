@@ -102,7 +102,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 										  		echo $row->leagueIdHvw; ?> 
 									</a>
 								</td>
-								<td class="date"><?php echo JHTML::_('date', $row->update , 'D, d.m.Y - H:i:s \U\h\r', $tz); ?></td>
+								<td class="date"><?php echo JHTML::_('date', $row->update , 'D, d.m.Y - H:i:s', $tz); ?></td>
 								<td align="center">
 									<div class="updateBtn">
 										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">

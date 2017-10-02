@@ -5,11 +5,19 @@
 		name="hvwinfo"
 		label="COM_HBMANAGER_CONFIG_SETTINGS_LABEL"
 		description="COM_HBMANAGER_CONFIG_SETTINGS_DESC"
+		addfieldpath="administrator/components/com_hbmanager/models/fields"
 	>
+		<field 
+			name="customstyle" 
+			type="customstyle" 
+			label="" 
+			description="" 
+		/>
+
 		<field 
 			name="hvwurl-page" 
 			type="url" 
-			class="url-input"
+			class="longUrl"
 			default="http://www.hvw-online.org/spielbetrieb/ergebnissetabellen/#/league?ogId=3&amp;lId=__ID__&amp;allGames=1" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_LABEL" 
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_DESC" 
@@ -19,7 +27,7 @@
 		<field 
 			name="hvwurl-json" 
 			type="url" 
-			class="url-input"
+			class="longUrl"
 			default="http://spo.handball4all.de/service/if_g_json.php?ca=1&amp;cl=__ID__&amp;cmd=ps&amp;og=3" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_LABEL" 
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_DESC" 
