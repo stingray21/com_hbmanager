@@ -30,6 +30,9 @@ class hbmanagerViewTeams extends JViewLegacy
 			return false;
 		}
 
+		// Set the submenu
+		HbmanagerHelper::addSubmenu('teams');
+
 		// Set the toolbar and number of found items
 		$this->addToolBar();
 

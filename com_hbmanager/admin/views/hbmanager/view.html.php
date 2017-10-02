@@ -18,6 +18,9 @@ class hbmanagerViewHbmanager extends JViewLegacy
 			return false;
 		}
 
+		// Set the submenu
+		HbmanagerHelper::addSubmenu('hbmanager');
+
 		// Set the toolbar and number of found items
 		$this->addToolBar();
 

@@ -38,9 +38,11 @@ class hbmanagerViewTeamdata extends JViewLegacy
 			return false;
 		}
 
+		// Set the submenu
+		HbmanagerHelper::addSubmenu('teamdata');
+
 		// Set the toolbar and number of found items
 		$this->addToolBar();
-		//$this->sidebar = JHtmlSidebar::render();
 
 		// Display the template
 		parent::display($tpl);
