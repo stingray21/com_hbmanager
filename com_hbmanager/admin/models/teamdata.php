@@ -130,11 +130,11 @@ class HBmanagerModelTeamdata extends JModelList
 		$hvwData = self::getHvwTeamData($team->url);
 
 		// schedule
-		// $result['schedule'] = self::updateDB_game($team, $hvwData['schedule']);
+		$result['schedule'] = self::updateDB_game($team, $hvwData['schedule']);
 
 		// standings
-		// $standingsData = self::addMissingRanking($hvwData['standings']);
-		// $result['standings'] = self::updateDB_standings($team, $standingsData);
+		$standingsData = self::addMissingRanking($hvwData['standings']);
+		$result['standings'] = self::updateDB_standings($team, $standingsData);
 
 		// standings_details
 		$standingsData = self::getDetailedStandingsData($team->teamkey);
@@ -552,8 +552,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 				}
 				elseif ($compare === 0) {
 					if ($compareH2H) {
-						self::compareH2H_test($newRow, $currRow, $teamkey);
-						$direct = self::compareH2H_mysql($newRow, $currRow, $teamkey);
+						$direct = self::compareH2H($newRow, $currRow, $teamkey);
 						$currRow->direct = $currRow->direct + (-1*$direct);
 						$newRow->direct = $newRow->direct + $direct;
 					}
@@ -595,82 +594,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 		return -1;
 	}
 
-	protected function compareH2H_test ($newRow, $currRow, $teamkey, $runs = 50) 
-	{
-
-		echo "\n\n".__FILE__." (".__LINE__."): \n".__FUNCTION__."\n";
-
-		$functionNames = array('compareH2H_php','compareH2H_php_single','compareH2H_mysql');
-
-		foreach ($functionNames as $key => $functionName) 
-		{	
-			$time_start = microtime(true);
-
-			$result = [];
-			for ($i=0; $i < $runs; $i++) 
-			{ 
-				$result[] = self::$functionName($newRow, $currRow, $teamkey);
-			}
-
-			$time_end = microtime(true);
-			echo "\n<pre>";
-			echo "\n\t".$functionName;
-			echo "\n\tresult: ".implode(" ", $result);
-			echo "\n\tsum: ".array_sum($result);
-			echo "\n\ttime: ".($time_end - $time_start)." seconds";
-			echo "\n</pre>\n";
-		}
-	}
-
-	protected function  compareH2H_php($newRow, $currRow, $teamkey)
-	{
-		// PHP version of head-to-head comparison function
-		$db = JFactory::getDBO();
-
-		// home game of $newRow team against $currRow team
-		$query = $db->getQuery(true);
-		$query->select('goalsHome AS goals, goalsAway AS goalsOpponent');
-		$query->from('#__hb_game');
-		$query->where($db->qn('home').'='.$db->q($newRow->team).' AND '.
-			$db->qn('away').'='.$db->q($currRow->team).' AND '.
-			$db->qn('season').'='.$db->q($this->season).' AND '.
-			$db->qn('teamkey').'='.$db->q($teamkey));
-		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
-		$db->setQuery($query);
-		$homeGame = $db->loadObject();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($newRow);echo'</pre>';
-
-		// away game of $newRow team against $currRow team
-		$query = $db->getQuery(true);
-		$query->select('goalsAway AS goals, goalsHome AS goalsOpponent');
-		$query->from('#__hb_game');
-		$query->where($db->qn('home').'='.$db->q($currRow->team).' AND '.
-			$db->qn('away').'='.$db->q($newRow->team).' AND '.
-			$db->qn('season').'='.$db->q($this->season).' AND '.
-			$db->qn('teamkey').'='.$db->q($teamkey));
-		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
-		$db->setQuery($query);
-		$awayGame = $db->loadObject();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($currRow);echo'</pre>';
-
-		// compare goals
-		$goals = ($homeGame->goals + $awayGame->goals) 
-					- ($awayGame->goalsOpponent + $homeGame->goalsOpponent);	
-		if ($goals > 0) $direct = 1;
-		elseif ($goals < 0) $direct = -1;
-		else 
-		{
-			// take goals shot away in account
-			$awayGoals = ($awayGame->goals - $homeGame->goalsOpponent);
-			if ($awayGoals > 0) $direct = 1;
-			elseif ($awayGoals < 0) $direct = -1;
-			else $direct = 0; 
-		}
-		
-		return $direct;
-	}
-
-	protected function  compareH2H_php_single($newRow, $currRow, $teamkey)
+	protected function  compareH2H($newRow, $currRow, $teamkey)
 	{
 		// PHP version of head-to-head comparison function with single SQL request
 		$db = JFactory::getDBO();
@@ -713,72 +637,6 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 		return $direct;
 	}
 
-
-	
-
-	protected function  compareH2H_mysql($newRow, $currRow, $teamkey)
-	{
-		// MySQL version of head-to-head comparison function
-		$table = '#__hb_game'; // TODO $this->tableGame;
-		$db = JFactory::getDBO();
-		$query = "SELECT 
-			team, opponent, 
-			SUM(goals - goalsOpponent) AS goalsDiff, 
-			SUM(IF(loc = 'A', goals, 0)) - SUM(IF(loc = 'H', goalsOpponent, 0)) AS awayGoalsDiff,
-			CASE 
-				WHEN SUM(goals - goalsOpponent) > 0 
-					THEN 1
-				WHEN SUM(goals - goalsOpponent) < 0 
-					THEN -1
-				WHEN SUM(goals - goalsOpponent) = 0 
-					THEN CASE
-						WHEN SUM(IF(loc='A', goals, 0)) - SUM(IF(loc='H', goalsOpponent, 0)) > 0
-							THEN 1
-						WHEN SUM(IF(loc='A', goals, 0)) - SUM(IF(loc='H', goalsOpponent, 0)) < 0 
-							THEN -1
-						WHEN SUM(IF(loc='A', goals, 0)) - SUM(IF(loc='H', goalsOpponent, 0)) = 0 
-							THEN 0	
-					END
-				ELSE 0
-			END AS direct
-			FROM 
-			(SELECT 
-			'H' AS loc, 
-			DATE(s1.dateTime) AS datum,
-			s1.home AS team, 
-			s1.away AS opponent, 
-			s1.goalsHome AS goals, 
-			s1.goalsAway AS goalsOpponent
-			FROM ".$table." AS s1 
-			WHERE home=".$db->q($newRow->team)."
-			AND away=".$db->q($currRow->team)."
-			AND season=".$db->q($this->season)." 
-			AND teamkey=".$db->q($teamkey)." 
-
-			UNION 
-
-			SELECT 
-			'A' AS loc,
-			DATE(s2.dateTime) datum,
-			s2.away team, 
-			s2.home opponent, 
-			s2.goalsAway goals, 
-			s2.goalsHome goalsOpponent 
-			FROM ".$table." AS s2 
-			WHERE away=".$db->q($newRow->team)."
-			AND home=".$db->q($currRow->team)."
-			AND season=".$db->q($this->season)." 
-			AND teamkey=".$db->q($teamkey)." 
-			) AS s 
-
-			GROUP BY team";
-		
-		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$result = $db->loadObject();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($result);echo'</pre>';die;
-		return (int) $result->direct;
-	}
 }
 
 	
