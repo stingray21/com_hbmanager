@@ -73,7 +73,6 @@ CREATE TABLE `#__hb_team_picture` (
 
 DROP TABLE IF EXISTS `#__hb_game`;
 CREATE TABLE `#__hb_game` (
-  `gameId` int(10) NOT NULL AUTO_INCREMENT,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `leagueKey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -91,8 +90,7 @@ CREATE TABLE `#__hb_game` (
   `pointsAway` int(1) DEFAULT NULL,
   `ownClub` tinyint(1) DEFAULT NULL,
   `reportHvwId` int(10) DEFAULT NULL,
-  PRIMARY KEY (`gameId`),
-  UNIQUE KEY (`season`, `gameIdHvw`)
+  PRIMARY KEY (`season`, `gameIdHvw`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -154,7 +152,8 @@ CREATE TABLE `#__hb_standings` (
   `goalsNeg` mediumint(4) DEFAULT NULL,
   `goalsDiff` mediumint(4) DEFAULT NULL,
   `pointsPos` tinyint(2) DEFAULT NULL,
-  `pointsNeg` tinyint(2) DEFAULT NULL
+  `pointsNeg` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`season`, `teamkey`, `team`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -166,6 +165,8 @@ CREATE TABLE `#__hb_standings_details` (
   `rank` tinyint(2) DEFAULT NULL,
   `team` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `games` tinyint(2) DEFAULT NULL,
+  `gamesH` tinyint(2) DEFAULT NULL,
+  `gamesA` tinyint(2) DEFAULT NULL,
   `wins` tinyint(2) DEFAULT NULL,
   `winsHome` tinyint(2) DEFAULT NULL,
   `winsAway` tinyint(2) DEFAULT NULL,
@@ -189,7 +190,8 @@ CREATE TABLE `#__hb_standings_details` (
   `pointsPosAway` tinyint(2) DEFAULT NULL,
   `pointsNeg` tinyint(2) DEFAULT NULL,
   `pointsNegHome` tinyint(2) DEFAULT NULL,
-  `pointsNegAway` tinyint(2) DEFAULT NULL
+  `pointsNegAway` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`season`, `teamkey`, `team`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
