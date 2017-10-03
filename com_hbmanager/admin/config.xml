@@ -25,6 +25,16 @@
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_DESC" 
 			size="80" 
 		/>
+
+		<field 
+			name="hvwurl-report" 
+			type="longurl" 
+			default="http://spo.handball4all.de/misc/sboPublicReports.php?sGID=__ID__" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_REPORT_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_REPORT_DESC" 
+			size="80" 
+		/>
+		
 		
 		<field 
 			name="clubindicator" 
@@ -35,6 +45,15 @@
 			size="10"
 		/>
 		
+		<field 
+			name="season" 
+			type="text" 
+			default="2017" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_SEASON_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_SEASON_DESC" 
+			size="10"
+		/>
+
 		<field 
 			name="urlyear" 
 			type="text" 

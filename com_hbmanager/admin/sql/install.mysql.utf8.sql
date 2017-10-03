@@ -54,9 +54,9 @@ CREATE TABLE `#__hb_team_details` (
 DROP TABLE IF EXISTS `#__hb_team_picture`;
 CREATE TABLE `#__hb_team_picture` (
   `picId` int(10) NOT NULL AUTO_INCREMENT,
+  `season` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `teamkey` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `filename` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `season` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `caption_dt1` longtext COLLATE utf8_unicode_ci,
   `caption_dd1` longtext COLLATE utf8_unicode_ci,
   `caption_dt2` longtext COLLATE utf8_unicode_ci,
@@ -73,23 +73,26 @@ CREATE TABLE `#__hb_team_picture` (
 
 DROP TABLE IF EXISTS `#__hb_game`;
 CREATE TABLE `#__hb_game` (
+  `gameId` int(10) NOT NULL AUTO_INCREMENT,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `gameIdHvw` int(6) NOT NULL DEFAULT '0',
-  `leagueTeamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `gymNr` int(6) DEFAULT NULL,
+  `leagueKey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gameIdHvw` int(7) NOT NULL,
+  `gymId` int(6) DEFAULT NULL,
   `dateTime` datetime DEFAULT NULL,
   `home` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `away` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `goalsHome` int(3) DEFAULT NULL,
   `goalsAway` int(3) DEFAULT NULL,
+  `goalsHome1` int(3) DEFAULT NULL,
+  `goalsAway1` int(3) DEFAULT NULL,
   `comment` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `weightHome` int(3) DEFAULT NULL,
-  `weightAway` int(3) DEFAULT NULL,
+  `pointsHome` int(1) DEFAULT NULL,
+  `pointsAway` int(1) DEFAULT NULL,
   `ownClub` tinyint(1) DEFAULT NULL,
-  `reportLink` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`season`,`gameIdHvw`),
-  UNIQUE KEY `gameIdHvw` (`gameIdHvw`)
+  `reportHvwId` int(10) DEFAULT NULL,
+  PRIMARY KEY (`gameId`),
+  UNIQUE KEY (`season`, `gameIdHvw`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
