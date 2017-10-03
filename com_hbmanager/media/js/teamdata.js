@@ -1,12 +1,37 @@
 function updateTeamBtn(teamkey)
 {
-	console.log('Update ' + teamkey);
+	// console.log('Update ' + teamkey);
+	var row = document.getElementById("update-team-"+teamkey);
 
+	row.getElementsByClassName("indicator")[0].classList.remove("show");
+	row.getElementsByClassName("details")[0].classList.remove("show");
 	document.getElementById("update-team-"+teamkey).getElementsByClassName("updateBtn")[0].classList.add("spinner");
 	
 	updateTeamData(teamkey, function (response) {
-			document.getElementById("update-team-"+teamkey).getElementsByClassName("updateBtn")[0].classList.remove("spinner");
-			document.getElementById("update-team-"+teamkey).getElementsByClassName("date")[0].innerHTML = response.date;
+			// console.log(response);
+			
+			row.getElementsByClassName("updateBtn")[0].classList.remove("spinner");
+			row.getElementsByClassName("date")[0].innerHTML = response.date;
+			
+			row.getElementsByClassName("updateStatus")[0].classList.add("show");
+			 
+			if (response.result.total == true) 
+			{
+				row.getElementsByClassName("indicator")[0].classList.add("icon-checkmark", "show");
+			} 
+			else 
+			{
+				row.getElementsByClassName("details")[0].classList.add("show");
+
+				var classSchedule = ((response.result.schedule == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("schedule")[0].getElementsByTagName("span")[0].classList.add(classSchedule);
+
+				var classStandings = ((response.result.standings == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("standings")[0].getElementsByTagName("span")[0].classList.add(classStandings);
+
+				var classStandingsDetails = ((response.result.standingsDetails == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("standings-details")[0].getElementsByTagName("span")[0].classList.add(classStandingsDetails);
+			}
 		});
 
 }	
@@ -29,6 +54,7 @@ function updateTeamData(teamkey, callback)
 				if (httpRequest.status === 200) {
 					var response = JSON.parse(httpRequest.responseText);
 					console.log(response.teamkey + ': ' + response.date);
+					// console.log(response.result);
 					callback(response);
 				} else {
 					console.log('There was a problem with the request.');

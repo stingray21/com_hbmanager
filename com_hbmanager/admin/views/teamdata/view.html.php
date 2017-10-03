@@ -38,6 +38,9 @@ class hbmanagerViewTeamdata extends JViewLegacy
 			return false;
 		}
 
+		$model = $this->getModel('teamdata'); 
+		$this->dateFormat = $model->getDateFormat();
+
 		// Set the submenu
 		HbmanagerHelper::addSubmenu('teamdata');
 

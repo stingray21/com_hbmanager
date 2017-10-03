@@ -77,9 +77,21 @@
 			type="calendar" 
 			default="2015-10-01" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_URL_STARTDATE_LABEL" 
-			description="COM_HBMANAGER_CONFIG_CLUB_SETTINGS_URL_STARTDATE_DESC" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_URL_STARTDATE_DESC" 
 			format="%Y-%m-%d" 
 		/>
+		<!-- $timezone = false; //true: user-time, false:server-time -->
+		<field 
+			name="timezone" 
+			type="radio" 
+			default="0" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_TIMEZONE_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_TIMEZONE_DESC" 
+			class="btn-group btn-group-yesno"
+		>
+	  			<option value="0">Server</option>
+	  			<option value="1">User</option>
+		</field>
 	</fieldset>
 	
 	<fieldset

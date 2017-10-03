@@ -63,5 +63,19 @@ div#teamdata .spinner:before {
   border: 2px solid #ccc;
   border-top-color: #333;
   animation: spinner .6s linear infinite; }
+div#teamdata .updateStatus .icon-checkmark {
+  color: #398137; }
+div#teamdata .updateStatus .icon-warning {
+  color: #bd362f; }
+div#teamdata .updateStatus .indicator {
+  display: none;
+  margin-left: 10px; }
+div#teamdata .updateStatus .details {
+  display: none; }
+  div#teamdata .updateStatus .details ul {
+    list-style-type: none;
+    margin-left: 10px; }
+div#teamdata .updateStatus .show {
+  display: block; }
 
 /*# sourceMappingURL=admin.css.map */

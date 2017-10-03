@@ -17,9 +17,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class HBmanagerModelTeamdata extends JModelList
 {
-	private $tz = false; //true: user-time, false:server-time
+	protected $tz = false; //true: user-time, false:server-time
  	protected $season;
  	protected $ownTeamNames;
+ 	protected $dateFormat = 'D, d.m.Y - H:i:s';
+ 	protected $tableTeams = '#__hb_team';
 
 	/**
 	 * Constructor.
@@ -32,6 +34,7 @@ class HBmanagerModelTeamdata extends JModelList
 	public function __construct($config = array())
 	{
 		$this->season = HbmanagerHelper::getCurrentSeason();
+		$this->tz = HbmanagerHelper::getHbTimezone();
 		$this->ownTeamNames = self::getOwnTeamNames();
 
 		if (empty($config['filter_fields']))
@@ -65,7 +68,7 @@ class HBmanagerModelTeamdata extends JModelList
 
 		// Create the base select statement.
 		$query->select('*')
-			  ->from($db->quoteName('#__hb_team'));
+			  ->from($db->quoteName($this->tableTeams));
 
 		// Filter: like / search
 		$search = $this->getState('filter.search');
@@ -86,18 +89,6 @@ class HBmanagerModelTeamdata extends JModelList
 		return $query;
 	}
 
-	protected function getOwnTeamNames()
-	{
-		$db	= JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('DISTINCT '.$db->qn('shortName'));
-		$query->from('#__hb_team');
-		$db->setQuery($query);
-		$result = $db->loadColumn();
-		
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($result);echo'</pre>';
-		return $result;
-	}
 
 	function updateTeamData($teamkey) 
 	{
@@ -105,25 +96,23 @@ class HBmanagerModelTeamdata extends JModelList
 		$team->url = HbmanagerHelper::get_hvw_json_url($team->leagueIdHvw);
 		
 		$response['teamkey'] = $teamkey;
-		$response['date'] = JHTML::_('date', $team->update, 'D, d.m.Y - H:i:s', $this->tz);
 		$response['link'] = $team->url;
 
 		$response['result'] = self::updateTeamDB($team);
-		
+		$response['result']['total'] = !in_array(false, $response['result'], true);
+
+		// update dateTime
+		if (in_array(true, $response['result'], true))	{
+			$team->update = self::updateTimestamp($team->teamkey);
+		}
+
+		$response['date'] = JHTML::_('date', $team->update, $this->dateFormat, $this->tz);
+
+		self::updateLog($team, $response['result']);
+
 		return $response;
 	}
 
-	protected function getTeam($teamkey)
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__hb_team');
-		$query->where($db->qn('teamkey').' = '.$db->q($teamkey));
-		$db->setQuery($query);
-		$team = $db->loadObject();
-		return $team;
-	}
 
 	protected function updateTeamDB ($team) 
 	{
@@ -139,9 +128,78 @@ class HBmanagerModelTeamdata extends JModelList
 		// standings_details
 		$standingsData = self::getDetailedStandingsData($team->teamkey);
 		$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
-		$result['detailedStandings'] = self::updateDB_standings_details($team, $standingsData);
+		$result['standingsDetails'] = self::updateDB_standings_details($team, $standingsData);
+
+		// $result['schedule'] = true; $result['standings'] = true ; $result['standingsDetails'] = true; //testing
+		return $result;
+	}
+
+
+	protected function getOwnTeamNames()
+	{
+		$db	= JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('DISTINCT '.$db->qn('shortName'));
+		$query->from($this->tableTeams);
+		$db->setQuery($query);
+		$result = $db->loadColumn();
+		
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($result);echo'</pre>';
+		return $result;
+	}
+
+	protected function updateTimestamp ($teamkey)
+    {
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		$query->update($this->tableTeams);
+		
+		$dateUTC = JFactory::getDate( )->toSql();
+		
+		$query->set($db->qn('update').' = '.$db->q($dateUTC));
+		$query->where($db->qn('teamkey').' = '.$db->q($teamkey));
+		
+		$db->setQuery($query);
+		$result = $db->query();
+
+		return $dateUTC;
+    }
+
+    protected function updateLog($team, $result, $type = 'manual')
+    {	
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		$query->insert($db->qn('#__hb_updatelog'));
+		
+		$query->columns($db->qn(array('type','teamkey','dateTime', 'schedule', 'standings', 'standingsDetails')));
+
+		$query->values($db->q($type).', '.$db->q($team->teamkey).', '.$db->q($team->update).', '.
+			$db->q($result['schedule']).', '.$db->q($result['standings']).', '.$db->q($result['standingsDetails']));
+
+		$db->setQuery($query);
+		$result = $db->query();
 
 		return $result;
+    }
+
+	public function getDateFormat()
+	{
+		return $this->dateFormat;
+	}
+
+
+	protected function getTeam($teamkey)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from($this->tableTeams);
+		$query->where($db->qn('teamkey').' = '.$db->q($teamkey));
+		$db->setQuery($query);
+		$team = $db->loadObject();
+		return $team;
 	}
 
 	protected function getHvwTeamData($url) 

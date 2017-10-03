@@ -78,95 +78,13 @@ class hbmanagerModelHbdata extends JModelLegacy
 		//echo '=> model->$updated <br><pre>'; echo $query; echo '</pre>';
 		//echo '=> model->$updated <br><pre>'; print_r($teams); echo '</pre>';
 		return $teams;
-	}
-	
-    function updateTeam($teamkey) 
-    {
-		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teamkey); echo '</pre>';
-		$source = self::getSourceFromHVW( self::getHvwLink($teamkey) );
-		self::setSeason($source['headline']);
-		
-		if (self::updateGamesInDB($teamkey, $source['schedule'], $source['leagueKey'])
-				&& self::updateHvwStandingsInDB($teamkey, $source['standings'])
-				&& self::updateDetailedStandingsInDB($teamkey) )
-//		if (self::updateGamesInDB($teamkey, $source['schedule']) )
-		{
-			//TODO find better place for updating Standings Chart data
-			self::updateStandingsChartData($teamkey);
-		
-			self::updateTimestamp ($teamkey);
-			$this->updated[] = $teamkey;
-			self::updateLog('schedule', $teamkey);
-			return true;
-		}
-		return false;
-    }
-	
+	}	
 	
 	private function updateStandingsChartData ($teamkey) {
 		$chartModel = new HBmanagerModelHbdatastandings();
 		//echo __FILE__.' ('.__LINE__.')<pre>'; print_r($teamkey); echo '</pre>';
 		$chartModel->updateStandingsChart($teamkey);
 	}
-	
-
-    protected function updateTimestamp ($teamkey)
-    {
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->update('hb_mannschaft');
-		$dateUTC = JFactory::getDate( )->toSql();
-		//echo '<p>in DB: '.$date."</p>";
-		$query->set($db->qn('update').' = '.$db->q($dateUTC));
-		$query->where($db->qn('kuerzel').' = '.
-								$db->q($teamkey));
-		//echo '=> model->$query <br><pre>".$query."</pre>';
-		$db->setQuery($query);
-		$result = $db->query();
-
-		return $result;
-    }
-
-    protected function updateLog($type, $teamkey)
-    {	
-		// function to log updates for cronjob
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->insert($db->qn('hb_updatelog'));
-		$query->columns($db->qn(array('typ','kuerzel','datum')));
-
-		$dateUTC = JFactory::getDate( )->toSql();
-		$query->values($db->q($type).', '.$db->q($teamkey).', '.
-				$db->q($dateUTC));
-		//echo '=> model->$query <br><pre>'.$query.'</pre>';
-
-		$db->setQuery($query);
-		$result = $db->query();
-
-		return $result;
-    }
-
-    function getUpdateDate($teamkey, $formatted = true)
-    {
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->qn(array('kuerzel', 'update')));
-		$query->from('hb_mannschaft');
-		$query->where($db->qn('kuerzel').' = '.$db->q($teamkey));
-		//echo '=> model->$query <br><pre>'.$query.'</pre>';
-		$db->setQuery($query);
-		$team = $db->loadObject();
-		//echo '=> model <br><pre>'; print_r($team); echo '</pre>';
-		if ($formatted) {
-			$format = 'D, d.m.Y - H:i:s \U\h\r';
-			$date = JHtml::_('date', $team->update, $format, false);
-		}
-		else {
-			$date = $team->update;
-		}
-		return $date;
-    }
-
 
 	
 }

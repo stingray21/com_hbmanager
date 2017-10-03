@@ -39,4 +39,34 @@ div#teamdata {
 		animation: spinner .6s linear infinite;
 	}
 
+	.updateStatus {
+
+		
+		.icon-checkmark {
+			color: #398137;
+		}
+
+		.icon-warning {
+			color: #bd362f;
+		}
+
+		.indicator {
+			display: none;
+			margin-left: 10px;
+		}
+
+		.details {
+			display: none;
+
+			ul {
+				list-style-type: none;
+				margin-left: 10px;
+			}
+		}
+
+		.show {
+			display: block;
+		}
+	}								
+
 }

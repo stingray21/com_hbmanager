@@ -10,8 +10,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 
-//TODO move to settings parameter
-$tz = true; //true: user-time, false:server-time
+// $tz = true; //true: user-time, false:server-time
+$tz = HbmanagerHelper::getHbTimezone();
 
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task) 
@@ -69,6 +69,9 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 						<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_UPDATE', 'update', $listDirn, $listOrder); ?>
 					</th>
 					<th width="">
+						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STATUS'); ?>
+					</th>
+					<th width="">
 						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_BTN'); ?>
 					</th>
 					<th width="2%">
@@ -106,7 +109,19 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 										  		echo $row->leagueIdHvw; ?> 
 									</a>
 								</td>
-								<td class="date"><?php echo JHTML::_('date', $row->update , 'D, d.m.Y - H:i:s', $tz); ?></td>
+								<td class="date"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></td>
+								<td width="20%">
+									<div class="updateStatus">
+										<span class="indicator"></span>
+										<div class="details">
+											<ul>
+												<li class="schedule"><span class="flag"></span><?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_SCHEDULE'); ?></li>
+												<li class="standings"><span class="flag"></span><?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STANDINGS'); ?></li>
+												<li class="standings-details"><span class="flag"></span><?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STANDINGS_DETAILS'); ?></li>
+											</ul>
+										</div>	
+									</div>									
+								</td>
 								<td align="center">
 									<div class="updateBtn">
 										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">

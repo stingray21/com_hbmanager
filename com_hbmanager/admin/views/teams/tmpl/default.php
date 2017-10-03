@@ -10,6 +10,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 
+// $tz = true; //true: user-time, false:server-time
+$tz = HbmanagerHelper::getHbTimezone();
+
 JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder     = $this->escape($this->filter_order);
@@ -115,7 +118,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 										  echo $row->leagueIdHvw; ?>
 								</a>
 							</td>
-							<td><?php echo $row->update; ?></td>
+							<td class="date"><?php echo JHTML::_('date', $row->update , 'd.m.Y - H:i:s', $tz); ?></td>
 							<td><?php echo $row->email; ?></td>
 							<td align="center">
 								<?php echo $row->teamId; ?>

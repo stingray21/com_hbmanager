@@ -197,11 +197,15 @@ CREATE TABLE `#__hb_standings_details` (
 -- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `#__hb_updatelog`;
-CREATE TABLE `#__hb_updatelog` (
-  `updateId` int(11) NOT NULL AUTO_INCREMENT,
-  `type` text NOT NULL,
-  `teamkey` text NOT NULL,
-  `dateTime` datetime NOT NULL,
+
+CREATE TABLE `hkog_hb_updatelog` (
+  `updateId` int(10) NOT NULL AUTO_INCREMENT,,
+  `type` text DEFAULT NULL,
+  `teamkey` text DEFAULT NULL,
+  `dateTime` datetime DEFAULT NULL,
+  `schedule` tinyint(4) DEFAULT NULL,
+  `standings` tinyint(4) DEFAULT NULL,
+  `standingsDetails` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`updateId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
