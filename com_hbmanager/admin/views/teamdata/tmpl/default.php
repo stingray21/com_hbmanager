@@ -69,10 +69,10 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 						<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_UPDATE', 'update', $listDirn, $listOrder); ?>
 					</th>
 					<th width="">
-						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STATUS'); ?>
-					</th>
-					<th width="">
 						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_BTN'); ?>
+					</th>
+					<th width="20%">
+						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STATUS'); ?>
 					</th>
 					<th width="2%">
 						<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'teamId', $listDirn, $listOrder); ?>
@@ -110,7 +110,14 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 									</a>
 								</td>
 								<td class="date"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></td>
-								<td width="20%">
+								<td align="center">
+									<div class="updateBtn">
+										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">
+											<span class="icon-loop" aria-hidden="true"></span>
+										</a>		
+									</div>
+								</td>
+								<td>
 									<div class="updateStatus">
 										<span class="indicator"></span>
 										<div class="details">
@@ -121,13 +128,6 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 											</ul>
 										</div>	
 									</div>									
-								</td>
-								<td align="center">
-									<div class="updateBtn">
-										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">
-											<span class="icon-loop" aria-hidden="true"></span>
-										</a>		
-									</div>
 								</td>
 								<td align="center">
 									<?php echo $row->teamId; ?>

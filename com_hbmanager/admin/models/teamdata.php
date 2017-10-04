@@ -118,17 +118,39 @@ class HBmanagerModelTeamdata extends JModelList
 	{
 		$hvwData = self::getHvwTeamData($team->url);
 
+		// @ suppresses error messages
+
 		// schedule
-		$result['schedule'] = self::updateDB_game($team, $hvwData['schedule']);
+		$result['schedule'] = false;
+		try {
+			$result['schedule'] = @self::updateDB_game($team, $hvwData['schedule']);
+		} catch (Exception $e) {	
+			//echo 'Exception: ',  $e->getMessage(), "\n";
+		}		
 
 		// standings
-		$standingsData = self::addMissingRanking($hvwData['standings']);
-		$result['standings'] = self::updateDB_standings($team, $standingsData);
+		$result['standings'] = false;
+		try {
+			if (empty($hvwData['standings'])) 
+			{
+				$result['standings'] = true;
+			} else {
+				$standingsData = @self::addMissingRanking($hvwData['standings']);
+				$result['standings'] = self::updateDB_standings($team, $standingsData);
+			}
+		} catch (Exception $e) {	
+			//echo 'Exception: ',  $e->getMessage(), "\n";
+		}		
 
 		// standings_details
-		$standingsData = self::getDetailedStandingsData($team->teamkey);
-		$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
-		$result['standingsDetails'] = self::updateDB_standings_details($team, $standingsData);
+		$result['standingsDetails'] = false;
+		try {
+			$standingsData = self::getDetailedStandingsData($team->teamkey);
+			$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
+			$result['standingsDetails'] = @self::updateDB_standings_details($team, $standingsData);
+		} catch (Exception $e) {	
+			//echo 'Exception: ',  $e->getMessage(), "\n";
+		}		
 
 		// $result['schedule'] = true; $result['standings'] = true ; $result['standingsDetails'] = true; //testing
 		return $result;
