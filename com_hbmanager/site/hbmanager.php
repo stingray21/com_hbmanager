@@ -11,5 +11,10 @@ $controller = JControllerLegacy::getInstance('HbManager');
 $input = JFactory::getApplication()->input;
 $controller->execute($input->getCmd('task'));
 
+
+// TODO: Not needed?
+// // Require helper file
+// JLoader::register('HbmanagerHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/hbmanager.php');
+
 // Redirect if set by the controller
 $controller->redirect();

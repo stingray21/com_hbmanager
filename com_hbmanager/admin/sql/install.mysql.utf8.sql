@@ -206,6 +206,7 @@ CREATE TABLE `hkog_hb_updatelog` (
   `schedule` tinyint(4) DEFAULT NULL,
   `standings` tinyint(4) DEFAULT NULL,
   `standingsDetails` tinyint(4) DEFAULT NULL,
+  `error` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`updateId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

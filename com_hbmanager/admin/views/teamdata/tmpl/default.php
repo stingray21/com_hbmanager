@@ -18,7 +18,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	{
 		if (task == "teamdata.update")
 		{
-			updateTeams();
+			updateCheckedTeams();
 		}
 	}
 ');

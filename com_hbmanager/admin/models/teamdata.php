@@ -90,7 +90,7 @@ class HBmanagerModelTeamdata extends JModelList
 	}
 
 
-	function updateTeamData($teamkey) 
+	function updateTeamData($teamkey, $type = 'manual') 
 	{
 		$team = self::getTeam($teamkey);
 		$team->url = HbmanagerHelper::get_hvw_json_url($team->leagueIdHvw);
@@ -100,6 +100,7 @@ class HBmanagerModelTeamdata extends JModelList
 
 		$response['result'] = self::updateTeamDB($team);
 		$response['result']['total'] = !in_array(false, $response['result'], true);
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($response);echo'</pre>';
 
 		// update dateTime
 		if (in_array(true, $response['result'], true))	{
@@ -108,54 +109,110 @@ class HBmanagerModelTeamdata extends JModelList
 
 		$response['date'] = JHTML::_('date', $team->update, $this->dateFormat, $this->tz);
 
-		self::updateLog($team, $response['result']);
+		self::updateLog($team, $response['result'], $type);
 
 		return $response;
 	}
 
+	function warning_handler($errno, $errstr, $errfile, $errline)
+	{
+		$message = "<br />\n<b>Warning</b>:  $errstr in <b>$errfile</b> on line <b>$errline</b><br />\n";
+		// echo $message;
+		throw new Exception($message);
+		/* Don't execute PHP internal error handler */
+		return false;
+	}
 
 	protected function updateTeamDB ($team) 
-	{
+	{	
+		// Error handler that includes warnings
+		set_error_handler(array($this, 'warning_handler'), E_WARNING);
+
 		$hvwData = self::getHvwTeamData($team->url);
-
-		// @ suppresses error messages
-
-		// schedule
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($hvwData);echo'</pre>';
 		$result['schedule'] = false;
-		try {
-			$result['schedule'] = @self::updateDB_game($team, $hvwData['schedule']);
-		} catch (Exception $e) {	
-			//echo 'Exception: ',  $e->getMessage(), "\n";
-		}		
-
-		// standings
 		$result['standings'] = false;
-		try {
-			if (empty($hvwData['standings'])) 
-			{
-				$result['standings'] = true;
-			} else {
-				$standingsData = @self::addMissingRanking($hvwData['standings']);
-				$result['standings'] = self::updateDB_standings($team, $standingsData);
-			}
-		} catch (Exception $e) {	
-			//echo 'Exception: ',  $e->getMessage(), "\n";
-		}		
-
-		// standings_details
 		$result['standingsDetails'] = false;
-		try {
-			$standingsData = self::getDetailedStandingsData($team->teamkey);
-			$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
-			$result['standingsDetails'] = @self::updateDB_standings_details($team, $standingsData);
-		} catch (Exception $e) {	
-			//echo 'Exception: ',  $e->getMessage(), "\n";
-		}		
+		$result['error'] = null;
 
-		// $result['schedule'] = true; $result['standings'] = true ; $result['standingsDetails'] = true; //testing
+		if (!isset($hvwData['error']))
+		{
+			// schedule
+			try {
+				$result['schedule'] = self::updateDB_game($team, $hvwData['schedule']);
+			} catch (Exception $e) {	
+				//echo 'Exception: ',  $e->getMessage(), "\n";
+				$result['error'][] =  $e->getMessage();
+			}		
+
+			// standings
+			try {
+				if (empty($hvwData['standings'])) 
+				{
+					$result['standings'] = true;
+				} else {
+					$standingsData = self::addMissingRanking($hvwData['standings']);
+					$result['standings'] = self::updateDB_standings($team, $standingsData);
+				}
+			} catch (Exception $e) {	
+				//echo 'Exception: ',  $e->getMessage(), "\n";
+				$result['error'][] =  $e->getMessage();
+			}		
+
+			// standings_details
+			try {
+				$standingsData = self::getDetailedStandingsData($team->teamkey);
+				$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
+				$result['standingsDetails'] = self::updateDB_standings_details($team, $standingsData);
+			} catch (Exception $e) {	
+				//echo 'Exception: ',  $e->getMessage(), "\n";
+				$result['error'][] =  $e->getMessage();
+			}		
+		} else {
+			$result['error'][] = $hvwData;
+		}
+
+		// $result['schedule'] = true; $result['standings'] = (bool)random_int(0, 1) ; $result['standingsDetails'] = true; //testing
+
+		restore_error_handler();
 		return $result;
 	}
 
+	protected function getHvwTeamData($url) 
+	{
+		// Error handler that includes warnings
+		set_error_handler(array($this, 'warning_handler'), E_WARNING);
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($url); echo'</pre>';
+		// $json = self::testCase();
+		try 
+		{
+			$json = file_get_contents($url);
+		} catch (Exception $e) {	
+			// echo 'Exception: ',  $e->getMessage(), "\n";
+			$json = null;
+			$hvwData['error'] = "no HVW data ($url)";
+			$hvwData['message'] = $e->getMessage();
+		}	
+		restore_error_handler();
+		if (empty($json)) return $hvwData;
+
+		$obj = json_decode($json, true);
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($obj); echo'</pre>';
+		
+		// Title
+		$hvwData['headline'] 	= $obj[0]['head']['headline2'];
+		$hvwData['name'] 		= $obj[0]['head']['name'];
+		$hvwData['leagueKey'] 	= $obj[0]['head']['sname'];
+		
+		// Standings
+		$hvwData['standings'] 	= $obj[0]['content']['score'];
+		
+		// Schedule
+		$hvwData['schedule'] 	= $obj[0]['content']['futureGames']['games'];
+		
+		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($hvwData); echo'</pre>';
+		return $hvwData;
+	}
 
 	protected function getOwnTeamNames()
 	{
@@ -164,6 +221,7 @@ class HBmanagerModelTeamdata extends JModelList
 		$query->select('DISTINCT '.$db->qn('shortName'));
 		$query->from($this->tableTeams);
 		$db->setQuery($query);
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$result = $db->loadColumn();
 		
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($result);echo'</pre>';
@@ -190,15 +248,18 @@ class HBmanagerModelTeamdata extends JModelList
 
     protected function updateLog($team, $result, $type = 'manual')
     {	
+    	// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($result);echo'</pre>';
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
+		$error = (empty($result['error'])) ? 'NULL' : $db->q(json_encode($result['error']));
+
 		$query->insert($db->qn('#__hb_updatelog'));
 		
-		$query->columns($db->qn(array('type','teamkey','dateTime', 'schedule', 'standings', 'standingsDetails')));
+		$query->columns($db->qn(array('type','teamkey','dateTime', 'schedule', 'standings', 'standingsDetails', 'error')));
 
 		$query->values($db->q($type).', '.$db->q($team->teamkey).', '.$db->q($team->update).', '.
-			$db->q($result['schedule']).', '.$db->q($result['standings']).', '.$db->q($result['standingsDetails']));
+			$db->q($result['schedule']).', '.$db->q($result['standings']).', '.$db->q($result['standingsDetails']).', '.$error);
 
 		$db->setQuery($query);
 		$result = $db->query();
@@ -223,29 +284,6 @@ class HBmanagerModelTeamdata extends JModelList
 		$team = $db->loadObject();
 		return $team;
 	}
-
-	protected function getHvwTeamData($url) 
-	{
-		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($url); echo'</pre>';
-		$json = file_get_contents($url);
-		$obj = json_decode($json, true);
-		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($obj); echo'</pre>';
-		
-		// Title
-		$hvwData['headline'] 	= $obj[0]['head']['headline2'];
-		$hvwData['name'] 		= $obj[0]['head']['name'];
-		$hvwData['leagueKey'] 	= $obj[0]['head']['sname'];
-		
-		// Standings
-		$hvwData['standings'] 	= $obj[0]['content']['score'];
-		
-		// Schedule
-		$hvwData['schedule'] 	= $obj[0]['content']['futureGames']['games'];
-		
-		//echo __FILE__.' - '.__LINE__.'<pre>';print_r($hvwData); echo'</pre>';
-		return $hvwData;
-	}
-
 
 	protected function deleteCurrentData ($table, $teamkey)
 	{

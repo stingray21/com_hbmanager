@@ -1,11 +1,58 @@
 function updateTeamBtn(teamkey)
 {
-	// console.log('Update ' + teamkey);
+	//console.log('Update ' + teamkey);
 	var row = document.getElementById("update-team-"+teamkey);
 
 	row.getElementsByClassName("indicator")[0].classList.remove("show");
 	row.getElementsByClassName("details")[0].classList.remove("show");
-	document.getElementById("update-team-"+teamkey).getElementsByClassName("updateBtn")[0].classList.add("spinner");
+	row.getElementsByClassName("updateBtn")[0].classList.add("spinner");
+	
+	updateTeamData(teamkey, function (response) {
+			// console.log(response);
+			
+			row.getElementsByClassName("updateBtn")[0].classList.remove("spinner");
+			row.getElementsByClassName("date")[0].innerHTML = response.date;
+			
+			row.getElementsByClassName("updateStatus")[0].classList.add("show");
+			 
+			if (response.result.total == true) 
+			{
+				row.getElementsByClassName("indicator")[0].classList.add("icon-checkmark", "show");
+			} 
+			else 
+			{
+				row.getElementsByClassName("details")[0].classList.add("show");
+
+				var classSchedule = ((response.result.schedule == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("schedule")[0].getElementsByTagName("span")[0].classList.add(classSchedule);
+
+				var classStandings = ((response.result.standings == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("standings")[0].getElementsByTagName("span")[0].classList.add(classStandings);
+
+				var classStandingsDetails = ((response.result.standingsDetails == true) ? "icon-checkmark" : "icon-warning");
+				row.getElementsByClassName("standings-details")[0].getElementsByTagName("span")[0].classList.add(classStandingsDetails);
+			}
+		});
+
+}	
+
+function updateTeams(teams)
+{
+	teams.forEach(function(team) {
+		// console.log(element);
+		updateTeamBtn(team.teamkey);
+	});
+
+}	
+
+function updateTeamBtn(teamkey)
+{
+	//console.log('Update ' + teamkey);
+	var row = document.getElementById("update-team-"+teamkey);
+
+	row.getElementsByClassName("indicator")[0].classList.remove("show");
+	row.getElementsByClassName("details")[0].classList.remove("show");
+	row.getElementsByClassName("updateBtn")[0].classList.add("spinner");
 	
 	updateTeamData(teamkey, function (response) {
 			// console.log(response);
@@ -70,24 +117,23 @@ function updateTeamData(teamkey, callback)
 	httpRequest.send('teamkey=' + encodeURIComponent(teamkey));
 }
 
-function updateTeams()
+function updateCheckedTeams()
 {
 	var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
 	// console.log(checkedBoxes);
 
-	var teamkeys = [];
+	var teams = [];
 	for (var i=0; i<checkedBoxes.length; i++) {
 		if (checkedBoxes[i].name != "checkall-toggle") 
 		{
 			var teamkey = checkedBoxes[i].parentElement.parentElement.id;
 			teamkey = teamkey.replace('update-team-', '');
 
-			updateTeamBtn(teamkey);
-
-			teamkeys.push(teamkey);
+			teams.push({"teamkey": teamkey, "update": null});
+			// teams.push({"teamkey": "M-1", "update": "2017-10-04 19:37:28"});
 		}
     }
     // console.log(teamkeys);
 	
-	return true;
+	return updateTeams(teams);
 }

@@ -1,4 +1,78 @@
 // hbmanager css site
 
-@import 'hbhomegames';
+@import 'icomoon';
+@import 'icohb';
 
+
+
+
+div#teamupdate {
+	
+
+	.icon-loop::before {
+    	color: #398137;
+	}
+
+	@keyframes spinner {
+		to {transform: rotate(360deg);}
+	}
+
+	.spinner { 
+		position: relative; 
+
+		.btn {
+			display: none;
+		}
+	}
+	 
+	.spinner:before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		width: 15px;
+		height: 15px;
+		margin-left: 7px;
+		border-radius: 50%;
+		border: 2px solid #ccc;
+		border-top-color: #333;
+		animation: spinner .6s linear infinite;
+	}
+	
+	.table th.number, 
+	.table td.number {
+		text-align: center;
+	}
+
+	.updateStatus {
+
+		
+		.icon-checkmark {
+			color: #398137;
+		}
+
+		.icon-warning {
+			color: #bd362f;
+		}
+
+		.indicator {
+			display: none;
+			margin-left: 10px;
+		}
+
+		.details {
+			display: none;
+
+			ul {
+				list-style-type: none;
+				margin: 0 0 0 10px;
+				padding: 0; 
+				// TODO: fix hkog.css 287 and 271 for menu, ol, ul { padding and margin } to be more specific
+			}
+		}
+
+		.show {
+			display: block;
+		}
+	}								
+
+}
