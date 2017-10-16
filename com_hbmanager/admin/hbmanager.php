@@ -17,9 +17,8 @@ $document = JFactory::getDocument();
 // Get an instance of the controller prefixed by HbManager
 $controller = JControllerLegacy::getInstance('hbmanager');
 
-// TODO: Not needed?
-// // Require helper file
-// JLoader::register('HbmanagerHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/hbmanager.php');
+// Require helper file
+JLoader::register('HbmanagerHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/hbmanager.php');
 
 // Perform the Request task
 $input = JFactory::getApplication()->input;
