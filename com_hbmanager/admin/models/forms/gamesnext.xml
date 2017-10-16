@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="gamesnext">
+		<fieldset name="games">
+			<field
+				name="gameIdHvw"
+				type="hidden"
+			/>
+			<field
+				name="season"
+				type="hidden"
+			/>
+			<field
+				name="pregameID"
+				type="hidden"
+			/>
+			<field 
+				name="includeToNews" 
+				type="checkbox" 
+				label="COM_HBMANAGER_GAMES_FORM_PUBLISH_LABEL" 
+				description="COM_HBMANAGER_GAMES_FOR_PUBLISH_DESC" 
+				value="1" 
+				default="0" 
+			/>
+			<field
+				name="pregame"
+				type="textarea"
+				label="COM_HBMANAGER_GAMES_FORM_REPORT_LABEL" 
+				description="COM_HBMANAGER_GAMES_FORM_REPORT_DESC"
+				default=""
+				cols="65"
+				rows="8"
+			/>
+			<field
+				name="meetupLoc"
+				type="text"
+				label="COM_HBMANAGER_GAMES_FORM_HALFTIME_LABEL" 
+				description="COM_HBMANAGER_GAMES_FORM_HALFTIME_DESC"
+				default=""
+				size="15"
+			/>
+			<field
+				name="meetupTime"
+				type="text"
+				label="COM_HBMANAGER_GAMES_FORM_TREND_LABEL" 
+				description="COM_HBMANAGER_GAMES_FORM_TREND_DESC"
+				size="15"
+			/>
+		</fieldset>
+	</fields>
+</form>

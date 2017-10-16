@@ -109,7 +109,8 @@ function updateTeamData(teamkey, callback)
 			}
 		}
 		catch( e ) {
-			alert('Caught Exception: ' + e.description);
+			// alert('Caught Exception: ' + e.description);
+			console.log('Caught Exception: ' + e.description);
 		}
 	};
 	httpRequest.open('POST', url);

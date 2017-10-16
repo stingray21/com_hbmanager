@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="gameDates">
+		<fieldset name="dates">
+			<field
+				name="id"
+				type="hidden"
+			/>
+
+			<field 
+				name="prevStart" 
+				type="gamedaysPrev" 
+				default="" 
+				class="articleselectbox" 
+				label="COM_HBMANAGER_GAMEDATES_FROM"
+			/>
+			<field 
+				name="prevEnd" 
+				type="gamedaysPrev" 
+				default="" 
+				class="articleselectbox" 
+				label="COM_HBMANAGER_GAMEDATES_TO"
+			/> 
+			<field 
+				name="nextStart"
+				type="gamedaysNext" 
+				default="" 
+				class="articleselectbox" 
+				label="COM_HBMANAGER_GAMEDATES_FROM"
+			/> 
+			<field 
+				name="nextEnd"  
+				type="gamedaysNext" 
+				default="" 
+				class="articleselectbox" 
+				label="COM_HBMANAGER_GAMEDATES_TO"
+			/> 
+		
+		</fieldset>
+	</fields>
+</form>

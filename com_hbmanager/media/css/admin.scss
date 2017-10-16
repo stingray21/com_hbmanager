@@ -70,3 +70,40 @@ div#teamdata {
 	}								
 
 }
+
+
+#gamesnext,
+#gamesprev {
+
+	td.report {
+		textarea {
+			width: auto;
+		}
+	}
+
+	#gamedatesForm {
+		dl,dt,dd {
+			margin: 0;
+			display: inline-block;
+		}	
+
+		dl {
+			margin-bottom: 2em;
+		}
+
+		dt {
+			margin-right: 0.5em;
+		}	
+		dd {
+			margin-right: 3em;
+		}
+
+		label, select {
+			padding: 4px 6px;
+			margin: 0;
+		}
+
+	}
+
+}
+

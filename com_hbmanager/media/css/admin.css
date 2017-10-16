@@ -78,4 +78,28 @@ div#teamdata .updateStatus .details {
 div#teamdata .updateStatus .show {
   display: block; }
 
+#gamesnext td.report textarea,
+#gamesprev td.report textarea {
+  width: auto; }
+#gamesnext #gamedatesForm dl, #gamesnext #gamedatesForm dt, #gamesnext #gamedatesForm dd,
+#gamesprev #gamedatesForm dl,
+#gamesprev #gamedatesForm dt,
+#gamesprev #gamedatesForm dd {
+  margin: 0;
+  display: inline-block; }
+#gamesnext #gamedatesForm dl,
+#gamesprev #gamedatesForm dl {
+  margin-bottom: 2em; }
+#gamesnext #gamedatesForm dt,
+#gamesprev #gamedatesForm dt {
+  margin-right: 0.5em; }
+#gamesnext #gamedatesForm dd,
+#gamesprev #gamedatesForm dd {
+  margin-right: 3em; }
+#gamesnext #gamedatesForm label, #gamesnext #gamedatesForm select,
+#gamesprev #gamedatesForm label,
+#gamesprev #gamedatesForm select {
+  padding: 4px 6px;
+  margin: 0; }
+
 /*# sourceMappingURL=admin.css.map */

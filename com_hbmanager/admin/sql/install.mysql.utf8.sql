@@ -99,13 +99,14 @@ DROP TABLE IF EXISTS `#__hb_gamereport`;
 CREATE TABLE `#__hb_gamereport` (
   `reportID` int(6) NOT NULL AUTO_INCREMENT,
   `gameIdHvw` int(6) DEFAULT NULL,
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `report` longtext COLLATE utf8_unicode_ci,
   `playerList` longtext COLLATE utf8_unicode_ci,
   `extra` longtext COLLATE utf8_unicode_ci,
   `halftime` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `trend` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`reportID`),
-  UNIQUE KEY `gameIdHvw` (`gameIdHvw`)
+  UNIQUE KEY (`season`, `gameIdHvw`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -113,12 +114,13 @@ CREATE TABLE `#__hb_gamereport` (
 DROP TABLE IF EXISTS `#__hb_pregame`;
 CREATE TABLE `#__hb_pregame` (
   `pregameID` int(6) NOT NULL AUTO_INCREMENT,
-  `gameIdHvw` int(6) DEFAULT NULL,
+  `gameIdHvw` int(6) NOT NULL,
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `pregame` longtext COLLATE utf8_unicode_ci,
   `meetupLoc` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `meetupTime` time DEFAULT NULL,
   PRIMARY KEY (`pregameID`),
-  UNIQUE KEY `gameIdHvw` (`gameIdHvw`)
+  UNIQUE KEY (`season`, `gameIdHvw`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
