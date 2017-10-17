@@ -83,7 +83,7 @@ class HbmanagerViewTeam extends JViewLegacy
 			$title = JText::_('COM_HBMANAGER_TEAM_EDIT');
 		}
 
-		JToolBarHelper::title($title, 'team');
+		JToolBarHelper::title($title, 'hb-ball');
 		JToolBarHelper::save('team.save');
 		JToolBarHelper::cancel(
 			'team.cancel',

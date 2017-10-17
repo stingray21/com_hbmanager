@@ -12,7 +12,7 @@
 // 	background-image: url(../images/update.png);
 // }
 
-div#teamdata {
+#teamdata {
 
 	@keyframes spinner {
 		to {transform: rotate(360deg);}
@@ -71,6 +71,29 @@ div#teamdata {
 
 }
 
+#gamedatesForm {
+	dl,dt,dd {
+		margin: 0;
+		display: inline-block;
+	}	
+
+	dl {
+		margin-bottom: 2em;
+	}
+
+	dt {
+		margin-right: 0.5em;
+	}	
+	dd {
+		margin-right: 3em;
+	}
+
+	label, select {
+		padding: 4px 6px;
+		margin: 0;
+	}
+
+}
 
 #gamesnext,
 #gamesprev {
@@ -81,29 +104,21 @@ div#teamdata {
 		}
 	}
 
-	#gamedatesForm {
-		dl,dt,dd {
-			margin: 0;
-			display: inline-block;
-		}	
 
-		dl {
-			margin-bottom: 2em;
-		}
-
-		dt {
-			margin-right: 0.5em;
-		}	
-		dd {
-			margin-right: 3em;
-		}
-
-		label, select {
-			padding: 4px 6px;
-			margin: 0;
-		}
-
-	}
 
 }
 
+#printnews {
+	
+	#printsheet {
+		background: #fcfcfc;
+		margin: 1em;
+		padding: 1em;
+		border: 1px solid #ddd;
+		box-shadow: 5px 5px 5px gray;
+		width: 40em;
+		text-align: justify;
+	}
+
+
+}

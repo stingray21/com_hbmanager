@@ -63,7 +63,7 @@ class hbmanagerViewGamesNext extends JViewLegacy
 	{
 		$title = JText::_('COM_HBMANAGER_GAMES_NEXT_TITLE');
 
-		JToolBarHelper::title($title, 'teams');
+		JToolBarHelper::title($title, 'hb-ball');
 		JToolBarHelper::custom('games.savePregame', 'save', 'save',  JText::_('COM_HBMANAGER_GAMES_TOOLBAR_SAVE'), false);
 		JToolBarHelper::custom('games.publishPregame', 'out', 'out',  JText::_('COM_HBMANAGER_GAMES_TOOLBAR_PUBLISH'), false);
 	}

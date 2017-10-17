@@ -42,7 +42,7 @@ class hbmanagerViewHbmanager extends JViewLegacy
 	{
 		$title = JText::_('COM_HBMANAGER_MANAGER_TITLE');
 
-		JToolBarHelper::title($title, 'hbmanager');
+		JToolBarHelper::title($title, 'hb-ball');
 	}
 	/**
 	 * Method to set up the document properties

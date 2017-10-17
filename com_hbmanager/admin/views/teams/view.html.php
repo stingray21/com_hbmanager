@@ -59,7 +59,7 @@ class hbmanagerViewTeams extends JViewLegacy
 			$title .= "<span style='font-size: 0.5em; vertical-align: middle;'> (" . $this->pagination->total . ")</span>";
 		}
 
-		JToolBarHelper::title($title, 'teams');
+		JToolBarHelper::title($title, 'hb-ball');
 		JToolBarHelper::addNew('teams.add');
 		JToolBarHelper::editList('teams.edit');
 		JToolBarHelper::deleteList('', 'teams.delete');

@@ -48,11 +48,11 @@
 @keyframes spinner {
   to {
     transform: rotate(360deg); } }
-div#teamdata .spinner {
+#teamdata .spinner {
   position: relative; }
-  div#teamdata .spinner .btn {
+  #teamdata .spinner .btn {
     display: none; }
-div#teamdata .spinner:before {
+#teamdata .spinner:before {
   content: '';
   box-sizing: border-box;
   position: absolute;
@@ -63,43 +63,45 @@ div#teamdata .spinner:before {
   border: 2px solid #ccc;
   border-top-color: #333;
   animation: spinner .6s linear infinite; }
-div#teamdata .updateStatus .icon-checkmark {
+#teamdata .updateStatus .icon-checkmark {
   color: #398137; }
-div#teamdata .updateStatus .icon-warning {
+#teamdata .updateStatus .icon-warning {
   color: #bd362f; }
-div#teamdata .updateStatus .indicator {
+#teamdata .updateStatus .indicator {
   display: none;
   margin-left: 10px; }
-div#teamdata .updateStatus .details {
+#teamdata .updateStatus .details {
   display: none; }
-  div#teamdata .updateStatus .details ul {
+  #teamdata .updateStatus .details ul {
     list-style-type: none;
     margin-left: 10px; }
-div#teamdata .updateStatus .show {
+#teamdata .updateStatus .show {
   display: block; }
+
+#gamedatesForm dl, #gamedatesForm dt, #gamedatesForm dd {
+  margin: 0;
+  display: inline-block; }
+#gamedatesForm dl {
+  margin-bottom: 2em; }
+#gamedatesForm dt {
+  margin-right: 0.5em; }
+#gamedatesForm dd {
+  margin-right: 3em; }
+#gamedatesForm label, #gamedatesForm select {
+  padding: 4px 6px;
+  margin: 0; }
 
 #gamesnext td.report textarea,
 #gamesprev td.report textarea {
   width: auto; }
-#gamesnext #gamedatesForm dl, #gamesnext #gamedatesForm dt, #gamesnext #gamedatesForm dd,
-#gamesprev #gamedatesForm dl,
-#gamesprev #gamedatesForm dt,
-#gamesprev #gamedatesForm dd {
-  margin: 0;
-  display: inline-block; }
-#gamesnext #gamedatesForm dl,
-#gamesprev #gamedatesForm dl {
-  margin-bottom: 2em; }
-#gamesnext #gamedatesForm dt,
-#gamesprev #gamedatesForm dt {
-  margin-right: 0.5em; }
-#gamesnext #gamedatesForm dd,
-#gamesprev #gamedatesForm dd {
-  margin-right: 3em; }
-#gamesnext #gamedatesForm label, #gamesnext #gamedatesForm select,
-#gamesprev #gamedatesForm label,
-#gamesprev #gamedatesForm select {
-  padding: 4px 6px;
-  margin: 0; }
+
+#printnews #printsheet {
+  background: #fcfcfc;
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 5px gray;
+  width: 40em;
+  text-align: justify; }
 
 /*# sourceMappingURL=admin.css.map */

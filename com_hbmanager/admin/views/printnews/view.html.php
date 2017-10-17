@@ -5,7 +5,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class hbmanagerViewGamesPrev extends JViewLegacy
+class hbmanagerViewPrintNews extends JViewLegacy
 {
 
 	function display($tpl = null)
@@ -26,21 +26,19 @@ class hbmanagerViewGamesPrev extends JViewLegacy
 
 		$dates = (isset($post['gameDates'])) ? $post['gameDates'] : [];
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		// $dates['prevStart'] = '2017-10-14';
-		// $dates['prevEnd'] 	= '2017-10-15';
 
 		$model->setDates($dates);
 		$this->dates = $model->getDates();
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
-		$this->games = $model->getPrevGames();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->games);echo'</pre>';
-
-		$config = new JConfig();
-		$this->user = JFactory::getUser();
-		// $userid = $user->id;
+		$this->prevgames = $model->getPrevGames();
+		$this->reports = $model->getReports();
+		// $this->pregames = $model->getPregames();
+		$nextAndHomeGames = $model->getNextAndHomeGames();
+		$this->nextgames = $nextAndHomeGames->nextgames;
+		$this->homegames = $nextAndHomeGames->homegames;
 
 		// Set the submenu
-		HbmanagerHelper::addSubmenu('gamesprev');
+		HbmanagerHelper::addSubmenu('printnews');
 
 		// Set the toolbar and number of found items
 		$this->addToolBar();
@@ -61,11 +59,9 @@ class hbmanagerViewGamesPrev extends JViewLegacy
 	 */
 	protected function addToolBar()
 	{
-		$title = JText::_('COM_HBMANAGER_GAMES_PREV_TITLE');
+		$title = JText::_('COM_HBMANAGER_GAMES_PRINTNEWS_TITLE');
 
 		JToolBarHelper::title($title, 'hb-ball');
-		JToolBarHelper::custom('games.saveReport', 'save', 'save',  JText::_('COM_HBMANAGER_GAMES_TOOLBAR_SAVE'), false);
-		JToolBarHelper::custom('games.publishReport', 'out', 'out',  JText::_('COM_HBMANAGER_GAMES_TOOLBAR_PUBLISH'), false);
 	}
 	/**
 	 * Method to set up the document properties
@@ -76,6 +72,6 @@ class hbmanagerViewGamesPrev extends JViewLegacy
 	{
 		$document = JFactory::getDocument();
 		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/admin.css' );
-		$document->setTitle(JText::_('COM_HBMANAGER_GAMES_PREV_TITLE'));
+		$document->setTitle(JText::_('COM_HBMANAGER_GAMES_PRINTNEWS_TITLE'));
 	}
 }
