@@ -13,15 +13,20 @@ defined('_JEXEC') or die('Restricted Access');
 // $tz = true; //true: user-time, false:server-time
 $tz = HbmanagerHelper::getHbTimezone();
 
-// JFactory::getDocument()->addScriptDeclaration('
-// 	Joomla.submitbutton = function(task) 
-// 	{
-// 		if (task == "teamdata.update")
-// 		{
-// 			updateCheckedTeams();
-// 		}
-// 	}
-// ');
+JFactory::getDocument()->addScriptDeclaration('
+	Joomla.submitbutton = function(task) 
+	{
+		if (task == "showAll")
+		{
+			showAllGames();
+		}
+
+		if (task == "importAll")
+		{
+			importAllGames();
+		}
+	}
+');
 
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
@@ -37,6 +42,26 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 		echo JHtmlSidebar::render(); 
 		JToolBarHelper::preferences('com_hbmanager');
 		?>
+	</div>
+
+	<div class="modal hide fade" id="modal-confirm">
+		<div class="modal-header">
+			<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
+			<h3><?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_PREVIEW'); ?></h3>
+		</div>
+		<div class="modal-body">
+			<div id="import-preview">
+
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn hasTooltip" href="javascript:void(0);" onclick="" title="" data-original-title="Update team" id="import-confirm-btn" data-dismiss="modal">
+				<span class="icon-signup" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_BTN_IMPORT'); ?>
+			</button>
+			<button class="btn" type="button" data-dismiss="modal">
+				<?php echo JText::_('JCANCEL'); ?>
+			</button>
+		</div>
 	</div>
 
 
@@ -62,16 +87,16 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 						<?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_TEAM'); ?>
 					</th>
 					<th width="5%"></th>
-					<th width="10%">
+					<th width="9%">
 						<?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_GAME_ID'); ?>
 					</th>
-					<th width="15%">
+					<th width="30%">
 						<?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_MATCH'); ?>
 					</th>
-					<th width="10%">
+					<th width="20%">
 						<?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_REPORT_LINK'); ?>
 					</th>
-					<th width="10%">
+					<th width="15%">
 						<?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_IMPORT'); ?>
 					</th>
 					<th width="">
@@ -79,15 +104,13 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 					</th>
 				</tr>
 				</thead>
-				<tbody>
+				<tbody id="importGamesList">
 							
 			<?php if (!empty($this->games)) : ?>
 				<?php foreach ($this->games as $game) :
 					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);
 				?>
-					<tr class="<?php 
-								echo ((!empty($game->reportHvwId) OR isset($game->importFilename)) AND empty($game->timeString)) ? '' : 'hidden';
-								?>">
+					<tr id="<?php echo 'gameId_'.$game->gameIdHvw; ?>" class="<?php echo ($game->imported) ? 'hidden' : ''; ?>">
 						<td><?php echo HbmanagerHelper::formatInput($form->getInput('gameIdHvw', 'gamesprev', $game->gameIdHvw), $i)?>
 							<?php echo HbmanagerHelper::formatInput($form->getInput('season', 'gamesprev', $game->season), $i)?>
 						</td>
@@ -97,14 +120,14 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 						<td><?php echo $game->gameIdHvw ?></td>
 						<td><?php echo $game->home; ?> - <?php echo $game->away; ?></td>
 						<td align="center">
-							<a class="btn btn-micro hasTooltip" href="<?php echo HbmanagerHelper::get_hvw_report_url($game->reportHvwId); ?>" title="<?php echo JText::_('COM_HBMANAGER_GAMES_HVWLINK'); ?>" target="_BLANK" title="Download pdf" data-original-title="Download pdf">
+							<a class="btn btn-small hasTooltip" href="<?php echo HbmanagerHelper::get_hvw_report_url($game->reportHvwId); ?>" title="<?php echo JText::_('COM_HBMANAGER_GAMES_HVWLINK'); ?>" target="_BLANK" title="Download pdf" data-original-title="Download pdf">
 								<span class="icon-download" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_BTN_DOWNLOAD'); ?>
 							</a>
 						</td>
 						<td><?php if (isset($game->importFilename)) : ?>
-							<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="importGameBtn('<?php echo $game->gameIdHvw; ?>');" title="" data-original-title="Update team">
+							<button class="btn btn-small hasTooltip modal" href="javascript:void(0);" onclick="importGamePreview('<?php echo $game->gameIdHvw; ?>');" title="" data-original-title="Update team" data-toggle="modal" data-target="#modal-confirm">
 								<span class="icon-signup" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_BTN_IMPORT'); ?>
-							</a>		
+							</button>		
 							<?php endif; ?>
 						</td>
 						<td>

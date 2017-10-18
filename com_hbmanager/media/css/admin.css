@@ -104,4 +104,18 @@
   width: 40em;
   text-align: justify; }
 
+#gamedetails #modal-confirm .modal-body {
+  max-height: 500px;
+  overflow: scroll; }
+#gamedetails #import-preview {
+  margin: 1em 2em;
+  padding: 0.5em;
+  margin-bottom: 5em; }
+  #gamedetails #import-preview table tr {
+    border-bottom: 1px solid #ddd; }
+  #gamedetails #import-preview table tr:nth-child(even) {
+    background: #eee; }
+  #gamedetails #import-preview table td {
+    padding: 0.1em 0.25em; }
+
 /*# sourceMappingURL=admin.css.map */

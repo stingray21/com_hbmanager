@@ -123,5 +123,34 @@
 
 #gamedetails {
 
+	#modal-confirm .modal-body {
+		max-height: 500px;
+		overflow: scroll;
+	}
+
+	#import-preview {
+		margin: 1em 2em;
+		padding: 0.5em;
+		margin-bottom: 5em;
+
+		table {
+			tr {
+				border-bottom: 1px solid #ddd;
+			}
+
+			tr:nth-child(even) {
+				background: #eee;
+			}
+			tr:nth-child(odd) {
+				
+			}
+
+			td {
+				padding: 0.1em 0.25em;
+
+			}
+		}
+	}
+
 }
 

@@ -48,7 +48,7 @@ class hbmanagerController extends JControllerLegacy
 		
 	}
 	
-	function importGameData()
+	function previewGameData()
 	{
 		// Set up the data to be sent in the response.
 		$model = $this->getModel('gamedetails');
@@ -58,7 +58,7 @@ class hbmanagerController extends JControllerLegacy
 		$gameId = $jinput->get('gameId');
 		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
 
-		$response = $model->importGameData($gameId);
+		$response = $model->previewGameData($gameId);
 
 		// Get the document object.
 		$document = JFactory::getDocument();
@@ -74,4 +74,32 @@ class hbmanagerController extends JControllerLegacy
 		echo json_encode($response);
 		
 	}
+
+	function importGameData()
+	{
+		// Set up the data to be sent in the response.
+		$model = $this->getModel('gamedetails');
+		
+		//$teamkey = 'M1';
+		$jinput = JFactory::getApplication()->input;
+		$gameId = $jinput->get('gameId');
+		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+
+		$response = $model->insertGameData($gameId);
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename 
+		// -> returns result.json file instead of being displayed in the browser
+		// JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
+
+		// Output the JSON data.
+		echo json_encode($response);
+		
+	}
+
 } 

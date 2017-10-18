@@ -113,17 +113,14 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	
 		$query = $db->getQuery(true);
 
-		$query->select('*');
+		$query->select('`season`, `gameIdHvw`, `teamkey`, game.`leagueKey` AS `leagueKey`, `leagueIdHvw`, `dateTime`, `home`, `away`, `goalsHome`, `goalsAway`, `reportHvwId`, `order`, `team`, `name`, `shortName`, `league`, `youth`, `update`, IF(`timeString` = \'00:00\', 1, 0) AS `imported` ');
 
 		$query->from($this->tables->game.' AS game');
 		$query->leftJoin($db->qn($this->tables->team).' USING ('.$db->qn('teamkey').')');
 		// $query->leftJoin($db->qn($this->tables->gamereport).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
-		$query->leftJoin($db->qn($this->tables->gamedetails).' AS details ON'.
-			' game.'.$db->qn('gameIdHvw').' = details.'.$db->qn('gameIdHvw').
-			' AND game.'.$db->qn('season').' = details.'.$db->qn('season').
-			' AND details.'.$db->qn('timeString').' = '.$db->q('00:00'));
-		
-		$query->where('game.'.$db->qn('season').' = '.$db->q($this->season));
+		$query->leftJoin($db->qn($this->tables->gamedetails).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
+		$query->where($db->qn('season').' = '.$db->q($this->season));
+		$query->where('('.$db->qn('timeString').' = '.$db->q('00:00').' OR '.$db->qn('timeString').' = "" OR '.$db->qn('timeString').' IS NULL)');
 		$query->where($db->qn('youth').' = '.$db->q('aktiv'));
 		$query->where($db->qn('ownClub').' = 1');
 		$query->where('DATE('.$db->qn('dateTime').') < '.$db->q($this->today->format('Y-m-d')));
@@ -152,6 +149,29 @@ class HBmanagerModelGamedetails extends JModelAdmin
 
 	// ------------------------------------------------------------------------
 	
+	public function previewGameData($gameId)
+	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+		$response = self::importGameData($gameId);
+
+		return $response;
+	}	
+
+
+	public function insertGameData($gameId)
+	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameData);echo'</pre>';
+
+		$gameData = self::importGameData($gameId);
+
+		// Goals
+		$response['players'] = self::savePlayers($gameData->players);
+		// Actions
+		$response['actions'] = self::saveActions($gameData->actions);
+
+		return $response;
+	}
+
 	public function importGameData($gameId)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
@@ -160,17 +180,20 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		self::setGameInfo($gameId);
 
 		$inputData = self::importData($gameId);
+
+		$gameData = new stdClass();
+		$gameData->gameId = $gameId;
 		// Game Info
-		$response = self::processGame($inputData->gameInfo);
+		$gameData->gameInfo = self::processGame($inputData->gameInfo);
 		// Goals
-		$players = ($this->homeGame) ? $inputData->playersHome : $inputData->playersAway;
-		self::processPlayers($players);
+		$playersInput = ($this->homeGame) ? $inputData->playersHome : $inputData->playersAway;
+		$gameData->players = self::processPlayers($playersInput);
 		// Actions
-		self::processActions($inputData->action);
+		$gameData->actions = self::processActions($inputData->action);
 
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($inputData);echo'</pre>';
 
-		return $response;
+		return $gameData;
 	}	
 
 	private function getFileName($id)
@@ -373,9 +396,17 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$players = self::convertPlayerStringToArray($playersString);
 		$players = self::formatPlayersArray($players);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($players);echo'</pre>';
+		return $players;
+	}
+
+	private function savePlayers($players) 
+	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($players);echo'</pre>';
 		self::addPlayersInfoToDB($players);
 		self::addMissingPlayers($players);
 		self::setHomeAliases($players);
+
+		return true; //TODO doublecheck if it acutally worked
 	}
 
 
@@ -409,7 +440,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 			
 			$value = [];
 			$value['gameIdHvw'] = $this->gameId;
-			$value['name'] = $row[1];
+			$value['playerName'] = $row[1];
 			$alias = self::getAlias($row[1]);
 			$value['alias'] = $alias;
 			//$birthday = $row[2];
@@ -514,7 +545,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		foreach ($missing as $key => $value) {
 			$values[$key]['id'] = ''; // needed, otherwise only 1 entry gets stored in 
 			$values[$key]['alias'] = $data[$value]['alias'];
-			$values[$key]['name'] = $data[$value]['name'];
+			$values[$key]['playerName'] = $data[$value]['playerName'];
 		}
 		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($values);echo'</pre>';
 		$table = JTable::getInstance('Contacts','HbmanagerTable');
@@ -544,7 +575,15 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$actions = self::convertActionStringToArray($actionString);
 		$actions = self::formatActionsArray($actions);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($actions);echo'</pre>';
+		return $actions;
+	}	
+
+	private function saveActions($actions) 
+	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($actions);echo'</pre>';
 		self::addActionsToDB($actions);
+
+		return true; //TODO doublecheck if it acutally worked
 	}
 
 	private function convertActionStringToArray($string)
@@ -611,9 +650,9 @@ class HBmanagerModelGamedetails extends JModelAdmin
 			$currAction = self::getActionType($row[3]); 
 			$value['text'] = $currAction->text;
 			$value['number'] = $currAction->nr;
-			$value['name'] = $currAction->name;
+			$value['playerName'] = $currAction->playerName;
 			$value['alias'] = $currAction->alias;
-			$value['team'] = $currAction->team;
+			$value['teamFlag'] = $currAction->teamFlag;
 			$value['category'] = $currAction->category;
 
 			$actionArray[] = $value;
@@ -653,10 +692,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$action = new stdClass();
 		$action->text = $text;
 
-		$action->name = null;
+		$action->playerName = null;
 		$pattern = '/.*(durch|für) (.* .*) \(\d{1,2}\)$/';
 		if (preg_match($pattern, $text)) {
-			$action->name = preg_replace($pattern, '$2', $text);
+			$action->playerName = preg_replace($pattern, '$2', $text);
 		}
 
 		$action->nr = null;
@@ -664,10 +703,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		if (preg_match($pattern, $text)) {
 			$action->nr = preg_replace($pattern, '$1', $text);
 		}
-		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($action->name);echo '</pre>';
-		$action->alias = self::getAlias($action->name);
+		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($action->playerName);echo '</pre>';
+		$action->alias = self::getAlias($action->playerName);
 		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($action->alias);echo '</pre>';
-		$action->team = self::getTeamFlag($action->alias);
+		$action->teamFlag = self::getTeamFlag($action->alias);
 		$action->category = self::getCategory($text);
 
 		return $action;
@@ -765,7 +804,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
 
-			$columns = array('season', 'gameIdHvw', 'actionIndex', 'timeString', 'time', 'scoreHome', 'scoreAway', 'scoreDiff', 'scoreChange', 'text', 'number', 'name', 'alias', 'team', 'category', 'stats_goals', 'stats_yellow', 'stats_suspension', 'stats_red');
+			$columns = array('season', 'gameIdHvw', 'actionIndex', 'timeString', 'time', 'scoreHome', 'scoreAway', 'scoreDiff', 'scoreChange', 'text', 'number', 'playerName', 'alias', 'teamFlag', 'category', 'stats_goals', 'stats_yellow', 'stats_suspension', 'stats_red');
 
 			foreach($inputData as $row) {
 				$values[] = implode(', ', self::formatGoalValueForDB($row));
@@ -799,9 +838,9 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$value['scoreChange'] 	= (empty($row['scoreChange'])) ? 'NULL' : $row['scoreChange'];
         $value['text'] 			= (empty($row['text'])) ? 'NULL' : "'".$row['text']."'";
         $value['number'] 		= (empty($row['number'])) ? 'NULL' : $row['number'];
-        $value['name'] 			= (empty($row['name'])) ? 'NULL' : "'".$row['name']."'";
+        $value['playerName'] 			= (empty($row['playerName'])) ? 'NULL' : "'".$row['playerName']."'";
         $value['alias'] 		= (empty($row['alias'])) ? 'NULL' : "'".$row['alias']."'";
-        $value['team'] 			= (empty($row['team'])) ? 'NULL' : $row['team'];
+        $value['teamFlag'] 			= (empty($row['teamFlag'])) ? 'NULL' : $row['teamFlag'];
         $value['category'] 		= (empty($row['category'])) ? 'NULL' : "'".$row['category']."'";
         $value['stats_goals'] 	= (empty($row['stats_goals'])) ? 'NULL' : $row['stats_goals'];
 		$value['stats_yellow'] 	= (empty($row['stats_yellow'])) ? 'NULL' : $row['stats_yellow'];

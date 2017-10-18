@@ -18,6 +18,7 @@ class hbmanagerViewGamedetails extends JViewLegacy
 
 			return false;
 		}
+		JHtml::_('bootstrap.modal');
 
 		$model = $this->getModel();
 
@@ -55,7 +56,8 @@ class hbmanagerViewGamedetails extends JViewLegacy
 		$title = JText::_('COM_HBMANAGER_GAMEDETAILS_TITLE');
 
 		JToolBarHelper::title($title, 'hb-ball');
-		// JToolBarHelper::custom('games.saveReport', 'save', 'save',  JText::_('COM_HBMANAGER_GAMEDETAILS_TOOLBAR_SAVE'), false);
+		JToolBarHelper::custom('showAll', 'list', 'list',  JText::_('COM_HBMANAGER_GAMEDETAILS_TOOLBAR_SHOW_ALL'), false);
+		// JToolBarHelper::custom('importAll', 'signup', 'signup',  JText::_('COM_HBMANAGER_GAMEDETAILS_TOOLBAR_IMPORT_ALL'), false);
 	}
 	/**
 	 * Method to set up the document properties

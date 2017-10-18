@@ -273,7 +273,7 @@ CREATE TABLE `#__hb_team_player` (
 
 DROP TABLE IF EXISTS `#__hb_gamereport_details`;
 
-CREATE TABLE `#__hb_spielbericht_details` (
+CREATE TABLE `#__hb_gamereport_details` (
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `gameIdHvw` int(6) NOT NULL DEFAULT '0',
   `actionIndex` int(3) NOT NULL,
@@ -285,9 +285,9 @@ CREATE TABLE `#__hb_spielbericht_details` (
   `scoreDiff` int(2) DEFAULT NULL,
   `text` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `number` int(3) DEFAULT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `playerName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `alias` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `team` int(1) DEFAULT NULL,
+  `teamFlag` int(1) DEFAULT NULL,
   `category` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `stats_goals` int(3) DEFAULT NULL,
   `stats_yellow` int(1) DEFAULT NULL,
