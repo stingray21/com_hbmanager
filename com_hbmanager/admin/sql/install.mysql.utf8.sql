@@ -201,7 +201,7 @@ CREATE TABLE `#__hb_standings_details` (
 DROP TABLE IF EXISTS `#__hb_updatelog`;
 
 CREATE TABLE `hkog_hb_updatelog` (
-  `updateId` int(10) NOT NULL AUTO_INCREMENT,,
+  `updateId` int(10) NOT NULL AUTO_INCREMENT,
   `type` text DEFAULT NULL,
   `teamkey` text DEFAULT NULL,
   `dateTime` datetime DEFAULT NULL,
@@ -212,3 +212,86 @@ CREATE TABLE `hkog_hb_updatelog` (
   PRIMARY KEY (`updateId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_player`;
+
+CREATE TABLE `#__hb_player` (
+  `playerId` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `height` int(5) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `clubs` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`playerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_game_player`;
+
+CREATE TABLE `#__hb_game_player` (
+  `season` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `gameIdHvw` int(10) NOT NULL,
+  `alias` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `teamkey` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `number` varchar(10) NOT NULL,
+  `goalie` tinyint(1) DEFAULT NULL,
+  `goals` int(3) DEFAULT NULL,
+  `penalty` int(3) DEFAULT NULL,
+  `penaltyGoals` int(3) DEFAULT NULL,
+  `yellow` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `suspension1` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `suspension2` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `suspension3` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `red` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comment` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `suspensionTeam` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`season`, `gameIdHvw`, `alias`, `number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_team_player`;
+
+CREATE TABLE `#__hb_team_player` (
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `teamkey` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `season` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `number` int(3) DEFAULT NULL,
+  `coach` tinyint(1) DEFAULT '0',
+  `TW` tinyint(1) DEFAULT '0',
+  `LA` tinyint(1) DEFAULT '0',
+  `RL` tinyint(1) DEFAULT '0',
+  `RM` tinyint(1) DEFAULT '0',
+  `RR` tinyint(1) DEFAULT '0',
+  `RA` tinyint(1) DEFAULT '0',
+  `KM` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`season`, `teamkey`, `alias`, `number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_gamereport_details`;
+
+CREATE TABLE `#__hb_spielbericht_details` (
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `gameIdHvw` int(6) NOT NULL DEFAULT '0',
+  `actionIndex` int(3) NOT NULL,
+  `timeString` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `time` int(5) DEFAULT NULL,
+  `scoreChange` tinyint(1) DEFAULT NULL,
+  `scoreHome` int(3) DEFAULT NULL,
+  `scoreAway` int(3) DEFAULT NULL,
+  `scoreDiff` int(2) DEFAULT NULL,
+  `text` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `number` int(3) DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `alias` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `team` int(1) DEFAULT NULL,
+  `category` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `stats_goals` int(3) DEFAULT NULL,
+  `stats_yellow` int(1) DEFAULT NULL,
+  `stats_suspension` int(1) DEFAULT NULL,
+  `stats_red` int(1) DEFAULT NULL,
+  PRIMARY KEY (`season`, `gameIdHvw`, `actionIndex`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
