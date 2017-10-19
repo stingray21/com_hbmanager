@@ -67,11 +67,6 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
 	<div id="j-main-container" class="span10">
 		
-
-	<?php 
-	$form = JForm::getInstance('formgamedetails', JPATH_COMPONENT_ADMINISTRATOR.'/models/forms/gamesprev.xml');
-	$i = 0;
-	?>
 		<form action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=gamedetails.saveReport') ?>" method="post" id="adminForm" name="adminForm">
 
 			<table class="table table-striped table-hover">
@@ -111,9 +106,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);
 				?>
 					<tr id="<?php echo 'gameId_'.$game->gameIdHvw; ?>" class="<?php echo ($game->imported) ? 'hidden' : ''; ?>">
-						<td><?php echo HbmanagerHelper::formatInput($form->getInput('gameIdHvw', 'gamesprev', $game->gameIdHvw), $i)?>
-							<?php echo HbmanagerHelper::formatInput($form->getInput('season', 'gamesprev', $game->season), $i)?>
-						</td>
+						<td></td>
 						<td><?php echo JHTML::_('date', $game->dateTime , 'd.m.Y', $tz); ?></td>
 						<td><?php echo $game->team; ?></td>
 						<td><a href="<?php echo HbmanagerHelper::get_hvw_page_url($game->leagueIdHvw); ?>" title="<?php echo JText::_('COM_HBMANAGER_GAMES_HVWLINK'); ?>" target="_BLANK"><?php echo $game->leagueKey ?><?php //echo $game->teamkey; ?></a></td>

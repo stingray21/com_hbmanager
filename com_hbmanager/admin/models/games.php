@@ -66,6 +66,8 @@ class HBmanagerModelGames extends JModelAdmin
 
 	public function getForm($data = array(), $loadData = true)
 	{
+		// TODO: implement this method
+		
 		// // Get the form.
 		// $form = $this->loadForm(
 		// 	'com_hbmanager.team',

@@ -22,7 +22,15 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	
 	private $today = null;
 	private $season = null;
-	private $tables = null;
+
+	private $table_team = '#__hb_team';
+	private $table_game = '#__hb_game';
+	private $table_gamereport = '#__hb_gamereport';
+	private $table_gamedetails = '#__hb_gamereport_details';
+	private $table_teamplayer = '#__hb_team_player';
+	private $table_gameplayer = '#__hb_game_player';
+	private $table_contact = '#__contact_details';
+
 	private $tz = null;
 	private $importFilePath = null;
 	private $fileGameIds = null;
@@ -41,15 +49,6 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	function __construct() 
 	{
 		parent::__construct();
-		
-		$this->tables = new stdClass();
-		$this->tables->team = '#__hb_team';
-		$this->tables->game = '#__hb_game';
-		$this->tables->gamereport = '#__hb_gamereport';
-		$this->tables->gamedetails = '#__hb_gamereport_details';
-		$this->tables->teamplayer = '#__hb_team_player';
-		$this->tables->gameplayer = '#__hb_game_player';
-		$this->tables->contact = '#__contact_details';
 
 		$this->tz = new DateTimeZone($this->timezone);
 
@@ -115,10 +114,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 
 		$query->select('`season`, `gameIdHvw`, `teamkey`, game.`leagueKey` AS `leagueKey`, `leagueIdHvw`, `dateTime`, `home`, `away`, `goalsHome`, `goalsAway`, `reportHvwId`, `order`, `team`, `name`, `shortName`, `league`, `youth`, `update`, IF(`timeString` = \'00:00\', 1, 0) AS `imported` ');
 
-		$query->from($this->tables->game.' AS game');
-		$query->leftJoin($db->qn($this->tables->team).' USING ('.$db->qn('teamkey').')');
-		// $query->leftJoin($db->qn($this->tables->gamereport).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
-		$query->leftJoin($db->qn($this->tables->gamedetails).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
+		$query->from($this->table_game.' AS game');
+		$query->leftJoin($db->qn($this->table_team).' USING ('.$db->qn('teamkey').')');
+		// $query->leftJoin($db->qn($this->table_gamereport).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
+		$query->leftJoin($db->qn($this->table_gamedetails).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where('('.$db->qn('timeString').' = '.$db->q('00:00').' OR '.$db->qn('timeString').' = "" OR '.$db->qn('timeString').' IS NULL)');
 		$query->where($db->qn('youth').' = '.$db->q('aktiv'));
@@ -213,8 +212,8 @@ class HBmanagerModelGamedetails extends JModelAdmin
 
 		$query->select('gameIdHvw, teamkey, season, shortName, home, away');
 
-		$query->from($db->qn($this->tables->game));
-		$query->leftJoin($db->qn($this->tables->team).
+		$query->from($db->qn($this->table_game));
+		$query->leftJoin($db->qn($this->table_team).
 				' USING ('.$db->qn('teamkey').')');
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->gameId));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
@@ -234,7 +233,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('alias');
-		$query->from($db->qn($this->tables->teamplayer));
+		$query->from($db->qn($this->table_teamplayer));
 		// $query->where($db->qn('teamkey').' = '.$db->q($teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('TW').' = 1');
@@ -495,7 +494,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	{	
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->delete($db->qn($this->tables->gameplayer));
+		$query->delete($db->qn($this->table_gameplayer));
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->gameId));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
@@ -521,8 +520,8 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT alias');
-		$query->from($db->qn($this->tables->gameplayer));
-		$query->leftJoin($db->qn($this->tables->contact).' USING ('.$db->qn('alias').')');
+		$query->from($db->qn($this->table_gameplayer));
+		$query->leftJoin($db->qn($this->table_contact).' USING ('.$db->qn('alias').')');
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->gameId));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
@@ -787,7 +786,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	public function cleanActionsInDB() {	
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->delete($db->qn($this->tables->gamedetails));
+		$query->delete($db->qn($this->table_gamedetails));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->gameId));
 		// echo __FUNCTION__.'<pre>'.$query.'</pre>';
@@ -812,7 +811,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 
 			// Prepare the insert query.
 			$query
-					->insert($db->qn($this->tables->gamedetails)) 
+					->insert($db->qn($this->table_gamedetails)) 
 					->columns($db->qn($columns))
 					->values($values);
 
