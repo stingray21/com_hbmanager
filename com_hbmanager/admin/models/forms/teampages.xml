@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="teampages">
+		<fieldset name="games">
+			<field
+					name="team"
+					type="hidden"
+					/>
+			<field
+					name="teamkey"
+					type="hidden"
+					/>
+			<field
+					name="teamCategory"
+					type="hidden"
+					/>
+			<field
+					name="add][main"
+					type="checkbox"
+					label="COM_HBMANAGER_MENU_MANAGER_FORM_TEAM_LABEL"
+					description="COM_HBMANAGER_MENU_MANAGER_FORM_TEAM_DESC"
+					default=""
+					/>
+			<field
+					name="add][player"
+					type="checkbox"
+					label="COM_HBMANAGER_MENU_MANAGER_FORM_PLAYER_LABEL"
+					description="COM_HBMANAGER_MENU_MANAGER_FORM_PLAYER_DESC"
+					default=""
+					/>
+			<field
+					name="add][reports"
+					type="checkbox"
+					label="COM_HBMANAGER_MENU_MANAGER_FORM_REPORTS_LABEL"
+					description="COM_HBMANAGER_MENU_MANAGER_FORM_REPORTS_DESC"
+					default=""
+					/>
+			<field
+					name="add][stats"
+					type="checkbox"
+					label="COM_HBMANAGER_MENU_MANAGER_FORM_STATS_LABEL"
+					description="COM_HBMANAGER_MENU_MANAGER_FORM_STATS_DESC"
+					default=""
+					/>
+		</fieldset>
+	</fields>
+</form>
