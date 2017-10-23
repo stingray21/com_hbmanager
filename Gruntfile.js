@@ -15,7 +15,8 @@ module.exports = function(grunt) {
                     dest:  './<%= ext.name %>/',  
                 }],
                 pretend: false, // Don't do any IO. Before you run the task with `updateAndDelete` PLEASE MAKE SURE it doesn't remove too much. 
-                verbose: false // Display log messages when copying files 
+                verbose: false, // Display log messages when copying files 
+                updateAndDelete: true, // Remove all files from dest that are not found in src. Default: false
             }
         },
         'string-replace': {
