@@ -105,6 +105,9 @@ function updateTeamData(teamkey, callback)
 					callback(response);
 				} else {
 					console.log('There was a problem with the request.');
+					var response = {"result": {"total": false}};
+					// console.log(response.result);										
+					callback(response);
 				}
 			}
 		}

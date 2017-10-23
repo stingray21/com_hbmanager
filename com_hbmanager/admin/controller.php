@@ -36,16 +36,14 @@ class hbmanagerController extends JControllerLegacy
 		// Get the document object.
 		$document = JFactory::getDocument();
 
-		// Set the MIME type for JSON output.
-		$document->setMimeEncoding('application/json');
-
 		// Change the suggested filename 
 		// -> returns result.json file instead of being displayed in the browser
 		// JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
 
 		// Output the JSON data.
-		echo json_encode($response);
-		
+		$document->setMimeEncoding('application/json'); // Set the MIME type for JSON output.
+		$response = json_encode($response);
+		echo $response;
 	}
 	
 	function previewGameData()

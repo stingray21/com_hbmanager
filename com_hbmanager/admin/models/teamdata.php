@@ -21,7 +21,13 @@ class HBmanagerModelTeamdata extends JModelList
  	protected $season;
  	protected $ownTeamNames;
  	protected $dateFormat = 'D, d.m.Y - H:i:s';
- 	protected $tableTeams = '#__hb_team';
+
+ 	private $table_team 				= '#__hb_team';
+	private $table_game 				= '#__hb_game';
+	private $table_updatelog			= '#__hb_updatelog';
+	private $table_standings 			= '#__hb_standings';
+	private $table_standings_details 	= '#__hb_standings_details';
+	private $table_team_details 		= '#__hb_team_details';
 
 	/**
 	 * Constructor.
@@ -68,7 +74,7 @@ class HBmanagerModelTeamdata extends JModelList
 
 		// Create the base select statement.
 		$query->select('*')
-			  ->from($db->quoteName($this->tableTeams));
+			  ->from($db->quoteName($this->table_team));
 
 		// Filter: like / search
 		$search = $this->getState('filter.search');
@@ -162,12 +168,22 @@ class HBmanagerModelTeamdata extends JModelList
 			// standings_details
 			try {
 				$standingsData = self::getDetailedStandingsData($team->teamkey);
-				$standingsData = self::sortDetailedStandings($standingsData, $team->teamkey, true);
 				$result['standingsDetails'] = self::updateDB_standings_details($team, $standingsData);
 			} catch (Exception $e) {	
 				//echo 'Exception: ',  $e->getMessage(), "\n";
 				$result['error'][] =  $e->getMessage();
 			}		
+
+			// standings_chart
+			// try {
+				if ($team->youth == 'aktiv') {	
+					$standingsChartData = self::getStandingsChartData($team);
+					$result['standingsChart'] = self::updateDB_team_details($team, $standingsChartData);
+				} 
+			// } catch (Exception $e) {	
+			// 	//echo 'Exception: ',  $e->getMessage(), "\n";
+			// 	$result['error'][] =  $e->getMessage();
+			// }
 		} else {
 			$result['error'][] = $hvwData;
 		}
@@ -219,7 +235,7 @@ class HBmanagerModelTeamdata extends JModelList
 		$db	= JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT '.$db->qn('shortName'));
-		$query->from($this->tableTeams);
+		$query->from($this->table_team);
 		$db->setQuery($query);
 		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$result = $db->loadColumn();
@@ -233,7 +249,7 @@ class HBmanagerModelTeamdata extends JModelList
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		$query->update($this->tableTeams);
+		$query->update($this->table_team);
 		
 		$dateUTC = JFactory::getDate( )->toSql();
 		
@@ -254,7 +270,7 @@ class HBmanagerModelTeamdata extends JModelList
 
 		$error = (empty($result['error'])) ? 'NULL' : $db->q(json_encode($result['error']));
 
-		$query->insert($db->qn('#__hb_updatelog'));
+		$query->insert($db->qn($this->table_updatelog));
 		
 		$query->columns($db->qn(array('type','teamkey','dateTime', 'schedule', 'standings', 'standingsDetails', 'error')));
 
@@ -278,7 +294,7 @@ class HBmanagerModelTeamdata extends JModelList
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*');
-		$query->from($this->tableTeams);
+		$query->from($this->table_team);
 		$query->where($db->qn('teamkey').' = '.$db->q($teamkey));
 		$db->setQuery($query);
 		$team = $db->loadObject();
@@ -342,8 +358,6 @@ class HBmanagerModelTeamdata extends JModelList
 
 	protected function updateDB_game ($team, $hvwData)
 	{
-		$table = '#__hb_game';
-		
 		$columns = array('season', 'teamkey', 'leagueKey', 'gameIdHvw', 'gymId', 'dateTime', 'home', 'away', 'goalsHome', 'goalsAway', 'goalsHome1', 'goalsAway1', 'comment', 'pointsHome', 'pointsAway', 'ownClub', 'reportHvwId');
 
 		foreach($hvwData as $row) {
@@ -351,7 +365,7 @@ class HBmanagerModelTeamdata extends JModelList
 			self::formatValues_game($row, $team));
 		}
 
-		return self::updateDB($team, $table, $values, $columns);
+		return self::updateDB($team, $this->table_game, $values, $columns);
 	}
 
 	protected function formatValues_game ($hvwData, $team)
@@ -429,8 +443,6 @@ class HBmanagerModelTeamdata extends JModelList
 
 	protected function updateDB_standings ($team, $hvwData)
 	{
-		$table = '#__hb_standings';
-
 		$columns = array('season', 'teamkey', 'rank', 'team', 'games', 'wins', 'ties', 'losses', 'goalsPos', 'goalsNeg', 'goalsDiff', 'pointsPos', 'pointsNeg');
 
 		foreach($hvwData as $row) {
@@ -438,7 +450,7 @@ class HBmanagerModelTeamdata extends JModelList
 			self::formatValues_standings($row, $team));
 		}
 
-		return self::updateDB($team, $table, $values, $columns);
+		return self::updateDB($team, $this->table_standings, $values, $columns);
 	}
 
 	protected function addMissingRanking ($hvwData)
@@ -481,8 +493,6 @@ class HBmanagerModelTeamdata extends JModelList
 
 	protected function updateDB_standings_details ($team, $hvwData)
 	{
-		$table = '#__hb_standings_details';
-
 		$columns = array('season', 'teamkey', 'rank', 'team', 'games', 'gamesH', 'gamesA', 'wins', 'winsHome', 'winsAway', 'ties', 'tiesHome', 'tiesAway', 'losses', 'lossesHome', 'lossesAway', 'goalsPos', 'goalsPosHome', 'goalsPosAway', 'goalsNeg', 'goalsNegHome', 'goalsNegAway', 'goalsDiff', 'goalsDiffHome', 'goalsDiffAway', 'pointsPos', 'pointsPosHome', 'pointsPosAway', 'pointsNeg', 'pointsNegHome', 'pointsNegAway');
 
 		foreach($hvwData as $row) {
@@ -490,7 +500,7 @@ class HBmanagerModelTeamdata extends JModelList
 			self::formatValues_standings_details($row, $team));
 		}
 
-		return self::updateDB($team, $table, $values, $columns);
+		return self::updateDB($team, $this->table_standings_details, $values, $columns);
 	}
 
 	protected function formatValues_standings_details ($hvwData, $team)
@@ -532,13 +542,12 @@ class HBmanagerModelTeamdata extends JModelList
 		return $value;
 	}
 
-protected function getDetailedStandingsData ($teamkey, $date = null)		
+	protected function getDetailedStandingsData($teamkey, $date = null)		
 	{
 		$db = JFactory::getDBO();
-		$table = '#__hb_game';
-
+		
 		//$noDateOption = ($date === null) ? 1 : 0 ;
-		$dateOption = ($date !== null) ? " AND DATE(`datumZeit`) <= ".$db->q($date) : '';
+		$dateOption = ($date !== null) ? " AND DATE(`dateTime`) <= ".$db->q($date) : '';
 		
 		// make a second table with the home and away switch, then only take the "new" home teams in account
 
@@ -588,7 +597,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 
 			FROM ( 
 				SELECT home as team, teamkey 
-				FROM ".$table."
+				FROM ".$this->table_game."
 				WHERE teamkey = ".$db->q($teamkey)."
 				AND season=".$db->q($this->season)." 
 				GROUP BY team
@@ -604,7 +613,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 				s1.goalsAway goalsOpponent,
 				s1.pointsHome points,	 
 				s1.pointsAway pointsOpponent
-				FROM ".$table." s1 
+				FROM ".$this->table_game." s1 
 				WHERE s1.pointsHome IS NOT NULL  
 					AND teamkey = ".$db->q($teamkey)."
 					AND season = ".$db->q($this->season)." 
@@ -620,7 +629,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 				s2.goalsHome goalsOpponent,
 				s2.pointsAway points,	 
 				s2.pointsHome pointsOpponent
-				FROM ".$table." s2 
+				FROM ".$this->table_game." s2 
 				WHERE s2.pointsHome IS NOT NULL 
 					AND teamkey = ".$db->q($teamkey)."
 					AND season = ".$db->q($this->season)." 
@@ -632,14 +641,32 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 
 		// echo  __FILE__.' ('.__LINE__.')<pre>'; echo $query; echo "</pre>";
 		$db->setQuery($query);
-		$result = $db->loadObjectList();
-		// echo __FILE__.' ('.__LINE__.')<pre>'; print_r($result); echo '</pre>'; die;
-		return $result;
+		$standingsData = $db->loadObjectList();
+
+		$standingsData = self::sortDetailedStandings($standingsData, $teamkey);
+		// echo __FILE__.' ('.__LINE__.')<pre>'; print_r($standingsData); echo '</pre>'; die;
+		return $standingsData;
 	}
 
-	protected function sortDetailedStandings($standings, $teamkey, $compareH2H = false)
+	protected function sortDetailedStandings($standings, $teamkey, $compareH2H = true)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($standings);echo'</pre>';
+
+// // TODO: use  usort
+// usort($games, function($a, $b) 
+// {
+// 	// $retval = $a->order <=> $b->order;
+// 	// if ($retval == 0) {
+// 	//     $retval = $a->dateTime <=> $b->dateTime;
+// 	// }
+	
+// 	$retval = ($a->order > $b->order) ? -1 : 1;
+// 	if ($a->order == $b->order) {
+// 	    $retval = (strtotime($a->dateTime) < strtotime($b->dateTime)) ? -1 : 1;
+// 	}
+// 	return $retval;
+// });
+
 		$sorted = array();
 		foreach ($standings as $row)
 		{
@@ -650,7 +677,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 		return $sorted;
 	}
 
-	protected function insertInStandings ($standings, $newRow, $teamkey, $compareH2H = false)
+	protected function insertInStandings ($standings, $newRow, $teamkey, $compareH2H = true)
 	{
 		$pos = 0;
 		$currRank = null;
@@ -720,7 +747,7 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 		// home game of $newRow team against $currRow team
 		$query = $db->getQuery(true);
 		$query->select('goalsHome AS goals, goalsAway AS goalsOpponent');
-		$query->from('#__hb_game');
+		$query->from($this->table_game);
 		$query->where(
 			'( '.
 			$db->qn('home').'='.$db->q($newRow->team).' AND '.$db->qn('away').'='.$db->q($currRow->team).
@@ -754,8 +781,82 @@ protected function getDetailedStandingsData ($teamkey, $date = null)
 		
 		return $direct;
 	}
+	
+
+// ----------------------------------------------------------------------------------
+// 	Standings chart data for #__hb_team_details
+// ----------------------------------------------------------------------------------
+
+	private function getStandingsChartData($team)
+	{
+		$dates = self::getChartDates($team->teamkey);
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
+
+		$chartData = [];
+		$chartData['info'] = $team->shortName;
+		$chartData['standings'] = [];
+
+		foreach ($dates as $date) {
+			$standings = self::getDetailedStandingsData($team->teamkey, $date);
+			$chartData['standings'] = self::add2ChartData($chartData['standings'], $standings, $date);
+			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($chartData);echo'</pre>';die;
+		}
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($chartData);echo'</pre>';
+		return $chartData;
+	}
+
+	private function add2ChartData($chartData, $standings, $date) {
+		// echo __FILE__.' ('.__LINE__.')<pre>'; print_r($standings); echo '</pre>';
+		foreach ($standings as $key => $team) {
+			if (empty($chartData[$key])) {
+				$chartData[$key] = ['name' => $team->team, 'data' => []];
+			}
+			foreach ($chartData as &$value) {
+				if ($value['name'] === $team->team) {
+					$element = [];
+					$element["date"] 		= $date;
+					$element["rank"] 		= $team->rank;
+					$element["pointsPos"] 	= $team->ptsPos;
+					$element["pointsNeg"] 	= $team->ptsNeg; 
+					$value["data"][] = $element;
+				}
+			}
+		}
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($chartData);echo'</pre>';
+		return $chartData;
+	} 
+
+	private function getChartDates($teamkey) {
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('DATE(dateTime) as day,'.
+				' DATE_ADD(DATE(`dateTime`), INTERVAL (8 - IF(DAYOFWEEK(`dateTime`)=1, 8, DAYOFWEEK(`dateTime`))) DAY) as nextSunday');
+		$query->from($this->table_game);
+		$query->where('ownClub = 1');		
+		$query->where('teamkey = '.$db->q($teamkey));		
+		$query->where($db->qn('season').' = '.$db->q($this->season));			
+		$query->where('DATE('.$db->qn('dateTime').') <= DATE_ADD(DATE(NOW()), INTERVAL (8 - IF(DAYOFWEEK(NOW())=1, 8, DAYOFWEEK(NOW()))) DAY)');
+		$query->order($db->qn('day')); 
+		$db->setQuery($query);
+		$dates = $db->loadColumn(1);
+		return $dates;
+	}
+
+	private function updateDB_team_details ($team, $standingsData)
+	{	
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($standingsData);echo'</pre>';
+		$db = $this->getDbo();
+		$columns = array('teamkey',	'season', 'standingsGraph');
+		
+		$values = [];
+		$value['teamkey'] = $db->q($team->teamkey);
+		$value['season'] = $db->q($this->season);
+		$value['standingsGraph'] = (!empty($standingsData)) ? $db->q(json_encode($standingsData)) : 'NULL';
+
+		$values[] = implode(', ', $value);
+
+		return self::updateDB($team, $this->table_team_details, $values, $columns);
+	}
+
 
 }
-
-	
-	
