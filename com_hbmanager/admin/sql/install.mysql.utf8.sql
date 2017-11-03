@@ -57,14 +57,7 @@ CREATE TABLE `#__hb_team_picture` (
   `season` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `teamkey` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `filename` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `caption_dt1` longtext COLLATE utf8_unicode_ci,
-  `caption_dd1` longtext COLLATE utf8_unicode_ci,
-  `caption_dt2` longtext COLLATE utf8_unicode_ci,
-  `caption_dd2` longtext COLLATE utf8_unicode_ci,
-  `caption_dt3` longtext COLLATE utf8_unicode_ci,
-  `caption_dd3` longtext COLLATE utf8_unicode_ci,
-  `caption_dt4` longtext COLLATE utf8_unicode_ci,
-  `caption_dd4` longtext COLLATE utf8_unicode_ci,
+  `caption` longtext COLLATE utf8_unicode_ci,
   `comment` longtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`picId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -295,3 +288,34 @@ CREATE TABLE `#__hb_gamereport_details` (
   `stats_red` int(1) DEFAULT NULL,
   PRIMARY KEY (`season`, `gameIdHvw`, `actionIndex`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_training`;
+
+CREATE TABLE `#__hb_training` (
+  `trainingID` int(3) NOT NULL,
+  `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `day` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `start` time NOT NULL,
+  `end` time NOT NULL,
+  `training_comment` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gymId` int(7) DEFAULT NULL,
+  `visible` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`trainingID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_team_coach`;
+
+CREATE TABLE `#__hb_team_coach` (
+  `coachID` int(11) NOT NULL,
+  `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `alias` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rank` int(2) DEFAULT NULL,
+  PRIMARY KEY (`coachID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+

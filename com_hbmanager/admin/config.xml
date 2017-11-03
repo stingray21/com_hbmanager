@@ -98,6 +98,7 @@
 		name="teammenus"
 		label="COM_HBMANAGER_CONFIG_TEAMMENU_LABEL"
 		description="COM_HBMANAGER_CONFIG_TEAMMENU_DESC"
+		addfieldpath="/administrator/components/com_hbmanager/models/fields"
 	>
 		<field 
 			name="menuActive" 
@@ -124,5 +125,84 @@
 		>
 			<option value="ONLY1">ONLY_ONE</option>
 		</field>
+		
+		<field
+			name="show_team"
+			type="radio"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TEAM_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TEAM_DESC"
+			default="1"
+			class="btn-group btn-group-yesno"
+		>
+			<option	value="1">JSHOW</option>
+			<option	value="0">JHIDE</option>
+		</field>
+		<field
+			name="show_picture"
+			type="radio"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_PICTURE_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_PICTURE_DESC"
+			default="1"
+			class="btn-group btn-group-yesno"
+		>
+			<option	value="1">JSHOW</option>
+			<option	value="0">JHIDE</option>
+		</field>
+		<field
+			name="show_training"
+			type="radio"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TRAINING_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TRAINING_DESC"
+			default="1"
+			class="btn-group btn-group-yesno"
+		>
+			<option	value="1">JSHOW</option>
+			<option	value="0">JHIDE</option>
+		</field>
+		<field 
+			name="show_email" 
+			type="list" 
+			label="COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_DESC"
+			default="alias"
+		>
+			<option value="none">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_NONE</option>
+			<option value="personal">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_PERSONAL</option>
+			<option value="alias">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_ALIAS</option>
+		</field>
+
+		<field
+			name="show_schedule"
+			type="radio"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_SCHEDULE_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_SCHEDULE_DESC"
+			default="1"
+			class="btn-group btn-group-yesno"
+		>
+			<option	value="1">JSHOW</option>
+			<option	value="0">JHIDE</option>
+		</field>
+		<field
+			name="show_standings"
+			type="radio"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGS_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGS_DESC"
+			default="1"
+			class="btn-group btn-group-yesno"
+		>
+			<option	value="1">JSHOW</option>
+			<option	value="0">JHIDE</option>
+		</field>
+		<field
+			name="show_standings_type"
+			type="list"
+			label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_LABEL"
+			description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_DESC"
+			default="standard"
+		>
+			<option	value="standard">COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_STANDARD</option>
+			<option	value="details">COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_DETAILS</option>
+		</field>
 	</fieldset>
+
 </config>

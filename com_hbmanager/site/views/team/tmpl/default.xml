@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_HBMANAGER_HBMANAGER_VIEW_TEAM_TITLE">
+		<message>COM_HBMANAGER_HBMANAGER_VIEW_TEAM_DESC</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params"
+		addfieldpath="/administrator/components/com_hbmanager/models/fields">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBMANAGER_TEAM_OPTIONS_TEAM_SETTINGS_LABEL">
+			<field
+				name="teamkey"
+				type="teams"
+				size="1"
+				label="COM_HBMANAGER_TEAM_OPTIONS_TEAMKEY_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_TEAMKEY_DESC"
+				/>
+				
+			
+			<field
+				name="show_team"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TEAM_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TEAM_DESC"
+				useglobal="true"
+			>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+			<field
+				name="show_picture"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_PICTURE_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_PICTURE_DESC"
+				useglobal="true"
+			>
+				<option	value="1">JSHOW</option>
+				<option	value="0">JHIDE</option>
+			</field>
+			<field
+				name="show_training"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TRAINING_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_TRAINING_DESC"
+				useglobal="true"
+			>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+			<field 
+				name="show_email" 
+				type="list" 
+				label="COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_DESC"
+				default=""
+				useglobal="true"
+			>
+				<option value="none">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_NONE</option>
+				<option value="personal">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_PERSONAL</option>
+				<option value="alias">COM_HBMANAGER_TEAM_OPTIONS_EMAIL_DISPLAY_ALIAS</option>
+			</field>
+
+			<field
+				name="show_schedule"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_SCHEDULE_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_SCHEDULE_DESC"
+				useglobal="true"
+			>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+			<field
+				name="show_standings"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGS_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGS_DESC"
+				useglobal="true"
+			>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+			<field
+				name="show_standings_type"
+				type="list"
+				label="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_LABEL"
+				description="COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_DESC"				
+				useglobal="true"
+			>
+				<option	value="standard">COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_STANDARD</option>
+				<option	value="details">COM_HBMANAGER_TEAM_OPTIONS_SHOW_STANDINGSTYPE_DETAILS</option>
+			</field>
+		</fieldset>
+		
+		
+	</fields>
+  
+</metadata>
