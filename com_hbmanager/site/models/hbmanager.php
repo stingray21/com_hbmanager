@@ -43,6 +43,11 @@ class HBmanagerModelHBmanager extends JModelLegacy
 		
 		parent::__construct($config);
     }
+    
+	public function getTimezone () 
+	{
+		return $this->tz;
+	}
 
 	public function getTeam($teamkey = null)
 	{

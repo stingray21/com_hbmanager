@@ -119,26 +119,4 @@ $team = $this->team;
 <h1><?php echo JText::_('COM_HBMANAGER_TEAM_NO_TEAM')?></h1>
 <?php endif; ?>
 
-<?php
-
-//echo __FILE__.__LINE__.'<a href="'.$this->model->getImage('500').'">'.$this->model->getImage('500').'</a>';
-
-// if (!empty($this->model->getImage('800')) AND file_exists($this->model->getImage('1200')))
-// {
-?>
-
-<?php
-//}
-
-
-// 	$modules =& JModuleHelper::getModules('HBteam');
-// 	foreach ($modules as $module){
-// 		echo JModuleHelper::renderModule($module);
-// 	}
-	
-
-// if ($this->standingsChart) {
-// 	echo '<div id="chart"></div>';
-// }
-?>	
 </div>

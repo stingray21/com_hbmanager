@@ -65,7 +65,7 @@ $reports = $this->show['schedule_params']['reports'];
 					</tbody>
 				</table>
 				<p><?php echo JText::_('COM_HBMANAGER_TEAM_UPDATE_DATE') ?>: <?php echo JHtml::_('date', $team->updateSchedule, 'd.m.y', $this->tz) ?> | 
-					<?php echo JText::_('COM_HBMANAGER_TEAM_REF_LEAGUE') ?>: <a href="<?php echo HbmanagerHelper::get_hvw_page_url($team->leagueIdHvw) ?>"><?php echo $team->league ?> (<?php echo $team->leagueKey ?>)</a>
+					<?php echo JText::_('COM_HBMANAGER_TEAM_REF_LEAGUE') ?>: <a href="<?php echo HbmanagerHelper::get_hvw_page_url($team->leagueIdHvw) ?>" target="_BLANK"><?php echo $team->league ?> (<?php echo $team->leagueKey ?>)</a>
 				</p>
 
 			</div>

@@ -20,11 +20,6 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		parent::__construct($config);
 	}
 
-	public function getTimezone () 
-	{
-		return $this->tz;
-	}
-
 	public function getShowParams () 
 	{
 		return $this->show_params;
@@ -322,10 +317,43 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 	public function getStandings()
 	{
+		if ($this->show['standings_type'] === 'details' ) {
+			$standings = self::getStandingsDetails();
+		}
+		else {
+			$standings = self::getStandingsStandard();
+		}
+
+		return $standings;
+	}
+
+	public function getStandingsStandard()
+	{
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from($db->qn($this->table_standings));
+		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
+		$query->where($db->qn('season').' = '.$db->q($this->season));		
+		$query->order($db->qn('rank'));
+		$db->setQuery($query);
+		$standings = $db->loadObjectList();
+		
+		if (is_null($posts=$db->loadRowList())) 
+		{
+				$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+				return;
+		}
+
+		return $standings;
+	}
+
+	public function getStandingsDetails()
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from($db->qn($this->table_standings_details));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));		
 		$query->order($db->qn('rank'));
