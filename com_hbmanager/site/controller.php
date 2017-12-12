@@ -76,5 +76,37 @@ class HbmanagerController extends JControllerLegacy
 		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=update&format=raw&viewoption=plain', false));
 	}
 
+	function getGameData()
+	{
+		// Set up the data to be sent in the response.
+		$model = $this->getModel('gamereports');
+		
+		//$teamkey = 'M1';
+		$jinput = JFactory::getApplication()->input;
+		$teamkey = $jinput->get('teamkey');
+		$gameId = $jinput->get('gameId');
+		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+
+		// $response = $model->getGameData($teamkey, $gameId);
+		$response = $model->getGameDataAll($teamkey);
+		// $response = array("teamkey" => $gameId);
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename 
+		// -> returns result.json file instead of being displayed in the browser
+		// JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
+
+		// http://localhost/handball/hb_joomla3/index.php?option=com_hbmanager&task=getGameData&format=raw&teamkey=M-1&gameId=70026
+
+		// Output the JSON data.
+		echo json_encode($response);
+		
+	}
+
 
 }

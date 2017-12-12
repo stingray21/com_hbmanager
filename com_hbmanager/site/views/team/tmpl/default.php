@@ -54,9 +54,9 @@ $team = $this->team;
 					<dd>
 						<?php echo (isset($coach->name)) ? ' <span>'.$coach->name.'</span>' : ''; ?>
 						<span>
-							<?php echo (!empty($coach->telephone)) ? ' |t '.$coach->telephone : ''; ?>
-							<?php echo (!empty($coach->mobile)) ? ' |m '.$coach->mobile : ''; ?>
-							<?php echo (!empty($coach->email_to)) ? ' |e '.$coach->email_to : ''; ?>
+							<?php echo (!empty($coach->telephone)) ? ' | '.$coach->telephone : ''; ?>
+							<?php echo (!empty($coach->mobile)) ? ' | '.$coach->mobile : ''; ?>
+							<?php echo (!empty($coach->email_to)) ? ' | '.$coach->email_to : ''; ?>
 						</span>
 					</dd>
 					<?php endforeach; ?>
@@ -70,11 +70,11 @@ $team = $this->team;
 							<span><?php echo $training->day ?></span>
 							<span><?php echo $training->start ?></span> - <span><?php echo $training->end ?></span> <?php echo JText::_('COM_HBMANAGER_TEAM_CLOCK'); ?>
 						</span>
-						<?php if (!empty($this->training_comment)) : ?>
-							<span><?php echo $training->bemerkung; ?></span>
+						<?php if (!empty($training->training_comment)) : ?>
+							<span><?php echo $training->training_comment; ?></span>
 						<?php endif; ?>
-						<?php if (!empty($this->gymID)) : ?>
-							<span><?php echo $training->gymName; ?></span>
+						<?php if (!empty($training->gymId)) : ?>
+							<span> | <?php echo $training->gymName; ?></span>
 						<?php endif; ?>
 					</dd>
 					<?php endforeach; ?>
@@ -108,6 +108,16 @@ $team = $this->team;
 			<?php if (count($this->standings) > 0) : ?>
 				
 				<?php echo $this->loadTemplate('standings_'.$this->show['standings_type']); ?>
+
+			<?php endif; ?>
+
+		<?php endif; ?>
+
+
+		<?php if ($this->show['hvwLink']) : ?>
+			<?php if ($this->team->hvwLinkUrl) : ?>
+				
+				<?php echo $this->loadTemplate('hvwLink'); ?>
 
 			<?php endif; ?>
 

@@ -22,12 +22,12 @@ class HBmanagerModelTeamdata extends JModelList
  	protected $ownTeamNames;
  	protected $dateFormat = 'D, d.m.Y - H:i:s';
 
- 	private $table_team 				= '#__hb_team';
-	private $table_game 				= '#__hb_game';
-	private $table_updatelog			= '#__hb_updatelog';
-	private $table_standings 			= '#__hb_standings';
-	private $table_standings_details 	= '#__hb_standings_details';
-	private $table_team_details 		= '#__hb_team_details';
+ 	protected $table_team 				= '#__hb_team';
+	protected $table_game 				= '#__hb_game';
+	protected $table_updatelog			= '#__hb_updatelog';
+	protected $table_standings 			= '#__hb_standings';
+	protected $table_standings_details 	= '#__hb_standings_details';
+	protected $table_team_details 		= '#__hb_team_details';
 
 	/**
 	 * Constructor.

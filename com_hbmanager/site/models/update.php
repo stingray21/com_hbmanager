@@ -77,15 +77,20 @@ class HBmanagerModelUpdate extends HBmanagerModelTeamdata
 	{
 		if ($onlyOutdated) $teams = self::getOutdatedTeamList();
 		else $teams = self::getTeamList();
-
-		$teams = [$teams[0]];
-		foreach ($teams as &$team) {
-			$team->response = self::updateTeamData($team->teamkey, $type);
-			$flags[] = $team->response['result']['total'];
-		}
+		//echo __FILE__.' ('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
 		$result = new stdClass();;
-		$result->success = array_product($flags);
-		$result->teams = $teams;
+		$result->success = 'no teams to update'; //TODO better solution
+		$result->teams = array();
+		
+		if (count($teams) > 0) {
+			$teams = [$teams[0]];
+			foreach ($teams as &$team) {
+				$team->response = self::updateTeamData($team->teamkey, $type);
+				$flags[] = $team->response['result']['total'];
+			}
+			$result->success = array_product($flags);
+			$result->teams = $teams;
+		} 
 
 		return $result;
 	}
@@ -95,7 +100,7 @@ class HBmanagerModelUpdate extends HBmanagerModelTeamdata
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->qn('teamkey').', '.$db->qn('update'));
-		$query->from($this->tableTeams);
+		$query->from($this->table_team);
 		$query->where($db->qn('leagueIdHvw').' IS NOT NULL');
 
 		$db->setQuery($query);
@@ -112,7 +117,7 @@ class HBmanagerModelUpdate extends HBmanagerModelTeamdata
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT('.$db->qn('teamkey').'), '.$db->qn('update') );
-		$query->from($db->qn($this->tableTeams));
+		$query->from($db->qn($this->table_team));
 		$query->innerJoin($db->qn('#__hb_game').
 			' USING ('.$db->qn('teamkey').')' );
 		$query->where($db->qn('leagueIdHvw').' IS NOT NULL','AND');

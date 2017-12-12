@@ -46,17 +46,17 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 					
 					<dl>
 						<dt>
-							<?php echo $form->getLabel('nextStart', 'gameDates'); ?>
+							<?php echo $form->getLabel('prevStart', 'gameDates'); ?>
 						</dt>
 						<dd>
-							<?php echo $form->getInput('nextStart', 'gameDates', $this->dates['nextStart']); ?>
+							<?php echo $form->getInput('prevStart', 'gameDates', $this->dates['prevStart']); ?>
 						</dd>
 						
 						<dt>
-							<?php echo $form->getLabel('nextEnd', 'gameDates'); ?>
+							<?php echo $form->getLabel('prevEnd', 'gameDates'); ?>
 						</dt>
 						<dd>
-							<?php echo $form->getInput('nextEnd', 'gameDates', $this->dates['nextEnd']); ?>
+							<?php echo $form->getInput('prevEnd', 'gameDates', $this->dates['prevEnd']); ?>
 						</dd>
 					</dl>
 

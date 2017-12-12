@@ -34,7 +34,7 @@ CREATE TABLE `zhkog_hb_team` (
   `sex` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `youth` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `update` datetime DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`teamId`),
   UNIQUE(`teamkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -193,7 +193,7 @@ CREATE TABLE `#__hb_standings_details` (
 
 DROP TABLE IF EXISTS `#__hb_updatelog`;
 
-CREATE TABLE `hkog_hb_updatelog` (
+CREATE TABLE `#__hb_updatelog` (
   `updateId` int(10) NOT NULL AUTO_INCREMENT,
   `type` text DEFAULT NULL,
   `teamkey` text DEFAULT NULL,
@@ -250,7 +250,7 @@ CREATE TABLE `#__hb_team_player` (
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `teamkey` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `season` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `number` int(3) DEFAULT NULL,
+  `number` int(3) NOT NULL,
   `coach` tinyint(1) DEFAULT '0',
   `TW` tinyint(1) DEFAULT '0',
   `LA` tinyint(1) DEFAULT '0',
@@ -319,3 +319,16 @@ CREATE TABLE `#__hb_team_coach` (
   PRIMARY KEY (`coachID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_spritesheets`;
+
+CREATE TABLE `#__hb_spritesheets` (
+  `spriteID` int(11) NOT NULL,
+  `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `spritesheet` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`spriteID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -29,10 +29,9 @@ class HbManagerViewTeam extends JViewLegacy
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->trainings);echo'</pre>';
 		$this->coaches = $this->get('Coaches');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->coaches);echo'</pre>';
-		$model = $this->getModel();
-		$this->schedule = $model->getSchedule($this->team);
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->schedule);echo'</pre>';
-		$this->standings = $model->getStandings();
+		$this->schedule = $this->get('Schedule');
+		// // echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->schedule);echo'</pre>';
+		$this->standings = $this->get('Standings');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->standings);echo'</pre>';
 
 		// Check for errors.

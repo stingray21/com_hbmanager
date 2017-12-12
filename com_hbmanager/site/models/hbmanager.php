@@ -17,11 +17,15 @@ class HBmanagerModelHBmanager extends JModelLegacy
 	protected $table_team_coach			= '#__hb_team_coach';
 	protected $table_gym 				= '#__hb_gym';
 	protected $table_game 				= '#__hb_game';
+	protected $table_game_player		= '#__hb_game_player';
 	protected $table_gamereport			= '#__hb_gamereport';
+	protected $table_gamereport_details	= '#__hb_gamereport_details';
+	protected $table_spritesheets		= '#__hb_spritesheets';
 	protected $table_updatelog			= '#__hb_updatelog';
 	protected $table_standings 			= '#__hb_standings';
 	protected $table_standings_details 	= '#__hb_standings_details';
 	protected $table_team_details 		= '#__hb_team_details';
+	protected $table_contact 			= '#__contact_details';
 
 	public function __construct($config = array())
 	{
@@ -41,12 +45,18 @@ class HBmanagerModelHBmanager extends JModelLegacy
 		$this->season 	= !empty($params_season) ? $params_season : HbmanagerHelper::getCurrentSeason();
 		$this->tz 		= HbmanagerHelper::getHbTimezone();
 		
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.$this->season.'</pre>';
 		parent::__construct($config);
     }
     
 	public function getTimezone () 
 	{
 		return $this->tz;
+	}
+
+	public function getSeason () 
+	{
+		return $this->season;
 	}
 
 	public function getTeam($teamkey = null)

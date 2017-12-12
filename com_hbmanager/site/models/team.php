@@ -9,6 +9,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 	private $show_params = [];
 	private $contact_global = [];
 	private $domain = null;
+	private $team = null;
 
 
 	public function __construct($config = array())
@@ -18,6 +19,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$this->domain = $params->get('emaildomain');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->show_params);echo'</pre>';
 		parent::__construct($config);
+		self::setTeam();
 	}
 
 	public function getShowParams () 
@@ -36,7 +38,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 			$menuparams = $menu->getParams($menuitemid);
 			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($menuparams);echo'</pre>';
 		}
-		$fields = ['team', 'picture', 'training', 'email', 'schedule', 'standings', 'standings_type'];
+		$fields = ['team', 'picture', 'training', 'email', 'schedule', 'standings', 'standings_type', 'hvwLink'];
 		foreach ($fields as $field) 
 		{
 			if (!is_null($menuparams->get('show_'.$field))) {
@@ -48,6 +50,8 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 		$this->show_params['schedule_params']['reports'] = 1;
 		$this->show_params['schedule_params']['indicator'] = 1;
+
+		$this->show_params['hvwLink'] = 1;
 
 		self::setGlobalContactParams();
 	}
@@ -64,7 +68,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		}
 	}
 
-	public function getTeam($teamkey = null)
+	private function setTeam($teamkey = null)
 	{
 		$teamkey = ($teamkey === null) ? $this->teamkey : null;
 		
@@ -82,12 +86,21 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$team = $db->loadObject();	
 
 		// echo __FILE__.' ('.__LINE__.')<pre>'; print_r($team); echo '</pre>';
-		$team = self::addPictureData($team);
-		$team->emailAlias = self::getEmailAlias($team->email);
-		$team->updateSchedule = self::getUpdate('schedule');
-		$team->updateStandings = self::getUpdate('standings');
-		$team->updateStandingsDetails = self::getUpdate('standingsDetails');
-		return $team;
+		if (!empty($team)) {
+			$team = self::addPictureData($team);
+			$team->emailAlias = self::getEmailAlias($team->email);
+			$team->updateSchedule = self::getUpdate('schedule');
+			$team->updateStandings = self::getUpdate('standings');
+			$team->updateStandingsDetails = self::getUpdate('standingsDetails');
+
+			$team->hvwLinkUrl = HbmanagerHelper::get_hvw_page_url($team->leagueIdHvw);
+		}
+		$this->team = $team;
+	}
+
+	public function getTeam($teamkey = null)
+	{
+		return $this->team;
 	}
 
 	public function getUpdate($type)
@@ -202,12 +215,12 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 
 
-	public function getSchedule($team)
+	public function getSchedule()
 	{
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('*, '.
-				'IF('.$db->qn('home').' = '.$db->q($team->shortName).',1,0) as homegame, '.
+				'IF('.$db->qn('home').' = '.$db->q($this->team->shortName).',1,0) as homegame, '.
 				'CASE '.
 				'WHEN '.$db->qn('pointsHome').' > '.$db->qn('pointsAway').' THEN 1 '.
 				'WHEN '.$db->qn('pointsHome').' < '.$db->qn('pointsAway').' THEN 2 '.
@@ -220,8 +233,8 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$query->leftJoin($db->qn($this->table_gamereport).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
-		$query->where('('.$db->qn('home').' = '.$db->q($team->shortName).' OR '.
-					$db->qn('away').' = '.$db->q($team->shortName).')');		
+		$query->where('('.$db->qn('home').' = '.$db->q($this->team->shortName).' OR '.
+					$db->qn('away').' = '.$db->q($this->team->shortName).')');		
 		$query->order($db->qn('dateTime'));
 		$db->setQuery($query);
 		$schedule = $db->loadObjectList();
@@ -317,7 +330,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 	public function getStandings()
 	{
-		if ($this->show['standings_type'] === 'details' ) {
+		if ($this->show_params['standings_type'] === 'details' ) {
 			$standings = self::getStandingsDetails();
 		}
 		else {
@@ -368,7 +381,6 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 		return $standings;
 	}
-
 
 
 }

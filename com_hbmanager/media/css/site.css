@@ -849,4 +849,181 @@ div#teamupdate .updateStatus .details {
 div#teamupdate .updateStatus .show {
   display: block; }
 
+@font-face {
+  font-family: 'digital-7';
+  src: url("../css/fonts/digital-7.ttf"); }
+@font-face {
+  font-family: 'digital-7-mono';
+  src: url("../css/fonts/digital-7-mono.ttf"); }
+div#gamereports {
+  /* remove standard-styles */
+  /* styling */
+  /* hide browser-styling (arrow) in IE10 */ }
+  div#gamereports select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    border-radius: 0;
+    font-size: 1em;
+    width: 100%; }
+  div#gamereports select {
+    width: 90%;
+    border: 1px solid #bbb;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    background-image: url(../images/select-arrow.png);
+    background-position: right;
+    background-repeat: no-repeat; }
+  div#gamereports select:hover {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1); }
+  div#gamereports select::-ms-expand {
+    display: none; }
+  div#gamereports .lt-ie10 select {
+    background-image: none; }
+  div#gamereports .noselect {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  div#gamereports #gamegraphframe rect.section {
+    fill: white;
+    opacity: 0.05; }
+  div#gamereports #gamegraphframe #gameInfo text {
+    text-anchor: middle;
+    fill: gray; }
+  div#gamereports #gamegraphframe #gameInfo text.teams,
+  div#gamereports #gamegraphframe #gameInfo text.result {
+    font-weight: bold;
+    font-size: 13pt;
+    fill: black; }
+  div#gamereports #gamegraphframe #gameInfo text.home {
+    text-anchor: end; }
+  div#gamereports #gamegraphframe #gameInfo text.center {
+    text-anchor: middle; }
+  div#gamereports #gamegraphframe #gameInfo text.away {
+    text-anchor: start; }
+  div#gamereports #gamegraphframe g.tick text {
+    font-family: 'digital-7';
+    font-size: 13pt; }
+  div#gamereports #gamegraphframe text.score {
+    font-family: 'digital-7-mono';
+    font-size: 13pt;
+    cursor: default;
+    text-anchor: start; }
+  div#gamereports #gamegraphframe text.score.home {
+    fill: #2D3891; }
+  div#gamereports #gamegraphframe text.score.away {
+    fill: red; }
+  div#gamereports #gamegraphframe text.score.neutral {
+    fill: black; }
+  div#gamereports #gamegraphframe text.action {
+    font-size: 8pt;
+    cursor: default;
+    text-anchor: start; }
+  div#gamereports #gamegraphframe path {
+    stroke: #2D3891;
+    stroke-width: 5;
+    stroke-linejoin: round;
+    fill: none; }
+  div#gamereports #gamegraphframe .axis line,
+  div#gamereports #gamegraphframe .axis path {
+    fill: none;
+    stroke: grey;
+    stroke-width: 2; }
+  div#gamereports #gamegraphframe .goaldot {
+    fill: #2D3891;
+    stroke: #2D3891;
+    stroke-width: 4; }
+  div#gamereports #gamegraphframe .goaldot.showGoal {
+    visibility: hidden; }
+  div#gamereports #gamegraphframe .center-line {
+    stroke: grey;
+    stroke-width: 2; }
+  div#gamereports #gamegraphframe .halftime-line {
+    stroke: lightgrey;
+    stroke-width: 4; }
+  div#gamereports #gamegraphframe .grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7; }
+  div#gamereports #gamegraphframe .grid path {
+    stroke-width: 0; }
+  div#gamereports #gamegraphframe .hideactiontag {
+    visibility: hidden; }
+  div#gamereports #gamegraphframe .actionTagItem text {
+    text-anchor: end;
+    font-size: 9pt; }
+  div#gamereports #gamegraphframe .actionTagItem text.name {
+    font-weight: bold; }
+  div#gamereports #gamegraphframe .actionTagItem text.time {
+    font-family: digital-7;
+    font-size: 13pt; }
+  div#gamereports #gamegraphframe .axis {
+    fill: gray;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  div#gamereports #gamegraphframe .axis .halo {
+    stroke: gray;
+    stroke-width: 4px;
+    stroke-linecap: round; }
+  div#gamereports #gamegraphframe .slider .handle path {
+    stroke: #2D3891;
+    stroke-width: 10px;
+    stroke-linecap: round;
+    pointer-events: none; }
+  div#gamereports #gamegraphframe .sliderbox text {
+    visibility: hidden; }
+  div#gamereports #gamegraphframe #scoreboard rect.background {
+    fill: #111; }
+  div#gamereports #gamegraphframe #scoreboard rect.frame {
+    fill: #aaa; }
+  div#gamereports #gamegraphframe #scoreboard text.team {
+    font-size: 10pt;
+    fill: #aaa;
+    text-anchor: end; }
+  div#gamereports #gamegraphframe #scoreboard text.diget {
+    font-family: 'digital-7-mono';
+    font-size: 30pt;
+    fill: yellow;
+    text-anchor: end; }
+  div#gamereports #gamegraphframe #scoreboard text.time {
+    text-anchor: middle; }
+  div#gamereports #gamegraphframe #scoreboard text.diget.bg {
+    fill: #333; }
+  div#gamereports #gamegraphframe #playerprofiles .action.number {
+    font-size: 18pt;
+    font-weight: bold;
+    cursor: default;
+    text-anchor: end; }
+  div#gamereports #gamegraphframe #playerprofiles text.bg {
+    fill: #FDDF12; }
+  div#gamereports #gamegraphframe #playerprofiles text.fg {
+    fill: #2D3891; }
+  div#gamereports #gamegraphframe #playerprofiles .profile.name {
+    font-size: 10pt;
+    font-weight: bold;
+    fill: black;
+    text-anchor: start; }
+  div#gamereports #gamegraphframe .icons * {
+    stroke: none; }
+  div#gamereports #gamegraphframe .icons .redcard {
+    fill: #cc0000; }
+  div#gamereports #gamegraphframe .icons .yellowcard {
+    fill: #FDDF12; }
+  div#gamereports #gamegraphframe .icons .suspension {
+    fill: #777; }
+  div#gamereports #gamegraphframe .icons g.ball * {
+    stroke: #888;
+    stroke-width: 1px; }
+  div#gamereports #gamegraphframe .icons g.ball circle {
+    fill: #aaa; }
+  div#gamereports #gamegraphframe .icons text.sevenicon {
+    font-weight: bold;
+    stroke-width: 0.5px;
+    stroke: #333;
+    fill: #333;
+    font-size: 10pt; }
+
 /*# sourceMappingURL=site.css.map */

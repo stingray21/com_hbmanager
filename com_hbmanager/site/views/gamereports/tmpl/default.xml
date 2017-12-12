@@ -3,5 +3,36 @@
 	<layout title="COM_HBMANAGER_VIEW_GAMEREPORTS_TITLE">
 		<message>COM_HBMANAGER_VIEW_GAMEREPORTS_DESC</message>
 	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params"
+		addfieldpath="/administrator/components/com_hbmanager/models/fields">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBMANAGER_GAMEREPORTS_OPTIONS_TEAM_SETTINGS_LABEL">
+			<field
+				name="teamkey"
+				type="teams"
+				size="1"
+				label="COM_HBMANAGER_GAMEREPORTS_OPTIONS_TEAMKEY_LABEL"
+				description="COM_HBMANAGER_GAMEREPORTS_OPTIONS_TEAMKEY_DESC"
+				/>
+
+			<field
+				name="show_schedule"
+				type="list"
+				label="COM_HBMANAGER_GAMEREPORTS_OPTIONS_SHOW_SCHEDULE_LABEL"
+				description="COM_HBMANAGER_GAMEREPORTS_OPTIONS_SHOW_SCHEDULE_DESC"
+				useglobal="true"
+			>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
+			</field>
+
+		</fieldset>
+		
+		
+	</fields>
   
 </metadata>

@@ -72,6 +72,7 @@ class hbmanagerViewTeams extends JViewLegacy
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
+		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/admin.css' );
 		$document->setTitle(JText::_('COM_HBMANAGER_TEAMS_TITLE'));
 	}
 }

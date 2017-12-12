@@ -127,7 +127,6 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 							<?php  ?>
 						</td>
 					</tr>
-				<?php $i++; ?>
 			<?php endforeach; ?>
 				</tbody>
 			</table>

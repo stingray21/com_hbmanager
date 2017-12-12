@@ -526,6 +526,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('name').' IS NULL');
+		// $query->where('('.$db->qn('name').' IS NULL OR '.$db->qn('name').' = '.$db->q('').')');
 		$query->order('('.$db->qn('number').'*1 = 0) ,'.$db->qn('number').'*1, '.$db->qn('number') );
 		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
@@ -544,12 +545,12 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		foreach ($missing as $key => $value) {
 			$values[$key]['id'] = ''; // needed, otherwise only 1 entry gets stored in 
 			$values[$key]['alias'] = $data[$value]['alias'];
-			$values[$key]['playerName'] = $data[$value]['playerName'];
+			$values[$key]['name'] = $data[$value]['playerName'];
 		}
-		//echo __FILE__.' ('.__LINE__.')<pre>';print_r($values);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.')<pre>';print_r($values);echo'</pre>';
 		$table = JTable::getInstance('Contacts','HbmanagerTable');
 		// $tablekey = $table->getKeyName(true);
-		// echo __FUNCTION__.__LINE__.'<pre>';print_r($tablekey); echo'</pre>';
+		// echo __FUNCTION__.__LINE__.'<pre>';print_r($tablekey); echo'</pre>';die;
 		foreach ($values as $key => $value) {
 			//echo __FILE__.' ('.__LINE__.')<pre>';print_r($value);echo'</pre>';
 			//$table->reset();
