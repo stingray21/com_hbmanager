@@ -49,8 +49,9 @@ class HbManagerViewGamereports extends JViewLegacy
 	{
 		$document = JFactory::getDocument();
 		
-		JHtml::_('jquery.framework');
+		// JHtml::_('jquery.framework');
 		$document->addScript( 'https://d3js.org/d3.v3.min.js' );
+		// $document->addScript( JUri::root() . 'media/com_hbmanager/js/d3.min.js' );
 
 		$document->addScript( JUri::root() . 'media/com_hbmanager/js/gamereport.js' );
 		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.css' );

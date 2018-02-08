@@ -109,4 +109,33 @@ class HbmanagerController extends JControllerLegacy
 	}
 
 
+	function getGoalChartData()
+	{
+		// Set up the data to be sent in the response.
+		$model = $this->getModel('goals');
+		
+		//$teamkey = 'M1';
+		$jinput = JFactory::getApplication()->input;
+		$teamkey = $jinput->get('teamkey');
+		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+
+		// $response = $model->getGameData($teamkey, $gameId);
+		$response = $model->getChartData($teamkey);
+		// $response = array("teamkey" => $gameId);
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// http://localhost/handball/hb_joomla3/index.php?option=com_hbmanager&task=getGoalChartData&format=raw&teamkey=M-1
+
+		// Output the JSON data.
+		echo json_encode($response);
+		
+	}
+
+
+
 }

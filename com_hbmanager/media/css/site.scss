@@ -3,6 +3,9 @@
 @import 'icomoon';
 @import 'icohb';
 
+$hkog-yellow: #FDDF12;
+$hkog-blue: #2D3891;
+
 div#teamupdate {
 	
 
@@ -184,7 +187,7 @@ div#gamereports {
 
 
 		text.score.home {
-		  fill: #2D3891;
+		  fill: $hkog-blue;
 		}
 
 		text.score.away {
@@ -202,7 +205,7 @@ div#gamereports {
 		}
 
 		path {
-		  stroke: #2D3891;
+		  stroke: $hkog-blue;
 		  stroke-width: 5;
 		  stroke-linejoin: round;
 		  fill: none;
@@ -216,8 +219,8 @@ div#gamereports {
 		}
 
 		.goaldot {
-		  fill: #2D3891;
-		  stroke: #2D3891;
+		  fill: $hkog-blue;
+		  stroke: $hkog-blue;
 		  stroke-width: 4;
 		}
 
@@ -277,7 +280,7 @@ div#gamereports {
 		}
 
 		.slider .handle path {
-		  stroke: #2D3891;
+		  stroke: $hkog-blue;
 		  stroke-width: 10px;
 		  stroke-linecap: round;
 		  pointer-events: none;
@@ -327,11 +330,11 @@ div#gamereports {
 			}
 
 			text.bg {
-			  fill: #FDDF12;
+			  fill: $hkog-yellow;
 			}
 
 			text.fg {
-			  fill: #2D3891;
+			  fill: $hkog-blue;
 			}
 
 			.profile.name {
@@ -352,7 +355,8 @@ div#gamereports {
 			}
 
 			.yellowcard {
-			  fill: #FDDF12;
+			  fill: $hkog-yellow;
+			//   fill: #FDDF12;
 			}
 
 			.suspension {
@@ -371,8 +375,8 @@ div#gamereports {
 			text.sevenicon {
 			  font-weight: bold;
 			  stroke-width: 0.5px;
-			  // stroke: #2D3891;
-			  // fill: #2D3891;
+			  // stroke: $hkog-blue;
+			  // fill: $hkog-blue;
 			  stroke: #333;
 			  fill: #333;
 			  font-size: 10pt;
@@ -380,3 +384,103 @@ div#gamereports {
 		}
 	}
 }
+
+#goals {
+	div#playertable {
+
+		#gameSelect {
+			float: left;
+			dislay: inline-block;
+			margin-right: 20px;
+
+			#selectedGame {
+				display: none;
+			}
+
+			ul {
+				list-style-type: none;
+				padding: 0;
+				border-top: 1px solid #fff;
+
+				li {
+					border-bottom: 2px solid #fff;
+					background: #ddd;
+					color: #aaa;
+					height: 1.75em;
+					cursor: pointer;
+
+					&.played {
+						color: #333;
+						&:hover {
+							background: $hkog-yellow;
+						}
+					}
+					
+					&.selectedGame {
+						background: $hkog-blue;
+						color: #fff;
+					}
+				}
+
+				span {
+					display: inline-block;
+				}
+
+				span.date {
+					min-width: 7em;
+				}
+				
+				span.gameName {
+					min-width: 11em;
+				}
+				
+				span.result {
+					min-width: 4em;		
+				}
+			}
+		}
+
+		table {
+			tr.grayout {
+				td {
+					color: #bbb;
+				}
+			}
+
+			#toggleSwitch {
+				cursor: pointer;
+			}
+
+			.buffer {
+				color: transparent;
+				border-right: 1px solid #ddd;
+				width: 0px;
+				padding-left: 0;
+				padding-right: 0;
+			}
+
+			.sofar.hidden {
+				display: none;
+			}
+
+			.total.hidden {
+				display: none;
+			}
+		}
+	}
+
+	#hbgoalchart_chartmode {
+		padding-bottom: 0;
+		padding-left: 40px;
+		border: 0;
+
+		.chartmodebox {
+			display: inline-block;
+			float: left;
+			padding-left: 30px;
+		}
+
+
+	}
+}
+

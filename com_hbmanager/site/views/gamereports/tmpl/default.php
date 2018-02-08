@@ -53,13 +53,11 @@ $team = $this->team;
 
 	<?php endforeach ?>
 
-	<?php // if($this->gameGraph) : ?>
-	<div id="gamegraphframe" class="noselect">
+	<?php if($this->gameGraph) : ?>
+	<h3><?php echo JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE_ACTIONS'); ?></h3>
 
-		<h3><?php echo JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE_ACTIONS'); ?></h3>
-
-	</div>
-	<?php // endif ?>
+	<div id="gamegraphframe" class="noselect"></div>
+	<?php endif ?>
 
 
 <?php endif ?>

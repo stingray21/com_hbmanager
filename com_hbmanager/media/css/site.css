@@ -1026,4 +1026,58 @@ div#gamereports {
     fill: #333;
     font-size: 10pt; }
 
+#goals div#playertable #gameSelect {
+  float: left;
+  dislay: inline-block;
+  margin-right: 20px; }
+  #goals div#playertable #gameSelect #selectedGame {
+    display: none; }
+  #goals div#playertable #gameSelect ul {
+    list-style-type: none;
+    padding: 0;
+    border-top: 1px solid #fff; }
+    #goals div#playertable #gameSelect ul li {
+      border-bottom: 2px solid #fff;
+      background: #ddd;
+      color: #aaa;
+      height: 1.75em;
+      cursor: pointer; }
+      #goals div#playertable #gameSelect ul li.played {
+        color: #333; }
+        #goals div#playertable #gameSelect ul li.played:hover {
+          background: #FDDF12; }
+      #goals div#playertable #gameSelect ul li.selectedGame {
+        background: #2D3891;
+        color: #fff; }
+    #goals div#playertable #gameSelect ul span {
+      display: inline-block; }
+    #goals div#playertable #gameSelect ul span.date {
+      min-width: 7em; }
+    #goals div#playertable #gameSelect ul span.gameName {
+      min-width: 11em; }
+    #goals div#playertable #gameSelect ul span.result {
+      min-width: 4em; }
+#goals div#playertable table tr.grayout td {
+  color: #bbb; }
+#goals div#playertable table #toggleSwitch {
+  cursor: pointer; }
+#goals div#playertable table .buffer {
+  color: transparent;
+  border-right: 1px solid #ddd;
+  width: 0px;
+  padding-left: 0;
+  padding-right: 0; }
+#goals div#playertable table .sofar.hidden {
+  display: none; }
+#goals div#playertable table .total.hidden {
+  display: none; }
+#goals #hbgoalchart_chartmode {
+  padding-bottom: 0;
+  padding-left: 40px;
+  border: 0; }
+  #goals #hbgoalchart_chartmode .chartmodebox {
+    display: inline-block;
+    float: left;
+    padding-left: 30px; }
+
 /*# sourceMappingURL=site.css.map */
