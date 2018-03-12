@@ -77,13 +77,13 @@ class HBmanagerModelUpdate extends HBmanagerModelTeamdata
 	{
 		if ($onlyOutdated) $teams = self::getOutdatedTeamList();
 		else $teams = self::getTeamList();
-		//echo __FILE__.' ('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
 		$result = new stdClass();;
 		$result->success = 'no teams to update'; //TODO better solution
 		$result->teams = array();
 		
 		if (count($teams) > 0) {
-			$teams = [$teams[0]];
+			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($teams);echo'</pre>';
 			foreach ($teams as &$team) {
 				$team->response = self::updateTeamData($team->teamkey, $type);
 				$flags[] = $team->response['result']['total'];

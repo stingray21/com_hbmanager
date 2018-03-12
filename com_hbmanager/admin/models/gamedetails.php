@@ -459,7 +459,8 @@ class HBmanagerModelGamedetails extends JModelAdmin
 			$value['comment'] = $row[12];
 			$value['suspensionTeam'] = $row[13];
 
-			$playerArray[$alias] = $value;
+			$arrayAlias = (in_array($value['number'], array("A","B","C","D"))) ? $alias."_".$value['number'] : $alias;
+			$playerArray[$arrayAlias] = $value;
 		}
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($playerArray);echo'</pre>';
 		return $playerArray;

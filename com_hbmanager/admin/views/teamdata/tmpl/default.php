@@ -20,6 +20,11 @@ JFactory::getDocument()->addScriptDeclaration('
 		{
 			updateCheckedTeams();
 		}
+
+		if (task == "teamdata.updateAll")
+		{
+			updateAllTeams();
+		}
 	}
 ');
 
@@ -150,7 +155,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&view=update'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&view=update'; ?></a></dd>
 
 				<dt>Update Link for Cronjob</dt>
-				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&view=updateCronjob'; ?></a></dd>
+				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?></a></dd>
 			</dl>
 		</div>
 	</div>

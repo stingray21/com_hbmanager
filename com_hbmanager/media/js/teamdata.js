@@ -141,3 +141,24 @@ function updateCheckedTeams()
 	
 	return updateTeams(teams);
 }
+
+function updateAllTeams()
+{
+	var checkedBoxes = document.querySelectorAll('input[type=checkbox]');
+	// console.log(checkedBoxes);
+
+	var teams = [];
+	for (var i=0; i<checkedBoxes.length; i++) {
+		if (checkedBoxes[i].name != "checkall-toggle") 
+		{
+			var teamkey = checkedBoxes[i].parentElement.parentElement.id;
+			teamkey = teamkey.replace('update-team-', '');
+
+			teams.push({"teamkey": teamkey, "update": null});
+			// teams.push({"teamkey": "M-1", "update": "2017-10-04 19:37:28"});
+		}
+    }
+    // console.log(teamkeys);
+	
+	return updateTeams(teams);
+}

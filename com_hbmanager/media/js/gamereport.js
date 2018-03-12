@@ -61,11 +61,36 @@ var sbAway = 135;
 var sbradius = 8;
 var sboffset = 2;
 
+
 // url to sprite sheet file
 // var players_sprite = 'http://localhost/handball/hb_joomla3/hbdata/playersprites.png';
+var default_players_sprite = false;
 var players_sprite = '../../../hbdata/spritesheets/'+teamkey+'_playersprites_'+season+'.png'; // works online
+var playersImage = new Image();
+playersImage.src = players_sprite;
+playersImage.onerror = function() {
+	// console.log(JSON.stringify(players_sprite) + ' not found');
+	players_sprite = players_sprite.replace('../../', '');
+	// playersImage = new Image();
+	playersImage.src = players_sprite;
+	playersImage.onerror = function() {
+		// console.log(JSON.stringify(players_sprite) + ' not found');
+		players_sprite = '../../../media/com_hbmanager/images/default_playersprites.png';
+		default_players_sprite = true;
+		// playersImage = new Image();
+		playersImage.src = players_sprite;
+		playersImage.onerror = function() {
+			// console.log(JSON.stringify(players_sprite) + ' not found');
+			players_sprite = players_sprite.replace('../../', '');
+		}
+	}
+}
+
+var picWidthFactor = 1;
+
 // var players_sprite = '../hbdata/spritesheets/'+teamkey+'_playersprites_'+season+'.png'; // works local
-console.log(players_sprite);
+// console.log(players_sprite);
+// console.log(JSON.stringify(players_sprite));
 
 // player profiles
 var picRadius = 22;
@@ -384,21 +409,35 @@ function findLatestAction(data, endTime) {
 	return recent; //TODO fix race error, return in callback
 }
 
-
-function getPicIndex(name, total) {
-	var index;
-	index = picarray.findIndex(function(d) {
-		return d === name;
-	});
-	// console.log(index);
-	if (index == '-1') {
-		index = picarray.findIndex(function(d) {
-			return d === 'dummy';
-		});
-	}
-	// console.log(index);
-	return index;
+function addPlayersPortraits(playersdata, picarray) {
+	// console.log(picarray);
+	playersdata.forEach(function (element, i) {
+		// console.log(element);
+		var picIndex;
+		if (default_players_sprite) {
+			picIndex = 0;
+		} else {
+			picIndex = picarray.findIndex(function(d) {
+				return d === element.alias;
+			});
+			// console.log(picIndex);
+			if (picIndex == '-1') {
+				picIndex = picarray.findIndex(function(d) {
+					return d === 'dummy';
+				});
+			}
+		}
+		playersdata[i].picIndex = picIndex;
+	}); 
+	// console.log(playersdata);
+	return playersdata;
 }
+
+function getPlayersPicWidthFactor() {
+	if (default_players_sprite) return 1;
+	return picarray.length;
+}
+
 
 function getIconX(player, category) {
 	var x = -1;
@@ -443,10 +482,10 @@ function addPlayerProfiles (playerdata) {
 		.attr("x", "0")
 		.attr("y", "0").append("image")
 		.attr("x", function(d, i) {
-			return -getPicIndex(d.alias) * (picRadius * 2);
+			return -d.picIndex * (picRadius * 2);
 		})
 		.attr("y", 0)
-		.attr("width", picRadius * 2 * picarray.length)
+		.attr("width", picRadius * 2 * picWidthFactor)
 		.attr("height", picRadius * 2)
 		.attr("xlink:href", players_sprite);
 
@@ -845,18 +884,20 @@ function updateData(selectedGameId, callback) {
 
 	data = gamesData[selectedGameId];
 	// console.log(data);
+	// console.log(JSON.stringify(data,null,4));
 
 	gameinfo = data.gameinfo;
 	gamedata = data.gamedata;
 	playerdata = data.playerdata;
 	picarray = data.picarray;
-
-	numGoals = getMaxGoalDiff(gamedata)+1;
+	
+	playerdata = addPlayersPortraits(playerdata, picarray);
+	picWidthFactor = getPlayersPicWidthFactor();
 
 	/* clean up previous data */
-
+	
 	document.getElementById('gamegraph').classList.add("hidden");
-
+	
 	// remove previous player profiles
 	while (playerProfileBox[0][0].firstChild) {
 		// console.log(playerProfileBox[0][0].firstChild);
@@ -864,11 +905,17 @@ function updateData(selectedGameId, callback) {
 	}	
 	// remove previous action tags
 	while (actionTagBox[0][0].firstChild) {
-		 // console.log(playerProfileBox[0][0].firstChild);
-		 actionTagBox[0][0].removeChild(actionTagBox[0][0].firstChild);
+		// console.log(playerProfileBox[0][0].firstChild);
+		actionTagBox[0][0].removeChild(actionTagBox[0][0].firstChild);
 	}
+	
+	// console.log(gamedata);
+	if (gamedata !== undefined && gamedata.length > 0) {
+		// console.log(gamedata);
 
-	if (gamedata) {
+		document.getElementById('gamegraph-box').classList.remove("hidden");
+		
+		numGoals = getMaxGoalDiff(gamedata)+1;
 
 		resize();
 
@@ -878,6 +925,8 @@ function updateData(selectedGameId, callback) {
 		gamegraph.classList.remove("hidden");
 	
 		callback(selectedGameId);
+	} else {
+		document.getElementById('gamegraph-box').classList.add("hidden");
 	}
 }
 

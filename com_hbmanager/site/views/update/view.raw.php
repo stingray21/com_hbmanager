@@ -29,9 +29,9 @@ class HbManagerViewUpdate extends JViewLegacy
 		
 		$this->result = $model->updateMultipleTeams();
 			
-		// 	$time_elapsed = microtime(true) - $start;
-		// 	$this->assignRef('time_elapsed', $time_elapsed);
-		// 	//echo '<p>'.$time_elapsed_us.' µs</p>';			
+		// $time_elapsed = microtime(true) - $start;
+		// $this->assignRef('time_elapsed', $time_elapsed);
+		// echo '<p>'.$time_elapsed.' µs</p>';			
 
 		
 		//echo '<p>raw view</p>';

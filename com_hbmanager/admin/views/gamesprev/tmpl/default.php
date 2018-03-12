@@ -13,6 +13,21 @@ defined('_JEXEC') or die('Restricted Access');
 // $tz = true; //true: user-time, false:server-time
 $tz = HbmanagerHelper::getHbTimezone();
 
+JFactory::getDocument()->addScriptDeclaration("
+	Joomla.checkAll = function(box) 
+	{
+		var state = false;
+		// console.log(box);
+		if (box.checked) state = true;
+			
+		var els = document.getElementsByClassName('selectBox');
+		// console.log(els);
+		[].forEach.call(els, function (el) {
+			el.getElementsByTagName('input')[0].checked = state;
+		});
+	}
+");
+
 // get the JForm object
 JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 // $form = JForm::getInstance('myform', JPATH_COMPONENT_ADMINISTRATOR.
@@ -79,8 +94,9 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 					<table class="table table-striped table-hover">
 						<thead>
 						<tr>
-							<th width="1%">
+							<th width="1%" class="selectBox">
 								<?php echo JText::_('COM_HBMANAGER_GAMES_NUM'); ?>
+								<input name="checkall-toggle" value="" class="hasTooltip" title="" onclick="Joomla.checkAll(this)" data-original-title="<?php echo JText::_('JGLOBAL_CHECK_ALL')?>" type="checkbox">
 							</th>
 							<th width="5%">
 								<?php echo JText::_('COM_HBMANAGER_GAMES_TIME'); ?>
@@ -112,7 +128,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 							<?php if (!empty($day)) : ?>
 								<?php foreach ($day as $day_i => $game) : ?>
 									<tr>
-										<td><?php echo HbmanagerHelper::formatInput($form->getInput('includeToNews', 'gamesprev', null), $i)?>
+										<td class="selectBox"><?php echo HbmanagerHelper::formatInput($form->getInput('includeToNews', 'gamesprev', null), $i)?>
 											<?php echo HbmanagerHelper::formatInput($form->getInput('gameIdHvw', 'gamesprev', $game->gameIdHvw), $i)?>
 											<?php echo HbmanagerHelper::formatInput($form->getInput('season', 'gamesprev', $game->season), $i)?>	
 											<?php echo HbmanagerHelper::formatInput($form->getInput('reportID', 'gamesprev', $game->reportID), $i)?>	

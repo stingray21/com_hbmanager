@@ -1,7 +1,7 @@
 var log = console.log.bind(console);
 
 var gameSelect;
-var tableMode = 'sofar'; // sofar or total
+var tableMode = 'total'; // sofar or total
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	

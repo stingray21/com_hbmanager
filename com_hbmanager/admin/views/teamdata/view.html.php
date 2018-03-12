@@ -21,6 +21,8 @@ class hbmanagerViewTeamdata extends JViewLegacy
 		$context = "hbmanager.list.admin.teams";
 		// Get data from the model
 		$this->items			= $this->get('Items');
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->items);echo'</pre>';
+		
 		$this->pagination		= $this->get('Pagination');
 		$this->state			= $this->get('State');
 		$this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'order', 'cmd');
@@ -72,6 +74,7 @@ class hbmanagerViewTeamdata extends JViewLegacy
 
 		JToolBarHelper::title($title, 'hb-ball');
 		JToolBarHelper::custom('teamdata.update', 'loop updateTeams', 'loop updateTeams',  JText::_('COM_HBMANAGER_TEAMDATA_TOOLBAR_UPDATE'), true);
+		JToolBarHelper::custom('teamdata.updateAll', 'loop updateTeams', 'loop updateTeams',  JText::_('COM_HBMANAGER_TEAMDATA_TOOLBAR_UPDATE_ALL'), false);
 	}
 
 	/**

@@ -33,6 +33,7 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 		$query->where($this->table_game.'.'.$db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('ownClub').' = 1');
 		$query->where('DATE('.$db->qn('dateTime').') < NOW() ');
+		$query->where($db->qn('pointsHome').' IS NOT NULL ');
 		$query->order($db->qn('dateTime').' ASC');
 		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
@@ -253,6 +254,8 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 		$db->setQuery($query);
 		$picArray = $db->loadResult();
 		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($picArray);echo '</pre>';
+		
+		if (empty($picArray)) $picArray = '["dummy"]';
 
     	return json_decode($picArray);
     }

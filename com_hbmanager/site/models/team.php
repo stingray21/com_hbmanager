@@ -94,6 +94,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 			$team->updateStandingsDetails = self::getUpdate('standingsDetails');
 
 			$team->hvwLinkUrl = HbmanagerHelper::get_hvw_page_url($team->leagueIdHvw);
+			$team->reportMenuLink = self::getReportMenuLink();
 		}
 		$this->team = $team;
 	}
@@ -382,6 +383,24 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		return $standings;
 	}
 
+	private function getReportMenuLink()
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		// $query->select(`alias`, `link`, `path`, `title`);
+		$query->select('`path`');
+		$query->from($db->qn('#__menu'));
+		$query->where($db->qn('link').' = '.$db->q('index.php?option=com_hbmanager&view=gamereports'));
+		$query->where($db->qn('params').' REGEXP \'{"teamkey":[^}]*"'.$this->teamkey.'"[^}]*}\'');
+		// $query->where(' JSON_EXTRACT(`params`, "$.teamkey") = \''.$db->q($this->teamkey).'\''); // MySQL 5.7 or MariaDB 10.2.3
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';
+		
+		$db->setQuery($query);
+		// $link = $db->loadObject();
+		$link = $db->loadResult();
 
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($link);echo'</pre>';
+		return $link;
+	}
 }
 

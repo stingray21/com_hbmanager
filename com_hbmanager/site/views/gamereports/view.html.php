@@ -28,6 +28,10 @@ class HbManagerViewGamereports extends JViewLegacy
 		$this->gameGraph = true;
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->games);echo'</pre>';
 		
+		$jinput = JFactory::getApplication()->input;
+		$gameId = $jinput->get('gameId');
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+		if (!empty($gameId)) $this->selectedGameId = $gameId;
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -55,7 +59,7 @@ class HbManagerViewGamereports extends JViewLegacy
 
 		$document->addScript( JUri::root() . 'media/com_hbmanager/js/gamereport.js' );
 		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.css' );
-		$document->setTitle(JText::_('COM_HBMANAGER_GAMEREPORT_TITLE'));
+		$document->setTitle(JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE'));
 	}
 
 }

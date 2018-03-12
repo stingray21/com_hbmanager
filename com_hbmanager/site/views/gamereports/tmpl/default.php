@@ -28,7 +28,7 @@ $team = $this->team;
 </form>
 
 
-<?php if(count($this->games > 0)) : ?>	
+<?php if(count($this->games) > 0) : ?>	
 
 	<h3><?php echo JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE_GAME'); ?></h3>
 
@@ -54,9 +54,11 @@ $team = $this->team;
 	<?php endforeach ?>
 
 	<?php if($this->gameGraph) : ?>
-	<h3><?php echo JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE_ACTIONS'); ?></h3>
+	<div id="gamegraph-box">
+		<h3><?php echo JText::_('COM_HBMANAGER_GAMEREPORTS_TITLE_ACTIONS'); ?></h3>
 
-	<div id="gamegraphframe" class="noselect"></div>
+		<div id="gamegraphframe" class="noselect"></div>
+	</div>
 	<?php endif ?>
 
 

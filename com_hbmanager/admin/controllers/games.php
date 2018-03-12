@@ -58,6 +58,26 @@ class HbmanagerControllerGames extends JControllerAdmin
 		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev', false));
 	}
 
+	public function publishAllReport($name = 'gamesprev', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
+	{
+		$post = JRequest::get('post');
+		$gamesPrev = (isset($post['gamesprev'])) ? $post['gamesprev'] : null;
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+
+		$model = $this->getModel('gamesprev'); 
+		$model->updateReportsInDB($gamesPrev);
+
+		foreach ($gamesPrev as $key => $value) {
+			$allGames[$value['gameIdHvw']] = true;
+		}
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($allGames);echo'</pre>';
+		if (array_sum($allGames) > 0) {
+			$model->writeNews($allGames);
+		} 
+
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev', false));
+	}
+
 	
 	public function savePregame($name = 'gamesnext', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
 	{
@@ -91,4 +111,25 @@ class HbmanagerControllerGames extends JControllerAdmin
 
 		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext', false));
 	}
+
+	public function publishAllPregame($name = 'gamesnext', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
+	{
+		$post = JRequest::get('post');
+		$gamesNext = (isset($post['gamesnext'])) ? $post['gamesnext'] : null;
+		echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+
+		$model = $this->getModel('gamesnext'); 
+		$model->updatePregamesInDB($gamesNext);
+
+		foreach ($gamesNext as $key => $value) {
+			$allGames[$value['gameIdHvw']] = true;
+		}
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($allGames);echo'</pre>';
+		if (array_sum($allGames) > 0) {
+			$model->writeNews($allGames);
+		} 
+
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext', false));
+	}
+
 }

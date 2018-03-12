@@ -26,6 +26,7 @@ $reports = $this->show['schedule_params']['reports'];
 				
 					<tbody>
 					<?php foreach ($this->schedule as $row) : ?>
+
 						<tr>
 							<td><?php echo JHtml::_('date', $row->dateTime, 'D', $this->tz)?></td>
 							<td><?php echo JHtml::_('date', $row->dateTime, 'j. M.', $this->tz)?></td>
@@ -37,9 +38,9 @@ $reports = $this->show['schedule_params']['reports'];
 						<?php if ($row->comment == "abge..") : ?>
 							<td colspan="3"><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_CANCELED') ?></td>
 						<?php else : ?>
-							<td class="<?php echo $row->heimspiel ? ' ownTeam' : '';?>"><?php echo $row->goalsHome;?></td>
+							<td class="<?php echo $row->homegame ? ' ownTeam' : '';?>"><?php echo $row->goalsHome;?></td>
 							<td><?php echo ($row->goalsHome != '') ? ':' : '';?></td>
-							<td class="<?php echo !$row->heimspiel ? ' ownTeam' : '';?>"><?php echo $row->goalsAway;?></td>
+							<td class="<?php echo !$row->homegame ? ' ownTeam' : '';?>"><?php echo $row->goalsAway;?></td>
 						<?php endif; ?>
 
 						<?php if ($indicator) : ?>	
@@ -53,8 +54,8 @@ $reports = $this->show['schedule_params']['reports'];
 						<?php if ($reports) : ?> 
 							<td>
 								<?php if (!empty($row->report)) : ?>
-								<a href="<?php echo $row->reportLink ?>">
-									<img src="<?php JURI::root().'com_hbmanager/images/page_white_text.png' ?>" title="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT') ?>" alt="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT')?>" />
+								<a href="<?php echo JURI::root().'index.php/'.$team->reportMenuLink.'?gameId='.$row->gameIdHvw ?>">
+									<img src="<?php echo JURI::root().'media/com_hbmanager/images/page_white_text.png' ?>" title="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT') ?>" alt="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT')?>" />
 								</a>
 								<?php endif; ?>
 							</td>

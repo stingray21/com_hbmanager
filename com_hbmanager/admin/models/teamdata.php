@@ -59,7 +59,7 @@ class HBmanagerModelTeamdata extends JModelList
 		// set maximum execution time limit
 		set_time_limit(90);
 
-    }
+	}
 
 	/**
 	 * Method to build an SQL query to load the list data.
@@ -95,6 +95,18 @@ class HBmanagerModelTeamdata extends JModelList
 		return $query;
 	}
 
+	// overwrites the default method
+	public function getItems()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from($this->table_team);
+		$query->where($db->qn('leagueIdHvw').' IS NOT NULL');
+		$db->setQuery($query);
+		$team = $db->loadObjectList();
+		return $team;
+	}
 
 	function updateTeamData($teamkey, $type = 'manual') 
 	{

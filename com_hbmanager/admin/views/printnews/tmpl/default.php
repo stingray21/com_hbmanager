@@ -189,7 +189,7 @@ JFactory::getDocument()->addScriptDeclaration('
 			<?php foreach ($this->homegames as $date => $days) : ?>
 				<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
 				<?php foreach ($days as $gym) : ?>
-					<i><?php echo $game->gymName ?>, <?php echo $game->town ?></i><br>
+					<i><?php echo $gym[0]->gymName ?>, <?php echo $gym[0]->town ?></i><br>
 					<?php foreach ($gym as $game) : ?>
 						<span class="game">
 							<b><?php echo $game->team ?></b> (<?php echo $game->leagueKey ?>)<br>
