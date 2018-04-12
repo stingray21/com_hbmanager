@@ -332,3 +332,66 @@ CREATE TABLE `#__hb_spritesheets` (
   `spritesheet` text COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`spriteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+-- --------------------------------------------------------
+
+DROP TABLE IF EXISTS `#__hb_clubteams`;
+
+CREATE TABLE `#__hb_clubteams` (
+  `clubteamId` int(11) NOT NULL AUTO_INCREMENT,
+  `teamname_long` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `teamname_short` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `teamname_abbr` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`clubteamId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--  data for table `#__hb_clubteams`
+INSERT INTO `#__hb_clubteams` (`clubteamId`, `teamname_long`, `teamname_short`, `teamname_abbr`) VALUES
+(1, 'HK Ostdorf/Geislingen', 'HK Ostd/Geisl', 'HKOG'),
+(2, 'HK Ostdorf/Geislingen 2', 'HK Ostd/Geisl 2', 'HKOG 2'),
+(3, 'HK Ostdorf/Geislingen 3', 'HK Ostd/Geisl 3', 'HKOG 3'),
+(4, 'HSG Albstadt', 'HSG Albstadt', 'Albstadt'),
+(5, 'HSG Albstadt 2', 'HSG Albstadt 2', 'Albstadt 2'),
+(6, 'HSG Baar', 'HSG Baar', 'Baar'),
+(7, 'HSG Baar 2', 'HSG Baar 2', 'Baar 2'),
+(8, 'HSG Fridingen/Mühlheim', 'HSG Frid/Mühl', 'Frid/Mühl'),
+(9, 'HSG Fridingen/Mühlheim 2', 'HSG Frid/Mühl 2', 'Frid/Mühl 2'),
+(10, 'HSG Fridingen/Mühlheim 3', 'HSG Frid/Mühl 3', 'Frid/Mühl 3'),
+(11, 'HSG Frittlingen-Neufra', 'HSG Fritt-Neuf', 'Fritt-Neuf'),
+(12, 'HSG Frittlingen-Neufra 2', 'HSG Fritt-Neuf 2', 'Fritt-Neuf 2'),
+(13, 'HSG Hossingen-Meßstetten', 'HSG Hoss-Meß', 'Hoss-Meß'),
+(14, 'HSG Hossingen-Meßstetten 2', 'HSG Hoss-Meß 2', 'Hoss-Meß 2'),
+(15, 'HSG Neckartal', 'HSG Neckartal', 'Neckartal'),
+(16, 'HSG Neckartal 2', 'HSG Neckartal 2', 'Neckartal 2'),
+(17, 'HSG Nendingen/Tuttlingen/Wurmlingen 2', 'HSG NTW 2', 'NTW 2'),
+(18, 'HSG Nendingen/Tuttlingen/Wurmlingen 3', 'HSG NTW 3', 'NTW 3'),
+(19, 'HSG Rietheim-Weilheim', 'HSG Riet-Weil', 'Riet-Weil'),
+(20, 'HSG Rietheim-Weilheim 2', 'HSG Riet-Weil 2', 'Riet-Weil 2'),
+(21, 'HSG Rottweil', 'HSG Rottweil', 'Rottweil'),
+(22, 'HSG Rottweil 2', 'HSG Rottweil 2', 'Rottweil 2'),
+(23, 'HSG Rottweil 3', 'HSG Rottweil 3', 'Rottweil 3'),
+(24, 'HSG Rottweil 4', 'HSG Rottweil 4', 'Rottweil 4'),
+(25, 'HWB Handball Winterlingen-Bitz', 'HWB Wint-Bitz', 'Wint-Bitz'),
+(26, 'JGW Frommern-Streichen', 'JGW From-Strei', 'From-Strei'),
+(27, 'JSG Balingen-Weilstetten', 'JSG Bal-Weilst', 'Bal-Weilst'),
+(28, 'JSG Balingen-Weilstetten 2', 'JSG Bal-Weilst 2', 'Bal-Weilst 2'),
+(29, 'TG Schömberg', 'TG Schömberg', 'Schömb.'),
+(30, 'TG Schömberg 2', 'TG Schömberg 2', 'Schömb. 2'),
+(31, 'TG Schömberg 3', 'TG Schömberg 3', 'Schömb. 3'),
+(32, 'TG 1859 Schwenningen', 'TG Schwenn.', 'TG Schw.'),
+(33, 'TG 1859 Schwenningen 2', 'TG Schwenn. 2', 'TG Schw. 2'),
+(34, 'TSV Dunningen', 'TSV Dunningen', 'Dunningen'),
+(35, 'TSV Stetten a.k.M. 1', 'TSV Stett./akM 1', 'Stett. akM 1'),
+(36, 'TSV Stetten a.k.M. 2', 'TSV Stett./akM 2', 'Stett. akM 2'),
+(37, 'TV Aixheim', 'TV Aixheim', 'Aixheim'),
+(38, 'TV Aixheim 2', 'TV Aixheim 2', 'Aixheim 2'),
+(39, 'TV Hechingen', 'TV Hechingen', 'Hechingen'),
+(40, 'TV Onstmettingen', 'TV Onstmett.', 'Onstmett.'),
+(41, 'TV Onstmettingen 2', 'TV Onstmett. 2', 'Onstmett. 2'),
+(42, 'TV Spaichingen', 'TV Spaichingen', 'Spaich.'),
+(43, 'TV Spaichingen 2', 'TV Spaichingen 2', 'Spaich. 2'),
+(44, 'TV 1905 Streichen', 'TV Streichen', 'Streichen'),
+(45, 'TV Weilstetten 2', 'TV Weilstetten 2', 'Weilstet. 2'),
+(46, 'VfH 87 Schwenningen', 'VfH Schwenn.', 'VfH Schw.'),
+(47, 'VfH 87 Schwenningen 2', 'VfH Schwenn. 2', 'VfH Schw. 2');

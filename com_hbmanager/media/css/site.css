@@ -1,746 +1,963 @@
+@charset "UTF-8";
 @font-face {
-  font-family: 'IcoMoon';
+  font-family: "IcoMoon";
   src: url("../../../media/jui/fonts/IcoMoon.eot");
   src: url("../../../media/jui/fonts/IcoMoon.eot?#iefix") format("embedded-opentype"), url("../../../media/jui/fonts/IcoMoon.woff") format("woff"), url("../../../media/jui/fonts/IcoMoon.ttf") format("truetype"), url("../../../media/jui/fonts/IcoMoon.svg#IcoMoon") format("svg");
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
 [data-icon]:before {
-  font-family: 'IcoMoon';
+  font-family: "IcoMoon";
   content: attr(data-icon);
-  speak: none; }
+  speak: none;
+}
 
-[class^="icon-"],
+[class^=icon-],
 [class*=" icon-"] {
   display: inline-block;
   width: 14px;
   height: 14px;
-  margin-right: .25em;
-  line-height: 14px; }
+  margin-right: 0.25em;
+  line-height: 14px;
+}
 
-[class^="icon-"]:before,
+[class^=icon-]:before,
 [class*=" icon-"]:before {
-  font-family: 'IcoMoon';
+  font-family: "IcoMoon";
   font-style: normal;
-  speak: none; }
+  speak: none;
+}
 
-[class^="icon-"].disabled,
+[class^=icon-].disabled,
 [class*=" icon-"].disabled {
-  font-weight: normal; }
+  font-weight: normal;
+}
 
 .icon-joomla:before {
-  content: "\e200"; }
+  content: "";
+}
 
 .icon-chevron-up:before,
 .icon-uparrow:before,
 .icon-arrow-up:before {
-  content: "\e005"; }
+  content: "";
+}
 
 .icon-chevron-right:before,
 .icon-rightarrow:before,
 .icon-arrow-right:before {
-  content: "\e006"; }
+  content: "";
+}
 
 .icon-chevron-down:before,
 .icon-downarrow:before,
 .icon-arrow-down:before {
-  content: "\e007"; }
+  content: "";
+}
 
 .icon-chevron-left:before,
 .icon-leftarrow:before,
 .icon-arrow-left:before {
-  content: "\e008"; }
+  content: "";
+}
 
 .icon-arrow-first:before {
-  content: "\e003"; }
+  content: "";
+}
 
 .icon-arrow-last:before {
-  content: "\e004"; }
+  content: "";
+}
 
 .icon-arrow-up-2:before {
-  content: "\e009"; }
+  content: "";
+}
 
 .icon-arrow-right-2:before {
-  content: "\e00a"; }
+  content: "";
+}
 
 .icon-arrow-down-2:before {
-  content: "\e00b"; }
+  content: "";
+}
 
 .icon-arrow-left-2:before {
-  content: "\e00c"; }
+  content: "";
+}
 
 .icon-arrow-up-3:before {
-  content: "\e00f"; }
+  content: "";
+}
 
 .icon-arrow-right-3:before {
-  content: "\e010"; }
+  content: "";
+}
 
 .icon-arrow-down-3:before {
-  content: "\e011"; }
+  content: "";
+}
 
 .icon-arrow-left-3:before {
-  content: "\e012"; }
+  content: "";
+}
 
 .icon-menu-2:before {
-  content: "\e00e"; }
+  content: "";
+}
 
 .icon-arrow-up-4:before {
-  content: "\e201"; }
+  content: "";
+}
 
 .icon-arrow-right-4:before {
-  content: "\e202"; }
+  content: "";
+}
 
 .icon-arrow-down-4:before {
-  content: "\e203"; }
+  content: "";
+}
 
 .icon-arrow-left-4:before {
-  content: "\e204"; }
+  content: "";
+}
 
 .icon-share:before,
 .icon-redo:before {
-  content: "\27"; }
+  content: "'";
+}
 
 .icon-undo:before {
-  content: "\28"; }
+  content: "(";
+}
 
 .icon-forward-2:before {
-  content: "\e205"; }
+  content: "";
+}
 
 .icon-backward-2:before,
 .icon-reply:before {
-  content: "\e206"; }
+  content: "";
+}
 
 .icon-unblock:before,
 .icon-refresh:before,
 .icon-redo-2:before {
-  content: "\6c"; }
+  content: "l";
+}
 
 .icon-undo-2:before {
-  content: "\e207"; }
+  content: "";
+}
 
 .icon-move:before {
-  content: "\7a"; }
+  content: "z";
+}
 
 .icon-expand:before {
-  content: "\66"; }
+  content: "f";
+}
 
 .icon-contract:before {
-  content: "\67"; }
+  content: "g";
+}
 
 .icon-expand-2:before {
-  content: "\68"; }
+  content: "h";
+}
 
 .icon-contract-2:before {
-  content: "\69"; }
+  content: "i";
+}
 
 .icon-play:before {
-  content: "\e208"; }
+  content: "";
+}
 
 .icon-pause:before {
-  content: "\e209"; }
+  content: "";
+}
 
 .icon-stop:before {
-  content: "\e210"; }
+  content: "";
+}
 
 .icon-previous:before,
 .icon-backward:before {
-  content: "\7c"; }
+  content: "|";
+}
 
 .icon-next:before,
 .icon-forward:before {
-  content: "\7b"; }
+  content: "{";
+}
 
 .icon-first:before {
-  content: "\7d"; }
+  content: "}";
+}
 
 .icon-last:before {
-  content: "\e000"; }
+  content: "";
+}
 
 .icon-play-circle:before {
-  content: "\e00d"; }
+  content: "";
+}
 
 .icon-pause-circle:before {
-  content: "\e211"; }
+  content: "";
+}
 
 .icon-stop-circle:before {
-  content: "\e212"; }
+  content: "";
+}
 
 .icon-backward-circle:before {
-  content: "\e213"; }
+  content: "";
+}
 
 .icon-forward-circle:before {
-  content: "\e214"; }
+  content: "";
+}
 
 .icon-loop:before {
-  content: "\e001"; }
+  content: "";
+}
 
 .icon-shuffle:before {
-  content: "\e002"; }
+  content: "";
+}
 
 .icon-search:before {
-  content: "\53"; }
+  content: "S";
+}
 
 .icon-zoom-in:before {
-  content: "\64"; }
+  content: "d";
+}
 
 .icon-zoom-out:before {
-  content: "\65"; }
+  content: "e";
+}
 
 .icon-apply:before,
 .icon-edit:before,
 .icon-pencil:before {
-  content: "\2b"; }
+  content: "+";
+}
 
 .icon-pencil-2:before {
-  content: "\2c"; }
+  content: ",";
+}
 
 .icon-brush:before {
-  content: "\3b"; }
+  content: ";";
+}
 
 .icon-save-new:before,
 .icon-plus-2:before {
-  content: "\5d"; }
+  content: "]";
+}
 
 .icon-minus-sign:before,
 .icon-minus-2:before {
-  content: "\5e"; }
+  content: "^";
+}
 
 .icon-delete:before,
 .icon-remove:before,
 .icon-cancel-2:before {
-  content: "\49"; }
+  content: "I";
+}
 
 .icon-publish:before,
 .icon-save:before,
 .icon-ok:before,
 .icon-checkmark:before {
-  content: "\47"; }
+  content: "G";
+}
 
 .icon-new:before,
 .icon-plus:before {
-  content: "\2a"; }
+  content: "*";
+}
 
 .icon-plus-circle:before {
-  content: "\e215"; }
+  content: "";
+}
 
 .icon-minus:before,
 .icon-not-ok:before {
-  content: "\4b"; }
+  content: "K";
+}
 
 .icon-ban-circle:before,
 .icon-minus-circle:before {
-  content: "\e216"; }
+  content: "";
+}
 
 .icon-unpublish:before,
 .icon-cancel:before {
-  content: "\4a"; }
+  content: "J";
+}
 
 .icon-cancel-circle:before {
-  content: "\e217"; }
+  content: "";
+}
 
 .icon-checkmark-2:before {
-  content: "\e218"; }
+  content: "";
+}
 
 .icon-checkmark-circle:before {
-  content: "\e219"; }
+  content: "";
+}
 
 .icon-info:before {
-  content: "\e220"; }
+  content: "";
+}
 
 .icon-info-2:before,
 .icon-info-circle:before {
-  content: "\e221"; }
+  content: "";
+}
 
 .icon-question:before,
 .icon-question-sign:before,
 .icon-help:before {
-  content: "\45"; }
+  content: "E";
+}
 
 .icon-question-2:before,
 .icon-question-circle:before {
-  content: "\e222"; }
+  content: "";
+}
 
 .icon-notification:before {
-  content: "\e223"; }
+  content: "";
+}
 
 .icon-notification-2:before,
 .icon-notification-circle:before {
-  content: "\e224"; }
+  content: "";
+}
 
 .icon-pending:before,
 .icon-warning:before {
-  content: "\48"; }
+  content: "H";
+}
 
 .icon-warning-2:before,
 .icon-warning-circle:before {
-  content: "\e225"; }
+  content: "";
+}
 
 .icon-checkbox-unchecked:before {
-  content: "\3d"; }
+  content: "=";
+}
 
 .icon-checkin:before,
 .icon-checkbox:before,
 .icon-checkbox-checked:before {
-  content: "\3e"; }
+  content: ">";
+}
 
 .icon-checkbox-partial:before {
-  content: "\3f"; }
+  content: "?";
+}
 
 .icon-square:before {
-  content: "\e226"; }
+  content: "";
+}
 
 .icon-radio-unchecked:before {
-  content: "\e227"; }
+  content: "";
+}
 
 .icon-radio-checked:before,
 .icon-generic:before {
-  content: "\e228"; }
+  content: "";
+}
 
 .icon-circle:before {
-  content: "\e229"; }
+  content: "";
+}
 
 .icon-signup:before {
-  content: "\e230"; }
+  content: "";
+}
 
 .icon-grid:before,
 .icon-grid-view:before {
-  content: "\58"; }
+  content: "X";
+}
 
 .icon-grid-2:before,
 .icon-grid-view-2:before {
-  content: "\59"; }
+  content: "Y";
+}
 
 .icon-menu:before {
-  content: "\5a"; }
+  content: "Z";
+}
 
 .icon-list:before,
 .icon-list-view:before {
-  content: "\31"; }
+  content: "1";
+}
 
 .icon-list-2:before {
-  content: "\e231"; }
+  content: "";
+}
 
 .icon-menu-3:before {
-  content: "\e232"; }
+  content: "";
+}
 
 .icon-folder-open:before,
 .icon-folder:before {
-  content: "\2d"; }
+  content: "-";
+}
 
 .icon-folder-close:before,
 .icon-folder-2:before {
-  content: "\2e"; }
+  content: ".";
+}
 
 .icon-folder-plus:before {
-  content: "\e234"; }
+  content: "";
+}
 
 .icon-folder-minus:before {
-  content: "\e235"; }
+  content: "";
+}
 
 .icon-folder-3:before {
-  content: "\e236"; }
+  content: "";
+}
 
 .icon-folder-plus-2:before {
-  content: "\e237"; }
+  content: "";
+}
 
 .icon-folder-remove:before {
-  content: "\e238"; }
+  content: "";
+}
 
 .icon-file:before {
-  content: "\e016"; }
+  content: "";
+}
 
 .icon-file-2:before {
-  content: "\e239"; }
+  content: "";
+}
 
 .icon-file-add:before,
 .icon-file-plus:before {
-  content: "\29"; }
+  content: ")";
+}
 
 .icon-file-minus:before {
-  content: "\e017"; }
+  content: "";
+}
 
 .icon-file-check:before {
-  content: "\e240"; }
+  content: "";
+}
 
 .icon-file-remove:before {
-  content: "\e241"; }
+  content: "";
+}
 
 .icon-save-copy:before,
 .icon-copy:before {
-  content: "\e018"; }
+  content: "";
+}
 
 .icon-stack:before {
-  content: "\e242"; }
+  content: "";
+}
 
 .icon-tree:before {
-  content: "\e243"; }
+  content: "";
+}
 
 .icon-tree-2:before {
-  content: "\e244"; }
+  content: "";
+}
 
 .icon-paragraph-left:before {
-  content: "\e246"; }
+  content: "";
+}
 
 .icon-paragraph-center:before {
-  content: "\e247"; }
+  content: "";
+}
 
 .icon-paragraph-right:before {
-  content: "\e248"; }
+  content: "";
+}
 
 .icon-paragraph-justify:before {
-  content: "\e249"; }
+  content: "";
+}
 
 .icon-screen:before {
-  content: "\e01c"; }
+  content: "";
+}
 
 .icon-tablet:before {
-  content: "\e01d"; }
+  content: "";
+}
 
 .icon-mobile:before {
-  content: "\e01e"; }
+  content: "";
+}
 
 .icon-box-add:before {
-  content: "\51"; }
+  content: "Q";
+}
 
 .icon-box-remove:before {
-  content: "\52"; }
+  content: "R";
+}
 
 .icon-download:before {
-  content: "\e021"; }
+  content: "";
+}
 
 .icon-upload:before {
-  content: "\e022"; }
+  content: "";
+}
 
 .icon-home:before {
-  content: "\21"; }
+  content: "!";
+}
 
 .icon-home-2:before {
-  content: "\e250"; }
+  content: "";
+}
 
 .icon-out-2:before,
 .icon-new-tab:before {
-  content: "\e024"; }
+  content: "";
+}
 
 .icon-out-3:before,
 .icon-new-tab-2:before {
-  content: "\e251"; }
+  content: "";
+}
 
 .icon-link:before {
-  content: "\e252"; }
+  content: "";
+}
 
 .icon-picture:before,
 .icon-image:before {
-  content: "\2f"; }
+  content: "/";
+}
 
 .icon-pictures:before,
 .icon-images:before {
-  content: "\30"; }
+  content: "0";
+}
 
 .icon-palette:before,
 .icon-color-palette:before {
-  content: "\e014"; }
+  content: "";
+}
 
 .icon-camera:before {
-  content: "\55"; }
+  content: "U";
+}
 
 .icon-camera-2:before,
 .icon-video:before {
-  content: "\e015"; }
+  content: "";
+}
 
 .icon-play-2:before,
 .icon-video-2:before,
 .icon-youtube:before {
-  content: "\56"; }
+  content: "V";
+}
 
 .icon-music:before {
-  content: "\57"; }
+  content: "W";
+}
 
 .icon-user:before {
-  content: "\22"; }
+  content: '"';
+}
 
 .icon-users:before {
-  content: "\e01f"; }
+  content: "";
+}
 
 .icon-vcard:before {
-  content: "\6d"; }
+  content: "m";
+}
 
 .icon-address:before {
-  content: "\70"; }
+  content: "p";
+}
 
 .icon-share-alt:before,
 .icon-out:before {
-  content: "\26"; }
+  content: "&";
+}
 
 .icon-enter:before {
-  content: "\e257"; }
+  content: "";
+}
 
 .icon-exit:before {
-  content: "\e258"; }
+  content: "";
+}
 
 .icon-comment:before,
 .icon-comments:before {
-  content: "\24"; }
+  content: "$";
+}
 
 .icon-comments-2:before {
-  content: "\25"; }
+  content: "%";
+}
 
 .icon-quote:before,
 .icon-quotes-left:before {
-  content: "\60"; }
+  content: "`";
+}
 
 .icon-quote-2:before,
 .icon-quotes-right:before {
-  content: "\61"; }
+  content: "a";
+}
 
 .icon-quote-3:before,
 .icon-bubble-quote:before {
-  content: "\e259"; }
+  content: "";
+}
 
 .icon-phone:before {
-  content: "\e260"; }
+  content: "";
+}
 
 .icon-phone-2:before {
-  content: "\e261"; }
+  content: "";
+}
 
 .icon-envelope:before,
 .icon-mail:before {
-  content: "\4d"; }
+  content: "M";
+}
 
 .icon-envelope-opened:before,
 .icon-mail-2:before {
-  content: "\4e"; }
+  content: "N";
+}
 
 .icon-unarchive:before,
 .icon-drawer:before {
-  content: "\4f"; }
+  content: "O";
+}
 
 .icon-archive:before,
 .icon-drawer-2:before {
-  content: "\50"; }
+  content: "P";
+}
 
 .icon-briefcase:before {
-  content: "\e020"; }
+  content: "";
+}
 
 .icon-tag:before {
-  content: "\e262"; }
+  content: "";
+}
 
 .icon-tag-2:before {
-  content: "\e263"; }
+  content: "";
+}
 
 .icon-tags:before {
-  content: "\e264"; }
+  content: "";
+}
 
 .icon-tags-2:before {
-  content: "\e265"; }
+  content: "";
+}
 
 .icon-options:before,
 .icon-cog:before {
-  content: "\38"; }
+  content: "8";
+}
 
 .icon-cogs:before {
-  content: "\37"; }
+  content: "7";
+}
 
 .icon-screwdriver:before,
 .icon-tools:before {
-  content: "\36"; }
+  content: "6";
+}
 
 .icon-wrench:before {
-  content: "\3a"; }
+  content: ":";
+}
 
 .icon-equalizer:before {
-  content: "\39"; }
+  content: "9";
+}
 
 .icon-dashboard:before {
-  content: "\78"; }
+  content: "x";
+}
 
 .icon-switch:before {
-  content: "\e266"; }
+  content: "";
+}
 
 .icon-filter:before {
-  content: "\54"; }
+  content: "T";
+}
 
 .icon-purge:before,
 .icon-trash:before {
-  content: "\4c"; }
+  content: "L";
+}
 
 .icon-checkedout:before,
 .icon-lock:before,
 .icon-locked:before {
-  content: "\23"; }
+  content: "#";
+}
 
 .icon-unlock:before {
-  content: "\e267"; }
+  content: "";
+}
 
 .icon-key:before {
-  content: "\5f"; }
+  content: "_";
+}
 
 .icon-support:before {
-  content: "\46"; }
+  content: "F";
+}
 
 .icon-database:before {
-  content: "\62"; }
+  content: "b";
+}
 
 .icon-scissors:before {
-  content: "\e268"; }
+  content: "";
+}
 
 .icon-health:before {
-  content: "\6a"; }
+  content: "j";
+}
 
 .icon-wand:before {
-  content: "\6b"; }
+  content: "k";
+}
 
 .icon-eye-open:before,
 .icon-eye:before {
-  content: "\3c"; }
+  content: "<";
+}
 
 .icon-eye-close:before,
 .icon-eye-blocked:before,
 .icon-eye-2:before {
-  content: "\e269"; }
+  content: "";
+}
 
 .icon-clock:before {
-  content: "\6e"; }
+  content: "n";
+}
 
 .icon-compass:before {
-  content: "\6f"; }
+  content: "o";
+}
 
 .icon-broadcast:before,
 .icon-connection:before,
 .icon-wifi:before {
-  content: "\e01b"; }
+  content: "";
+}
 
 .icon-book:before {
-  content: "\e271"; }
+  content: "";
+}
 
 .icon-lightning:before,
 .icon-flash:before {
-  content: "\79"; }
+  content: "y";
+}
 
 .icon-print:before,
 .icon-printer:before {
-  content: "\e013"; }
+  content: "";
+}
 
 .icon-feed:before {
-  content: "\71"; }
+  content: "q";
+}
 
 .icon-calendar:before {
-  content: "\43"; }
+  content: "C";
+}
 
 .icon-calendar-2:before {
-  content: "\44"; }
+  content: "D";
+}
 
 .icon-calendar-3:before {
-  content: "\e273"; }
+  content: "";
+}
 
 .icon-pie:before {
-  content: "\77"; }
+  content: "w";
+}
 
 .icon-bars:before {
-  content: "\76"; }
+  content: "v";
+}
 
 .icon-chart:before {
-  content: "\75"; }
+  content: "u";
+}
 
 .icon-power-cord:before {
-  content: "\32"; }
+  content: "2";
+}
 
 .icon-cube:before {
-  content: "\33"; }
+  content: "3";
+}
 
 .icon-puzzle:before {
-  content: "\34"; }
+  content: "4";
+}
 
 .icon-attachment:before,
 .icon-paperclip:before,
 .icon-flag-2:before {
-  content: "\72"; }
+  content: "r";
+}
 
 .icon-lamp:before {
-  content: "\74"; }
+  content: "t";
+}
 
 .icon-pin:before,
 .icon-pushpin:before {
-  content: "\73"; }
+  content: "s";
+}
 
 .icon-location:before {
-  content: "\63"; }
+  content: "c";
+}
 
 .icon-shield:before {
-  content: "\e274"; }
+  content: "";
+}
 
 .icon-flag:before {
-  content: "\35"; }
+  content: "5";
+}
 
 .icon-flag-3:before {
-  content: "\e275"; }
+  content: "";
+}
 
 .icon-bookmark:before {
-  content: "\e023"; }
+  content: "";
+}
 
 .icon-bookmark-2:before {
-  content: "\e276"; }
+  content: "";
+}
 
 .icon-heart:before {
-  content: "\e277"; }
+  content: "";
+}
 
 .icon-heart-2:before {
-  content: "\e278"; }
+  content: "";
+}
 
 .icon-thumbs-up:before {
-  content: "\5b"; }
+  content: "[";
+}
 
 .icon-thumbs-down:before {
-  content: "\5c"; }
+  content: "\\";
+}
 
 .icon-unfeatured:before,
 .icon-asterisk:before,
 .icon-star-empty:before {
-  content: "\40"; }
+  content: "@";
+}
 
 .icon-star-2:before {
-  content: "\41"; }
+  content: "A";
+}
 
 .icon-featured:before,
 .icon-default:before,
 .icon-star:before {
-  content: "\42"; }
+  content: "B";
+}
 
 .icon-smiley:before,
 .icon-smiley-happy:before {
-  content: "\e279"; }
+  content: "";
+}
 
 .icon-smiley-2:before,
 .icon-smiley-happy-2:before {
-  content: "\e280"; }
+  content: "";
+}
 
 .icon-smiley-sad:before {
-  content: "\e281"; }
+  content: "";
+}
 
 .icon-smiley-sad-2:before {
-  content: "\e282"; }
+  content: "";
+}
 
 .icon-smiley-neutral:before {
-  content: "\e283"; }
+  content: "";
+}
 
 .icon-smiley-neutral-2:before {
-  content: "\e284"; }
+  content: "";
+}
 
 .icon-cart:before {
-  content: "\e019"; }
+  content: "";
+}
 
 .icon-basket:before {
-  content: "\e01a"; }
+  content: "";
+}
 
 .icon-credit:before {
-  content: "\e286"; }
+  content: "";
+}
 
 .icon-credit-2:before {
-  content: "\e287"; }
+  content: "";
+}
 
 .icon-expired:before {
-  content: "\4b"; }
+  content: "K";
+}
 
 .icon-edit:before {
-  color: #24748c; }
+  color: #24748c;
+}
 
 .icon-publish:before,
 .icon-save:before,
@@ -748,7 +965,8 @@
 .icon-save-new:before,
 .icon-save-copy:before,
 .btn-toolbar .icon-copy:before {
-  color: #378137; }
+  color: #378137;
+}
 
 .icon-unpublish:before,
 .icon-not-ok:before,
@@ -756,26 +974,30 @@
 .icon-ban-circle:before,
 .icon-minus-sign:before,
 .btn-toolbar .icon-cancel:before {
-  color: #942a25; }
+  color: #942a25;
+}
 
 .icon-featured:before,
 .icon-default:before,
 .icon-expired:before,
 .icon-pending:before {
-  color: #c67605; }
+  color: #c67605;
+}
 
 .icon-back:before {
-  content: "\e008"; }
+  content: "";
+}
 
 @font-face {
-  font-family: 'icohb';
+  font-family: "icohb";
   src: url("fonts/icohb.eot?e4u2ud");
   src: url("fonts/icohb.eot?e4u2ud#iefix") format("embedded-opentype"), url("fonts/icohb.ttf?e4u2ud") format("truetype"), url("fonts/icohb.woff?e4u2ud") format("woff"), url("fonts/icohb.svg?e4u2ud#icohb") format("svg");
   font-weight: normal;
-  font-style: normal; }
-[class^="icon-hb"]::before, [class*=" icon-hb"]::before {
+  font-style: normal;
+}
+[class^=icon-hb]::before, [class*=" icon-hb"]::before {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icohb' !important;
+  font-family: "icohb" !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -784,43 +1006,57 @@
   line-height: 1;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+}
 
 .icon-hb-ball::before {
-  content: "\e900"; }
+  content: "";
+}
 
 .icon-hb-image::before {
-  content: "\e90d"; }
+  content: "";
+}
 
 .icon-hb-images::before {
-  content: "\e90e"; }
+  content: "";
+}
 
 .icon-hb-profile::before {
-  content: "\e923"; }
+  content: "";
+}
 
 .icon-hb-file-empty::before {
-  content: "\e924"; }
+  content: "";
+}
 
 .icon-hb-files-empty::before {
-  content: "\e925"; }
+  content: "";
+}
 
 .icon-hb-file-text2::before {
-  content: "\e926"; }
+  content: "";
+}
 
 .icon-hb-file-picture::before {
-  content: "\e927"; }
+  content: "";
+}
 
 div#teamupdate .icon-loop::before {
-  color: #398137; }
+  color: #398137;
+}
 @keyframes spinner {
   to {
-    transform: rotate(360deg); } }
+    transform: rotate(360deg);
+  }
+}
 div#teamupdate .spinner {
-  position: relative; }
-  div#teamupdate .spinner .btn {
-    display: none; }
+  position: relative;
+}
+div#teamupdate .spinner .btn {
+  display: none;
+}
 div#teamupdate .spinner:before {
-  content: '';
+  content: "";
   box-sizing: border-box;
   position: absolute;
   width: 15px;
@@ -829,255 +1065,395 @@ div#teamupdate .spinner:before {
   border-radius: 50%;
   border: 2px solid #ccc;
   border-top-color: #333;
-  animation: spinner .6s linear infinite; }
+  animation: spinner 0.6s linear infinite;
+}
 div#teamupdate .table th.number,
 div#teamupdate .table td.number {
-  text-align: center; }
+  text-align: center;
+}
 div#teamupdate .updateStatus .icon-checkmark {
-  color: #398137; }
+  color: #398137;
+}
 div#teamupdate .updateStatus .icon-warning {
-  color: #bd362f; }
+  color: #bd362f;
+}
 div#teamupdate .updateStatus .indicator {
   display: none;
-  margin-left: 10px; }
+  margin-left: 10px;
+}
 div#teamupdate .updateStatus .details {
-  display: none; }
-  div#teamupdate .updateStatus .details ul {
-    list-style-type: none;
-    margin: 0 0 0 10px;
-    padding: 0; }
+  display: none;
+}
+div#teamupdate .updateStatus .details ul {
+  list-style-type: none;
+  margin: 0 0 0 10px;
+  padding: 0;
+}
 div#teamupdate .updateStatus .show {
-  display: block; }
+  display: block;
+}
 
 @font-face {
-  font-family: 'digital-7';
-  src: url("../css/fonts/digital-7.ttf"); }
+  font-family: "digital-7";
+  src: url("../css/fonts/digital-7.ttf");
+}
 @font-face {
-  font-family: 'digital-7-mono';
-  src: url("../css/fonts/digital-7-mono.ttf"); }
+  font-family: "digital-7-mono";
+  src: url("../css/fonts/digital-7-mono.ttf");
+}
+div#hbteam #teaminfo {
+  max-width: 800px;
+}
+div#hbteam #teampic {
+  width: 98%;
+}
+div#hbteam #teampic img {
+  margin-left: auto;
+  margin-right: auto;
+}
+div#hbteam .hbschedule table,
+div#hbteam .hbstandings table {
+  width: 98%;
+  max-width: 800px;
+}
+div#hbteam .hbschedule table tr:nth-child(even),
+div#hbteam .hbstandings table tr:nth-child(even) {
+  background: #f4f4f4;
+}
+div#hbteam .hbschedule table tr th, div#hbteam .hbschedule table tr td,
+div#hbteam .hbstandings table tr th,
+div#hbteam .hbstandings table tr td {
+  padding: 0.2em 0.2em;
+}
+div#hbteam .hbschedule table tr .ownTeam,
+div#hbteam .hbstandings table tr .ownTeam {
+  font-weight: bold;
+}
+div#hbteam .hbschedule table tr .dots,
+div#hbteam .hbstandings table tr .dots {
+  padding: 0.2em 0em;
+}
+div#hbteam .hbschedule table tr .number,
+div#hbteam .hbstandings table tr .number {
+  text-align: center;
+}
+div#hbteam .hbschedule table tr .right,
+div#hbteam .hbstandings table tr .right {
+  text-align: right;
+}
+div#hbteam .hbschedule table tr .left,
+div#hbteam .hbstandings table tr .left {
+  text-align: left;
+}
+div#hbteam .hbschedule table tr .gym,
+div#hbteam .hbstandings table tr .gym {
+  font-size: 0.8em;
+}
+div#hbteam .hbschedule table + p,
+div#hbteam .hbstandings table + p {
+  text-align: right;
+  font-size: 0.8em;
+  margin-top: 0.2em;
+  margin-right: 2em;
+}
+div#hbteam .hbhvwLink a {
+  float: left;
+}
+div#hbteam .hbhvwLink p {
+  margin-left: 120px;
+  margin-left: -webkit-calc(100px + 1em);
+  margin-left: calc(100px + 1em);
+}
+
 div#gamereports {
   /* remove standard-styles */
   /* styling */
-  /* hide browser-styling (arrow) in IE10 */ }
-  div#gamereports select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    border-radius: 0;
-    font-size: 1em;
-    width: 100%; }
-  div#gamereports select {
-    width: 90%;
-    border: 1px solid #bbb;
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
-    background-color: white;
-    background-image: url(../images/select-arrow.png);
-    background-position: right;
-    background-repeat: no-repeat; }
-  div#gamereports select:hover {
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1); }
-  div#gamereports select::-ms-expand {
-    display: none; }
-  div#gamereports .lt-ie10 select {
-    background-image: none; }
-  div#gamereports .noselect {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  div#gamereports #gamegraphframe rect.section {
-    fill: white;
-    opacity: 0.05; }
-  div#gamereports #gamegraphframe #gameInfo text {
-    text-anchor: middle;
-    fill: gray; }
-  div#gamereports #gamegraphframe #gameInfo text.teams,
-  div#gamereports #gamegraphframe #gameInfo text.result {
-    font-weight: bold;
-    font-size: 13pt;
-    fill: black; }
-  div#gamereports #gamegraphframe #gameInfo text.home {
-    text-anchor: end; }
-  div#gamereports #gamegraphframe #gameInfo text.center {
-    text-anchor: middle; }
-  div#gamereports #gamegraphframe #gameInfo text.away {
-    text-anchor: start; }
-  div#gamereports #gamegraphframe g.tick text {
-    font-family: 'digital-7';
-    font-size: 13pt; }
-  div#gamereports #gamegraphframe text.score {
-    font-family: 'digital-7-mono';
-    font-size: 13pt;
-    cursor: default;
-    text-anchor: start; }
-  div#gamereports #gamegraphframe text.score.home {
-    fill: #2D3891; }
-  div#gamereports #gamegraphframe text.score.away {
-    fill: red; }
-  div#gamereports #gamegraphframe text.score.neutral {
-    fill: black; }
-  div#gamereports #gamegraphframe text.action {
-    font-size: 8pt;
-    cursor: default;
-    text-anchor: start; }
-  div#gamereports #gamegraphframe path {
-    stroke: #2D3891;
-    stroke-width: 5;
-    stroke-linejoin: round;
-    fill: none; }
-  div#gamereports #gamegraphframe .axis line,
-  div#gamereports #gamegraphframe .axis path {
-    fill: none;
-    stroke: grey;
-    stroke-width: 2; }
-  div#gamereports #gamegraphframe .goaldot {
-    fill: #2D3891;
-    stroke: #2D3891;
-    stroke-width: 4; }
-  div#gamereports #gamegraphframe .goaldot.showGoal {
-    visibility: hidden; }
-  div#gamereports #gamegraphframe .center-line {
-    stroke: grey;
-    stroke-width: 2; }
-  div#gamereports #gamegraphframe .halftime-line {
-    stroke: lightgrey;
-    stroke-width: 4; }
-  div#gamereports #gamegraphframe .grid .tick {
-    stroke: lightgrey;
-    opacity: 0.7; }
-  div#gamereports #gamegraphframe .grid path {
-    stroke-width: 0; }
-  div#gamereports #gamegraphframe .hideactiontag {
-    visibility: hidden; }
-  div#gamereports #gamegraphframe .actionTagItem text {
-    text-anchor: end;
-    font-size: 9pt; }
-  div#gamereports #gamegraphframe .actionTagItem text.name {
-    font-weight: bold; }
-  div#gamereports #gamegraphframe .actionTagItem text.time {
-    font-family: digital-7;
-    font-size: 13pt; }
-  div#gamereports #gamegraphframe .axis {
-    fill: gray;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  div#gamereports #gamegraphframe .axis .halo {
-    stroke: gray;
-    stroke-width: 4px;
-    stroke-linecap: round; }
-  div#gamereports #gamegraphframe .slider .handle path {
-    stroke: #2D3891;
-    stroke-width: 10px;
-    stroke-linecap: round;
-    pointer-events: none; }
-  div#gamereports #gamegraphframe .sliderbox text {
-    visibility: hidden; }
-  div#gamereports #gamegraphframe #scoreboard rect.background {
-    fill: #111; }
-  div#gamereports #gamegraphframe #scoreboard rect.frame {
-    fill: #aaa; }
-  div#gamereports #gamegraphframe #scoreboard text.team {
-    font-size: 10pt;
-    fill: #aaa;
-    text-anchor: end; }
-  div#gamereports #gamegraphframe #scoreboard text.diget {
-    font-family: 'digital-7-mono';
-    font-size: 30pt;
-    fill: yellow;
-    text-anchor: end; }
-  div#gamereports #gamegraphframe #scoreboard text.time {
-    text-anchor: middle; }
-  div#gamereports #gamegraphframe #scoreboard text.diget.bg {
-    fill: #333; }
-  div#gamereports #gamegraphframe #playerprofiles .action.number {
-    font-size: 18pt;
-    font-weight: bold;
-    cursor: default;
-    text-anchor: end; }
-  div#gamereports #gamegraphframe #playerprofiles text.bg {
-    fill: #FDDF12; }
-  div#gamereports #gamegraphframe #playerprofiles text.fg {
-    fill: #2D3891; }
-  div#gamereports #gamegraphframe #playerprofiles .profile.name {
-    font-size: 10pt;
-    font-weight: bold;
-    fill: black;
-    text-anchor: start; }
-  div#gamereports #gamegraphframe .icons * {
-    stroke: none; }
-  div#gamereports #gamegraphframe .icons .redcard {
-    fill: #cc0000; }
-  div#gamereports #gamegraphframe .icons .yellowcard {
-    fill: #FDDF12; }
-  div#gamereports #gamegraphframe .icons .suspension {
-    fill: #777; }
-  div#gamereports #gamegraphframe .icons g.ball * {
-    stroke: #888;
-    stroke-width: 1px; }
-  div#gamereports #gamegraphframe .icons g.ball circle {
-    fill: #aaa; }
-  div#gamereports #gamegraphframe .icons text.sevenicon {
-    font-weight: bold;
-    stroke-width: 0.5px;
-    stroke: #333;
-    fill: #333;
-    font-size: 10pt; }
+  /* hide browser-styling (arrow) in IE10 */
+}
+div#gamereports select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 0;
+  font-size: 1em;
+  width: 100%;
+}
+div#gamereports select {
+  width: 90%;
+  border: 1px solid #bbb;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  background-image: url(../images/select-arrow.png);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div#gamereports select:hover {
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+div#gamereports select::-ms-expand {
+  display: none;
+}
+div#gamereports .lt-ie10 select {
+  background-image: none;
+}
+div#gamereports .noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div#gamereports #gamegraphframe rect.section {
+  fill: white;
+  opacity: 0.05;
+}
+div#gamereports #gamegraphframe #gameInfo text {
+  text-anchor: middle;
+  fill: gray;
+}
+div#gamereports #gamegraphframe #gameInfo text.teams,
+div#gamereports #gamegraphframe #gameInfo text.result {
+  font-weight: bold;
+  font-size: 13pt;
+  fill: black;
+}
+div#gamereports #gamegraphframe #gameInfo text.home {
+  text-anchor: end;
+}
+div#gamereports #gamegraphframe #gameInfo text.center {
+  text-anchor: middle;
+}
+div#gamereports #gamegraphframe #gameInfo text.away {
+  text-anchor: start;
+}
+div#gamereports #gamegraphframe g.tick text {
+  font-family: "digital-7";
+  font-size: 13pt;
+}
+div#gamereports #gamegraphframe text.score {
+  font-family: "digital-7-mono";
+  font-size: 13pt;
+  cursor: default;
+  text-anchor: start;
+}
+div#gamereports #gamegraphframe text.score.home {
+  fill: #2D3891;
+}
+div#gamereports #gamegraphframe text.score.away {
+  fill: red;
+}
+div#gamereports #gamegraphframe text.score.neutral {
+  fill: black;
+}
+div#gamereports #gamegraphframe text.action {
+  font-size: 8pt;
+  cursor: default;
+  text-anchor: start;
+}
+div#gamereports #gamegraphframe path {
+  stroke: #2D3891;
+  stroke-width: 5;
+  stroke-linejoin: round;
+  fill: none;
+}
+div#gamereports #gamegraphframe .axis line,
+div#gamereports #gamegraphframe .axis path {
+  fill: none;
+  stroke: grey;
+  stroke-width: 2;
+}
+div#gamereports #gamegraphframe .goaldot {
+  fill: #2D3891;
+  stroke: #2D3891;
+  stroke-width: 4;
+}
+div#gamereports #gamegraphframe .goaldot.showGoal {
+  visibility: hidden;
+}
+div#gamereports #gamegraphframe .center-line {
+  stroke: grey;
+  stroke-width: 2;
+}
+div#gamereports #gamegraphframe .halftime-line {
+  stroke: lightgrey;
+  stroke-width: 4;
+}
+div#gamereports #gamegraphframe .grid .tick {
+  stroke: lightgrey;
+  opacity: 0.7;
+}
+div#gamereports #gamegraphframe .grid path {
+  stroke-width: 0;
+}
+div#gamereports #gamegraphframe .hideactiontag {
+  visibility: hidden;
+}
+div#gamereports #gamegraphframe .actionTagItem text {
+  text-anchor: end;
+  font-size: 9pt;
+}
+div#gamereports #gamegraphframe .actionTagItem text.name {
+  font-weight: bold;
+}
+div#gamereports #gamegraphframe .actionTagItem text.time {
+  font-family: digital-7;
+  font-size: 13pt;
+}
+div#gamereports #gamegraphframe .axis {
+  fill: gray;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div#gamereports #gamegraphframe .axis .halo {
+  stroke: gray;
+  stroke-width: 4px;
+  stroke-linecap: round;
+}
+div#gamereports #gamegraphframe .slider .handle path {
+  stroke: #2D3891;
+  stroke-width: 10px;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+div#gamereports #gamegraphframe .sliderbox text {
+  visibility: hidden;
+}
+div#gamereports #gamegraphframe #scoreboard rect.background {
+  fill: #111;
+}
+div#gamereports #gamegraphframe #scoreboard rect.frame {
+  fill: #aaa;
+}
+div#gamereports #gamegraphframe #scoreboard text.team {
+  font-size: 10pt;
+  fill: #aaa;
+  text-anchor: end;
+}
+div#gamereports #gamegraphframe #scoreboard text.diget {
+  font-family: "digital-7-mono";
+  font-size: 30pt;
+  fill: yellow;
+  text-anchor: end;
+}
+div#gamereports #gamegraphframe #scoreboard text.time {
+  text-anchor: middle;
+}
+div#gamereports #gamegraphframe #scoreboard text.diget.bg {
+  fill: #333;
+}
+div#gamereports #gamegraphframe #playerprofiles .action.number {
+  font-size: 18pt;
+  font-weight: bold;
+  cursor: default;
+  text-anchor: end;
+}
+div#gamereports #gamegraphframe #playerprofiles text.bg {
+  fill: #FDDF12;
+}
+div#gamereports #gamegraphframe #playerprofiles text.fg {
+  fill: #2D3891;
+}
+div#gamereports #gamegraphframe #playerprofiles .profile.name {
+  font-size: 10pt;
+  font-weight: bold;
+  fill: black;
+  text-anchor: start;
+}
+div#gamereports #gamegraphframe .icons * {
+  stroke: none;
+}
+div#gamereports #gamegraphframe .icons .redcard {
+  fill: #cc0000;
+}
+div#gamereports #gamegraphframe .icons .yellowcard {
+  fill: #FDDF12;
+}
+div#gamereports #gamegraphframe .icons .suspension {
+  fill: #777;
+}
+div#gamereports #gamegraphframe .icons g.ball * {
+  stroke: #888;
+  stroke-width: 1px;
+}
+div#gamereports #gamegraphframe .icons g.ball circle {
+  fill: #aaa;
+}
+div#gamereports #gamegraphframe .icons text.sevenicon {
+  font-weight: bold;
+  stroke-width: 0.5px;
+  stroke: #333;
+  fill: #333;
+  font-size: 10pt;
+}
 
 #goals div#playertable #gameSelect {
-  float: left;
-  dislay: inline-block;
-  margin-right: 20px; }
-  #goals div#playertable #gameSelect #selectedGame {
-    display: none; }
-  #goals div#playertable #gameSelect ul {
-    list-style-type: none;
-    padding: 0;
-    border-top: 1px solid #fff; }
-    #goals div#playertable #gameSelect ul li {
-      border-bottom: 2px solid #fff;
-      background: #ddd;
-      color: #aaa;
-      height: 1.75em;
-      cursor: pointer; }
-      #goals div#playertable #gameSelect ul li.played {
-        color: #333; }
-        #goals div#playertable #gameSelect ul li.played:hover {
-          background: #FDDF12; }
-      #goals div#playertable #gameSelect ul li.selectedGame {
-        background: #2D3891;
-        color: #fff; }
-    #goals div#playertable #gameSelect ul span {
-      display: inline-block; }
-    #goals div#playertable #gameSelect ul span.date {
-      min-width: 7em; }
-    #goals div#playertable #gameSelect ul span.gameName {
-      min-width: 11em; }
-    #goals div#playertable #gameSelect ul span.result {
-      min-width: 4em; }
+  display: inline-block;
+  margin-right: 20px;
+}
+#goals div#playertable #gameSelect #selectedGame {
+  display: none;
+}
+#goals div#playertable #gameSelect ul {
+  list-style-type: none;
+  padding: 0;
+  border-top: 1px solid #fff;
+}
+#goals div#playertable #gameSelect ul li {
+  border-bottom: 2px solid #fff;
+  background: #ddd;
+  color: #aaa;
+  height: 1.75em;
+  cursor: pointer;
+}
+#goals div#playertable #gameSelect ul li.played {
+  color: #333;
+}
+#goals div#playertable #gameSelect ul li.played:hover {
+  background: #FDDF12;
+}
+#goals div#playertable #gameSelect ul li.selectedGame {
+  background: #2D3891;
+  color: #fff;
+}
+#goals div#playertable #gameSelect ul span {
+  display: inline-block;
+}
+#goals div#playertable #gameSelect ul span.date {
+  min-width: 7em;
+}
+#goals div#playertable #gameSelect ul span.gameName {
+  min-width: 11em;
+}
+#goals div#playertable #gameSelect ul span.result {
+  min-width: 4em;
+}
 #goals div#playertable table tr.grayout td {
-  color: #bbb; }
+  color: #bbb;
+}
 #goals div#playertable table #toggleSwitch {
-  cursor: pointer; }
+  cursor: pointer;
+}
 #goals div#playertable table .buffer {
   color: transparent;
   border-right: 1px solid #ddd;
   width: 0px;
   padding-left: 0;
-  padding-right: 0; }
+  padding-right: 0;
+}
 #goals div#playertable table .sofar.hidden {
-  display: none; }
+  display: none;
+}
 #goals div#playertable table .total.hidden {
-  display: none; }
+  display: none;
+}
 #goals #hbgoalchart_chartmode {
   padding-bottom: 0;
   padding-left: 40px;
-  border: 0; }
-  #goals #hbgoalchart_chartmode .chartmodebox {
-    display: inline-block;
-    float: left;
-    padding-left: 30px; }
-
-/*# sourceMappingURL=site.css.map */
+  border: 0;
+}
+#goals #hbgoalchart_chartmode .chartmodebox {
+  display: inline-block;
+  padding-left: 30px;
+}

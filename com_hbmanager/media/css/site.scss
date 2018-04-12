@@ -87,6 +87,82 @@ div#teamupdate {
   src: url("../css/fonts/digital-7-mono.ttf");
 }
 
+div#hbteam {
+
+	#teaminfo {
+		max-width: 800px;
+	}
+	
+	#teampic {
+		width: 98%;
+		
+		img {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.hbschedule table,
+	.hbstandings table {
+		
+		width: 98%;
+		max-width: 800px;
+		
+		
+		tr:nth-child(even) {
+			background: #f4f4f4;
+		} 
+		
+		tr {	
+			th, td {
+				padding: 0.2em 0.2em;
+				
+			}
+			
+			.ownTeam {
+				font-weight: bold;
+			}
+			
+			.dots {
+				padding: 0.2em 0em;
+			}
+			
+			.number {
+				text-align: center;
+			}
+			.right {
+				text-align: right;
+			}
+			.left {
+				text-align: left;
+			}
+			
+			.gym {
+				font-size: 0.8em;
+			}
+			
+		}
+	}
+	.hbschedule table+p,
+	.hbstandings table+p {
+		text-align: right;
+		font-size: 0.8em;
+		margin-top: 0.2em;
+		margin-right: 2em;
+	}
+
+	.hbhvwLink {
+		a {
+			float: left;
+		}
+		p {
+			margin-left: 120px;
+			margin-left: -webkit-calc(100px + 1em);
+			margin-left: calc(100px + 1em);
+		}
+	}
+}
+
 div#gamereports {
 
 	/* remove standard-styles */
@@ -389,8 +465,7 @@ div#gamereports {
 	div#playertable {
 
 		#gameSelect {
-			float: left;
-			dislay: inline-block;
+			display: inline-block;
 			margin-right: 20px;
 
 			#selectedGame {
@@ -476,7 +551,6 @@ div#gamereports {
 
 		.chartmodebox {
 			display: inline-block;
-			float: left;
 			padding-left: 30px;
 		}
 

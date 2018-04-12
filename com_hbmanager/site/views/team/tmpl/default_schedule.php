@@ -5,14 +5,14 @@ defined('_JEXEC') or die('Restricted access');
 $team = $this->team;
 $indicator = $this->show['schedule_params']['indicator'];
 $reports = $this->show['schedule_params']['reports'];
+JHTML::_('bootstrap.tooltip');
 ?>
 
 			<div class="hbschedule">
-		
 				<table>
 					<thead>
 						<tr>
-							<th></th> 
+							<th class="hidden-phone"></th> 
 							<th colspan="2"><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_WHEN')?></th>
 							<th><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_GYM')?></th>
 							<th><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_HOMETEAM')?></th>
@@ -26,21 +26,26 @@ $reports = $this->show['schedule_params']['reports'];
 				
 					<tbody>
 					<?php foreach ($this->schedule as $row) : ?>
-
+						<?php //echo __FILE__.' ('.__LINE__.'):<pre>';print_r($row);echo'</pre>';
+						$gymDesc = $row->street.'<br>'.$row->zip.' '.$row->town.'<br>'.$row->adhesive;
+						$gymLink = 'https://www.google.de/maps/search/'.urlencode($row->gymName).'+'.urlencode($row->zip).'+'.urlencode($row->town);
+						?>
 						<tr>
-							<td><?php echo JHtml::_('date', $row->dateTime, 'D', $this->tz)?></td>
-							<td><?php echo JHtml::_('date', $row->dateTime, 'j. M.', $this->tz)?></td>
-							<td><?php echo JHtml::_('date', $row->dateTime, 'H:i', $this->tz)?> <?php echo JText::_('COM_HBMANAGER_TEAM_CLOCK')?></td>
-							<td><?php echo $row->gymId ?></td>
-							<td><?php echo $row->home ?></td>
+							<td class="hidden-phone right"><?php echo JHtml::_('date', $row->dateTime, 'D', $this->tz)?></td>
+							<td><span><span class="hidden-phone"><?php echo JHtml::_('date', $row->dateTime, 'j. M.', $this->tz)?></span></span></td>
+							<td><span><span class="hidden-phone"><?php echo JHtml::_('date', $row->dateTime, 'H:i', $this->tz)?> <?php echo JText::_('COM_HBMANAGER_TEAM_CLOCK')?></span>
+							 	<span class="visible-phone"><?php echo JHtml::_('date', $row->dateTime, 'd.m. H:i', $this->tz)?></span></span>
+							</td>
+							<td><span><?php echo JHTML::tooltip($gymDesc, $row->gymName, '', '<span class="visible-desktop gym">'.$row->gymName.' ('.$row->gymId.')</span>'.'<span class="hidden-desktop">'.$row->gymId.'</span>', $gymLink) ?></span></td>
+							<td class="right <?php echo $row->homegame ? 'ownTeam' : '';?>"><span><span class="hidden-phone"><?php echo $row->home ?></span><span class="visible-phone"><?php echo $row->home_abbr ?></span></span></td>
 							<td>-</td>
-							<td><?php echo $row->away ?></td>
+							<td class="<?php echo !$row->homegame ? 'ownTeam' : '';?>"><span><span class="hidden-phone"><?php echo $row->away ?></span><span class="visible-phone"><?php echo $row->away_abbr ?></span></span></td>
 						<?php if ($row->comment == "abge..") : ?>
 							<td colspan="3"><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_CANCELED') ?></td>
 						<?php else : ?>
-							<td class="<?php echo $row->homegame ? ' ownTeam' : '';?>"><?php echo $row->goalsHome;?></td>
+							<td class="<?php echo $row->homegame ? 'ownTeam' : '';?>"><?php echo $row->goalsHome;?></td>
 							<td><?php echo ($row->goalsHome != '') ? ':' : '';?></td>
-							<td class="<?php echo !$row->homegame ? ' ownTeam' : '';?>"><?php echo $row->goalsAway;?></td>
+							<td class="<?php echo !$row->homegame ? 'ownTeam' : '';?>"><?php echo $row->goalsAway;?></td>
 						<?php endif; ?>
 
 						<?php if ($indicator) : ?>	

@@ -7,10 +7,13 @@ $team = $this->team;
 ?>
 
 <div id="hbteam">
+	
+	<?php if (!empty($team)) : ?>
+	
+	<h1><?php echo $team->team; ?> <span><?php echo $team->league; ?></span></h1>
+	
+	<div id="teaminfo">
 
-<?php if (!empty($team)) : ?>
-
-<h1><?php echo $team->team; ?> <span><?php echo $team->league; ?></span></h1>
 
 	<?php if ($this->show['team']) : ?>
 
@@ -19,7 +22,7 @@ $team = $this->team;
 			<!-- <h2><?php echo JText::_('COM_HBMANAGER_TEAM_PICTURE'); ?></h2> -->
 			<div id="teampic">
 				<a href="<?php echo $team->paths['1200px'] ?>" target="_BLANK">
-				<img src="<?php echo $team->paths['500px'] ?>" id="teampic_image" alt="<?php echo $team->comment ?>"  />
+				<img src="<?php echo $team->paths['800px'] ?>" id="teampic_image" alt="<?php echo $team->comment ?>"  />
 				</a>
 				
 				<?php if (!empty($team->caption)) :?>
@@ -124,6 +127,8 @@ $team = $this->team;
 		<?php endif; ?>
 
 	<?php endif; ?>
+
+	</div>
 
 <?php else : ?>
 <h1><?php echo JText::_('COM_HBMANAGER_TEAM_NO_TEAM')?></h1>

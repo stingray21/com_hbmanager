@@ -222,24 +222,34 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$query = $db->getQuery(true);
 		$query->select('*, '.
 				'IF('.$db->qn('home').' = '.$db->q($this->team->shortName).',1,0) as homegame, '.
-				'CASE '.
+				'(CASE '.
 				'WHEN '.$db->qn('pointsHome').' > '.$db->qn('pointsAway').' THEN 1 '.
 				'WHEN '.$db->qn('pointsHome').' < '.$db->qn('pointsAway').' THEN 2 '.
 				'WHEN ('.$db->qn('pointsHome').' = '.$db->qn('pointsAway').') AND'.
 					$db->qn('pointsHome').' IS NOT NULL THEN 0 '.
 				'ELSE NULL '.
-				'END AS `result`'
+				'END ) AS `result`,
+				homenames.teamname_long AS home_long, homenames.teamname_short AS home_short, homenames.teamname_abbr AS home_abbr,
+				awaynames.teamname_long AS away_long, awaynames.teamname_short AS away_short, awaynames.teamname_abbr AS away_abbr '
 				);
 		$query->from($db->qn($this->table_game));
 		$query->leftJoin($db->qn($this->table_gamereport).' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
+		$query->leftJoin($db->qn($this->table_gym).' USING ('.$db->qn('gymId').')');
+		$query->leftJoin($db->qn('#__hb_clubteams').' AS homenames ON '.$db->qn('home').'='.$db->qn('homenames').'.'.$db->qn('teamname_short'));
+		$query->leftJoin($db->qn('#__hb_clubteams').' AS awaynames ON '.$db->qn('away').'='.$db->qn('awaynames').'.'.$db->qn('teamname_short'));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where('('.$db->qn('home').' = '.$db->q($this->team->shortName).' OR '.
 					$db->qn('away').' = '.$db->q($this->team->shortName).')');		
 		$query->order($db->qn('dateTime'));
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.str_replace('#_', 'hkog', $query).'</pre>';die;
+		
 		$db->setQuery($query);
 		$schedule = $db->loadObjectList();
 		
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($schedule);echo'</pre>';die;
+		
+
 		if (is_null($posts=$db->loadRowList())) 
 		{
 				$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
@@ -347,6 +357,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from($db->qn($this->table_standings));
+		$query->leftJoin($db->qn('#__hb_clubteams').' ON '.$db->qn('team').'='.$db->qn('teamname_long'));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));		
 		$query->order($db->qn('rank'));
@@ -368,6 +379,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from($db->qn($this->table_standings_details));
+		$query->leftJoin($db->qn('#__hb_clubteams').' ON '.$db->qn('team').'='.$db->qn('teamname_long'));
 		$query->where($db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('season').' = '.$db->q($this->season));		
 		$query->order($db->qn('rank'));

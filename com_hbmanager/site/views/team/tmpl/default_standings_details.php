@@ -26,6 +26,7 @@ $team = $this->team;
 					<tbody>
 						<?php
 						foreach ($this->standings as $row) {
+							echo __FILE__.' ('.__LINE__.'):<pre>';print_r($row);echo'</pre>';
 							?>
 							<tr>
 								<td><?php echo $row->rank ?></td>

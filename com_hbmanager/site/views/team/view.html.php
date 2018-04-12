@@ -44,7 +44,17 @@ class HbManagerViewTeam extends JViewLegacy
 
 		// Display the view
 		parent::display($tpl);
+
+		// Set the document
+		$this->setDocument();
 	}
 
+	protected function setDocument() 
+	{
+		$document = JFactory::getDocument();
+		
+		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.css' );
+		// $document->setTitle(JText::_('COM_HBMANAGER_GOALS_TITLE'));
+	}
 
 }
