@@ -20,20 +20,20 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	// protected $timezone = 'Europe/Berlin';
 	private $timezone = 'UTC';
 	
-	private $today = null;
-	private $season = null;
+	protected $today = null;
+	protected $season = null;
 
-	private $table_team = '#__hb_team';
-	private $table_game = '#__hb_game';
-	private $table_gamereport = '#__hb_gamereport';
-	private $table_gamedetails = '#__hb_gamereport_details';
-	private $table_teamplayer = '#__hb_team_player';
-	private $table_gameplayer = '#__hb_game_player';
-	private $table_contact = '#__contact_details';
+	protected $table_team = '#__hb_team';
+	protected $table_game = '#__hb_game';
+	protected $table_gamereport = '#__hb_gamereport';
+	protected $table_gamedetails = '#__hb_gamereport_details';
+	protected $table_teamplayer = '#__hb_team_player';
+	protected $table_gameplayer = '#__hb_game_player';
+	protected $table_contact = '#__contact_details';
 
-	private $tz = null;
-	private $importFilePath = null;
-	private $fileGameIds = null;
+	protected $tz = null;
+	protected $importFilePath = null;
+	protected $fileGameIds = null;
 
 
 	private $filenamePattern = '<ID>_all.txt';
@@ -217,10 +217,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 				' USING ('.$db->qn('teamkey').')');
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->gameId));
 		$query->where($db->qn('season').' = '.$db->q($this->season));
-		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
+		//  echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
 		$info = $db->loadObject();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($info);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($info);echo'</pre>';die;
 		$this->teamkey = $info->teamkey;
 		$this->homeGame = (strcmp($info->home, $info->shortName) === 0) ? true : false; 
 		$this->goalkeeper = self::setGoalkeeper($info->teamkey);
@@ -358,8 +358,8 @@ class HBmanagerModelGamedetails extends JModelAdmin
 				$row = str_getcsv($row, "," );
 			}
 		}
-		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($rows);echo '</pre>';
-
+		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($rows);echo '</pre>'; 
+		
 		preg_match("|.*NZ: (.*) \((.*)\)|", $rows[0][1],$match);
 		$game['league'] = $match[1];
 		$game['leagueKey'] = $match[2];
@@ -413,7 +413,8 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	{
 		$string = str_replace('"', '', trim($string));
 		//remove header
-		$pattern = "|(Nr.,Name,Jahrgang,M,R,Tore\r?\n?\(ges\),7m/\r?\n?Tore,Verw.,Hinausstellungen,,?,?Disq.,Ber.,Team-\r?\n?Zstr.\r?\n?,?,?\r?\n?,,,,,,,,1.,2.,3.,,,\r?\n?)|";
+		
+		$pattern = "/(Nr.,Name,Jahrgang,M,R,Tore\r?\n?\(ges\),7m\/\r?\n?Tore,Verw.,Hinausstellungen,,?,?Disq.,Ber.,(Team-\r?\n?Zstr\.\r?\n?|zus\.\r?\n?Strafe),?,?\r?\n?,,,,,,,,1.,2.,3.,,,\r?\n?)/";
 		$string = preg_replace($pattern, '', $string);
 
 		if (!empty($string)) {
@@ -459,8 +460,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 			$value['comment'] = $row[12];
 			$value['suspensionTeam'] = $row[13];
 
-			$arrayAlias = (in_array($value['number'], array("A","B","C","D"))) ? $alias."_".$value['number'] : $alias;
-			$playerArray[$arrayAlias] = $value;
+			$playerArray[$alias] = $value;
 		}
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($playerArray);echo'</pre>';
 		return $playerArray;
@@ -850,7 +850,6 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		//echo __FUNCTION__.'<pre>';print_r($value); echo'</pre>';
 		return $value;
 	}
-
 
 }
 

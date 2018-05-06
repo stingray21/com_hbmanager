@@ -59,6 +59,7 @@ function updateTeamBtn(teamkey)
 			
 			row.getElementsByClassName("updateBtn")[0].classList.remove("spinner");
 			row.getElementsByClassName("date")[0].innerHTML = response.date;
+			row.getElementsByClassName("dateMobile")[0].innerHTML = response.dateMobile;
 			
 			row.getElementsByClassName("updateStatus")[0].classList.add("show");
 			 
@@ -124,27 +125,6 @@ function updateTeamData(teamkey, callback)
 function updateCheckedTeams()
 {
 	var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-	// console.log(checkedBoxes);
-
-	var teams = [];
-	for (var i=0; i<checkedBoxes.length; i++) {
-		if (checkedBoxes[i].name != "checkall-toggle") 
-		{
-			var teamkey = checkedBoxes[i].parentElement.parentElement.id;
-			teamkey = teamkey.replace('update-team-', '');
-
-			teams.push({"teamkey": teamkey, "update": null});
-			// teams.push({"teamkey": "M-1", "update": "2017-10-04 19:37:28"});
-		}
-    }
-    // console.log(teamkeys);
-	
-	return updateTeams(teams);
-}
-
-function updateAllTeams()
-{
-	var checkedBoxes = document.querySelectorAll('input[type=checkbox]');
 	// console.log(checkedBoxes);
 
 	var teams = [];

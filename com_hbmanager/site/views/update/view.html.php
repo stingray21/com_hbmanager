@@ -42,6 +42,7 @@ class HbManagerViewUpdate extends JViewLegacy
 
 		// Assign data to the view
 		$this->dateFormat = $this->get('DateFormat');
+		$this->dateFormatMobile = $this->get('DateFormatMobile');
 		$this->teamList = $this->get('TeamList');
 
 		// Display the template
@@ -60,7 +61,7 @@ class HbManagerViewUpdate extends JViewLegacy
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->addScript( JUri::root() . 'media/com_hbmanager/js/teamdata.js' );
+		$document->addScript( JUri::root() . 'media/com_hbmanager/js/dteamdata.js' );
 		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.css' );
 		$document->setTitle(JText::_('COM_HBMANAGER_UPDATE_TITLE'));
 	}

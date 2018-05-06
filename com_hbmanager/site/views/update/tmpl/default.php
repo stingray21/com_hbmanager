@@ -10,6 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 // $tz = true; //true: user-time, false:server-time
 $tz = HbmanagerHelper::getHbTimezone();
 // echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->teamList);echo'</pre>';
+// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->items);echo'</pre>';
 
 JFactory::getDocument()->addScriptDeclaration('
 
@@ -27,16 +28,16 @@ JFactory::getDocument()->addScriptDeclaration('
 			<table class="table table-striped table-hover">
 				<thead>
 				<tr>
-					<th width="1%">
+					<th width="1%" class="hidden-phone">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_NUM'); ?>		
 					</th>
 					<th width="">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_TEAM'); ?>
 					</th>
-					<th width="">
+					<th width="" class="hidden-phone">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_HVWLINK_PAGE'); ?>
 					</th>
-					<th width="">
+					<th width="" class="hidden-phone">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_HVWLINK_JSON'); ?>
 					</th>
 					<th width="">
@@ -45,7 +46,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					<th width="20%">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_STATUS'); ?>
 					</th>
-					<th width="2%">
+					<th width="2%" class="hidden-phone">
 						<?php echo JText::_('COM_HBMANAGER_UPDATE_ID'); ?>
 					</th>
 				</tr>
@@ -61,20 +62,27 @@ JFactory::getDocument()->addScriptDeclaration('
 					<?php if (!empty($this->items)) : ?>
 						<?php foreach ($this->items as $i => $row) : ?>
 							<tr id="update-team-<?php echo $row->teamkey; ?>">
-								<td class="number"><?php echo $this->pagination->getRowOffset($i); ?></td>
+								<td class="number hidden-phone"><?php echo $this->pagination->getRowOffset($i); ?></td>
 
-								<td><?php echo $row->team.' ('.$row->leagueKey.')'; ?></td>
-								<td>
+								<td><?php echo $row->team;
+										if (!empty($row->leagueKey)) echo ' <br class="visible-phone">('.$row->leagueKey.')'; 
+									?></td>
+								<td class="hidden-phone">
 									<a href="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" title="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" target="_BLANK">
 										<?php echo JText::_('COM_HBMANAGER_UPDATE_HVWLINK_PAGE_TEXT'); ?>
 									</a>
 								</td>
-								<td>
+								<td class="hidden-phone">
 									<a href="<?php echo HbmanagerHelper::get_hvw_json_url($row->leagueIdHvw); ?>" title="<?php echo HbmanagerHelper::get_hvw_json_url($row->leagueIdHvw); ?>" target="_BLANK">
 										<?php echo $row->leagueIdHvw; ?> 
 									</a>
 								</td>
-								<td class="date"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></td>
+								<td class="update-date">
+									<span>
+									<span class="date hidden-phone"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></span>
+									<span class="dateMobile visible-phone"><?php echo JHTML::_('date', $row->update , $this->dateFormatMobile, $tz); ?></span>
+									</span>
+								</td>
 								<td>
 									<div class="updateBtn">
 											
@@ -90,7 +98,7 @@ JFactory::getDocument()->addScriptDeclaration('
 										</div>	
 									</div>									
 								</td>
-								<td class="number">
+								<td class="number hidden-phone">
 									<?php echo $row->teamId; ?>
 								</td>
 							</tr>

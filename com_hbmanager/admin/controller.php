@@ -54,7 +54,7 @@ class hbmanagerController extends JControllerLegacy
 		//$teamkey = 'M1';
 		$jinput = JFactory::getApplication()->input;
 		$gameId = $jinput->get('gameId');
-		//echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
 
 		$response = $model->previewGameData($gameId);
 

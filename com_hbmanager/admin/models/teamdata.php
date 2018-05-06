@@ -21,6 +21,7 @@ class HBmanagerModelTeamdata extends JModelList
  	protected $season;
  	protected $ownTeamNames;
  	protected $dateFormat = 'D, d.m.Y - H:i:s';
+ 	protected $dateFormatMobile = 'd.m. H:i';
 
  	protected $table_team 				= '#__hb_team';
 	protected $table_game 				= '#__hb_game';
@@ -59,7 +60,7 @@ class HBmanagerModelTeamdata extends JModelList
 		// set maximum execution time limit
 		set_time_limit(90);
 
-	}
+    }
 
 	/**
 	 * Method to build an SQL query to load the list data.
@@ -95,18 +96,6 @@ class HBmanagerModelTeamdata extends JModelList
 		return $query;
 	}
 
-	// overwrites the default method
-	public function getItems()
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from($this->table_team);
-		$query->where($db->qn('leagueIdHvw').' IS NOT NULL');
-		$db->setQuery($query);
-		$team = $db->loadObjectList();
-		return $team;
-	}
 
 	function updateTeamData($teamkey, $type = 'manual') 
 	{
@@ -126,6 +115,7 @@ class HBmanagerModelTeamdata extends JModelList
 		}
 
 		$response['date'] = JHTML::_('date', $team->update, $this->dateFormat, $this->tz);
+		$response['dateMobile'] = JHTML::_('date', $team->update, $this->dateFormatMobile, $this->tz);
 
 		self::updateLog($team, $response['result'], $type);
 
@@ -300,6 +290,10 @@ class HBmanagerModelTeamdata extends JModelList
 		return $this->dateFormat;
 	}
 
+	public function getDateFormatMobile()
+	{
+		return $this->dateFormatMobile;
+	}
 
 	protected function getTeam($teamkey)
 	{
