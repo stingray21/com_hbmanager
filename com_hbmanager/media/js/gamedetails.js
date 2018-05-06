@@ -1,14 +1,17 @@
-function importGamePreview(gameId)
+function importGamePreview(gameId, date)
 {
-	console.log('Import ' + gameId);
+	console.log('Import ' + date + ' - ' + gameId);
 	
 	var preview = document.getElementById("import-preview");
 
 
-	importGameData(gameId, function (gameData) {
-			// console.log(gameData);
+	importGameData(gameId, date, function (gameData) {
+			console.log(gameData);
 
 			var gameInfo = gameData.gameInfo;
+
+			var date
+
 			var players = gameData.players;
 			var actions = gameData.actions;
 
@@ -68,13 +71,13 @@ function importGamePreview(gameId)
 
 
 			var button = document.getElementById("import-confirm-btn");
-			button.addEventListener('click', function(){ saveGameBtn(gameInfo.gameId);}, false);
+			button.addEventListener('click', function(){ saveGameBtn(gameInfo.gameId, gameInfo.dateUni);}, false);
 			// console.log(button);
 
 		});
 }	
 
-function importGameData(gameId, callback)
+function importGameData(gameId, date, callback)
 {
 	// console.log('Loading ' + gameId);
 	var url = 'index.php?option=com_hbmanager&task=previewGameData&format=raw';
@@ -92,7 +95,7 @@ function importGameData(gameId, callback)
 				if (httpRequest.status === 200) {
 					// console.log(httpRequest.responseText);
 					var response = JSON.parse(httpRequest.responseText);
-					// console.log(response);
+					 console.log(response);
 					callback(response);
 				} else {
 					console.log('There was a problem with the request.');
@@ -106,23 +109,23 @@ function importGameData(gameId, callback)
 	};
 	httpRequest.open('POST', url);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	httpRequest.send('gameId=' + encodeURIComponent(gameId));
+	httpRequest.send('gameId=' + encodeURIComponent(gameId) + '&date=' + encodeURIComponent(date));
 }
 
 
-function saveGameBtn(gameId)
+function saveGameBtn(gameId, date)
 {
-	console.log('Save ' + gameId);
+	console.log('Save ' + gameId + ' - ' + date );
 	
 	var row = document.getElementById("gameId_"+gameId);
 
-	saveGameData(gameId, function (response) {
+	saveGameData(gameId, date, function (response) {
 			// console.log(response);
 			row.classList.add("hidden");
 		});
 }	
 
-function saveGameData(gameId, callback)
+function saveGameData(gameId, date,  callback)
 {
 	console.log('Loading ' + gameId);
 	var url = 'index.php?option=com_hbmanager&task=importGameData&format=raw';
@@ -154,7 +157,7 @@ function saveGameData(gameId, callback)
 	};
 	httpRequest.open('POST', url);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	httpRequest.send('gameId=' + encodeURIComponent(gameId));
+	httpRequest.send('gameId=' + encodeURIComponent(gameId) + '&date=' + encodeURIComponent(date));
 }
 
 function showAllGames()

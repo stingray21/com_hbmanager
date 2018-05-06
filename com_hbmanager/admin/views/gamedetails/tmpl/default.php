@@ -118,7 +118,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 							</a>
 						</td>
 						<td><?php if (isset($game->importFilename)) : ?>
-							<button class="btn btn-small hasTooltip modal" href="javascript:void(0);" onclick="importGamePreview('<?php echo $game->gameIdHvw; ?>');" title="" data-original-title="Update team" data-toggle="modal" data-target="#modal-confirm">
+							<button class="btn btn-small hasTooltip modal" href="javascript:void(0);" onclick="importGamePreview('<?php echo $game->gameIdHvw; ?>','<?php echo substr($game->dateTime,0,10); ?>');" title="" data-original-title="Update team" data-toggle="modal" data-target="#modal-confirm">
 								<span class="icon-signup" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_GAMEDETAILS_BTN_IMPORT'); ?>
 							</button>		
 							<?php endif; ?>

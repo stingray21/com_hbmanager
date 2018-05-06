@@ -36,7 +36,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 	protected $fileGameIds = null;
 
 
-	private $filenamePattern = '<ID>_all.txt';
+	private $filenamePattern = '<date>_<ID>.txt';
 
 	private $gameId = null;
 	private $teamkey = null;
@@ -138,30 +138,32 @@ class HBmanagerModelGamedetails extends JModelAdmin
 
 	private function addFileInfo($games)
 	{
+		
 		foreach ($games as &$game) {
 			if (in_array($game->gameIdHvw, $this->fileGameIds)) {
-				$game->importFilename = self::getFileName($game->gameIdHvw);
+				$game->importFilename = self::getFileName($game->gameIdHvw, substr($game->dateTime,0,10));
 			}
 		}		
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
 		return $games;
 	}
 
 	// ------------------------------------------------------------------------
 	
-	public function previewGameData($gameId)
+	public function previewGameData($gameId, $date)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
-		$response = self::importGameData($gameId);
+		$response = self::importGameData($gameId, $date);
 
 		return $response;
 	}	
 
 
-	public function insertGameData($gameId)
+	public function insertGameData($gameId, $date)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameData);echo'</pre>';
 
-		$gameData = self::importGameData($gameId);
+		$gameData = self::importGameData($gameId, $date);
 
 		// Goals
 		$response['players'] = self::savePlayers($gameData->players);
@@ -171,14 +173,14 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		return $response;
 	}
 
-	public function importGameData($gameId)
+	public function importGameData($gameId, $date)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
 		$response = false;
 
 		self::setGameInfo($gameId);
 
-		$inputData = self::importData($gameId);
+		$inputData = self::importData($gameId, $date);
 
 		$gameData = new stdClass();
 		$gameData->gameId = $gameId;
@@ -195,9 +197,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		return $gameData;
 	}	
 
-	private function getFileName($id)
+	private function getFileName($id, $date)
 	{
 		$filename = str_replace('<ID>', $id, $this->filenamePattern);
+		$filename = str_replace('<date>', $date, $filename);
 		
 		return $filename;
 	}
@@ -251,21 +254,23 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$files = array_filter(scandir($this->importFilePath), function($file) { 
 			return strpos($file, '.txt') !== false; 
 			});
-		//echo __FILE__.' - line '.__LINE__.'<pre>';print_r($files);echo '</pre>';
-		$pattern = '/'.self::getFileName('(\d{5,6})').'/';
+		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($files);echo '</pre>';
+		$pattern = '/'.self::getFileName('(\d{5,6})', '(\d{4}-\d{2}-\d{2})').'/';
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($pattern);echo'</pre>';
+		
 		foreach ($files as $file) {
 			preg_match($pattern, $file, $match);
 			if (count($match) > 1) { 
-				$ids[] = $match[1];
+				$ids[] = $match[2];
 				} 
 		}
 		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($ids);echo '</pre>';
 		return $ids;
 	}
 
-	public function importData($gameId)
+	public function importData($gameId, $date)
 	{
-		$rawText = file_get_contents($this->importFilePath.self::getFileName($gameId));
+		$rawText = file_get_contents($this->importFilePath.self::getFileName($gameId, $date));
 		// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($rawText);echo '</pre';
 		$pattern = '/(\r?\n){1,2}\/\/-----\w{2,10}----------(\r?\n)/';
 		$divider = '<&&&>';
@@ -368,6 +373,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$game['gameId'] = $match[1];
 		$game['date'] = $match[2];
 		$game['time'] = $match[3];
+		$game['dateUni'] = preg_replace('/(\d{2}).(\d{2}).(\d{2})/', '20$3-$2-$1',$game['date']);
 
 		preg_match("|(.*) \((.*)\)|", $rows[2][1],$match);
 		$game['gym'] = $match[1];

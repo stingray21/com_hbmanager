@@ -1,0 +1,10 @@
+#!/bin/sh
+git --work-tree=/www/htdocs/w0130d48/temp/com_hbmanager --git-dir=/www/htdocs/w0130d48/repos/com_hbmanager.git checkout -f
+
+rsync -v -r --exclude "language/" /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/admin/ /www/htdocs/w0130d48/hkog.de/administrator/components/com_hbmanager/ 
+rsync -v -r --exclude "language/" /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/site/ /www/htdocs/w0130d48/hkog.de/components/com_hbmanager/  
+rsync -v -r /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/media/ /www/htdocs/w0130d48/hkog.de/media/com_hbmanager/ 
+
+cp /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/admin/language/de-DE.com_hbmanager.ini /www/htdocs/w0130d48/hkog.de/administrator/language/de-DE/de-DE.com_hbmanager.ini
+cp /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/admin/language/de-DE.com_hbmanager.sys.ini /www/htdocs/w0130d48/hkog.de/administrator/language/de-DE/de-DE.com_hbmanager.sys.ini
+cp /www/htdocs/w0130d48/temp/com_hbmanager/com_hbmanager/site/language/de-DE.com_hbmanager.ini /www/htdocs/w0130d48/hkog.de/language/de-DE/de-DE.com_hbmanager.ini

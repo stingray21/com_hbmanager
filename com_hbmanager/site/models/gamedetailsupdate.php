@@ -60,13 +60,13 @@ class HBmanagerModelGameDetailsUpdate extends HBmanagerModelGameDetails
 	public function getGameImportList()
 	{
 		$games = self::getGames();
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
+		//  echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';die;
 		$imports = [];
 
 		foreach ($games as $game) {
 			if (!$game->imported && property_exists($game, 'importFilename')) {
 				$import = $game;	
-				$import->response = self::insertGameData($game->gameIdHvw);
+				$import->response = self::insertGameData($game->gameIdHvw, substr($game->dateTime,0,10));
 				$imports[] = $import;
 			}
 		}
