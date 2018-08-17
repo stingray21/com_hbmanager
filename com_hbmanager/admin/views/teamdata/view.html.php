@@ -21,8 +21,6 @@ class hbmanagerViewTeamdata extends JViewLegacy
 		$context = "hbmanager.list.admin.teams";
 		// Get data from the model
 		$this->items			= $this->get('Items');
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->items);echo'</pre>';
-		
 		$this->pagination		= $this->get('Pagination');
 		$this->state			= $this->get('State');
 		$this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'order', 'cmd');
@@ -42,6 +40,7 @@ class hbmanagerViewTeamdata extends JViewLegacy
 
 		// Assign data to the view
 		$this->dateFormat = $this->get('DateFormat');
+		$this->dateFormatMobile = $this->get('DateFormatMobile');
 
 		// Set the submenu
 		HbmanagerHelper::addSubmenu('teamdata');

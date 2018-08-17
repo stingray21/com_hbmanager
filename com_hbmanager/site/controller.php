@@ -26,16 +26,17 @@ class HbmanagerController extends JControllerLegacy
 		// Get the document object.
 		$document = JFactory::getDocument();
 
-		// Set the MIME type for JSON output.
-		$document->setMimeEncoding('application/json');
-
 		// Change the suggested filename 
 		// -> returns result.json file instead of being displayed in the browser
 		// JResponse::setHeader('Content-Disposition','attachment;filename="result.json"');
+		
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
 
 		// Output the JSON data.
-		echo json_encode($response);
-		
+		$response = json_encode($response);
+		echo $response;
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($response);echo'</pre>';
 	}
 
 

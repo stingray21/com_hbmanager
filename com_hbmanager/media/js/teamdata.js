@@ -50,6 +50,11 @@ function updateTeamBtn(teamkey)
 	//console.log('Update ' + teamkey);
 	var row = document.getElementById("update-team-"+teamkey);
 
+	if (row.getElementsByClassName("updateBtn")[0] === undefined)
+	{
+		return;
+	}
+
 	row.getElementsByClassName("indicator")[0].classList.remove("show");
 	row.getElementsByClassName("details")[0].classList.remove("show");
 	row.getElementsByClassName("updateBtn")[0].classList.add("spinner");
@@ -96,7 +101,7 @@ function updateTeamData(teamkey, callback)
 		return false;
 	}
 	httpRequest.onreadystatechange = function() {
-		try {
+		// try {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
 				// console.log(httpRequest.status);
 				if (httpRequest.status === 200) {
@@ -107,15 +112,15 @@ function updateTeamData(teamkey, callback)
 				} else {
 					console.log('There was a problem with the request.');
 					var response = {"result": {"total": false}};
-					// console.log(response.result);										
+					// console.log(response.result);
 					callback(response);
 				}
 			}
-		}
-		catch( e ) {
+		// }
+		// catch( e ) {
 			// alert('Caught Exception: ' + e.description);
-			console.log('Caught Exception: ' + e.description);
-		}
+			// console.log('Caught Exception: ' + e.description);
+		// }
 	};
 	httpRequest.open('POST', url);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -125,6 +130,27 @@ function updateTeamData(teamkey, callback)
 function updateCheckedTeams()
 {
 	var checkedBoxes = document.querySelectorAll('input[type=checkbox]:checked');
+	// console.log(checkedBoxes);
+
+	var teams = [];
+	for (var i=0; i<checkedBoxes.length; i++) {
+		if (checkedBoxes[i].name != "checkall-toggle") 
+		{
+			var teamkey = checkedBoxes[i].parentElement.parentElement.id;
+			teamkey = teamkey.replace('update-team-', '');
+
+			teams.push({"teamkey": teamkey, "update": null});
+			// teams.push({"teamkey": "M-1", "update": "2017-10-04 19:37:28"});
+		}
+    }
+    // console.log(teamkeys);
+	
+	return updateTeams(teams);
+}
+
+function updateAllTeams()
+{
+	var checkedBoxes = document.querySelectorAll('input[type=checkbox]');
 	// console.log(checkedBoxes);
 
 	var teams = [];

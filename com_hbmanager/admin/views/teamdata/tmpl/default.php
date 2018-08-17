@@ -20,7 +20,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		{
 			updateCheckedTeams();
 		}
-
+		
 		if (task == "teamdata.updateAll")
 		{
 			updateAllTeams();
@@ -102,7 +102,9 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 									<?php echo JHtml::_('grid.id', $i, $row->teamId); ?>
 								</td>
 
-								<td><?php echo $row->team.' ('.$row->leagueKey.')'; ?></td>
+								<td>
+									<?php echo $row->team?> <?php echo (!empty($row->leagueKey)) ? ' ('.$row->leagueKey.')' : ''; ?>
+								</td>
 								<td>
 									<a href="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" title="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" target="_BLANK">
 										<?php echo JText::_('COM_HBMANAGER_TEAMS_HVWLINK_PAGE_TEXT'); ?>
@@ -114,13 +116,22 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 										  		echo $row->leagueIdHvw; ?> 
 									</a>
 								</td>
-								<td class="date"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></td>
+								<td class="update-date">
+									<?php if (!empty($row->leagueIdHvw)) : ?>
+									<span>
+										<span class="date hidden-phone"><?php echo JHTML::_('date', $row->update , $this->dateFormat, $tz); ?></span>
+										<span class="dateMobile visible-phone"><?php echo JHTML::_('date', $row->update , $this->dateFormatMobile, $tz); ?></span>
+									</span>
+									<?php endif; ?>
+								</td>
 								<td align="center">
+									<?php if (!empty($row->leagueIdHvw)) : ?>
 									<div class="updateBtn">
 										<a class="btn btn-micro hasTooltip" href="javascript:void(0);" onclick="updateTeamBtn('<?php echo $row->teamkey; ?>');" title="" data-original-title="Update team">
-											<span class="icon-loop" aria-hidden="true"></span>
-										</a>		
-									</div>
+												<span class="icon-loop" aria-hidden="true"></span>
+											</a>		
+										</div>
+									<?php endif; ?>
 								</td>
 								<td>
 									<div class="updateStatus">
@@ -155,7 +166,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&view=update'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&view=update'; ?></a></dd>
 
 				<dt>Update Link for Cronjob</dt>
-				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?></a></dd>
+				<dd><a href="<?php echo  JURI::root().'index.php?option=com_hbmanager&task=updateCronjob'; ?>" target="_BLANK"><?php echo  JURI::root().'index.php?option=com_hbmanager&view=updateCronjob'; ?></a></dd>
 			</dl>
 		</div>
 	</div>

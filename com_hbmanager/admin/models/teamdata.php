@@ -99,7 +99,15 @@ class HBmanagerModelTeamdata extends JModelList
 
 	function updateTeamData($teamkey, $type = 'manual') 
 	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($teamkey);echo'</pre>';
 		$team = self::getTeam($teamkey);
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($team);echo'</pre>';die;
+		if ($team->leagueIdHvw === NULL | $team->leagueIdHvw === '') {
+			$response['teamkey'] = $teamkey;
+			$response['error'] = 'no HVW data';
+			return $response;
+		}
+		
 		$team->url = HbmanagerHelper::get_hvw_json_url($team->leagueIdHvw);
 		
 		$response['teamkey'] = $teamkey;
