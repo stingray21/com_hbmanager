@@ -125,42 +125,39 @@ class HBmanagerModelGamesNext extends HBmanagerModelGames
 			foreach ($days as $game) {
 
 				if (!$includedGames[$game->gameIdHvw]) continue; 
-				
+
+				if ($prevTeam !== $game->team)
+				{
+					$content .= '<h4>'.
+							'<a href="'.JURI::Root().'index.php/';
+					$content .= ($game->youth === 'aktiv') ? 'aktive' : 'youth';
+					$content .= '/'.strtolower($game->teamkey).'">'.
+							$game->team.' <span class="league">'.$game->league
+							.' ('.$game->leagueKey.')</span></a>'.
+							'</h4>'."\n";
+				}
+				$prevTeam = $game->team;
+
 				$content .= '<div>';
 				
-					if ($prevTeam !== $game->team)
-					{
-						$content .= '<h4>'.
-						'<a href="'.JURI::Root().'index.php/';
-						$content .= ($game->youth === 'aktiv') ? 'aktive' : 'youth';
-						$content .= '/'.strtolower($game->teamkey).'">'.
-						$game->team.' <span class="league">'.$game->league
-						.' ('.$game->leagueKey.')</span></a>'.
-						'</h4>'."\n";
-					}
-					$prevTeam = $game->team;
-					
-					
-					$ownHome = ($game->ownTeam === 1) ? ' own' : '';
-					$ownAway = ($game->ownTeam === 2) ? ' own' : '';
-					
-					$content .= '<div class="gameInfo">'."\n";
-						//$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
-						$content .= '<span class="team">'.
-							'<span class="home'.$ownHome.'">'.$game->home.'</span> '.
-							'<span class="dash">-</span> <span class="away'.$ownAway.'">'.$game->away.'</span>'.
-						'</span>';
+				$ownHome = ($game->ownTeam === 1) ? ' own' : '';
+				$ownAway = ($game->ownTeam === 2) ? ' own' : '';
+				
+				$content .= '<div class="gameInfo">'."\n";
+				//$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
+				$content .= '<span class="team">'.
+						'<span class="home'.$ownHome.'">'.$game->home.'</span> '.
+						'<span class="dash">-</span> <span class="away'.$ownAway.'">'.$game->away.'</span>'.
+					'</span>';
 					'</div>'."\n";
 					
-					
-					if (!empty($game->pregame))
+				if (!empty($game->pregame))
 					$content .= '<p class="gamereport">'.$game->pregame.'</p>';
-					if (!empty($game->meetupLoc))
+				if (!empty($game->meetupLoc))
 					$content .= '<p class="meetupLoc">'.$game->meetupLoc.'</p>';
-					if (!empty($game->meetupTime))
+				if (!empty($game->meetupTime))
 					$content .= '<p class="meetupTime">'.$game->meetupTime.'</p>';
-					
-					$content .= '</div>';
+				
 				$content .= '</div>'."\n\n";
 			}
 		}

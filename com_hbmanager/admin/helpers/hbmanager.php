@@ -47,6 +47,18 @@ class HbmanagerHelper
 			'index.php?option=com_hbmanager&view=gamedetails',
 			$submenu == 'gamedetails'
 		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_HBMANAGER_SUBMENU_GAMESHOME'),
+			'index.php?option=com_hbmanager&view=gameshome',
+			$submenu == 'gameshome'
+		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_HBMANAGER_SUBMENU_GAMESALL'),
+			'index.php?option=com_hbmanager&view=gamesall',
+			$submenu == 'gamesall'
+		);
 	}
 
 

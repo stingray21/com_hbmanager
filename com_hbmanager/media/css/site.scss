@@ -3,8 +3,9 @@
 @import 'icomoon';
 @import 'icohb';
 
-$hkog-yellow: #FDDF12;
-$hkog-blue: #2D3891;
+
+$hkog-yellow : #FDDF12;
+$hkog-blue	 : #2D3891;	
 
 div#teamupdate {
 	
@@ -432,7 +433,6 @@ div#gamereports {
 
 			.yellowcard {
 			  fill: $hkog-yellow;
-			//   fill: #FDDF12;
 			}
 
 			.suspension {

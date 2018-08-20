@@ -19,12 +19,14 @@ class HBmanagerModelGames extends JModelAdmin
 {
 	protected $prevGames = array();
 	protected $nextGames = array();
-	protected $timezone = 'Europe/Berlin';
-	// protected $timezone = 'UTC';
+	// protected $timezone = 'Europe/Berlin';
+	protected $timezone = 'UTC';
 	
 	protected $dates = null;
 	protected $tables = null;
 	protected $tz = null;
+	
+ 	protected $season;
 
 	// TODO use CONVERT_TZ in MySQL for date
 	
@@ -38,6 +40,8 @@ class HBmanagerModelGames extends JModelAdmin
 		$this->tables->gamereport = '#__hb_gamereport';
 		$this->tables->pregame = '#__hb_pregame';
 		$this->tables->gym = '#__hb_gym';
+
+		$this->season = HbmanagerHelper::getCurrentSeason();
 
 		$this->tz = new DateTimeZone($this->timezone);
 
@@ -102,12 +106,15 @@ class HBmanagerModelGames extends JModelAdmin
 	// 	return $data;
 	// }
 	
-	public function getTeams()
+	public function getTeams($order = true)
 	{	
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from($this->tables->team);
+		if ($order) {
+			$query->order($db->qn('order'));
+		}
 
 		$db->setQuery($query);
 		$teams = $db->loadObjectList();
@@ -358,7 +365,7 @@ class HBmanagerModelGames extends JModelAdmin
 	
 		$query = $db->getQuery(true);
 
-		$query->select('*, '.$this->tables->team.'.shortName AS teamShortName');
+		$query->select('*');
 
 		$query->from($this->tables->game);
 		$query->leftJoin($db->qn($this->tables->team).
@@ -496,8 +503,7 @@ class HBmanagerModelGames extends JModelAdmin
 			$game->winnerTeam = self::getWinnerTeam($game);
 			$game->ownTeam = self::getOwnTeam($game);
 			$game->indicator = self::getIndicator($game);	
-			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($game);echo'</pre>';
-			
+
 		}
 		return $games;
 	}
@@ -512,8 +518,8 @@ class HBmanagerModelGames extends JModelAdmin
 	
 	protected function getOwnTeam($game)
 	{
-		if ($game->home == $game->teamShortName) return 1;
-		elseif ($game->away == $game->teamShortName) return 2;
+		if ($game->home == $game->shortName) return 1;
+		elseif ($game->away == $game->shortName) return 2;
 		return null;
 	}
 	
@@ -527,13 +533,6 @@ class HBmanagerModelGames extends JModelAdmin
 
 	protected function getTitleDate($minDate, $maxDate)
 	{
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r([$minDate, $maxDate]);echo'</pre>';
-		
-		$minDate = strtotime($minDate);
-		$maxDate = strtotime($maxDate);
-		
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r(strftime("%Y-%m-%d", $minDate));echo'</pre>';
-
 		if ($minDate === $maxDate)
 		{
 			$titledate = JHtml::_('date', $minDate, 'D, j. M.', $this->timezone);
@@ -562,7 +561,8 @@ class HBmanagerModelGames extends JModelAdmin
 				$titledate .= JHtml::_('date', $minDate, 'F ', $this->timezone);
 			}
 			$titledate .= 'bis ';
-			$titledate .= JHtml::_('date', $maxDate, 'j. F', $this->timezone);
+			$titledate .= JHtml::_('date', $maxDate, 'j. F', 
+				$this->timezone);
 		}
 		
 		return $titledate;

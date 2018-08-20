@@ -154,3 +154,25 @@
 
 }
 
+#gamesall,
+#gameshome {
+
+	h4 {
+		margin-top: 3em;
+	}
+
+	table.schedule {
+		min-width: 40em;
+
+		tr:nth-child(even) {
+			background: #eee
+		}
+		tr:nth-child(odd) {
+			// background: #FFF
+		}
+
+		td {
+			padding: 0.1em 0.5em
+		}
+	}
+}

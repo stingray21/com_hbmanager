@@ -152,3 +152,20 @@
 #gamedetails #import-preview table td {
   padding: 0.1em 0.25em;
 }
+
+#gamesall h4,
+#gameshome h4 {
+  margin-top: 3em;
+}
+#gamesall table.schedule,
+#gameshome table.schedule {
+  min-width: 40em;
+}
+#gamesall table.schedule tr:nth-child(even),
+#gameshome table.schedule tr:nth-child(even) {
+  background: #eee;
+}
+#gamesall table.schedule td,
+#gameshome table.schedule td {
+  padding: 0.1em 0.5em;
+}
