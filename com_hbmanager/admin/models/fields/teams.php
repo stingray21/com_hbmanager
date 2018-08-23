@@ -25,7 +25,7 @@ class JFormFieldTeams extends JFormFieldList
 		$query->select("`teamkey` AS `key`, `team` AS `value`");
 		$query->from("`#__hb_team`");
 		$query->order("ISNULL(`order`), `order`");
-		$query->where("`leagueIdHvw` IS NOT NULL ");
+		// $query->where("`leagueIdHvw` IS NOT NULL ");
 
 
 		// Set the query and get the result list.
