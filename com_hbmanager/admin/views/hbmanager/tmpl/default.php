@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 </div>
 <div id="j-main-container" class="span10">
-	<p>TEST default</p>
+	<p><?php echo JText::_('COM_HBMANAGER_DEFAULT_DASHBOARD');	?></p>
 </div>
 
 
