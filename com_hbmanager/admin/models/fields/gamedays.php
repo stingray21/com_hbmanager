@@ -23,6 +23,7 @@ class JFormFieldGamedays extends JFormFieldList
         // Initialize variables.
         $options = array();
         $tz = HbmanagerHelper::getHbTimezone();
+        $season = HbmanagerHelper::getCurrentSeason();
         
         // Initialize some field attributes.
         $translate = $this->element['translate'] ? (string) $this->element['translate'] : false;
@@ -34,7 +35,8 @@ class JFormFieldGamedays extends JFormFieldList
         
        	$query->select("DISTINCT DATE(dateTime) AS ".$db->qn('date'));
 		$query->from('#__hb_game');
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
+        $query->where($db->qn('ownClub').' = '.$db->q(1));
+        $query->where($db->qn('season').'='.$db->q($season));
 
 		if ($this->timeframe === 'prev')      $query->where($db->qn('dateTime').' < NOW()');
 		elseif ($this->timeframe === 'next')  $query->where($db->qn('dateTime').' > NOW()');
