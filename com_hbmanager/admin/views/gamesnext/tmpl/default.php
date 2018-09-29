@@ -81,6 +81,10 @@ JFactory::getDocument()->addScriptDeclaration("
 
 		<form action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=games.savePregame') ?>" method="post" id="adminForm" name="adminForm">
 
+			
+			<input type="hidden" name="gameDates[nextStart]" id="gameDates[nextStart]" value="<?php echo $this->dates['nextStart']?>" />
+			<input type="hidden" name="gameDates[nextEnd]" id="gameDates[nextEnd]" value="<?php echo $this->dates['nextEnd']?>" />
+
 			<?php if (!empty($this->games)) : ?>
 				<?php foreach ($this->games as $date => $day) :
 					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);

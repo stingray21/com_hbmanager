@@ -44,23 +44,33 @@ class HBmanagerModelGames extends JModelAdmin
 		$this->season = HbmanagerHelper::getCurrentSeason();
 
 		$this->tz = new DateTimeZone($this->timezone);
+		
+		$dates = new stdClass();
+		$dates->prevStart 	= null;
+		$dates->prevEnd 	= null;
+		$dates->nextStart 	= null;
+		$dates->nextEnd 	= null;
 
+		$get = JRequest::get('get');
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($get);echo'</pre>';		
+		if (isset($get['prevStart'])) 	$dates->prevStart = $get['prevStart'];
+		if (isset($get['prevEnd'])) 	$dates->prevEnd 	= $get['prevEnd'];
+		if (isset($get['nextStart'])) 	$dates->nextStart = $get['nextStart'];
+		if (isset($get['nextEnd'])) 	$dates->nextEnd 	= $get['nextEnd'];
+		
+		$post = JRequest::get('post');
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+		if (isset($post['gameDates']['prevStart'])) $dates->prevStart 	= $post['gameDates']['prevStart'];
+		if (isset($post['gameDates']['prevEnd'])) 	$dates->prevEnd 	= $post['gameDates']['prevEnd'];
+		if (isset($post['gameDates']['nextStart'])) $dates->nextStart 	= $post['gameDates']['nextStart'];
+		if (isset($post['gameDates']['nextEnd'])) 	$dates->nextEnd 	= $post['gameDates']['nextEnd'];
+		
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
+		
 		$this->dates = new stdClass();
-		$this->dates->prevStart = null;
-		$this->dates->prevEnd = null;
-		$this->dates->nextStart = null;
-		$this->dates->nextEnd = null;	
-		
 		$this->dates->today = date_create('now', $this->tz);
-
-		self::setDates($this->dates);
-		// $this->dates->today = date_create('now', new DateTimeZone('UTC'))->format('Y-m-d');
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates->today);echo'</pre>';
-		
-		//$this->dates->today = "2015-10-24"; echo '<div><b>TESTING: date set to '.$this->dates->today.'</b></div>';
-//		echo '<pre>'.strftime("%A %w, %Y-%m-%d", strtotime($this->dates->today)).'</pre>';
-		//self::setDates();
-		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
+		self::setDates($dates);
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
 
 	// public function getTable($type = 'Team', $prefix = 'HbmanagerTable', $config = array())
@@ -189,6 +199,8 @@ class HBmanagerModelGames extends JModelAdmin
 		$query->where($db->qn('ownClub').' = '.$db->q(1));
 		$query->where('DATE('.$db->qn('dateTime').') <= '.
 					$db->q($offset->format('Y-m-d'))	);
+		$query->where('DATE('.$db->qn('dateTime').') <= '.
+		$db->q($this->dates->today->format('Y-m-d'))	);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -383,7 +395,8 @@ class HBmanagerModelGames extends JModelAdmin
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$games = $db->loadObjectList();		
-		// echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
+		
 
 		return $games;
 	}
@@ -524,15 +537,18 @@ class HBmanagerModelGames extends JModelAdmin
 	}
 	
 	protected function getIndicator($game) {
+		if ($game->winnerTeam === 0) return 'tied';
 		if ($game->winnerTeam === $game->ownTeam && $game->winnerTeam !== null) return 'win';
-		elseif ($game->winnerTeam !== $game->ownTeam && $game->winnerTeam !== null && $game->winnerTeam !== 0) return 'loss';
-		elseif ($game->winnerTeam === 0) return 'tied';
+		if ($game->winnerTeam !== $game->ownTeam && $game->winnerTeam !== null) return 'loss';
 		return 'blank';
 	}
 
 
 	protected function getTitleDate($minDate, $maxDate)
 	{
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($minDate);echo'</pre>';
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($maxDate);echo'</pre>';
+		
 		if ($minDate === $maxDate)
 		{
 			$titledate = JHtml::_('date', $minDate, 'D, j. M.', $this->timezone);

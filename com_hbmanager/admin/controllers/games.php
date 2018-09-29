@@ -34,7 +34,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 		$model = $this->getModel('gamesprev'); 
 		$model->updateReportsInDB($gamesPrev);
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev&prevStart='.$post['gameDates']['prevStart'].'&prevEnd='.$post['gameDates']['prevEnd'], false));
 	}	
 
 	public function publishReport($name = 'gamesprev', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
@@ -55,7 +55,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_HBMANAGER_GAMES_NO_GAMES_SELECTED'), 'warning');
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev&prevStart='.$post['gameDates']['prevStart'].'&prevEnd='.$post['gameDates']['prevEnd'], false));
 	}
 
 	public function publishAllReport($name = 'gamesprev', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
@@ -75,7 +75,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 			$model->writeNews($allGames);
 		} 
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesprev&prevStart='.$post['gameDates']['prevStart'].'&prevEnd='.$post['gameDates']['prevEnd'], false));
 	}
 
 	
@@ -88,7 +88,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 		$model = $this->getModel('gamesnext'); 
 		$model->updatePregamesInDB($gamesNext);
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext&nextStart='.$post['gameDates']['nextStart'].'&nextEnd='.$post['gameDates']['nextEnd'], false));
 	}
 
 	public function publishPregame($name = 'gamesnext', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
@@ -109,7 +109,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_HBMANAGER_GAMES_NO_GAMES_SELECTED'), 'warning');
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext&nextStart='.$post['gameDates']['nextStart'].'&nextEnd='.$post['gameDates']['nextEnd'], false));
 	}
 
 	public function publishAllPregame($name = 'gamesnext', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
@@ -129,7 +129,7 @@ class HbmanagerControllerGames extends JControllerAdmin
 			$model->writeNews($allGames);
 		} 
 
-		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext', false));
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=gamesnext&nextStart='.$post['gameDates']['nextStart'].'&nextEnd='.$post['gameDates']['nextEnd'], false));
 	}
 
 }

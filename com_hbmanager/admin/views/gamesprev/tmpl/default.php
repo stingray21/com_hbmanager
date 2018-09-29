@@ -34,6 +34,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 // 				'/models/forms/hbdates.xml');
 
 // echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->games);echo'</pre>';
+// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 
 ?>
 <div id="gamesprev">
@@ -85,6 +86,10 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 	$i = 0;
 	?>
 		<form action="<?php echo JRoute::_('index.php?option=com_hbmanager&task=games.saveReport') ?>" method="post" id="adminForm" name="adminForm">
+
+			
+			<input type="hidden" name="gameDates[prevStart]" id="gameDates[prevStart]" value="<?php echo $this->dates['prevStart']?>" />
+			<input type="hidden" name="gameDates[prevEnd]" id="gameDates[prevEnd]" value="<?php echo $this->dates['prevEnd']?>" />
 
 			<?php if (!empty($this->games)) : ?>
 				<?php foreach ($this->games as $date => $day) :

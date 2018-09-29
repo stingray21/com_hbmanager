@@ -24,12 +24,6 @@ class hbmanagerViewGamesNext extends JViewLegacy
 		$post = JRequest::get('post');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
 
-		$dates = (isset($post['gameDates'])) ? $post['gameDates'] : [];
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		// $dates['nextStart'] = '2017-10-14';
-		// $dates['nextEnd'] 	= '2017-10-15';
-
-		$model->setDates($dates);
 		$this->dates = $model->getDates();
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 		$this->games = $model->getNextGames();
