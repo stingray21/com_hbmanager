@@ -130,7 +130,7 @@ class HBmanagerModelGamesPrev extends HBmanagerModelGames
 			{
 				$content .= '<h4>'.
 						'<a href="'.JURI::Root().'index.php/';
-				$content .= ($game->youth === 'aktiv') ? 'aktive' : 'youth';
+				$content .= ($game->youth === 'aktiv') ? 'aktive' : 'jugend';
 				$content .= '/'.strtolower($game->teamkey).'">'.
 						$game->team.' <span class="league">'.$game->league
 						.' ('.$game->leagueKey.')</span></a>'.
