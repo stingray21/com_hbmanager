@@ -142,6 +142,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					<?php echo $game->report; ?><br>
 					<?php endif; ?>
 					<?php if (!empty($game->playerList)) : ?>
+					Es spielten: <br>
 					<?php echo $game->playerList; ?><br>
 					<?php endif; ?>
 					<?php if (!empty($game->extra)) : ?>
