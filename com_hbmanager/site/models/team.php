@@ -76,11 +76,10 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from($this->table_team);
-		$query->leftJoin($db->qn($this->table_team_picture).' USING ('.$db->qn('teamkey').')');
-		$query->where($db->qn('teamkey').' = '.$db->q($teamkey));
-		// $query->where($db->qn('season').' = '.$db->q($this->season));
+		$query->select('*, t1.teamkey AS teamkey');
+		$query->from($this->table_team.' AS t1');
+		$query->leftJoin($db->qn($this->table_team_picture).' AS t2 ON t1.teamkey=t2.teamkey AND '.$db->qn('season').' = '.$db->q($this->season));
+		$query->where('t1.teamkey='.$db->q($teamkey));
 		// echo __FILE__.' ('.__LINE__.')<pre>'; echo $query; echo "</pre>";
 		$db->setQuery($query);
 		$team = $db->loadObject();	
