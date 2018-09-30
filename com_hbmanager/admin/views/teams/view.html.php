@@ -60,9 +60,9 @@ class hbmanagerViewTeams extends JViewLegacy
 		}
 
 		JToolBarHelper::title($title, 'hb-ball');
-		JToolBarHelper::addNew('teams.add');
-		JToolBarHelper::editList('teams.edit');
-		JToolBarHelper::deleteList('', 'teams.delete');
+		JToolBarHelper::addNew('team.add');
+		JToolBarHelper::editList('team.edit');
+		JToolBarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'teams.delete');
 	}
 	/**
 	 * Method to set up the document properties

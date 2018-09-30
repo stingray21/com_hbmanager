@@ -1,0 +1,1 @@
+ALTER TABLE `#__hb_team` CHANGE `teamId` `id` INT(11) NOT NULL AUTO_INCREMENT;

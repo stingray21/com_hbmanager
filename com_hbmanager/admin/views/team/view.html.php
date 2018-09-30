@@ -72,7 +72,7 @@ class HbmanagerViewTeam extends JViewLegacy
 		$input->set('hidemainmenu', true);
 
 		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($input);echo'</pre>';
-		$isNew = ($this->item->teamId == 0);
+		$isNew = ($this->item->id == 0);
 
 		if ($isNew)
 		{
@@ -97,7 +97,7 @@ class HbmanagerViewTeam extends JViewLegacy
 	 */
 	protected function setDocument() 
 	{
-		$isNew = ($this->item->teamId < 1);
+		$isNew = ($this->item->id < 1);
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HBMANAGER_TEAM_CREATING') :
                 JText::_('COM_HBMANAGER_TEAM_EDITING'));

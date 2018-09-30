@@ -93,7 +93,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
 			<?php if (!empty($this->games)) : ?>
 				<?php foreach ($this->games as $date => $day) :
-					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);
+					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&id=' . $row->id);
 				?>
 					<h3><?php echo JText::_('COM_HBMANAGER_GAMES_DAY_HEADLINE').' '.JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></h3>
 					<table class="table table-striped table-hover">

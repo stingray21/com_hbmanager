@@ -16,6 +16,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class HbmanagerControllerTeams extends JControllerAdmin
 {
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+		// echo "TESTING";die;
+	}
+	
 	/**
 	 * Proxy for getModel.
 	 *
@@ -27,10 +33,11 @@ class HbmanagerControllerTeams extends JControllerAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getModel($name = 'Teams', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
+	
+	public function getModel($name = 'Team', $prefix = 'HbmanagerModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
-		echo "TESTING";
+		// echo "TESTING";
 		return $model;
 	}
 }

@@ -2,7 +2,7 @@
 <form>
 	<fieldset>
 		<field
-				name="teamId"
+				name="id"
 				type="hidden"
 				/>
 		<field

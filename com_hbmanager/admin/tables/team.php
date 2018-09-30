@@ -23,6 +23,6 @@ class HbmanagerTableTeam extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__hb_team', 'teamId', $db);
+		parent::__construct('#__hb_team', 'id', $db);
 	}
 }

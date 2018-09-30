@@ -80,7 +80,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 						<?php echo JText::_('COM_HBMANAGER_TEAMS_UPDATE_STATUS'); ?>
 					</th>
 					<th width="2%">
-						<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'teamId', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'id', $listDirn, $listOrder); ?>
 					</th>
 				</tr>
 				</thead>
@@ -94,12 +94,12 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 				<tbody>
 					<?php if (!empty($this->items)) : ?>
 						<?php foreach ($this->items as $i => $row) :
-							$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&id=' . $row->teamId);
+							$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&id=' . $row->id);
 						?>
 							<tr id="update-team-<?php echo $row->teamkey; ?>">
 								<td><?php echo $this->pagination->getRowOffset($i); ?></td>
 								<td>
-									<?php echo JHtml::_('grid.id', $i, $row->teamId); ?>
+									<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 								</td>
 
 								<td>
@@ -146,7 +146,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 									</div>									
 								</td>
 								<td align="center">
-									<?php echo $row->teamId; ?>
+									<?php echo $row->id; ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>

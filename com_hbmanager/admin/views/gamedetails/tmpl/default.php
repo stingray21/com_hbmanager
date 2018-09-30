@@ -103,7 +103,7 @@ JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 							
 			<?php if (!empty($this->games)) : ?>
 				<?php foreach ($this->games as $game) :
-					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);
+					//$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&id=' . $row->id);
 				?>
 					<tr id="<?php echo 'gameId_'.$game->gameIdHvw; ?>" class="<?php echo ($game->imported) ? 'hidden' : ''; ?>">
 						<td></td>

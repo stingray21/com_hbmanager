@@ -78,7 +78,7 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 					<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_EMAIL', 'email', $listDirn, $listOrder); ?>
 				</th>
 				<th width="2%">
-					<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'teamId', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_HBMANAGER_TEAMS_ID', 'id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			</thead>
@@ -92,12 +92,12 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 			<tbody>
 				<?php if (!empty($this->items)) : ?>
 					<?php foreach ($this->items as $i => $row) :
-						$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&teamId=' . $row->teamId);
+						$link = JRoute::_('index.php?option=com_hbmanager&task=team.edit&id=' . $row->id);
 					?>
 						<tr>
 							<td><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td>
-								<?php echo JHtml::_('grid.id', $i, $row->teamId); ?>
+								<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 							</td>
 
 							<td>
@@ -109,19 +109,22 @@ $listDirn      = $this->escape($this->filter_order_Dir);
 							<td><?php echo $row->teamkey; ?></td>
 							<td><?php echo $row->name; ?></td>
 							<td><?php echo $row->shortName; ?></td>
-							<td><?php echo $row->league.'('.$row->leagueKey.')'; ?></td>
+							<td><?php echo $row->league;
+									echo (!empty($row->leagueKey)) ? ' ('.$row->leagueKey.')' : ""; ?></td>
 							<td><?php echo $row->sex; ?></td>
 							<td><?php echo $row->youth; ?></td>
 							<td>
+								<?php if (!empty($row->leagueIdHvw)) : ?>
 								<a href="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" title="<?php echo HbmanagerHelper::get_hvw_page_url($row->leagueIdHvw); ?>" target="_BLANK">
 									<?php //echo JText::_('COM_HBMANAGER_TEAMS_HVWLINK_PAGE_TEXT');
 										  echo $row->leagueIdHvw; ?>
 								</a>
+								<?php endif; ?>
 							</td>
-							<td class="date"><?php echo JHTML::_('date', $row->update , 'd.m.Y - H:i:s', $tz); ?></td>
+							<td class="date"><?php echo (!empty($row->leagueIdHvw)) ? JHTML::_('date', $row->update , 'd.m.Y - H:i:s', $tz) : ""; ?></td>
 							<td><?php echo $row->email; ?></td>
 							<td align="center">
-								<?php echo $row->teamId; ?>
+								<?php echo $row->id; ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
