@@ -99,7 +99,7 @@ JFactory::getDocument()->addScriptDeclaration('
 									</div>									
 								</td>
 								<td class="number hidden-phone">
-									<?php echo $row->teamId; ?>
+									<?php echo $row->id; ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>

@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  2.0.0
  */
-class HbManagerViewUpdate extends JViewLegacy
+class HbManagerViewPrintreport extends JViewLegacy
 {
 	/**
 	 * Display the HB Manager view
@@ -19,18 +19,23 @@ class HbManagerViewUpdate extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		// Get application
-		$app = JFactory::getApplication();
-		// $context = "hbmanager.list.admin.teams";
+		$model = $this->getModel();
 
-		// Get data from the model
-		$this->items			= $this->get('Items');
-		$this->pagination		= $this->get('Pagination');
-		// $this->state			= $this->get('State');
-		// $this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'order', 'cmd');
-		// $this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
-		// $this->filterForm    	= $this->get('FilterForm');
-		// $this->activeFilters 	= $this->get('ActiveFilters');
+		$post = JRequest::get('post');
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
+
+		$dates = (isset($post['gameDates'])) ? $post['gameDates'] : [];
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
+
+		$model->setDates($dates);
+		$this->dates = $model->getDates();
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
+		$this->prevgames = $model->getPrevGames();
+		$this->reports = $model->getReports();
+		// $this->pregames = $model->getPregames();
+		$nextAndHomeGames = $model->getNextAndHomeGames();
+		$this->nextgames = $nextAndHomeGames->nextgames;
+		$this->homegames = $nextAndHomeGames->homegames;
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -43,7 +48,6 @@ class HbManagerViewUpdate extends JViewLegacy
 		// Assign data to the view
 		$this->dateFormat = $this->get('DateFormat');
 		$this->dateFormatMobile = $this->get('DateFormatMobile');
-		$this->teamList = $this->get('TeamList');
 
 		// Display the template
 		parent::display($tpl);
@@ -61,8 +65,9 @@ class HbManagerViewUpdate extends JViewLegacy
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
+
 		$document->addScript( JUri::root() . 'media/com_hbmanager/js/teamdata.js' );
 		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/site.css' );
-		$document->setTitle(JText::_('COM_HBMANAGER_UPDATE_TITLE'));
+		$document->setTitle(JText::_('COM_HBMANAGER_PRINTREPORT_TITLE'));
 	}
 }

@@ -1457,3 +1457,48 @@ div#gamereports #gamegraphframe .icons text.sevenicon {
   display: inline-block;
   padding-left: 30px;
 }
+
+#gamedatesForm {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 2em;
+  max-width: 800px;
+}
+#gamedatesForm fieldset {
+  border: 0;
+}
+#gamedatesForm fieldset legend {
+  margin-bottom: 0.2em;
+}
+#gamedatesForm fieldset p {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 700;
+}
+#gamedatesForm dl, #gamedatesForm dt, #gamedatesForm dd {
+  margin: 0;
+  display: inline-block;
+}
+#gamedatesForm dl {
+  margin-bottom: 1em;
+}
+#gamedatesForm dt {
+  margin-right: 0.5em;
+}
+#gamedatesForm dd {
+  margin-right: 3em;
+}
+#gamedatesForm label, #gamedatesForm select {
+  padding: 4px 6px;
+  margin: 0;
+}
+
+#printreport .printsheet {
+  background: #fcfcfc;
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 5px gray;
+  width: 40em;
+  text-align: justify;
+}
