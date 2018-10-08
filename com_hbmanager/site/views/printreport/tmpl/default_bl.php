@@ -30,11 +30,19 @@
 			<b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
 			<?php foreach ($days as $game) : ?>
 				<span class="game">
-					<?php $teamname = (strcmp($game->youth,'aktiv')===0) ? $game->team : $game->teamkey ; 
-						$teamname = preg_replace('/(-| )(1)$/', '$1', $teamname);
-						$teamname = preg_replace('/(-| )(\d{1,2})?$/', '$2', $teamname);
-						// $teamname = preg_replace('/(-| )(1)$/', '$1', $teamname);
-						echo $teamname;
+					<?php 
+						if (strcmp($game->youth,'aktiv')===0) {
+							$teamname = $game->team;
+							$teamname = preg_replace('/ \d$/', '', $teamname);
+						} else {
+							$teamname = $game->leagueKey;
+							$teamname = preg_replace('/^((m|w|g)J[A-F]([4,6]\+1))-.*/', '$1', $teamname);
+						} 
+						preg_match('/\d$/', $game->name, $team);
+						// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($match);echo'</pre>';
+						$teamNum = isset($match[0]) ? $match[0] : '';
+						
+						echo $teamname.$teamNum;
 						?>: 
 					<?php 
 						if (isset($game->details)) echo JText::_('COM_HBMANAGER_PRINTREPORT_MULTIGAMES');

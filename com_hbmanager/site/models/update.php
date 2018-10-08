@@ -102,6 +102,7 @@ class HBmanagerModelUpdate extends HBmanagerModelTeamdata
 		$query->select($db->qn('teamkey').', '.$db->qn('update'));
 		$query->from($this->table_team);
 		$query->where($db->qn('leagueIdHvw').' IS NOT NULL');
+		$query->where($db->qn('leagueIdHvw').'!= 0', 'OR');
 
 		$db->setQuery($query);
 		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
