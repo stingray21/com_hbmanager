@@ -312,6 +312,7 @@ class HBmanagerModelGames extends JModelAdmin
 
 		$games = self::getGamesfromDB($start, $end, $this->tables->gamereport);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
+		if (empty($games)) return [];
 		$arrange = true;
 		if ($arrange) 
 		{
@@ -359,6 +360,7 @@ class HBmanagerModelGames extends JModelAdmin
 
 		$games = self::getGamesfromDB($start, $end, $this->tables->pregame);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
+		if (empty($games)) return [];
 		$arrange = true;
 		if ($arrange) 
 		{
@@ -387,9 +389,10 @@ class HBmanagerModelGames extends JModelAdmin
 		$query->leftJoin($db->qn($this->tables->gym).
 				' USING ('.$db->qn('gymId').')');
 		
+		$query->where('(DATE('.$db->qn('dateTime').') BETWEEN '
+		.$db->q($start).' AND '.$db->q($end).')');
 		$query->where($db->qn('ownClub').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('dateTime').') BETWEEN '
-			.$db->q($start).' AND '.$db->q($end));
+		$query->where('('.$this->tables->game.'.'.$db->qn('comment').' != '.$db->q('abgesetzt').' OR '.$this->tables->game.'.'.$db->qn('comment').' IS NULL)');
 		// $query->where($db->qn('goalsHome').' IS NOT NULL');
 		$query->order($db->qn('dateTime').' ASC');
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
