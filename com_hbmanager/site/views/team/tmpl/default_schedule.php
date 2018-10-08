@@ -40,8 +40,8 @@ JHTML::_('bootstrap.tooltip');
 							<td class="right <?php echo $row->homegame ? 'ownTeam' : '';?>"><span><span class="hidden-phone"><?php echo $row->home ?></span><span class="visible-phone"><?php echo $row->home_abbr ?></span></span></td>
 							<td>-</td>
 							<td class="<?php echo !$row->homegame ? 'ownTeam' : '';?>"><span><span class="hidden-phone"><?php echo $row->away ?></span><span class="visible-phone"><?php echo $row->away_abbr ?></span></span></td>
-						<?php if ($row->comment == "abge..") : ?>
-							<td colspan="3"><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_CANCELED') ?></td>
+						<?php if ($row->comment == "abgesetzt") : ?>
+							<td colspan="3" class="comment"><?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_CANCELED') ?></td>
 						<?php else : ?>
 							<td class="<?php echo $row->homegame ? 'ownTeam' : '';?>"><?php echo $row->goalsHome;?></td>
 							<td><?php echo ($row->goalsHome != '') ? ':' : '';?></td>

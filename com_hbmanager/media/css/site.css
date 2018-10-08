@@ -1145,8 +1145,9 @@ div#hbteam .hbschedule table tr .left,
 div#hbteam .hbstandings table tr .left {
   text-align: left;
 }
-div#hbteam .hbschedule table tr .gym,
-div#hbteam .hbstandings table tr .gym {
+div#hbteam .hbschedule table tr .gym, div#hbteam .hbschedule table tr .comment,
+div#hbteam .hbstandings table tr .gym,
+div#hbteam .hbstandings table tr .comment {
   font-size: 0.8em;
 }
 div#hbteam .hbschedule table + p,
