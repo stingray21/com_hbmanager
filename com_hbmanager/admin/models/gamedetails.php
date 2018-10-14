@@ -122,7 +122,7 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$query->where('('.$db->qn('timeString').' = '.$db->q('00:00').' OR '.$db->qn('timeString').' = "" OR '.$db->qn('timeString').' IS NULL)');
 		$query->where($db->qn('youth').' = '.$db->q('aktiv'));
 		$query->where($db->qn('ownClub').' = 1');
-		$query->where('DATE('.$db->qn('dateTime').') < '.$db->q($this->today->format('Y-m-d')));
+		$query->where($db->qn('dateTime').' <= '.$db->q($this->today->format('Y-m-d H:i:s')));
 		// $query->where($db->qn('goalsHome').' IS NOT NULL');
 		$query->order($db->qn('dateTime').' ASC');
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';die;
