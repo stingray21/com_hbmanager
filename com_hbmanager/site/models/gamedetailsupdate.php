@@ -40,7 +40,7 @@ class HBmanagerModelGameDetailsUpdate extends HBmanagerModelGameDetails
 		$query->where('('.$db->qn('timeString').' = "" OR '.$db->qn('timeString').' IS NULL)');
 		$query->where($db->qn('youth').' = '.$db->q('aktiv'));
 		$query->where($db->qn('ownClub').' = 1');
-		$query->where('DATE('.$db->qn('dateTime').') < '.$db->q($this->today->format('Y-m-d')));
+		$query->where($db->qn('dateTime').' <= '.$db->q($this->today->format('Y-m-d H:i:s')));
 		$query->order($db->qn('dateTime').' ASC');
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';die;
 		$db->setQuery($query);
