@@ -99,7 +99,8 @@ $form = JForm::getInstance('gamedateform', JPATH_COMPONENT_ADMINISTRATOR.'/model
 		
 		<button class="btn" onclick="copyToClipboard('printsheet-bl')"><span class="icon-copy" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_PRINTREPORT_COPY_BUTTON');?></button>	
 		<div class="printsheet">
-		<?php echo $this->loadTemplate('bl'); ?>
+			<?php //echo $this->loadTemplate('bl'); ?>
+			<?php require(JPATH_COMPONENT_ADMINISTRATOR.'/views/printnews/tmpl/default_bl.php'); ?>
 		</div>
 	</div>
 
@@ -110,7 +111,8 @@ $form = JForm::getInstance('gamedateform', JPATH_COMPONENT_ADMINISTRATOR.'/model
 		
 		<button class="btn" onclick="copyToClipboard('printsheet-ge')"><span class="icon-copy" aria-hidden="true"></span> <?php echo JText::_('COM_HBMANAGER_PRINTREPORT_COPY_BUTTON');?></button>	
 		<div class="printsheet">
-		<?php echo $this->loadTemplate('ge'); ?>
+			<?php //echo $this->loadTemplate('ge'); ?>
+			<?php require(JPATH_COMPONENT_ADMINISTRATOR.'/views/printnews/tmpl/default_ge.php'); ?>
 		</div>
 	</div>
 

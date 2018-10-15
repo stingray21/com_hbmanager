@@ -124,13 +124,13 @@
   width: auto;
 }
 
-#printnews #printsheet {
+#printnews .printsheet {
   background: #fcfcfc;
   margin: 1em;
   padding: 1em;
   border: 1px solid #ddd;
   box-shadow: 5px 5px 5px gray;
-  width: 40em;
+  width: 33em;
   text-align: justify;
 }
 

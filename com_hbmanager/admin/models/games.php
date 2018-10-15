@@ -400,6 +400,7 @@ class HBmanagerModelGames extends JModelAdmin
 		$games = $db->loadObjectList();		
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
 		
+		$games = self::addTeamShort($games);
 
 		return $games;
 	}
@@ -519,6 +520,20 @@ class HBmanagerModelGames extends JModelAdmin
 			$game->winnerTeam = self::getWinnerTeam($game);
 			$game->ownTeam = self::getOwnTeam($game);
 			$game->indicator = self::getIndicator($game);	
+
+		}
+		return $games;
+	}
+
+	protected function addTeamShort($games)
+	{
+		foreach ($games as &$game)
+		{
+			//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
+			$search = [ 'Jugend' , 'weiblich', 'männlich', 'gemischt', 'Geislingen', 'Ostdorf'];
+			$replace = [ 'Jgd.', 'weibl.', 'männl.', 'gem.', 'G.', 'O.'];
+			// TODO: move $search and $replace in Admin Options
+			$game->teamShort = str_replace( $search , $replace, $game->team);	
 
 		}
 		return $games;

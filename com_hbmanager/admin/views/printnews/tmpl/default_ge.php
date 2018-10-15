@@ -9,7 +9,7 @@
 			<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
 			<?php foreach ($days as $game) : ?>
 				<span class="game">
-					<b><?php echo $game->team ?></b> (<?php echo $game->leagueKey ?>)<br>
+					<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
 					<i><?php echo $game->home ?> - <?php echo $game->away ?> | <?php echo $game->goalsHome ?>:<?php echo $game->goalsAway ?></i><br>
 				</span>
 			<?php endforeach; ?>
@@ -56,12 +56,13 @@
 			<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
 			<?php foreach ($days as $game) : ?>
 				<span class="game">
-					<b><?php echo $game->team ?></b> (<?php echo $game->leagueKey ?>)<br>
-					<i><?php echo $game->gymName ?>, <?php echo $game->town ?></i><br>
 					<i><?php 
 						if (isset($game->details)) echo JText::_('COM_HBMANAGER_PRINTREPORT_MULTIGAMES');
 						echo JHTML::_('date', $game->dateTime , 'H:i', $tz); 
-						echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?> <?php echo $game->home ?> - <?php echo $game->away ?></i><br>
+						echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?>&nbsp;in <?php echo $game->town ?> (<?php echo $game->gymName ?>)</i><br>
+					<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
+					<i> <?php echo $game->home ?> - <?php echo $game->away ?></i><br>
+					
 				</span>
 			<?php endforeach; ?>
 			</p>
@@ -85,8 +86,8 @@
 				<i><?php echo $gym[0]->gymName ?>, <?php echo $gym[0]->town ?></i><br>
 				<?php foreach ($gym as $game) : ?>
 					<span class="game">
-						<b><?php echo $game->team ?></b> (<?php echo $game->leagueKey ?>)<br>
-						<i><?php echo JHTML::_('date', $game->dateTime , 'H:i', $tz); ?> <?php echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?> <?php echo $game->home ?> - <?php echo $game->away ?></i><br>
+						<i><?php echo JHTML::_('date', $game->dateTime , 'H:i', $tz).'&nbsp;'.JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?></i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
+						<i><?php echo $game->home ?> - <?php echo $game->away ?></i><br>
 					</span>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
