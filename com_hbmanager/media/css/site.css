@@ -1389,6 +1389,15 @@ div#gamereports #gamegraphframe .icons text.sevenicon {
   font-size: 10pt;
 }
 
+#goals div#playertable {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+@media (max-width: 600px) {
+  #goals div#playertable {
+    grid-template-columns: 100%;
+  }
+}
 #goals div#playertable #gameSelect {
   display: inline-block;
   margin-right: 20px;

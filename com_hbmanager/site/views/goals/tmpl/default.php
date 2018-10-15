@@ -18,8 +18,6 @@ $team = $this->team;
 <h1><?php echo JText::_('COM_HBMANAGER_GOALS_HEADLINE') ?> | <?php echo $team->team; ?> <span><?php echo $team->league; ?></span></h1>
 
 <div id="playertable">
-
-	<h3><?php echo JText::_('COM_HBMANAGER_GOALS_SCORER'); ?></h3>	
 	
 	<div id="gameSelect">
 		<div v-on="mouseover: showSelection(), mouseout: hideSelection()" class="menu">

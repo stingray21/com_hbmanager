@@ -32,6 +32,7 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 		// $query->group('hb_spiel.spielIdHvw, hb_spiel.datumZeit,spielberichtId');
 		$query->where($this->table_game.'.'.$db->qn('teamkey').' = '.$db->q($this->teamkey));
 		$query->where($db->qn('ownClub').' = 1');
+		$query->where($this->table_game.'.'.$db->qn('season').' = '.$db->q($this->season));
 		$query->where('DATE('.$db->qn('dateTime').') < NOW() ');
 		$query->where($db->qn('pointsHome').' IS NOT NULL ');
 		$query->order($db->qn('dateTime').' ASC');

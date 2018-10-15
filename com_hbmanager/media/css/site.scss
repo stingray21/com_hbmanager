@@ -463,6 +463,12 @@ div#gamereports {
 
 #goals {
 	div#playertable {
+		display: grid;
+		grid-template-columns: 40% 60%;
+
+		@media (max-width: 600px) {
+			grid-template-columns: 100%;
+		}
 
 		#gameSelect {
 			display: inline-block;
