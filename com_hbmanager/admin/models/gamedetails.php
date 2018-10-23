@@ -420,7 +420,10 @@ class HBmanagerModelGamedetails extends JModelAdmin
 		$string = str_replace('"', '', trim($string));
 		//remove header
 		
-		$pattern = "/(Nr.,Name,Jahrgang,M,R,Tore\r?\n?\(ges\),7m\/\r?\n?Tore,Verw.,Hinausstellungen,,?,?Disq.,Ber.,(Team-\r?\n?Zstr\.\r?\n?|zus\.\r?\n?Strafe),?,?\r?\n?,,,,,,,,1.,2.,3.,,,\r?\n?)/";
+		// old version
+		// $pattern = "/(Nr.,Name,Jahrgang,M,R,Tore\r?\n?\(ges\),7m\/\r?\n?Tore,Verw.,Hinausstellungen,,?,?Disq.,Ber.,(Team-\r?\n?Zstr\.\r?\n?|zus\.\r?\n?Strafe),?,?\r?\n?,,,,,,,,1.,2.,3.,,,\r?\n?)/";
+		// new version
+		$pattern = "/Nr\.,Name,Jahrgang,M,R,Tore,7m\/Tore,Verw\.,Zeitstr\.1,Zeitstr\.2,Zeitstr\.3,Disq.,Ber.,zus. Strafe,,\r?\n?/";
 		$string = preg_replace($pattern, '', $string);
 
 		if (!empty($string)) {
