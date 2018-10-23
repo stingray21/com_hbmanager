@@ -91,10 +91,11 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 			$team->updateSchedule = self::getUpdate('schedule');
 			$team->updateStandings = self::getUpdate('standings');
 			$team->updateStandingsDetails = self::getUpdate('standingsDetails');
-
+			
 			$team->hvwLinkUrl = HbmanagerHelper::get_hvw_page_url($team->leagueIdHvw);
 			$team->reportMenuLink = self::getReportMenuLink();
 		}
+		// echo __FILE__.' ('.__LINE__.')<pre>'; print_r($team); echo '</pre>';
 		$this->team = $team;
 	}
 
@@ -186,7 +187,18 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		foreach ($coaches as &$coach)
 		{
 			$params = new JRegistry();
-			if ($coach && isset($coach->params)) $params->loadString($coach->params);	
+			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($coach->params);echo'</pre>';die;
+			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($coach);echo'</pre>';
+			if ($coach && isset($coach->params) && !empty($coach->params)) {
+				// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($coach && isset($coach->params) && !empty($coach->params));echo'</pre>';
+				try {
+					$params->loadString($coach->params);	
+				} catch (Exception $e)  {
+					// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($coach->params);echo'</pre>';
+					// echo 'Exception abgefangen: ',  $e->getMessage(), "\n";
+				}
+
+			}
 			$contact_show['telephone'] = !is_null($params->get('show_telephone')) ? $params->get('show_telephone') : $this->contact_global['telephone'];
 			$contact_show['mobile'] = !is_null($params->get('show_mobile')) ? $params->get('show_mobile') : $this->contact_global['mobile'];
 			$contact_show['email_to'] = !is_null($params->get('show_email_to')) ? $params->get('show_email_to') : $this->contact_global['email'];
@@ -248,18 +260,33 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($schedule);echo'</pre>';die;
 		
-
 		if (is_null($posts=$db->loadRowList())) 
 		{
-				$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
-				return;
+			$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+			return;
 		}
+		$schedule = self::addReportLink ($schedule);
 		// $schedule = self::addBackground($schedule);
 		// $schedule = self::addResult($schedule);
 		// $schedule = self::addHighlightNextGame($schedule);
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($schedule);echo'</pre>';die;
 		return $schedule;
 	}
 	
+	protected function addReportLink($schedule)
+	{
+		$highlighted = false;
+		foreach ($schedule as &$row)
+		{
+			if (!empty($row->report)) {
+				$row->reportLink = './'.$this->team->reportMenuLink.'?gameId='.$row->gameIdHvw;
+			} else {
+				$row->reportLink = null;
+			}
+		}
+		return $schedule;
+	}
+
 	// public static function getReportNr($team)
 	// {
 	// 	$db = JFactory::getDBO();
@@ -396,6 +423,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 
 	private function getReportMenuLink()
 	{
+		// aktive/f-1/f-1-berichte?gameId=71012
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		// $query->select(`alias`, `link`, `path`, `title`);

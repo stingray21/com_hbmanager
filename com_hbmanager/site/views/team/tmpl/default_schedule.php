@@ -59,8 +59,8 @@ JHTML::_('bootstrap.tooltip');
 						<?php if ($reports) : ?> 
 							<td>
 								<?php if (!empty($row->report)) : ?>
-								<a href="<?php echo $row->reportLink ?>">
-									<img src="<?php JURI::root().'com_hbmanager/images/page_white_text.png' ?>" title="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT') ?>" alt="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT')?>" />
+								<a href="<?php echo $row->reportLink ?>" title="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT')?>" alt="<?php echo JText::_('COM_HBMANAGER_TEAM_SCHEDULE_TO_REPORT')?>">
+									<span class="icon-file-2"> </span>
 								</a>
 								<?php endif; ?>
 							</td>
