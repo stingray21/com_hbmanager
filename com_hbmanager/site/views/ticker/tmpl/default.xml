@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_HBMANAGER_VIEW_TICKER_TITLE">
+		<message>COM_HBMANAGER_VIEW_TICKER_DESC</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params"
+		addfieldpath="/administrator/components/com_hbmanager/models/fields">
+
+		<!-- Basic options. -->
+		<fieldset name="basic"
+			label="COM_HBMANAGER_TICKER_OPTIONS_SETTINGS_LABEL">
+
+			<field
+				name="test"
+				type="list"
+				label="COM_HBMANAGER_TICKER_OPTIONS_TEST_LABEL"
+				description="COM_HBMANAGER_TICKER_OPTIONS_TEST_DESC"
+			>
+				<option	value="0">JNO</option>
+				<option	value="1">JYES</option>
+			</field>
+
+		</fieldset>
+		
+		
+	</fields>
+  
+</metadata>

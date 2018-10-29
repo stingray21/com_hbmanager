@@ -1389,6 +1389,382 @@ div#gamereports #gamegraphframe .icons text.sevenicon {
   font-size: 10pt;
 }
 
+div#gameticker .noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div#gameticker #ticker {
+  width: 800px;
+  background: #fcd092;
+  border: 8px solid #fcd092;
+  border-radius: 10px;
+}
+div#gameticker #ticker > div {
+  background-image: url(../images/halle_bg.png);
+  background-position-x: -3px;
+  border: 2px solid #553813;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+div#gameticker #ticker > div > div {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 5px;
+  margin: 5px;
+}
+div#gameticker #ticker rect.section {
+  fill: white;
+  opacity: 0.05;
+}
+div#gameticker #ticker #gameinfo {
+  grid-column: 1/4;
+  grid-row: 1;
+  border-radius: 5px;
+  margin: 5px;
+}
+div#gameticker #ticker #scoreboardframe {
+  grid-column: 2;
+  grid-row: 2;
+}
+div#gameticker #ticker #homePlayerframe {
+  grid-column: 1;
+  grid-row: 2/4;
+}
+div#gameticker #ticker #awayPlayerframe {
+  grid-column: 3;
+  grid-row: 2/4;
+}
+div#gameticker #ticker #detailsframe {
+  grid-column: 2;
+  grid-row: 3;
+}
+div#gameticker #ticker #historyframe {
+  grid-column: 1/4;
+  grid-row: 4;
+}
+div#gameticker #ticker #scoregraphframe {
+  grid-column: 1/4;
+  grid-row: 5;
+}
+div#gameticker #ticker table tr {
+  border-bottom: 1px solid #ddd;
+}
+div#gameticker #ticker table tr td {
+  padding: 0.3em 0.5em;
+}
+div#gameticker #ticker #scoreboardframe {
+  background: 0;
+  text-align: center;
+}
+div#gameticker #ticker #detailsframe {
+  background: transparent;
+}
+div#gameticker #ticker #detailsframe > div {
+  background: #111;
+  padding: 3px;
+  border-radius: 7px;
+}
+div#gameticker #ticker #detailsframe > div > div {
+  background: #111;
+  border: 2px solid #aaa;
+  min-height: 5em;
+  border-radius: 5px;
+}
+div#gameticker #ticker #detailsframe .currentEvent {
+  font-weight: 700;
+  text-align: center;
+  margin: 0.25em 0.5em;
+  color: yellow;
+}
+div#gameticker #ticker #gameinfo {
+  background-color: #2D3891;
+  border-radius: 0px;
+  margin: -10px;
+  padding: 10px;
+  color: white;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 10px;
+}
+div#gameticker #ticker #gameinfo .game {
+  grid-column: 1;
+  grid-row: 1;
+}
+div#gameticker #ticker #gameinfo .game > span {
+  display: block;
+  font-size: 0.8em;
+}
+div#gameticker #ticker #gameinfo .game .teams {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+div#gameticker #ticker #gameinfo .update {
+  grid-column: 2;
+  grid-row: 1;
+}
+div#gameticker #ticker #gameinfo .update button {
+  margin-left: 150px;
+  margin-bottom: 15px;
+  padding: 4px;
+  background: #ccc;
+  color: #333;
+  border: 1px solid #666;
+  border-radius: 3px;
+  display: block;
+  width: 30px;
+  height: 30px;
+  float: right;
+}
+div#gameticker #ticker #gameinfo .update button.disabled {
+  color: #bbb;
+}
+div#gameticker #ticker #gameinfo .update button span {
+  font-size: 1.2em;
+  margin: 0;
+  width: 20px;
+  line-height: 17px;
+}
+div#gameticker #ticker #gameinfo .update > span {
+  font-size: 0.8em;
+  display: block;
+  text-align: right;
+}
+div#gameticker #ticker #gameinfo .update > span #updateTimer {
+  display: inline-block;
+  min-width: 2.5em;
+}
+div#gameticker #ticker #homePlayerframe .icon,
+div#gameticker #ticker #awayPlayerframe .icon,
+div#gameticker #ticker #historyframe .icon {
+  margin-left: 5px;
+}
+div#gameticker #ticker #homePlayerframe .icon > span,
+div#gameticker #ticker #awayPlayerframe .icon > span,
+div#gameticker #ticker #historyframe .icon > span {
+  width: 15px;
+  height: 15px;
+  display: block;
+  float: left;
+  margin-top: 1px;
+}
+div#gameticker #ticker #homePlayerframe .icon .goal,
+div#gameticker #ticker #awayPlayerframe .icon .goal,
+div#gameticker #ticker #historyframe .icon .goal {
+  margin-left: -1px;
+}
+div#gameticker #ticker #homePlayerframe .icon .yellow::after,
+div#gameticker #ticker #awayPlayerframe .icon .yellow::after,
+div#gameticker #ticker #historyframe .icon .yellow::after {
+  content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNSI+PHJlY3Qgd2lkdGg9IjEwcHgiIGhlaWdodD0iMTVweCIgc3R5bGU9ImZpbGw6I0ZEREYxMiIgcng9IjIiIHJ5PSIyIj48L3JlY3Q+PC9zdmc+");
+}
+div#gameticker #ticker #homePlayerframe .icon .red::after,
+div#gameticker #ticker #awayPlayerframe .icon .red::after,
+div#gameticker #ticker #historyframe .icon .red::after {
+  content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNSI+PHJlY3Qgd2lkdGg9IjEwcHgiIGhlaWdodD0iMTVweCIgc3R5bGU9ImZpbGw6I0ZGMDAwMCIgcng9IjIiIHJ5PSIyIj48L3JlY3Q+PC9zdmc+");
+}
+div#gameticker #ticker #homePlayerframe .icon .suspension::after,
+div#gameticker #ticker #awayPlayerframe .icon .suspension::after,
+div#gameticker #ticker #historyframe .icon .suspension::after {
+  content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNSI+PHBhdGggY2xhc3M9InN1c3BlbnNpb24taWNvbiIgZmlsbD0iI2FhYSIgZD0ibSAxLjU0Nzk3MDgsMi4wNDY5NjMzIGMgLTAuMDA1NSwtMC4zNDgxIDAuMDk0NzMsLTAuOTk0MzEgMC43NTc3NzgsLTEuMDgxOTc5OTYgMC42NjMwNDksLTAuMDg3NyAwLjk4NDk3OSwwLjQxMzkzOTk2IDEuMDIzMzA5LDAuODM2ODE5OTYgMC4xNDU0MzIsMS42MDQ1IDAuMzQwOTI0LDMuMzU4MzQgMC41MjE1OTQsNS4zMDE4IDAuMTk3OTc1LC0xLjgyMDQ5IDAuMjcxNjg5LC0zLjU5MjU4IDAuNTY1MTM5LC01LjM1NzMgMC4wNTkzMywtMC4zNTY3NSAwLjM0NDk0NSwtMC43OTM0OTk5NiAwLjg2NTIyLC0wLjc2NzMyOTk2IDAuNDIyNTYyLDAuMDIxMyAwLjg1MzMyNSwwLjQ3MjMzOTk2IDAuODM3NzY5LDAuOTAzNDE5OTYgLTAuMDc2OTUsMi4xMzI0IC0wLjIzMTk4LDQuNTgzMzcgLTAuMjY3ODk2LDUuODk0OTEgMC4wMjM3MSwtMC43MDg3IDAuNzAwMjk3LC0xLjIwNDE0IDEuMjUwNDk5LC0xLjA4NDg4IDAuODQzMTU4LDAuMTgyNzcgMC42NTQzMDcsMS4wOTY4IDAuNTM3NTE3LDEuNzA3NDEgMC4yNTM2NTEsLTAuMzg0MTQgMC43MjI5MDYsLTAuNzg5NDggMS4zODI5NDEsLTAuNDU4NTYgMC42NjAwMzUsMC4zMzA5MiAwLjQxNjQwOCwxLjg3MzA0IDAuNDI3OTg0LDIuMjM1ODQ5NyAwLjA0OTA2LDEuNTM3MzIgMC4wMjkzMywwLjk3NjU1IC0wLjE1MjI1NiwyLjY1ODI3IC0wLjExMjgyMywxLjA0NDg5IC0wLjc2NDAzOCwyLjA4Mjg0IC0wLjk0MTQyNSwzLjA5NjgyIGwgLTYuMDI2NzI5LDAuMDI0MTMgYyAtMC4xNjc4NTcsNi43ZS00IC0xLjIzOTgyOCwtMi40MDY0NSAtMS43NTc4OTM5OCwtMy41NzM0NSAtMC4zODk2NjQsLTAuODc3NzYgMS4yMzUzODE5OCwtMy44MTAxOTk3IDEuMjM1MzgxOTgsLTMuODEwMTk5NyAwLDAgLTAuMjIxMzc0LC00LjE2MjMxIC0wLjI1ODkzMiwtNi41MjU3MyB6Ij48L3BhdGg+PC9zdmc+");
+}
+div#gameticker #ticker #homePlayerframe .icon .goal::after,
+div#gameticker #ticker #awayPlayerframe .icon .goal::after,
+div#gameticker #ticker #historyframe .icon .goal::after {
+  content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+PGcgY2xhc3M9ImJhbGwiIHRyYW5zZm9ybT0ic2NhbGUoMC44KSI+PGNpcmNsZSBjbGFzcz0iZ29hbC0wIiBjeD0iOCIgY3k9IjguNDUiIHI9IjcuNSIgc3R5bGU9ImZpbGw6I2FhYTtzdHJva2U6ICM4ODg7c3Ryb2tlLXdpZHRoOjFweCI+PC9jaXJjbGU+PHBhdGggIHN0eWxlPSJmaWxsOiNhYWE7c3Ryb2tlOiAjODg4O3N0cm9rZS13aWR0aDoxcHgiIGQ9Im0gMTMuMTE1NTM0LDkuOTg4MTUyOSAxLjU3MDAyLDEuMzQ4ODkxMSBNIDIuODg0NDY1LDYuOTI0NTM0IDEuMzE0NDQ1NSw1LjU3NTY0MjYgbSA2LjY3MTA5NjEsMS41NTcyNzYyIDAsMi42NjI2NTAzIE0gMTEuMDkyNDY1LDE0Ljk1NTAzNSA5LjM0ODk1NzMsMTMuNzIxMjEgMTAuNDA4MzY5LDExLjM0MjQzNiBtIDIuNzA3OTY2LC0xLjMzOTU3IC0yLjcxNzg3MSwxLjMzNTI3MiBMIDcuOTk5OTk5NSw5Ljc4ODU0MTggNS42MDE1MzQxLDExLjMzODEzOCAyLjg4MzY2MzYsMTAuMDAyODY2IGMgLTAuMDMxOTU1LC0xLjAzMjIxMjQgLTAuMDc3NDU5LC0yLjA2MDg4ODkgMCwtMy4wOTMwNDUyIEwgNS42MDE1MzQxLDUuNTc0NTQ5MyA3Ljk5OTk5OTUsNy4xMjQxNDQ4IDEwLjM5ODQ2NCw1LjU3NDU0OTMgMTMuMTE2MzM1LDYuOTA5ODIwOCBjIDAuMDY3MSwxLjAzMTU5NzIgMC4wMzA3NCwyLjA2MTM0MDYgMCwzLjA5MzA0NTIgeiBNIDIuODg0NDYzOSw5Ljk4ODE1MjkgMS4zMTQ0NDQ0LDExLjMzNzA0NCBNIDQuOTA3NTMzMiwxNC45NTUwMzUgNi42NTEwNDA4LDEzLjcyMTIxIDUuNTkxNjI5LDExLjM0MjQzNiBtIDEuMDUyMzA2NiwyLjM0MTA4OCBjIDAuOTA0MDQ2MSwtMC4wMDcxIDEuODA4MDgsLTAuMDAzMiAyLjcxMjEyNjksMCBtIDMuNzU5NDcxNSwtNi43NTg5OSAxLjU3MDAyLC0xLjM0ODg5MTQgTSAxMS4wOTI0NjUsMS45NTc2NTE4IDkuMzQ4OTU3MywzLjE5MTQ3NzQgMTAuNDA4MzY5LDUuNTcwMjUxIE0gNC45MDc1MzMyLDEuOTU3NjUxOCA2LjY1MTA0MDgsMy4xOTE0Nzc0IDUuNTkxNjI5LDUuNTcwMjUxIE0gNi42NDM5MzU2LDMuMjI5MTYzMSBjIDAuOTA0MDQ3MiwwLjAwNjE2IDEuODA4MDc5LDAuMDAyOCAyLjcxMjEyNjksMCI+PC9wYXRoPjwvZz48L3N2Zz4=");
+}
+div#gameticker #ticker #homePlayerframe,
+div#gameticker #ticker #awayPlayerframe {
+  height: 100%;
+}
+div#gameticker #ticker #homePlayerframe p.team,
+div#gameticker #ticker #awayPlayerframe p.team {
+  margin: 2px;
+  font-weight: 700;
+}
+div#gameticker #ticker #homePlayerframe table,
+div#gameticker #ticker #awayPlayerframe table {
+  width: 100%;
+}
+div#gameticker #ticker #homePlayerframe table td,
+div#gameticker #ticker #awayPlayerframe table td {
+  padding: 0.2em 0.2em;
+  text-align: center;
+}
+div#gameticker #ticker #homePlayerframe table td span.name,
+div#gameticker #ticker #awayPlayerframe table td span.name {
+  padding-right: 0.5em;
+}
+div#gameticker #ticker #homePlayerframe table td span,
+div#gameticker #ticker #awayPlayerframe table td span {
+  float: left;
+}
+div#gameticker #ticker #homePlayerframe table td:first-child,
+div#gameticker #ticker #awayPlayerframe table td:first-child {
+  font-weight: 700;
+  text-align: left;
+}
+div#gameticker #ticker #historyframe {
+  height: 20em;
+  overflow-y: scroll;
+  padding: 5px;
+  font-weight: 700;
+}
+div#gameticker #ticker #historyframe table {
+  width: 100%;
+}
+div#gameticker #ticker #historyframe td {
+  vertical-align: top;
+}
+div#gameticker #ticker #historyframe td.index {
+  color: #ccc;
+  width: 2em;
+  text-align: right;
+  padding-right: 1em;
+}
+div#gameticker #ticker #historyframe td.icon {
+  width: 15px;
+  padding-right: 0.1em;
+}
+div#gameticker #ticker #historyframe .time {
+  width: 3em;
+  text-align: right;
+}
+div#gameticker #ticker #historyframe .colon {
+  padding-left: 0;
+  padding-right: 0;
+  color: #888;
+}
+div#gameticker #ticker #historyframe .score {
+  width: 1.5em;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+  color: #ccc;
+}
+div#gameticker #ticker #historyframe .goal {
+  color: #000;
+}
+div#gameticker #ticker #scoreboard rect.background {
+  fill: #111;
+}
+div#gameticker #ticker #scoreboard rect.frame {
+  fill: #aaa;
+}
+div#gameticker #ticker #scoreboard text.team {
+  font-size: 10pt;
+  fill: #aaa;
+  text-anchor: end;
+}
+div#gameticker #ticker #scoreboard text.diget {
+  font-family: "digital-7-mono";
+  font-size: 30pt;
+  fill: yellow;
+  text-anchor: end;
+}
+div#gameticker #ticker #scoreboard text.time {
+  text-anchor: end;
+}
+div#gameticker #ticker #scoreboard text.diget.bg {
+  fill: #333;
+}
+div#gameticker #ticker #scoreboard text.diget.dots.bg {
+  fill: yellow;
+  text-anchor: middle;
+}
+@media (max-width: 600px) {
+  div#gameticker #ticker {
+    border: 0;
+    width: calc(100% - 20px);
+  }
+  div#gameticker #ticker > div {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5px;
+    border: 0;
+  }
+  div#gameticker #ticker #gameinfo {
+    grid-column: 1/3;
+    grid-row: 1;
+    margin: 0;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+  div#gameticker #ticker #gameinfo .game {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  div#gameticker #ticker #gameinfo .game span:first-child {
+    font-size: 1em;
+  }
+  div#gameticker #ticker #gameinfo .update {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  div#gameticker #ticker #gameinfo .update button {
+    margin: 0px;
+  }
+  div#gameticker #ticker #gameinfo .update > span {
+    font-size: 0.8em;
+    padding: 5px;
+    float: right;
+  }
+  div#gameticker #ticker #scoreboardframe {
+    grid-column: 1/3;
+    grid-row: 2;
+  }
+  div#gameticker #ticker #homePlayerframe {
+    grid-column: 1;
+    grid-row: 6;
+  }
+  div#gameticker #ticker #awayPlayerframe {
+    grid-column: 2;
+    grid-row: 6;
+  }
+  div#gameticker #ticker #detailsframe {
+    grid-column: 1/3;
+    grid-row: 3;
+  }
+  div#gameticker #ticker #historyframe {
+    grid-column: 1/3;
+    grid-row: 4;
+    height: 20em;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  div#gameticker #ticker #historyframe td:first-child {
+    display: none;
+  }
+  div#gameticker #ticker #historyframe .time {
+    width: 3em;
+    text-align: left;
+  }
+  div#gameticker #ticker #historyframe .score {
+    min-width: 1.5em;
+    text-align: center;
+  }
+  div#gameticker #ticker #scoregraphframe {
+    grid-column: 1;
+    grid-row: 8;
+  }
+  div#gameticker #ticker #homePlayerframe td span.name,
+div#gameticker #ticker #awayPlayerframe td span.name {
+    display: none;
+  }
+}
+
+#livegames table {
+  width: 90%;
+  max-width: 800px;
+}
+#livegames a.btn {
+  background: #2D3891;
+  color: white;
+  box-shadow: none;
+  text-shadow: none;
+}
+
 #goals div#playertable {
   display: grid;
   grid-template-columns: 40% 60%;

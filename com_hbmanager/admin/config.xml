@@ -11,7 +11,7 @@
 		<field 
 			name="hvwurl-page" 
 			type="longurl" 
-			default="http://www.hvw-online.org/spielbetrieb/ergebnissetabellen/#/league?ogId=3&amp;lId=__ID__&amp;allGames=1" 
+			default="https://www.hvw-online.org/spielbetrieb/ergebnissetabellen/#/league?ogId=3&amp;lId=__ID__&amp;allGames=1" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_LABEL" 
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_PAGE_DESC" 
 			size="80" 
@@ -20,7 +20,7 @@
 		<field 
 			name="hvwurl-json" 
 			type="longurl" 
-			default="http://spo.handball4all.de/service/if_g_json.php?ca=1&amp;cl=__ID__&amp;cmd=ps&amp;og=3" 
+			default="https://spo.handball4all.de/service/if_g_json.php?ca=1&amp;cl=__ID__&amp;cmd=ps&amp;og=3" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_LABEL" 
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_JSON_DESC" 
 			size="80" 
@@ -29,12 +29,29 @@
 		<field 
 			name="hvwurl-report" 
 			type="longurl" 
-			default="http://spo.handball4all.de/misc/sboPublicReports.php?sGID=__ID__" 
+			default="https://spo.handball4all.de/misc/sboPublicReports.php?sGID=__ID__" 
 			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_REPORT_LABEL" 
 			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_REPORT_DESC" 
 			size="80" 
 		/>
-		
+
+		<field 
+			name="hvwurl-live" 
+			type="longurl" 
+			default="https://spo.handball4all.de/service/if_g_json.php?cmd=po&amp;o=11&amp;og=3" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_LIVE_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_LIVE_DESC" 
+			size="80" 
+		/>
+
+		<field 
+			name="hvwurl-ticker" 
+			type="longurl" 
+			default="https://spo.handball4all.de/service/if_ticker_data.php" 
+			label="COM_HBMANAGER_CONFIG_SETTINGS_HVW_TICKER_LABEL" 
+			description="COM_HBMANAGER_CONFIG_SETTINGS_HVW_TICKER_DESC" 
+			size="80" 
+		/>
 		
 		<field 
 			name="clubindicator" 
