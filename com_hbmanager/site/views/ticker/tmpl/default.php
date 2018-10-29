@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 <?php else : ?>
-<h1><?php echo JText::_('COM_HBMANAGER_TICKER_NO_TICKER')?></h1>
+<p><?php echo JText::_('COM_HBMANAGER_TICKER_NO_TICKER')?></p>
 <?php endif; ?>
 
 </div>
