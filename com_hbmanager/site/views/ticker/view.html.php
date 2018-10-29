@@ -29,7 +29,7 @@ class HbManagerViewTicker extends JViewLegacy
 		$this->baseUrl = $this->get('baseUrl');
 		$this->testMode = $this->get('TestMode');
 
-		$this->ticker = (!empty($this->baseUrl) && !empty($this->baseUrl)) ? true : false;
+		$this->ticker = (!empty($this->baseUrl) && !empty($this->token)) ? true : false;
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->ticker);echo'</pre>';
 		
 

@@ -5,14 +5,14 @@
 	<name>COM_HBMANAGER</name>
 	<!-- The following elements are optional and free of formatting 
 	conttraints -->
-	<creationDate>2018-10-29 13:14 GMT+0100</creationDate>
+	<creationDate>2018-10-29 13:17 GMT+0100</creationDate>
 	<author>Jochen Stehle</author>
 	<authorEmail>joshsteele21@gmail.com</authorEmail>
 	<authorUrl></authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>2.5.2</version>
+	<version>2.5.3</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_HBMANAGER_DESCRIPTION</description>
 

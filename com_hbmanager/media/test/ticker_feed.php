@@ -6,7 +6,7 @@ http://handball.local/ticker_feed.php?token=0cfc85a55beb2db4522f8c0791209800&app
 */
 
 $numNewEvents = abs(rand(0,5));
-$numNewEvents = 10;
+// $numNewEvents = 10;
 
 $token = (isset($_GET["token"])) ? htmlspecialchars($_GET["token"]) : '' ;
 $appid = (isset($_GET["appid"])) ? htmlspecialchars($_GET["appid"]) : '' ;
