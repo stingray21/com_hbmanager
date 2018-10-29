@@ -84,9 +84,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	token = urlParams.get('token');
 	// console.log(token);
 
+	if (token === null) return false;
+
 	// var base_url = 'https://spo.handball4all.de/service/if_ticker_data.php'; 
 	// base_url is set in default.php of view
-	if (testMode || token === 'test' || token === null) {
+	if (testMode || token === 'test') {
 		testMode = true;
 		base_url = './media/com_hbmanager/test/ticker_feed.php';
 	} 

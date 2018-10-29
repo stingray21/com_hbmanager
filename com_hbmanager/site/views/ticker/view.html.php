@@ -23,13 +23,13 @@ class HbManagerViewTicker extends JViewLegacy
 		$this->tz = $this->get('Timezone');
 		
 		$jinput = JFactory::getApplication()->input;
-		// $this->token = $jinput->get('token'); // done in JS script
+		$this->token = $jinput->get('token'); // done in JS script
 
 		// $this->gameInfo = $this->get('gameInfo');
 		$this->baseUrl = $this->get('baseUrl');
 		$this->testMode = $this->get('TestMode');
 
-		$this->ticker = (!empty($this->baseUrl)) ? true : false;
+		$this->ticker = (!empty($this->baseUrl) && !empty($this->baseUrl)) ? true : false;
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->ticker);echo'</pre>';
 		
 
