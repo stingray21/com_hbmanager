@@ -411,11 +411,16 @@ function printPlayer(player) {
 	var span = document.createElement("SPAN");
 
 	var name = document.createElement("SPAN");
-	name.appendChild(document.createTextNode('Spieler '));
+	var num = document.createElement("SPAN");
+	if (isNaN(1*player.player)) {
+		name.appendChild(document.createTextNode('Betreuer '));
+		num.appendChild(document.createTextNode(player.player));
+	} else {
+		name.appendChild(document.createTextNode('Spieler '));
+		num.appendChild(document.createTextNode('#' + player.player));
+	} 
 	name.classList.add('name');
 	span.appendChild(name);
-	var num = document.createElement("SPAN");
-	num.appendChild(document.createTextNode('#' + player.player));
 	span.appendChild(num);
 	
 	var cards = document.createElement("SPAN");

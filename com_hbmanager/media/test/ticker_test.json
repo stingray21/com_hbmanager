@@ -33,6 +33,7 @@
 {"game_time":"700","home_score":"8","guest_score":"9","message":"Spielzeit gestartet","stops_time":false,"status":0,"status_descripion":"OK"},
 {"game_time":"720","home_score":"8","guest_score":"9","message":"Verwarnung für die Nummer A der Heimmannschaft","stops_time":false,"status":0,"status_descripion":"OK"},
 {"game_time":"800","home_score":"8","guest_score":"10","message":"Tor für die Gastmannschaft durch die Nummer 5","stops_time":false,"status":0,"status_descripion":"OK"},
+{"game_time":"850","home_score":"8","guest_score":"11","message":"Tor für die Gastmannschaft durch die Nummer 5","stops_time":false,"status":0,"status_descripion":"OK"},
 {"game_time":"900","home_score":"8","guest_score":"11","message":"2-min Strafe für die Nummer 16 der Gastmannschaft","stops_time":true,"status":0,"status_descripion":"OK"},
 {"game_time":"930","home_score":"8","guest_score":"11","message":"2-min Strafe für die Nummer 16 der Gastmannschaft","stops_time":true,"status":0,"status_descripion":"OK"},
 {"game_time":"960","home_score":"8","guest_score":"11","message":"2-min Strafe für die Nummer 16 der Gastmannschaft","stops_time":true,"status":0,"status_descripion":"OK"},
