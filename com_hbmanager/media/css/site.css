@@ -1888,3 +1888,22 @@ div#gameticker #ticker #awayPlayerframe td span.name {
   width: 33em;
   text-align: justify;
 }
+
+#hbsponsors div.sponsors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#hbsponsors div.sponsors .sponsor {
+  flex: 0 0 calc(25% - 20px);
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 5px;
+}
+#hbsponsors div.sponsors .sponsor div.img {
+  background-image: url("../../mod_hbsponsor/images/Sponsoren.png");
+  width: 240px;
+  height: 80px;
+}
