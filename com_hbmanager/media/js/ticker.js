@@ -521,8 +521,9 @@ function updateEventList() {
 	// eventList[event.index] = event;
 	// console.log(eventList);
 	eventList.sort(function(a, b) {
-		if (a.game_time == b.game_time) return (a.index < b.index);
-		return (a.game_time < b.game_time);
+		// console.log(b.game_time - a.game_time);
+		if (a.game_time == b.game_time) return (b.game_time - a.game_time);
+		return (b.game_time - a.game_time);
 	});	
 
 	// mark duplicates
