@@ -85,11 +85,13 @@ class HBmanagerModelLivegames extends HBmanagerModelHBmanager
 		$games[0]['team'] = 'Männer 1';
 		$games[0]['name'] = 'HK Ostdorf/Geislingen';
 		$games[0]['shortName'] = 'HK Ostd/Geisl';
+		$games[0]['leagueKey'] = 'M-BK';
 		$games[0]['league'] = 'Bezirksklasse';
 		$games[0]['leagueIdHvw'] = '35341';
 		$games[0]['sex'] = 'm';
 		$games[0]['youth'] = 'aktiv';
 		$games[0]['dateTime'] = '2018-10-28 16:00:00';
+		$games[0]['shortGym'] = 'KSH';
 
 		return $games;
 	} 
@@ -124,6 +126,7 @@ class HBmanagerModelLivegames extends HBmanagerModelHBmanager
 				if (preg_match('/HK Ostd\/Geisl/', $game['gHomeTeam'].$game['gGuestTeam'])) {
 					$game = array_merge($game, self::getGameDetails($game['gNo']));
 					// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($game);echo'</pre>';
+					$game['shortGym'] = self::getShortGym($game['gGymnasiumName'].', '.$game['gGymnasiumTown']);
 					$games[] = $game;
 				}
 				// if ($game['live']) {
@@ -132,10 +135,71 @@ class HBmanagerModelLivegames extends HBmanagerModelHBmanager
 				// }
 			}
 		}
-		
-		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($hvwData); echo'</pre>';
+
+		usort($games, 'self::compareGames');
+		// foreach ($games as $key => $val) {
+		// 	echo "<p>".$val['dateTime']." - ".$val['order']."</p>";
+		// }
+		$games = self::groupGames($games);
+		// echo __FILE__.' - '.__LINE__.'<pre>';print_r($games); echo'</pre>';
 		return $games;
 	}
+
+	private function getShortGym($gym) {
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gym);echo'</pre>';
+		
+		switch ($gym) {
+			case 'Kreissporthalle, Balingen':
+				$short = 'KSH';
+				break;
+			case 'Schloßparkhalle, Geislingen':
+				$short = 'SPH';
+				break;
+			
+			default:
+				$short = '';
+				break;
+		}
+
+		return $short;
+	}
+
+	private function groupGames($games) {
+		
+		foreach ($games as $key => $val) {
+			$date = preg_replace('/^(\d{1,2}).(\d{1,2}).(\d{1,2})$/', '20$3-$2-$1', $val['gDate'] );
+			$date = DateTime::createFromFormat('Y-m-d H:i:s', $date.' 12:00:00')->getTimestamp();
+			$groupedGames[$date][] = $val;
+		}
+
+		return $groupedGames;
+	}
+
+	// Comparison function
+	private function compareGames($a, $b) {
+		
+		// sort by date
+		$aa = DateTime::createFromFormat('Y-m-d H:i:s', $a['dateTime'])->getTimestamp();
+		$bb = DateTime::createFromFormat('Y-m-d H:i:s', $b['dateTime'])->getTimestamp();
+		
+		if ($aa == $bb) {
+			if ($a['order'] == $b['order']) {
+				return 0;
+			}
+			return ($a['order'] < $b['order']) ? -1 : 1;
+		}
+		return ($aa < $bb) ? -1 : 1;
+
+		// sort by order
+		// $a = $a['order'];
+		// $b = $b['order'];
+		
+		// if ($a == $b) {
+		// 	return 0;
+		// }
+		// return ($a < $b) ? -1 : 1;
+	}
+
 
 	function warning_handler($errno, $errstr, $errfile, $errline)
 	{
@@ -151,9 +215,9 @@ class HBmanagerModelLivegames extends HBmanagerModelHBmanager
 		// Get the database object.
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select(' `teamkey`, `order`, `team`, `name`, `shortName`, `league`, `leagueIdHvw`, `sex`, `youth` ,`dateTime` ');
+		$query->select(' `teamkey`, `order`, `team`, `name`, `shortName`, `league`, t.`leagueKey`, `leagueIdHvw`, `sex`, `youth` ,`dateTime` ');
 		$query->from($this->table_game);
-		$query->leftJoin($db->qn($this->table_team).' USING ('.$db->qn('teamkey').')');
+		$query->leftJoin($db->qn($this->table_team).' as t USING ('.$db->qn('teamkey').')');
 		$query->where($this->table_game.'.'.$db->qn('gameIdHvw').' = '.$db->q($gameID));
 		$query->where($this->table_game.'.'.$db->qn('season').' = '.$db->q($this->season));
 		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;

@@ -888,6 +888,25 @@ div#gameticker {
 	table {
 		width: 90%;
 		max-width: 800px;
+
+		.date {
+			min-width: 10%;
+		}
+		.team {
+			min-width: 30%;
+		}
+		.game {
+			min-width: 30%;
+		}
+		.gym {
+			min-width: 10%;
+		}
+		.live {
+			min-width: 10%;
+		}
+		.result {
+			min-width: 10%;
+		}
 	}
 
 	a.btn {

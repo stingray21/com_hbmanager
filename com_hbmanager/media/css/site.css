@@ -1758,6 +1758,24 @@ div#gameticker #ticker #awayPlayerframe td span.name {
   width: 90%;
   max-width: 800px;
 }
+#livegames table .date {
+  min-width: 10%;
+}
+#livegames table .team {
+  min-width: 30%;
+}
+#livegames table .game {
+  min-width: 30%;
+}
+#livegames table .gym {
+  min-width: 10%;
+}
+#livegames table .live {
+  min-width: 10%;
+}
+#livegames table .result {
+  min-width: 10%;
+}
 #livegames a.btn {
   background: #2D3891;
   color: white;
