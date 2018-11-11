@@ -25,10 +25,11 @@ defined('_JEXEC') or die('Restricted access');
 				<span class="hidden-phone"><?php echo $game['league'];?></span><span class="visible-phone"><?php echo $game['leagueKey'];?></span></td>
 			<!-- <td>Spielbeginn: <?php echo $game['dateTime'];?> Uhr</td> -->
 			<td class="game"><?php echo $game['gHomeTeam'];?> - <?php echo $game['gGuestTeam'];?></td>
-			<td class="gym"><?php echo JHTML::tooltip($game['gGymnasiumName'].', '.$game['gGymnasiumTown'], 
+			<td class="gym"><span class="hidden-phone"><?php 
+					echo JHTML::tooltip($game['gGymnasiumName'].', '.$game['gGymnasiumTown'], 
 						JText::_('COM_HBMANAGER_LIVEGAMES_GYM'), '',  
 						'<span class="icon-home large-icon"> </span>');?>
-				<?php echo $game['shortGym'];?>
+				<?php echo $game['shortGym'];?></span>
 			</td>
 			<td class="result"><?php 
 				if (!empty(trim($game['gHomeGoals'].$game['gGuestGoals']))) {
@@ -39,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 				?></td>
 			<td class="live">
 				<?php if ($game['live']) : ?>
-				<a href="./index.php?option=com_hbmanager&view=ticker&token=<?php echo $game['gToken'];?>" class="btn"><span class="icon-play"></span></a>
+				<a href="./index.php?option=com_hbmanager&view=ticker&token=<?php echo $game['gToken'];?>" class="btn"><span class="icon-play"></span><span class="hidden-phone">Ticker</span></a>
 				<?php endif; ?>
 			</td>
 		</tr>

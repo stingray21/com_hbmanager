@@ -582,7 +582,7 @@ function addToPlayerList(event) {
 		var p1 = (isNaN(1*a.player)) ? 1000 : 1*a.player;
 		var p2 = (isNaN(1*b.player)) ? 1000 : 1*b.player;
 		// console.log(a.player, p1, b.player, p2, p1 > p2);
-		return (p1 > p2);
+		return (p1 - p2);
 	});
 	// console.log(list);
 }
