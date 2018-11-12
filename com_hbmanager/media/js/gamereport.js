@@ -327,21 +327,24 @@ function getMaxGoalDiff(gamedata) {
 }
 
 function getPlayerAlias(name) {
-	//console.log(name);
+	// console.log(name);
 	if (name !== null) {
-		var alias = name;
+		// escape regex characters
+		var alias = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		alias = alias.trim();
 		// ÄäÖöÜüß
-		alias = alias.replace("Ä", "Ae");
-		alias = alias.replace("ä", "ae");
-		alias = alias.replace("Ö", "Oe");
-		alias = alias.replace("ö", "oe");
-		alias = alias.replace("Ü", "Ue");
-		alias = alias.replace("ü", "ue");
-		alias = alias.replace("ß", "ss");
+		alias = alias.replace(/Ä/g, 'Ae');
+		alias = alias.replace(/ä/g, 'ae');
+		alias = alias.replace(/Ö/g, 'Oe');
+		alias = alias.replace(/ö/g, 'oe');
+		alias = alias.replace(/Ü/g, 'Ue');
+		alias = alias.replace(/ü/g, 'ue');
+		alias = alias.replace(/ß/g, 'ss');
+		
+		alias = alias.replace(/ /g, '-');
 
-		alias = alias.replace(" ", "-");
 		alias = alias.toLowerCase();
+		// console.log(name, alias);
 		return alias;
 	}
 	return '';
