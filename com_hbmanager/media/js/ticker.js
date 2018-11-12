@@ -161,9 +161,11 @@ function updateGameInfo() {
 			// console.log(this);
 			// console.log(this.responseText);
 			response = JSON.parse(this.responseText);
-			extraGameInfo = response;
-			document.getElementsByClassName('league')[0].innerHTML=extraGameInfo.team+", "+extraGameInfo.league+" ("+extraGameInfo.leagueKey+")";
-			gameLength = extraGameInfo.gameLength;
+			if (response !== null) {
+				extraGameInfo = response;
+				document.getElementsByClassName('league')[0].innerHTML=extraGameInfo.team+", "+extraGameInfo.league+" ("+extraGameInfo.leagueKey+")";
+				gameLength = extraGameInfo.gameLength;
+			}
 		}
 	};
 	xhttp.open("GET", url, true);

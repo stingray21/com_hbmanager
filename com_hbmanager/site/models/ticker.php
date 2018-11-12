@@ -50,7 +50,9 @@ class HBmanagerModelTicker extends HBmanagerModelHBmanager
 
 	public function getAdditionalGameInfo($gameId)
 	{
-
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gameId);echo'</pre>';
+		
+		if(is_null($gameId) || $gameId === 'null') return null; 
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select(' `teamkey`, `order`, `team`, `name`, `shortName`, `league`, t.`leagueKey`, `leagueIdHvw`, `sex`, `youth` ,`dateTime` ');
