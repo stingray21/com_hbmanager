@@ -1473,11 +1473,70 @@ div#gameticker #ticker #detailsframe > div > div {
   min-height: 5em;
   border-radius: 5px;
 }
-div#gameticker #ticker #detailsframe .currentEvent {
+div#gameticker #ticker #detailsframe #currentEvent {
   font-weight: 700;
   text-align: center;
   margin: 0.25em 0.5em;
   color: yellow;
+}
+div#gameticker #ticker #detailsframe #currentEvent.hidden {
+  display: none;
+}
+div#gameticker #ticker #detailsframe #eventLoader.run {
+  display: block;
+  position: relative;
+  width: 64px;
+  height: 32px;
+  margin: 0 auto;
+}
+div#gameticker #ticker #detailsframe #eventLoader.run div {
+  position: absolute;
+  top: 11px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #aaa;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+div#gameticker #ticker #detailsframe #eventLoader.run div:nth-child(1) {
+  left: 6px;
+  animation: loader1 0.6s infinite;
+}
+div#gameticker #ticker #detailsframe #eventLoader.run div:nth-child(2) {
+  left: 6px;
+  animation: loader2 0.6s infinite;
+}
+div#gameticker #ticker #detailsframe #eventLoader.run div:nth-child(3) {
+  left: 26px;
+  animation: loader2 0.6s infinite;
+}
+div#gameticker #ticker #detailsframe #eventLoader.run div:nth-child(4) {
+  left: 45px;
+  animation: loader3 0.6s infinite;
+}
+@keyframes loader1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes loader3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes loader2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
 }
 div#gameticker #ticker #gameinfo {
   background-color: #2D3891;

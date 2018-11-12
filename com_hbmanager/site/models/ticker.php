@@ -47,53 +47,51 @@ class HBmanagerModelTicker extends HBmanagerModelHBmanager
 		return $this->test;
 	}
 
-	// public function getGameInfo()
-	// {
-	// 	$db = JFactory::getDBO();
-	// 	$query = $db->getQuery(true);
 
-	// 	$query->select('`gymId`, `season`, `teamkey`, `leagueKey`, `gameIdHvw`, `dateTime`, `home`, `away`, `goalsHome`, `goalsAway`, `goalsHome1`, `goalsAway1`, `comment`, `gymName`, `town`');
+	public function getAdditionalGameInfo($gameId)
+	{
 
-	// 	$query->from($this->table_game.' AS game');
-	// 	$query->leftJoin($db->qn($this->table_gym).' USING ('.$db->qn('gymId').')');
-	// 	$query->where($db->qn('season').' = '.$db->q($this->season));
-	// 	$query->where($db->qn('gameIdHvw').' = '.$db->q($this->selectedGameId));
-	// 	// echo __FILE__.' - line '.__LINE__.'<pre>'.$query.'</pre'; 
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select(' `teamkey`, `order`, `team`, `name`, `shortName`, `league`, t.`leagueKey`, `leagueIdHvw`, `sex`, `youth` ,`dateTime` ');
+		$query->from($this->table_game);
+		$query->leftJoin($db->qn($this->table_team).' as t USING ('.$db->qn('teamkey').')');
+		$query->where($this->table_game.'.'.$db->qn('gameIdHvw').' = '.$db->q($gameId));
+		$query->where($this->table_game.'.'.$db->qn('season').' = '.$db->q($this->season));
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.$query.'</pre>';die;
+		$db->setQuery($query);
+		$gameInfo = $db->loadObject();
 
-	// 	$db->setQuery($query);
-	// 	$infos = $db->loadObject();
-	// 	// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($infos);echo '</pre';die;
-	// 	$infos = self::formatGameInfos($infos);
+		$gameInfo->gameLength = self::getGameLength ($gameInfo->youth);
 
-	// 	return $infos;
-	// }
+		return $gameInfo;
+	}
 
-	// private function formatGameInfos($data)
-	// {		
-	// 	// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($data);echo '</pre>';
-	// 	$infos = null;
-		
-	// 	$infos['season'] = $data->season;
-	// 	$infos['teamkey'] = $data->teamkey;
-	// 	$infos['leagueKey'] = $data->leagueKey;
-	// 	$infos['gameIdHvw'] = intval($data->gameIdHvw);
-	// 	$infos['dateTime'] = JHtml::_('date', $data->dateTime, 'Y-m-d H:i:s', $this->tz);
-	// 	$infos['date'] = JHtml::_('date', $data->dateTime, 'd.m.y', $this->tz);
-	// 	$infos['time'] = JHtml::_('date', $data->dateTime, 'H:i', $this->tz);
-	// 	$infos['home'] = $data->home;
-	// 	$infos['away'] = $data->away;
-	// 	$infos['goalsHome'] = intval($data->goalsHome);
-	// 	$infos['goalsAway'] = intval($data->goalsAway);
-	// 	$infos['goalsHome1'] = intval($data->goalsHome1);
-	// 	$infos['goalsAway1'] = intval($data->goalsAway1);
-	// 	$infos['comment'] = $data->comment;
-	// 	$infos['gymId'] = intval($data->gymId);
-	// 	$infos['gymName'] = $data->gymName;
-	// 	$infos['town'] = $data->town;
 
-	// 	// echo __FILE__.' - line '.__LINE__.'<pre>';print_r($infos);echo '</pre>';
-	// 	return $infos;
-	// }
+	private function getGameLength ($youth) {
+		// https://de.wikipedia.org/wiki/Handball#Spieldauer
+		// Aktive und A-Jugend: 	2 × 30 Minuten 
+		// C-Jugend und B-Jugend: 	2 × 25 Minuten
+		// E-Jugend und D-Jugend: 	2 × 20 Minuten
+		// Pause von 10 Minuten
+		$length = 60 * 60;
+		switch ($youth) {
+			case 'aktiv' || 'A':
+				$length = 60 * 60;
+				break;
+			case 'B' || 'C':
+				$length = 50 * 60;
+				break;
+			case 'D' || 'E':
+				$length = 40 * 60;
+				break;
+			
+			default:
+				$length = 60 * 60;
+				break;
+		}
+		return $length;
+	}
 
 }
 

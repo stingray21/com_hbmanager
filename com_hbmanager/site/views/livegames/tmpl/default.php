@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 				?></td>
 			<td class="live">
 				<?php if ($game['live']) : ?>
-				<a href="./index.php?option=com_hbmanager&view=ticker&token=<?php echo $game['gToken'];?>" class="btn"><span class="icon-play"></span><span class="hidden-phone">Ticker</span></a>
+				<a href="./index.php?option=com_hbmanager&view=ticker&token=<?php echo $game['gToken'];?>&gameId=<?php echo $game['gNo'];?>" class="btn"><span class="icon-play"></span><span class="hidden-phone">Ticker</span></a>
 				<?php endif; ?>
 			</td>
 		</tr>

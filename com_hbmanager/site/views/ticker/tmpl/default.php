@@ -19,6 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 				<div class="game">
 					<span class="teams"></span>
+					<span class="league"></span>
 					<span class="location"></span>
 					<span class="referee"></span>
 				</div>
@@ -36,7 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 			<div id="detailsframe" class="noselect">
 				<div>
-					<div><p class="currentEvent"></p></div>
+					<div>
+						<div id="eventLoader"><div></div><div></div><div></div><div></div></div>
+						<p id="currentEvent"></p>
+					</div>
 				</div>
 			</div>
 			<div id="historyframe" class="noselect"></div>

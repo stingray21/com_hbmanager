@@ -6,8 +6,13 @@ var updatePause = 10; // duration for how long the update button is disabled aft
 
 
 var token;
+var gameId;
 var appid = '';
 var gameInfo = {};
+var extraGameInfo = {};
+var gameLength = 3600;
+var gameEndTimestamp = Math.floor(Date.now() / 1000)+60*60*6;
+var extraRunTime = 600; // in seconds
 var event_id = 0;
 var max_event_id = 0;
 var eventList = [];
@@ -82,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	//console.log("DOM fully loaded and parsed");
 	var urlParams = new URLSearchParams(window.location.search.substring(1));
 	token = urlParams.get('token');
+	gameId = urlParams.get('gameId');
 	// console.log(token);
 
 	if (token === null) return false;
@@ -134,28 +140,68 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function updateGameInfo() {
-	document.getElementsByClassName('teams')[0].innerHTML=gameInfo.home_lname+" - "+gameInfo.guest_lname;
-	document.getElementsByClassName('location')[0].innerHTML=gameInfo.gym_name+" ("+gameInfo.gym_town+")";
-	var refString = "Schiedsrichter:";
-	if (gameInfo.report.refereeA.name !== null) refString += " "+gameInfo.report.refereeA.prename.substring(0,1)+". "+gameInfo.report.refereeA.name;
-	if (gameInfo.report.refereeB.name !== null) refString += " und "+gameInfo.report.refereeB.prename.substring(0,1)+". "+gameInfo.report.refereeB.name;
-	document.getElementsByClassName('referee')[0].innerHTML=refString;
+	// console.log(gameInfo);
+	var url = './index.php?option=com_hbmanager&task=getAdditionalGameInfo&format=raw&gameId=' + gameId;
+	// console.log(url);
+	var xhttp;
+	xhttp=new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		
+		document.getElementsByClassName('teams')[0].innerHTML=gameInfo.home_lname+" - "+gameInfo.guest_lname;
+		document.getElementsByClassName('location')[0].innerHTML=gameInfo.gym_name+" ("+gameInfo.gym_town+")";
+		var refString = "Schiedsrichter:";
+		if (gameInfo.report.refereeA.name !== null) refString += " "+gameInfo.report.refereeA.prename.substring(0,1)+". "+gameInfo.report.refereeA.name;
+		if (gameInfo.report.refereeB.name !== null) refString += " und "+gameInfo.report.refereeB.prename.substring(0,1)+". "+gameInfo.report.refereeB.name;
+		document.getElementsByClassName('referee')[0].innerHTML=refString;
+		
+		document.getElementById('homePlayerframe').getElementsByClassName('team')[0].innerHTML=gameInfo.home_lname;
+		document.getElementById('awayPlayerframe').getElementsByClassName('team')[0].innerHTML=gameInfo.guest_lname;
+		
+		if (this.readyState == 4 && this.status == 200) {
+			// console.log(this);
+			// console.log(this.responseText);
+			response = JSON.parse(this.responseText);
+			extraGameInfo = response;
+			document.getElementsByClassName('league')[0].innerHTML=extraGameInfo.team+", "+extraGameInfo.league+" ("+extraGameInfo.leagueKey+")";
+			gameLength = extraGameInfo.gameLength;
+		}
+	};
+	xhttp.open("GET", url, true);
+	xhttp.send();
 
-	document.getElementById('homePlayerframe').getElementsByClassName('team')[0].innerHTML=gameInfo.home_lname;
-	document.getElementById('awayPlayerframe').getElementsByClassName('team')[0].innerHTML=gameInfo.guest_lname;
+
+
 }
 
 function runTicker () {
 	// index++;
-	if (event_id < maxRuns && !gameover) {
+	if (checkEndCondtion()) {
+		endTicker();
+	} else {
 		// now = new Date();
 		// console.log(now.getMinutes()+':'+now.getSeconds());
 		updateTicker();
 		
 		updateTimer = setTimeout(runTicker, updateInterval*1000);
-	} else {
-		endTicker();
 	}
+}
+
+function checkEndCondtion() {
+	if (event_id >= maxRuns) {
+		console.log("zu viele Anfragen");
+		var tooManyRuns = true;
+	}
+	
+	if (Math.floor(Date.now() / 1000) - gameEndTimestamp > extraRunTime) {
+		console.log("zu lange");
+		var tooMuchTime = true;
+	}
+
+	if (tooManyRuns || tooMuchTime) {
+		gameover = true;
+		return true;
+	}
+	return false;
 }
 
 function endTicker() {
@@ -168,22 +214,34 @@ function endTicker() {
 }
 
 function updateTicker() {
-	getTickerCount(event_id,updateMaxEventId);
-	pauseBtn();
-	lastUpdate = Math.floor(Date.now() / 1000);
+	if (checkEndCondtion()) {
+		endTicker();
+	} else {
+		getTickerCount(event_id,updateMaxEventId);
+		pauseBtn();
+		lastUpdate = Math.floor(Date.now() / 1000);
+	}
 }
 
 function pauseBtn(final = false) {
-	var id = 'updateTickerBtn';
-	document.getElementById(id).disabled = true;
-	document.getElementById(id).classList.add('disabled');
-
+	var btnId = 'updateTickerBtn';
+	document.getElementById(btnId).disabled = true;
+	document.getElementById(btnId).classList.add('disabled');
+	
 	if (!final) {
-		setTimeout(function(){
-				document.getElementById(id).disabled = false;
-				document.getElementById(id).classList.remove('disabled');
-		},updatePause*1000);
+		document.getElementById("currentEvent").classList.add('hidden');
+
+		var loaderId = 'eventLoader';
+		document.getElementById(loaderId).classList.add('run');
+		
+		setTimeout(activateBtn,updatePause*1000);
 	}
+}
+
+function activateBtn() {
+	var btnId = 'updateTickerBtn';
+	document.getElementById(btnId).disabled = false;
+	document.getElementById(btnId).classList.remove('disabled');
 }
 
 function runUpdateTimer() {
@@ -192,6 +250,8 @@ function runUpdateTimer() {
 	document.getElementById("updateTimer").innerHTML = formatTime(t-lastUpdate);
 	if (event_id < maxRuns && !gameover) {
 		setTimeout(runUpdateTimer, 1000);
+	} else {
+		document.getElementById("updateTimer").innerHTML = '-';
 	}
 }
 
@@ -227,6 +287,9 @@ function getTickerCount(currCount, callbackFunc) {
 function updateMaxEventId(response) {
 	// '{"count":43,"ticker_update":67,"status":0,"status_descripion":"OK"}'
 	max_event_id = response.count;
+
+	var loaderId = 'eventLoader';
+	document.getElementById(loaderId).classList.remove('run');
 	updateEvents();
 }
 
@@ -288,7 +351,8 @@ function updateDisplay() {
 	updatePlayerDisplay(playerList[2], 'away');
 	updateHistory();	
 	updateScoreBoard();
-	document.getElementById('detailsframe').getElementsByClassName("currentEvent")[0].innerHTML = eventList[0].editedMessage;
+	document.getElementById("currentEvent").classList.remove('hidden');
+	document.getElementById("currentEvent").innerHTML = eventList[0].editedMessage;
 }
 
 function updateHistory() {
@@ -470,9 +534,9 @@ function parseEvent(event) {
 	
 	// console.log(event);
 	re = /^Spielstand 2. Halbzeit/i;
-	if (event.message.match(re) !== null) {
-		gameover = true;
-		endTicker();
+	if (event.message.match(re) !== null || event.game_time >= gameLength) {
+		console.log("Spielende");
+		gameEndTimestamp = Math.floor(Date.now() / 1000);
 	}
 	re = /^Tor für/i;
 	event.goal = (event.message.match(re) !== null) ? 1 : 0;
@@ -522,7 +586,7 @@ function updateEventList() {
 	// console.log(eventList);
 	eventList.sort(function(a, b) {
 		// console.log(b.game_time - a.game_time);
-		if (a.game_time == b.game_time) return (b.game_time - a.game_time);
+		if (a.game_time == b.game_time) return (b.index - a.index);
 		return (b.game_time - a.game_time);
 	});	
 
