@@ -186,7 +186,7 @@ function resize() {
 
 	sliderBox.attr("transform", "translate(" + sliderOffsetLeft + "," + sliderOffsetTop + ")");
 
-	// populateData(gamedata, startTime);
+	populateData(gamedata, startTime);
 
 }
 

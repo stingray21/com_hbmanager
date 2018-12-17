@@ -207,6 +207,7 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 		$query->from($this->table_game_player);
 		$query->leftJoin($db->qn($this->table_contact).' USING ('.$db->qn('alias').')');
 		$query->where($db->qn('gameIdHvw').' = '.$db->q($this->selectedGameId));
+		$query->where($db->qn('season').' = '.$db->q($this->season));
 		$query->where($db->qn('number').' NOT IN ('.$db->q('A').','.$db->q('B').','.$db->q('C').','.$db->q('D').')');
 		$query->order($db->qn('alias').' ASC');
 		// echo __FILE__.' ('.__LINE__.')<pre>'.$query.'</pre>';
