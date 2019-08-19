@@ -17,6 +17,7 @@ const jeditor = require("gulp-json-editor");
 const dateFormat = require("dateformat");
 const replace = require("gulp-replace");
 // const argv = require("yargs").argv;
+const zip = require("gulp-zip");
 
 // Logging
 const log = require("fancy-log");
@@ -25,6 +26,7 @@ const c = require("ansi-colors");
 const del = require("del");
 const pipeline = require("readable-stream").pipeline;
 const notify = require("gulp-notify");
+const fs = require("fs");
 
 // FTP deploy
 const gutil = require("gulp-util");
@@ -49,6 +51,7 @@ const extDir_media = "media/";
 // const remoteJoomla_dest = remoteJoomla + extDir;
 const buildDir = "./" + extName + "/";
 const srcDir = "./src/";
+const releaseDir = "../Releases/";
 const paths = {
 	styles: {
 		watch: srcDir + "scss/**/*.scss",
@@ -109,39 +112,39 @@ function scripts() {
 // }
 
 function copy_to_local_Joomla_admin() {
-	return pipeline(
-		gulp.src([buildDir + "admin/**/*"]),
-		newer(localJoomla + extDir_admin + extName),
-		gulp.dest(localJoomla + extDir_admin + extName)
-	);
+	var src = buildDir + "admin/**/*";
+	var dest = localJoomla + extDir_admin + extName;
+	log(src + " --> " + dest);
+
+	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
 }
 function copy_to_local_Joomla_site() {
-	return pipeline(
-		gulp.src([buildDir + "site/**/*"]),
-		newer(localJoomla + extDir_site + extName),
-		gulp.dest(localJoomla + extDir_site + extName)
-	);
+	var src = buildDir + "site/**/*";
+	var dest = localJoomla + extDir_site + extName;
+	log(src + " --> " + dest);
+
+	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
 }
 function copy_to_local_Joomla_media() {
-	return pipeline(
-		gulp.src([buildDir + "media/**/*"]),
-		newer(localJoomla + extDir_media + extName),
-		gulp.dest(localJoomla + extDir_media + extName)
-	);
+	var src = buildDir + "media/**/*";
+	var dest = localJoomla + extDir_media + extName;
+	log(src + " --> " + dest);
+
+	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
 }
 function copy_to_local_Joomla_manifest() {
-	return pipeline(
-		gulp.src([buildDir + extName + ".xml"]),
-		newer(localJoomla + extDir_admin + extName),
-		gulp.dest(localJoomla + extDir_admin + extName)
-	);
+	var src = buildDir + extName + ".xml";
+	var dest = localJoomla + extDir_admin + extName;
+	log(src + " --> " + dest);
+
+	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
 }
 
 var deploy_to_local_Joomla = gulp.series(
-	copy_to_local_Joomla_admin
-	// copy_to_local_Joomla_site,
-	// copy_to_local_Joomla_media,
-	// copy_to_local_Joomla_manifest
+	copy_to_local_Joomla_admin,
+	copy_to_local_Joomla_site,
+	copy_to_local_Joomla_media,
+	copy_to_local_Joomla_manifest
 );
 
 /*
@@ -159,7 +162,11 @@ function watch_assets() {
 function watch_deploy_local() {
 	gulp.watch(paths.scripts.watch, scripts);
 	gulp.watch(paths.styles.watch, styles);
-	gulp.watch(buildDir + "**/*", deploy_to_local_Joomla);
+	// gulp.watch(buildDir + "**/*", deploy_to_local_Joomla);
+	gulp.watch(buildDir + "admin/**/*", copy_to_local_Joomla_admin);
+	gulp.watch(buildDir + "site/**/*", copy_to_local_Joomla_site);
+	gulp.watch(buildDir + "media/**/*", copy_to_local_Joomla_media);
+	gulp.watch(buildDir + extName + ".xml", copy_to_local_Joomla_manifest);
 }
 
 // FTP deploy
@@ -213,9 +220,10 @@ function bump_version(type) {
 		gulp.dest("./")
 	);
 }
+
 function update_date() {
 	var now = new Date();
-	var newDate = dateFormat(now, "yyyy-mm-dd HH:MM Z");
+	var newDate = dateFormat(now, "yyyy-mm-dd HH:MM:ss Z");
 
 	log("Update date in package.json: " + c.magenta(newDate));
 	return pipeline(
@@ -226,10 +234,10 @@ function update_date() {
 		gulp.dest("./")
 	);
 }
+
 function update_manifest() {
 	// gulp.series(bump_patch, update_date);
 
-	var fs = require("fs");
 	var package = JSON.parse(fs.readFileSync("./package.json"));
 
 	var manifest = buildDir + extNameLite + ".xml";
@@ -253,7 +261,26 @@ function update_manifest() {
 	);
 }
 
-var bumpup = gulp.series(bump_version, update_date, update_manifest);
+function zip_release() {
+	var package = JSON.parse(fs.readFileSync("./package.json"));
+	var now = new Date(package.date);
+	var date = dateFormat(now, "yyyymmdd-HHMMss");
+
+	var fileName = extName + "_" + date + "_" + package.version + ".zip";
+	log("Package Release File: " + c.magenta(fileName));
+	return pipeline(
+		gulp.src(buildDir + "**/*"),
+		zip(fileName),
+		gulp.dest(releaseDir)
+	);
+}
+
+var bumpup = gulp.series(
+	bump_version,
+	update_date,
+	update_manifest,
+	zip_release
+);
 
 /*
  * You can use CommonJS `exports` module notation to declare tasks
@@ -265,6 +292,7 @@ exports.deploy = deploy_local;
 exports.deploy_remote = deploy_remote;
 exports.dev = watch_deploy_local;
 exports.bump = bumpup;
+exports.zip = zip_release;
 /*
  * Define default task that can be called by just running `gulp` from cli
  */
