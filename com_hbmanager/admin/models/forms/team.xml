@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
+	<fieldset addrulepath="administrator/components/com_hbmanager/models/rules">
 		<field
 				name="id"
 				type="hidden"
@@ -70,37 +70,42 @@
 				/>
 		<field
 				name="sex"
-				type="text"
+				type="list"
 				label="COM_HBMANAGER_TEAM_SEX_LABEL"
 				description="COM_HBMANAGER_TEAM_SEX_DESC"
-				size="5"
-				class="inputbox"
 				default=""
-				/>
+				>
+				<option value="">COM_HBMANAGER_SEX_SELECT</option>
+				<option value="m">COM_HBMANAGER_SEX_MALE</option>
+				<option value="w">COM_HBMANAGER_SEX_FEMALE</option>
+				<option value="g">COM_HBMANAGER_SEX_MIXED</option>
+		</field>
+		
 		<field
 				name="youth"
-				type="text"
+				type="list"
 				label="COM_HBMANAGER_TEAM_YOUTH_LABEL"
 				description="COM_HBMANAGER_TEAM_YOUTH_DESC"
-				size="5"
-				class="inputbox"
 				default=""
-				/>
+				>
+				<option value="">COM_HBMANAGER_YOUTH_SELECT</option>
+				<option value="aktiv">COM_HBMANAGER_YOUTH_AKTIV</option>
+				<option value="A">COM_HBMANAGER_YOUTH_A</option>
+				<option value="B">COM_HBMANAGER_YOUTH_B</option>
+				<option value="C">COM_HBMANAGER_YOUTH_C</option>
+				<option value="D">COM_HBMANAGER_YOUTH_D</option>
+				<option value="E">COM_HBMANAGER_YOUTH_E</option>
+				<option value="F">COM_HBMANAGER_YOUTH_F</option>
+				<option value="minis">COM_HBMANAGER_YOUTH_MINIS</option>
+		</field>
+
 		<field
 				name="leagueIdHvw"
 				type="text"
 				label="COM_HBMANAGER_TEAM_HVWLINK_LABEL"
 				description="COM_HBMANAGER_TEAM_HVWLINK_DESC"
 				size="40"
-				class="inputbox"
-				default=""
-				/>
-		<field
-				name="update"
-				type="text"
-				label="COM_HBMANAGER_TEAM_UPDATE_LABEL"
-				description="COM_HBMANAGER_TEAM_UPDATE_DESC"
-				size="10"
+				validate="leagueid"
 				class="inputbox"
 				default=""
 				/>
