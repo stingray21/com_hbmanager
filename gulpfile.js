@@ -113,18 +113,55 @@ function scripts() {
 
 function copy_to_local_Joomla_admin() {
 	var src = buildDir + "admin/**/*";
+	var src_exclude = "!(" + buildDir + "admin/language/**/*)";
 	var dest = localJoomla + extDir_admin + extName;
 	log(src + " --> " + dest);
 
-	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
+	return pipeline(gulp.src(src, src_exclude), newer(dest), gulp.dest(dest));
 }
+function copy_to_local_Joomla_admin_language() {
+	var src = buildDir + "admin/language/**/*";
+	var dest = localJoomla + 'administrator/language/';
+	log(src + " --> " + dest);
+
+	options = {dest: dest, map: getLanguageNewerPath }
+	return pipeline(gulp.src(src), newer(options), gulp.dest(file => getLanguagePath(file, dest)));
+}
+
+function getLanguageNewerPath(file) {
+	// log(file);
+	var pattern = /^([a-z]{2}-[A-Z]{2})\.(.*)(\.sys)?(\.ini)$/;
+	langDir = file.replace(pattern, "$1/");
+	file = langDir + file;
+	return file;
+}
+
+function getLanguagePath(file, dest) {
+	// log(file.path);
+	log(c.magenta(file.relative));
+	var pattern = /^([a-z]{2}-[A-Z]{2})\.(.*)(\.sys)?(\.ini)$/;
+	langDir = file.relative.replace(pattern, "$1/");
+	// log(dest + langDir);
+	return dest + langDir;
+}
+
 function copy_to_local_Joomla_site() {
 	var src = buildDir + "site/**/*";
+	var src_exclude = "!(" + buildDir + "site/language/**/*)";
 	var dest = localJoomla + extDir_site + extName;
 	log(src + " --> " + dest);
 
-	return pipeline(gulp.src(src), newer(dest), gulp.dest(dest));
+	return pipeline(gulp.src(src, src_exclude), newer(dest), gulp.dest(dest));
 }
+function copy_to_local_Joomla_site_language() {
+	var src = buildDir + "language/**/*";
+	var dest = localJoomla + 'language/';
+	log(src + " --> " + dest);
+
+	options = {dest: dest, map: getLanguageNewerPath }
+	return pipeline(gulp.src(src), newer(options), gulp.dest(file => getLanguagePath(file, dest)));
+}
+
 function copy_to_local_Joomla_media() {
 	var src = buildDir + "media/**/*";
 	var dest = localJoomla + extDir_media + extName;
@@ -142,7 +179,9 @@ function copy_to_local_Joomla_manifest() {
 
 var deploy_to_local_Joomla = gulp.series(
 	copy_to_local_Joomla_admin,
+	copy_to_local_Joomla_admin_language,
 	copy_to_local_Joomla_site,
+	copy_to_local_Joomla_site_language,
 	copy_to_local_Joomla_media,
 	copy_to_local_Joomla_manifest
 );
@@ -163,8 +202,8 @@ function watch_deploy_local() {
 	gulp.watch(paths.scripts.watch, scripts);
 	gulp.watch(paths.styles.watch, styles);
 	// gulp.watch(buildDir + "**/*", deploy_to_local_Joomla);
-	gulp.watch(buildDir + "admin/**/*", copy_to_local_Joomla_admin);
-	gulp.watch(buildDir + "site/**/*", copy_to_local_Joomla_site);
+	gulp.watch(buildDir + "admin/**/*", gulp.series(copy_to_local_Joomla_admin, copy_to_local_Joomla_admin_language));
+	gulp.watch(buildDir + "site/**/*", gulp.series(copy_to_local_Joomla_site, copy_to_local_Joomla_site_language));
 	gulp.watch(buildDir + "media/**/*", copy_to_local_Joomla_media);
 	gulp.watch(buildDir + extName + ".xml", copy_to_local_Joomla_manifest);
 }
@@ -293,6 +332,7 @@ exports.deploy_remote = deploy_remote;
 exports.dev = watch_deploy_local;
 exports.bump = bumpup;
 exports.zip = zip_release;
+
 /*
  * Define default task that can be called by just running `gulp` from cli
  */

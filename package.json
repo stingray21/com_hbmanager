@@ -1,7 +1,7 @@
 {
 	"name": "com_hbmanager",
-	"version": "2.6.8",
-	"date": "2018-12-17 13:32 GMT+0100",
+	"version": "2.6.9",
+	"date": "2019-08-20 17:36:43 GMT+0200",
 	"description": "Joomla! HB Manager extension",
 	"main": "",
 	"scripts": {
@@ -11,10 +11,7 @@
 		"type": "git",
 		"url": "git+ssh://git@github.com/stingray21/com_hbmanager.git"
 	},
-	"keywords": [
-		"handball",
-		"joomla"
-	],
+	"keywords": ["handball", "joomla"],
 	"author": "Jochen Stehle",
 	"license": "ISC",
 	"bugs": {
@@ -44,6 +41,7 @@
 		"gulp-sourcemaps": "^2.6.5",
 		"gulp-uglify-es": "^1.0.4",
 		"gulp-util": "^3.0.8",
+		"gulp-zip": "^5.0.0",
 		"vinyl-ftp": "^0.6.1"
 	}
 }
