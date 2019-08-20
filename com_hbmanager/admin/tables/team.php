@@ -26,4 +26,9 @@ class HbmanagerTableTeam extends JTable
 	{
 		parent::__construct('#__hb_team', 'id', $db);
 	}
+
+	public function store($updateNulls = true) {
+		/* overload JTable::store() to enable updating values into NULL */
+		return parent::store(true);
+	}
 }

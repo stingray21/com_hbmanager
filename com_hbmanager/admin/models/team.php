@@ -85,4 +85,14 @@ class HBmanagerModelTeam extends JModelAdmin
 		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($data);echo'</pre>';
 		return $data;
 	}
+
+	protected function prepareTable($table)
+	{
+		/* define which columns can have NULL values */
+		$defnull = array('order','leagueKey','league','sex','youth','leagueIdHvw','email');
+		foreach ($defnull as $val)
+			/* define the rules when the value is set NULL */
+			if (!strlen(trim($table->$val)))
+				$table->$val = NULL;
+	}
 }
