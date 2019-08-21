@@ -81,8 +81,10 @@ class HBmanagerModelGamesAll extends HBmanagerModelGames
 		if (strcmp(JURI::base(true), '/administrator') === 0) {
 			$base_directory = '../';
 		}
+		$tz = HbmanagerHelper::getHbTimezone();
+		$today = JHtml::_('date', 'now', 'Ymd-His', $tz);
 		$season = HbmanagerHelper::getCurrentSeason();
-		$filename = $base_directory . 'hbdata/' . $season . '_hkog_games.xlsx';
+		$filename = $base_directory . 'hbdata/' . $today . '_hkog_spiele_' . $season . '.xlsx';
 		// echo __FILE__ . '(' . __LINE__ . ')<pre>' . $filename . '</pre>';
 		if (is_file($filename)) {
 			unlink($filename);
