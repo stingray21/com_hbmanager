@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_helloworld
@@ -21,19 +22,19 @@ class HBmanagerModelGames extends JModelAdmin
 	protected $nextGames = array();
 	// protected $timezone = 'Europe/Berlin';
 	protected $timezone = 'UTC';
-	
+
 	protected $dates = null;
 	protected $tables = null;
 	protected $tz = null;
-	
- 	protected $season;
+
+	protected $season;
 
 	// TODO use CONVERT_TZ in MySQL for date
-	
-	function __construct() 
+
+	function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->tables = new stdClass();
 		$this->tables->team = '#__hb_team';
 		$this->tables->game = '#__hb_game';
@@ -44,7 +45,7 @@ class HBmanagerModelGames extends JModelAdmin
 		$this->season = HbmanagerHelper::getCurrentSeason();
 
 		$this->tz = new DateTimeZone($this->timezone);
-		
+
 		$dates = new stdClass();
 		$dates->prevStart 	= null;
 		$dates->prevEnd 	= null;
@@ -57,16 +58,16 @@ class HBmanagerModelGames extends JModelAdmin
 		if (isset($get['prevEnd'])) 	$dates->prevEnd 	= $get['prevEnd'];
 		if (isset($get['nextStart'])) 	$dates->nextStart = $get['nextStart'];
 		if (isset($get['nextEnd'])) 	$dates->nextEnd 	= $get['nextEnd'];
-		
+
 		$post = JRequest::get('post');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($post);echo'</pre>';
 		if (isset($post['gameDates']['prevStart'])) $dates->prevStart 	= $post['gameDates']['prevStart'];
 		if (isset($post['gameDates']['prevEnd'])) 	$dates->prevEnd 	= $post['gameDates']['prevEnd'];
 		if (isset($post['gameDates']['nextStart'])) $dates->nextStart 	= $post['gameDates']['nextStart'];
 		if (isset($post['gameDates']['nextEnd'])) 	$dates->nextEnd 	= $post['gameDates']['nextEnd'];
-		
+
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		
+
 		$this->dates = new stdClass();
 		$this->dates->today = date_create('now', $this->tz);
 		self::setDates($dates);
@@ -81,7 +82,7 @@ class HBmanagerModelGames extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// TODO: implement this method
-		
+
 		// // Get the form.
 		// $form = $this->loadForm(
 		// 	'com_hbmanager.team',
@@ -115,9 +116,9 @@ class HBmanagerModelGames extends JModelAdmin
 	// 	// echo __FILE__.'('.__LINE__.'):<pre>';print_r($data);echo'</pre>';
 	// 	return $data;
 	// }
-	
+
 	public function getTeams($order = true)
-	{	
+	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -137,34 +138,34 @@ class HBmanagerModelGames extends JModelAdmin
 			//echo 'no dates';
 			self::setDates();
 		}
-		
+
 		$dates['prevStart'] = $this->dates->prevStart->format('Y-m-d');
 		$dates['prevEnd'] = $this->dates->prevEnd->format('Y-m-d');
-		
+
 		$dates['nextStart'] = $this->dates->nextStart->format('Y-m-d');
 		$dates['nextEnd'] = $this->dates->nextEnd->format('Y-m-d');
 
 		return $dates;
 	}
-	
+
 	public function setDates($dates = null)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		
+
 		// previous games dates
 		self::setPrevDates($dates);
-		
+
 		// upcoming games dates
 		self::setNextDates($dates);
 
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
-	
+
 	public function setPrevDates($dates = null)
 	{
-		$dates = (object) $dates; 
+		$dates = (object) $dates;
 		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		
+
 		$startDate 	= (empty($dates->prevStart)) 	? null : date_create($dates->prevStart, $this->tz);
 		$endDate 	= (empty($dates->prevEnd)) 	? null : date_create($dates->prevEnd, $this->tz);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($endDate);echo'</pre>';
@@ -174,33 +175,33 @@ class HBmanagerModelGames extends JModelAdmin
 		}
 
 		// previous games start date
-		if (is_null($startDate) || (date_diff($startDate, $endDate)->format('%R') === '-' ) ) {
+		if (is_null($startDate) || (date_diff($startDate, $endDate)->format('%R') === '-')) {
 			$startDate = self::getPrevGamesStart($endDate);
-		} 
-		
+		}
+
 		$this->dates->prevStart = $startDate;
 		$this->dates->prevEnd 	= $endDate;
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
-	
+
 	protected function getPrevGamesEnd()
 	{
 		// TODO: double check time/timezone for offset
 		$timestamp = strtotime($this->dates->today->format('Y-m-d'));
-		$offset = date_create(date('Y-m-d H:i:s',strtotime('next Monday', strtotime('last Friday', $timestamp))), $this->tz);
+		$offset = date_create(date('Y-m-d H:i:s', strtotime('next Monday', strtotime('last Friday', $timestamp))), $this->tz);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
 
-		$db = $this->getDbo();  
-		
+		$db = $this->getDbo();
+
 		$query = $db->getQuery(true);
-		$query->select('MAX(DATE('.$db->qn('dateTime').')) AS '
-					.$db->qn('date'));
+		$query->select('MAX(DATE(' . $db->qn('dateTime') . ')) AS '
+			. $db->qn('date'));
 		$query->from($this->tables->game);
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
-		$query->where('DATE('.$db->qn('dateTime').') <= '.
-					$db->q($offset->format('Y-m-d'))	);
-		$query->where('DATE('.$db->qn('dateTime').') <= '.
-		$db->q($this->dates->today->format('Y-m-d'))	);
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
+		$query->where('DATE(' . $db->qn('dateTime') . ') <= ' .
+			$db->q($offset->format('Y-m-d')));
+		$query->where('DATE(' . $db->qn('dateTime') . ') <= ' .
+			$db->q($this->dates->today->format('Y-m-d')));
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -212,17 +213,17 @@ class HBmanagerModelGames extends JModelAdmin
 	protected function getPrevGamesStart($offset)
 	{
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true);
-		$query->select('MIN(DATE('.$db->qn('dateTime').')) AS '
-					.$db->qn('date'));
+		$query->select('MIN(DATE(' . $db->qn('dateTime') . ')) AS '
+			. $db->qn('date'));
 		$query->from($this->tables->game);
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
 		$query->where(
-					'DATE('.$db->qn('dateTime').') BETWEEN '.
-					$db->q(strftime("%Y-%m-%d", strtotime('last Monday', strtotime($offset->format('Y-m-d'))))).
-					' AND '.$db->q($offset->format('Y-m-d'))
-				);
+			'DATE(' . $db->qn('dateTime') . ') BETWEEN ' .
+				$db->q(strftime("%Y-%m-%d", strtotime('last Monday', strtotime($offset->format('Y-m-d'))))) .
+				' AND ' . $db->q($offset->format('Y-m-d'))
+		);
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -231,12 +232,12 @@ class HBmanagerModelGames extends JModelAdmin
 		return date_create($date, $this->tz);
 	}
 
-	
+
 	function setNextDates($dates = null)
 	{
-		$dates = (object) $dates; 
+		$dates = (object) $dates;
 		// echo __FILE__.'('.__LINE__.'):<pre>';print_r($dates);echo'</pre>';
-		
+
 		$startDate 	= (empty($dates->nextStart)) 	? null : date_create($dates->nextStart, $this->tz);
 		$endDate 	= (empty($dates->nextEnd)) 	? null : date_create($dates->nextEnd, $this->tz);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($startDate);echo'</pre>';
@@ -246,34 +247,34 @@ class HBmanagerModelGames extends JModelAdmin
 		if (is_null($startDate)) {
 			$startDate = self::getNextGamesStart();
 		}
-		
+
 		// next games end date
-		if (is_null($endDate) || (date_diff($startDate, $endDate)->format('%R') === '-' ) ) {
+		if (is_null($endDate) || (date_diff($startDate, $endDate)->format('%R') === '-')) {
 			$endDate = self::getNextGamesEnd($startDate);
-		} 
-		
+		}
+
 		$this->dates->nextStart = $startDate;
 		$this->dates->nextEnd 	= $endDate;
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
-	}		
+	}
 
 	protected function getNextGamesStart()
 	{
 		// TODO: double check time/timezone for offset
 		$timestamp = strtotime($this->dates->today->format('Y-m-d'));
-		$offset = date_create(date('Y-m-d H:i:s',strtotime('next Monday', strtotime('last Friday', $timestamp))), $this->tz);
+		$offset = date_create(date('Y-m-d H:i:s', strtotime('next Monday', strtotime('last Friday', $timestamp))), $this->tz);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($offset);echo'</pre>';
-		
+
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true);
-		$query->select('MIN(DATE('.$db->qn('dateTime').')) AS '
-					.$db->qn('date'));
+		$query->select('MIN(DATE(' . $db->qn('dateTime') . ')) AS '
+			. $db->qn('date'));
 		$query->from($this->tables->game);
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
 		$query->where(
-					'DATE('.$db->qn('dateTime').') > '.$db->q($offset->format('Y-m-d'))
-				);
+			'DATE(' . $db->qn('dateTime') . ') > ' . $db->q($offset->format('Y-m-d'))
+		);
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -281,22 +282,22 @@ class HBmanagerModelGames extends JModelAdmin
 
 		return date_create($date, $this->tz);
 	}
-	
+
 	protected function getNextGamesEnd($offset)
 	{
-	
-		$db = $this->getDbo();  
-		
+
+		$db = $this->getDbo();
+
 		$query = $db->getQuery(true);
-		$query->select('MAX(DATE('.$db->qn('dateTime').')) AS '
-					.$db->qn('date'));
+		$query->select('MAX(DATE(' . $db->qn('dateTime') . ')) AS '
+			. $db->qn('date'));
 		$query->from($this->tables->game);
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
 		$query->where(
-					'DATE('.$db->qn('dateTime').') BETWEEN '.
-					$db->q($offset->format('Y-m-d')).' AND '.
-					$db->q(strftime("%Y-%m-%d", strtotime('next Sunday', strtotime('last Monday', strtotime($offset->format('Y-m-d'))))))
-				);
+			'DATE(' . $db->qn('dateTime') . ') BETWEEN ' .
+				$db->q($offset->format('Y-m-d')) . ' AND ' .
+				$db->q(strftime("%Y-%m-%d", strtotime('next Sunday', strtotime('last Monday', strtotime($offset->format('Y-m-d'))))))
+		);
 		//echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
 		$date = $db->loadResult();
@@ -314,8 +315,7 @@ class HBmanagerModelGames extends JModelAdmin
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
 		if (empty($games)) return [];
 		$arrange = true;
-		if ($arrange) 
-		{
+		if ($arrange) {
 			$games = self::groupEF($games);
 			$games = self::addCssInfo($games);
 			$games = self::sortByOrder($games);
@@ -362,8 +362,7 @@ class HBmanagerModelGames extends JModelAdmin
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
 		if (empty($games)) return [];
 		$arrange = true;
-		if ($arrange) 
-		{
+		if ($arrange) {
 			$games = self::groupEF($games);
 			$games = self::addCssInfo($games);
 			$games = self::groupByDay($games);
@@ -376,30 +375,30 @@ class HBmanagerModelGames extends JModelAdmin
 	protected function getGamesfromDB($start, $end, $table)
 	{
 		$db = $this->getDbo();
-	
+
 		$query = $db->getQuery(true);
 
 		$query->select('*');
 
 		$query->from($this->tables->game);
-		$query->leftJoin($db->qn($this->tables->team).
-			' USING ('.$db->qn('teamkey').')');
-		$query->leftJoin($db->qn($table).
-				' USING ('.$db->qn('gameIdHvw').', '.$db->qn('season').')');
-		$query->leftJoin($db->qn($this->tables->gym).
-				' USING ('.$db->qn('gymId').')');
-		
-		$query->where('(DATE('.$db->qn('dateTime').') BETWEEN '
-		.$db->q($start).' AND '.$db->q($end).')');
-		$query->where($db->qn('ownClub').' = '.$db->q(1));
-		$query->where('('.$this->tables->game.'.'.$db->qn('comment').' != '.$db->q('abgesetzt').' OR '.$this->tables->game.'.'.$db->qn('comment').' IS NULL)');
+		$query->leftJoin($db->qn($this->tables->team) .
+			' USING (' . $db->qn('teamkey') . ')');
+		$query->leftJoin($db->qn($table) .
+			' USING (' . $db->qn('gameIdHvw') . ', ' . $db->qn('season') . ')');
+		$query->leftJoin($db->qn($this->tables->gym) .
+			' USING (' . $db->qn('gymId') . ')');
+
+		$query->where('(DATE(' . $db->qn('dateTime') . ') BETWEEN '
+			. $db->q($start) . ' AND ' . $db->q($end) . ')');
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
+		$query->where('(' . $this->tables->game . '.' . $db->qn('comment') . ' != ' . $db->q('abgesetzt') . ' OR ' . $this->tables->game . '.' . $db->qn('comment') . ' IS NULL)');
 		// $query->where($db->qn('goalsHome').' IS NOT NULL');
-		$query->order($db->qn('dateTime').' ASC');
+		$query->order($db->qn('dateTime') . ' ASC');
 		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
 		$db->setQuery($query);
-		$games = $db->loadObjectList();		
+		$games = $db->loadObjectList();
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
-		
+
 		$games = self::addTeamShort($games);
 
 		return $games;
@@ -408,12 +407,11 @@ class HBmanagerModelGames extends JModelAdmin
 	protected function groupEF($games)
 	{
 		$tempGames = array();
-		foreach ($games as $game){
-			if (preg_match('/^gJ(E|F)-/', $game->teamkey))
-			{
+		foreach ($games as $game) {
+			if (preg_match('/^gJ(E|F)-/', $game->teamkey)) {
 				$date = date_create($game->dateTime, $this->tz)->format('Y-m-d');
-				$key = $game->teamkey.'_'.$date.'_'.preg_replace('/[^a-zA-Z0-9_]/', '', $game->home.'_'.$game->away);
- 
+				$key = $game->teamkey . '_' . $date . '_' . preg_replace('/[^a-zA-Z0-9_]/', '', $game->home . '_' . $game->away);
+
 				$gameDetails = new stdClass();
 				$gameDetails->gameIdHvw = $game->gameIdHvw;
 				$gameDetails->dateTime = $game->dateTime;
@@ -443,17 +441,15 @@ class HBmanagerModelGames extends JModelAdmin
 				if (!is_null($gameDetails->goalsAway)) $tempGames[$key]->goalsAway += $gameDetails->goalsAway;
 				if (!is_null($gameDetails->pointsHome)) $tempGames[$key]->pointsHome += $gameDetails->pointsHome;
 				if (!is_null($gameDetails->pointsAway)) $tempGames[$key]->pointsAway += $gameDetails->pointsAway;
-				$tempGames[$key]->details[] = $gameDetails;				
-				
+				$tempGames[$key]->details[] = $gameDetails;
 			} else {
 				$tempGames[] = $game;
 			}
 		}
 
-		foreach ($tempGames as $game){
+		foreach ($tempGames as $game) {
 			if (isset($game->details)) {
-				usort($game->details, function($a, $b) 
-				{		
+				usort($game->details, function ($a, $b) {
 					$retval = (strtotime($a->dateTime) < strtotime($b->dateTime)) ? -1 : 1;
 					return $retval;
 				});
@@ -470,11 +466,11 @@ class HBmanagerModelGames extends JModelAdmin
 	{
 		// arrange games by date
 		$arranged = array();
-		foreach ($games as $game){
+		foreach ($games as $game) {
 			$date = date_create($game->dateTime, $this->tz)->format('Y-m-d');
 			$arranged[$date][] = $game;
 		}
-		
+
 		// echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
 		ksort($arranged);
 		// echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
@@ -483,16 +479,15 @@ class HBmanagerModelGames extends JModelAdmin
 
 	protected function sortByOrder($games)
 	{
-		usort($games, function($a, $b) 
-		{
+		usort($games, function ($a, $b) {
 			// $retval = $a->order <=> $b->order;
 			// if ($retval == 0) {
 			//     $retval = $a->dateTime <=> $b->dateTime;
 			// }
-			
+
 			$retval = ($a->order > $b->order) ? -1 : 1;
 			if ($a->order == $b->order) {
-			    $retval = (strtotime($a->dateTime) < strtotime($b->dateTime)) ? -1 : 1;
+				$retval = (strtotime($a->dateTime) < strtotime($b->dateTime)) ? -1 : 1;
 			}
 			return $retval;
 		});
@@ -501,60 +496,55 @@ class HBmanagerModelGames extends JModelAdmin
 
 	protected function sortByTime($games)
 	{
-		foreach ($games as &$day) 
-		{
-			usort($day, function($a, $b) 
-			{
+		foreach ($games as &$day) {
+			usort($day, function ($a, $b) {
 				$retval = (strtotime($a->dateTime) < strtotime($b->dateTime)) ? -1 : 1;
 				return $retval;
 			});
 		}
 		return $games;
-	}	
-	
+	}
+
 	protected function addCssInfo($games)
 	{
-		foreach ($games as &$game)
-		{
+		foreach ($games as &$game) {
 			//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
 			$game->winnerTeam = self::getWinnerTeam($game);
 			$game->ownTeam = self::getOwnTeam($game);
-			$game->indicator = self::getIndicator($game);	
-
+			$game->indicator = self::getIndicator($game);
 		}
 		return $games;
 	}
 
 	protected function addTeamShort($games)
 	{
-		foreach ($games as &$game)
-		{
+		foreach ($games as &$game) {
 			//echo __FUNCTION__."<pre>"; print_r($game); echo "</pre>";
-			$search = [ 'Jugend' , 'weiblich', 'männlich', 'gemischt', 'Geislingen', 'Ostdorf'];
-			$replace = [ 'Jgd.', 'weibl.', 'männl.', 'gem.', 'G.', 'O.'];
+			$search = ['Jugend', 'weiblich', 'männlich', 'gemischt', 'Geislingen', 'Ostdorf'];
+			$replace = ['Jgd.', 'weibl.', 'männl.', 'gem.', 'G.', 'O.'];
 			// TODO: move $search and $replace in Admin Options
-			$game->teamShort = str_replace( $search , $replace, $game->team);	
-
+			$game->teamShort = str_replace($search, $replace, $game->team);
 		}
 		return $games;
 	}
-	
+
 	protected function getWinnerTeam($game)
 	{
 		if ($game->pointsHome > $game->pointsAway) return 1;
 		elseif ($game->pointsHome < $game->pointsAway) return 2;
-		elseif ($game->pointsHome == $game->pointsAway && $game->pointsHome !== null ) return 0;
+		elseif ($game->pointsHome == $game->pointsAway && $game->pointsHome !== null) return 0;
 		return null;
-	}	
-	
+	}
+
 	protected function getOwnTeam($game)
 	{
 		if ($game->home == $game->shortName) return 1;
 		elseif ($game->away == $game->shortName) return 2;
 		return null;
 	}
-	
-	protected function getIndicator($game) {
+
+	protected function getIndicator($game)
+	{
 		if ($game->winnerTeam === 0) return 'tied';
 		if ($game->winnerTeam === $game->ownTeam && $game->winnerTeam !== null) return 'win';
 		if ($game->winnerTeam !== $game->ownTeam && $game->winnerTeam !== null) return 'loss';
@@ -566,39 +556,37 @@ class HBmanagerModelGames extends JModelAdmin
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($minDate);echo'</pre>';
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($maxDate);echo'</pre>';
-		
-		if ($minDate === $maxDate)
-		{
+
+		if ($minDate === $maxDate) {
 			$titledate = JHtml::_('date', $minDate, 'D, j. M.', $this->timezone);
 		}
 		// back to back days and weekend
-		elseif (strftime("%j", $minDate)+1 == strftime("%j", $maxDate) AND
-			(strftime("%w", $minDate) == 6 AND strftime("%w", $maxDate) == 0) )
-		{
+		elseif (
+			strftime("%j", $minDate) + 1 == strftime("%j", $maxDate) and (strftime("%w", $minDate) == 6 and strftime("%w", $maxDate) == 0)
+		) {
 			// if same month
-			if (strftime("%m", $minDate) == strftime("%m", $maxDate))
-			{
-				$date = JHTML::_('date', $minDate , 'j.', $this->timezone).
-					JHTML::_('date', $maxDate , '/j. M.', $this->timezone);
+			if (strftime("%m", $minDate) == strftime("%m", $maxDate)) {
+				$date = JHTML::_('date', $minDate, 'j.', $this->timezone) .
+					JHTML::_('date', $maxDate, '/j. M.', $this->timezone);
+			} else {
+				$date = JHTML::_('date', $minDate, 'j. F', $this->timezone) .
+					JHTML::_('date', $maxDate, ' / j. F', $this->timezone);
 			}
-			else
-			{
-				$date = JHTML::_('date', $minDate , 'j. F', $this->timezone).
-					JHTML::_('date', $maxDate , ' / j. F', $this->timezone);
-			}
-			$titledate = 'Wochenende '.$date;
-		}
-		else
-		{
+			$titledate = 'Wochenende ' . $date;
+		} else {
 			$titledate = JHtml::_('date', $minDate, 'j. ', $this->timezone);
 			if (strftime("%m", $minDate) !== strftime("%m", $maxDate)) {
 				$titledate .= JHtml::_('date', $minDate, 'F ', $this->timezone);
 			}
 			$titledate .= 'bis ';
-			$titledate .= JHtml::_('date', $maxDate, 'j. F', 
-				$this->timezone);
+			$titledate .= JHtml::_(
+				'date',
+				$maxDate,
+				'j. F',
+				$this->timezone
+			);
 		}
-		
+
 		return $titledate;
 	}
 
@@ -627,7 +615,7 @@ class HBmanagerModelGames extends JModelAdmin
 			}
 		}
 		return $homegames;
-	}	
+	}
 
 	public function getNextAndHomeGames()
 	{
@@ -653,6 +641,54 @@ class HBmanagerModelGames extends JModelAdmin
 		$games->homegames = $homegames;
 		return $games;
 	}
+
+
+
+	public function getAllHomeGames()
+	{
+		$db = $this->getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+
+		$query->from($this->tables->game);
+		$query->leftJoin($db->qn($this->tables->team) .
+			' USING (' . $db->qn('teamkey') . ')');
+		$query->leftJoin($db->qn($this->tables->gym) .
+			' USING (' . $db->qn('gymId') . ')');
+
+		$query->where($db->qn('ownClub') . ' = ' . $db->q(1));
+		$query->where($db->qn('season') . ' = ' . $db->q($this->season));
+		$query->order($db->qn('dateTime') . ' ASC');
+		// echo __FILE__.'('.__LINE__.'):<pre>'.$query.'</pre>';
+		$db->setQuery($query);
+		$games = $db->loadObjectList();
+		// echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';
+		$games = self::organizeHomeGames($games);
+		// echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';die;
+		return $games;
+	}
+
+	private function organizeHomeGames($games)
+	{
+		$games = self::groupByDay($games);
+		$games = self::sortByTime($games);
+
+		$gyms = HbmanagerHelper::getHomeGyms();
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($gyms);echo'</pre>';
+		$homegames = [];
+
+		// echo __FUNCTION__.':<pre>';print_r($games);echo'</pre>';die;
+
+		foreach ($games as $date => $days) {
+			foreach ($days as $game) {
+				// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($game->gymId);echo'</pre>';
+				if (in_array($game->gymId, $gyms)) {
+					$homegames[$date][$game->gymId][] = $game;
+				}
+			}
+		}
+		return $homegames;
+	}
 }
-
-

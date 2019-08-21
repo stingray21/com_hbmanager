@@ -11,8 +11,7 @@ class hbmanagerViewGamesall extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
+		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode('<br />', $errors));
 
 			return false;
@@ -20,8 +19,11 @@ class hbmanagerViewGamesall extends JViewLegacy
 
 		$model = $this->getModel();
 
+
 		$this->games = $model->getGames();
-		
+
+		$this->excelLink = $model->generateExcelFile($this->games);
+
 
 		// Set the submenu
 		HbmanagerHelper::addSubmenu('gamesall');
@@ -54,10 +56,10 @@ class hbmanagerViewGamesall extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setDocument() 
+	protected function setDocument()
 	{
 		$document = JFactory::getDocument();
-		$document->addStyleSheet( JUri::root() . 'media/com_hbmanager/css/admin.css' );
+		$document->addStyleSheet(JUri::root() . 'media/com_hbmanager/css/admin.css');
 		$document->setTitle(JText::_('COM_HBMANAGER_GAMESALL_TITLE'));
 	}
 }
