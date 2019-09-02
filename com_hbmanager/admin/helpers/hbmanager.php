@@ -59,6 +59,12 @@ class HbmanagerHelper
 			'index.php?option=com_hbmanager&view=gamesall',
 			$submenu == 'gamesall'
 		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_HBMANAGER_SUBMENU_EMAILS'),
+			'index.php?option=com_hbmanager&view=emails',
+			$submenu == 'emails'
+		);
 	}
 
 

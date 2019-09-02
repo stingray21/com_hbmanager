@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="emailtemplate">
+		<fieldset>
+			<field
+					name="id"
+					type="hidden"
+					/>
+			<field
+					name="emailbody"
+					type="textarea"
+					label="COM_HBMANAGER_EMAILS_BODY_LABEL"
+					description="COM_HBMANAGER_EMAILS_BODY_DESC"
+					rows="20" 
+					cols="30"
+					default=""
+					/>
+		</fieldset>
+	</fields>
+</form>

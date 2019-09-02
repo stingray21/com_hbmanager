@@ -1,7 +1,7 @@
 {
 	"name": "com_hbmanager",
-	"version": "2.6.9",
-	"date": "2019-08-20 19:18:18 GMT+0200",
+	"version": "2.6.10",
+	"date": "2019-09-02 18:02:02 GMT+0200",
 	"description": "Joomla! HB Manager extension",
 	"main": "",
 	"scripts": {
@@ -42,6 +42,7 @@
 		"gulp-uglify-es": "^1.0.4",
 		"gulp-util": "^3.0.8",
 		"gulp-zip": "^5.0.0",
+		"precss": "^4.0.0",
 		"vinyl-ftp": "^0.6.1"
 	}
 }

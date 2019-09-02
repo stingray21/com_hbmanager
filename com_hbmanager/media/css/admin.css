@@ -1,75 +1,67 @@
-@charset "UTF-8";
 @font-face {
-  font-family: "icohb";
+  font-family: 'icohb';
   src: url("fonts/icohb.eot?e4u2ud");
   src: url("fonts/icohb.eot?e4u2ud#iefix") format("embedded-opentype"), url("fonts/icohb.ttf?e4u2ud") format("truetype"), url("fonts/icohb.woff?e4u2ud") format("woff"), url("fonts/icohb.svg?e4u2ud#icohb") format("svg");
   font-weight: normal;
-  font-style: normal;
-}
-[class^=icon-hb]::before, [class*=" icon-hb"]::before {
+  font-style: normal; }
+
+[class^="icon-hb"]::before, [class*=" icon-hb"]::before {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icohb" !important;
+  font-family: 'icohb' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
+  font-feature-settings: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  -moz-osx-font-smoothing: grayscale; }
 
 .icon-hb-ball::before {
-  content: "";
-}
+  content: "\e900"; }
 
 .icon-hb-image::before {
-  content: "";
-}
+  content: "\e90d"; }
 
 .icon-hb-images::before {
-  content: "";
-}
+  content: "\e90e"; }
 
 .icon-hb-profile::before {
-  content: "";
-}
+  content: "\e923"; }
 
 .icon-hb-file-empty::before {
-  content: "";
-}
+  content: "\e924"; }
 
 .icon-hb-files-empty::before {
-  content: "";
-}
+  content: "\e925"; }
 
 .icon-hb-file-text2::before {
-  content: "";
-}
+  content: "\e926"; }
 
 .icon-hb-file-picture::before {
-  content: "";
-}
+  content: "\e927"; }
 
 #teamdata .icon-loop::before,
 .updateTeams .icon-loop::before {
-  color: #398137;
-}
+  color: #398137; }
+
+@-webkit-keyframes spinner {
+  to {
+    transform: rotate(360deg); } }
 
 @keyframes spinner {
   to {
-    transform: rotate(360deg);
-  }
-}
+    transform: rotate(360deg); } }
+
 #teamdata .spinner {
-  position: relative;
-}
-#teamdata .spinner .btn {
-  display: none;
-}
+  position: relative; }
+  #teamdata .spinner .btn {
+    display: none; }
+
 #teamdata .spinner:before {
-  content: "";
+  content: '';
   box-sizing: border-box;
   position: absolute;
   width: 15px;
@@ -78,51 +70,48 @@
   border-radius: 50%;
   border: 2px solid #ccc;
   border-top-color: #333;
-  animation: spinner 0.6s linear infinite;
-}
+  -webkit-animation: spinner .6s linear infinite;
+          animation: spinner .6s linear infinite; }
+
 #teamdata .updateStatus .icon-checkmark {
-  color: #398137;
-}
+  color: #398137; }
+
 #teamdata .updateStatus .icon-warning {
-  color: #bd362f;
-}
+  color: #bd362f; }
+
 #teamdata .updateStatus .indicator {
   display: none;
-  margin-left: 10px;
-}
+  margin-left: 10px; }
+
 #teamdata .updateStatus .details {
-  display: none;
-}
-#teamdata .updateStatus .details ul {
-  list-style-type: none;
-  margin-left: 10px;
-}
+  display: none; }
+  #teamdata .updateStatus .details ul {
+    list-style-type: none;
+    margin-left: 10px; }
+
 #teamdata .updateStatus .show {
-  display: block;
-}
+  display: block; }
 
 #gamedatesForm dl, #gamedatesForm dt, #gamedatesForm dd {
   margin: 0;
-  display: inline-block;
-}
+  display: inline-block; }
+
 #gamedatesForm dl {
-  margin-bottom: 2em;
-}
+  margin-bottom: 2em; }
+
 #gamedatesForm dt {
-  margin-right: 0.5em;
-}
+  margin-right: 0.5em; }
+
 #gamedatesForm dd {
-  margin-right: 3em;
-}
+  margin-right: 3em; }
+
 #gamedatesForm label, #gamedatesForm select {
   padding: 4px 6px;
-  margin: 0;
-}
+  margin: 0; }
 
 #gamesnext td.report textarea,
 #gamesprev td.report textarea {
-  width: auto;
-}
+  width: auto; }
 
 #printnews .printsheet {
   background: #fcfcfc;
@@ -131,41 +120,39 @@
   border: 1px solid #ddd;
   box-shadow: 5px 5px 5px gray;
   width: 33em;
-  text-align: justify;
-}
+  text-align: justify; }
 
 #gamedetails #modal-confirm .modal-body {
   max-height: 500px;
-  overflow: scroll;
-}
+  overflow: scroll; }
+
 #gamedetails #import-preview {
   margin: 1em 2em;
   padding: 0.5em;
-  margin-bottom: 5em;
-}
-#gamedetails #import-preview table tr {
-  border-bottom: 1px solid #ddd;
-}
-#gamedetails #import-preview table tr:nth-child(even) {
-  background: #eee;
-}
-#gamedetails #import-preview table td {
-  padding: 0.1em 0.25em;
-}
+  margin-bottom: 5em; }
+  #gamedetails #import-preview table tr {
+    border-bottom: 1px solid #ddd; }
+  #gamedetails #import-preview table tr:nth-child(even) {
+    background: #eee; }
+  #gamedetails #import-preview table td {
+    padding: 0.1em 0.25em; }
 
 #gamesall h4,
 #gameshome h4 {
-  margin-top: 3em;
-}
+  margin-top: 3em; }
+
 #gamesall table.schedule,
 #gameshome table.schedule {
-  min-width: 40em;
-}
-#gamesall table.schedule tr:nth-child(even),
-#gameshome table.schedule tr:nth-child(even) {
-  background: #eee;
-}
-#gamesall table.schedule td,
-#gameshome table.schedule td {
-  padding: 0.1em 0.5em;
-}
+  min-width: 40em; }
+  #gamesall table.schedule tr:nth-child(even),
+  #gameshome table.schedule tr:nth-child(even) {
+    background: #eee; }
+  #gamesall table.schedule td,
+  #gameshome table.schedule td {
+    padding: 0.1em 0.5em; }
+
+#hbemails textarea {
+  width: 95%;
+  max-width: 50rem; }
+
+/*# sourceMappingURL=admin.css.map */
