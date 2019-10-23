@@ -77,6 +77,21 @@ class HbmanagerController extends JControllerLegacy
 		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=update&format=raw&viewoption=plain', false));
 	}
 
+	function sendReminder()
+	{
+		$jinput = JFactory::getApplication()->input;
+		echo __FILE__.' ('.__LINE__.'):<pre>';print_r($jinput);echo'</pre>';
+		
+		// Get the model
+		// $model = $this->getModel('update');
+		// echo __FILE__.' ('.__LINE__.'):<pre>'.$model.'</pre>';
+
+		// http://hkog.local/index.php?option=com_hbmanager&task=sendReminder
+
+		// Redirect 
+		$this->setRedirect(JRoute::_('index.php?option=com_hbmanager&view=reminder&format=raw&viewoption=plain', false));
+	}
+
 	function getGameData()
 	{
 		// Set up the data to be sent in the response.

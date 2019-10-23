@@ -60,7 +60,7 @@ const paths = {
 	},
 	scripts: {
 		watch: srcDir + "js/**/*.js",
-		src: srcDir + "js/main_admin.js",
+		src: srcDir + "js/**/*.js",
 		dest: buildDir + "assets/"
 	}
 };
