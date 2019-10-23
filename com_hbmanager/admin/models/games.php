@@ -317,6 +317,7 @@ class HBmanagerModelGames extends JModelAdmin
 		$arrange = true;
 		if ($arrange) {
 			$games = self::groupEF($games);
+			$games = self::abbreviateGames($games);
 			$games = self::addCssInfo($games);
 			$games = self::sortByOrder($games);
 			if ($byDate) $games = self::groupByDay($games);
@@ -364,6 +365,7 @@ class HBmanagerModelGames extends JModelAdmin
 		$arrange = true;
 		if ($arrange) {
 			$games = self::groupEF($games);
+			$games = self::abbreviateGames($games);
 			$games = self::addCssInfo($games);
 			$games = self::groupByDay($games);
 			$games = self::sortByTime($games);
@@ -408,7 +410,7 @@ class HBmanagerModelGames extends JModelAdmin
 	{
 		$tempGames = array();
 		foreach ($games as $game) {
-			if (preg_match('/^gJ(E|F)-/', $game->teamkey)) {
+			if (preg_match('/^(g|w|m)J(E|F)-/', $game->teamkey)) {
 				$date = date_create($game->dateTime, $this->tz)->format('Y-m-d');
 				$key = $game->teamkey . '_' . $date . '_' . preg_replace('/[^a-zA-Z0-9_]/', '', $game->home . '_' . $game->away);
 
@@ -460,6 +462,24 @@ class HBmanagerModelGames extends JModelAdmin
 		}
 		//echo __FUNCTION__.':<pre>';print_r($arranged);echo'</pre>';
 		return $grouped;
+	}
+
+	protected function abbreviateGames($games)
+	{	
+		// TODO: able to change in backend
+		$pattern = '/^HK Ostd\/Geisl( (\d))?$/'; 
+		$abbreviation = 'HKOG';
+		
+		foreach ($games as &$game) {
+			// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $game ,1).'</pre>';
+			
+			$game->homeAbbr = preg_replace($pattern, $abbreviation.'$2',$game->home);
+			$game->awayAbbr = preg_replace($pattern, $abbreviation.'$2',$game->away);
+			// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $game->home ,1).'</pre>';
+		}
+		
+		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $games ,1).'</pre>';
+		return $games;
 	}
 
 	protected function groupByDay($games)

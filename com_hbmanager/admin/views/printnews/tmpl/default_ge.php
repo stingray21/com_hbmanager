@@ -1,5 +1,6 @@
 <?php 
 	$tz = HbmanagerHelper::getHbTimezone();
+	$abbreviated = true;
 	// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->prevgames);echo'</pre>'; 
 	?>
 	<?php if (!empty($this->prevgames)) : ?>
@@ -7,10 +8,17 @@
 			<p class="headline"><b><u><?php echo JText::_('COM_HBMANAGER_PRINTREPORT_HEADLINE_PREV_GAMES');?></u></b></p>
 		<?php foreach ($this->prevgames as $date => $days) : ?>
 			<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
-			<?php foreach ($days as $game) : ?>
+			<?php foreach ($days as $game) :
+				$home = $game->home;
+				$away = $game->away;  
+				if ($abbreviated) {
+					$home = $game->homeAbbr;
+					$away = $game->awayAbbr;
+				}
+				?>
 				<span class="game">
 					<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
-					<i><?php echo $game->home ?> - <?php echo $game->away ?> | <?php echo $game->goalsHome ?>:<?php echo $game->goalsAway ?></i><br>
+					<i><?php echo $home ?> - <?php echo $away ?> | <?php echo $game->goalsHome ?>:<?php echo $game->goalsAway ?></i><br>
 				</span>
 			<?php endforeach; ?>
 			</p>
@@ -54,14 +62,21 @@
 			<p class="headline"><b><u><?php echo JText::_('COM_HBMANAGER_PRINTREPORT_HEADLINE_NEXT_GAMES');?></u></b></p>
 		<?php foreach ($this->nextgames as $date => $days) : ?>
 			<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
-			<?php foreach ($days as $game) : ?>
+			<?php foreach ($days as $game) : 
+				$home = $game->home;
+				$away = $game->away;  
+				if ($abbreviated) {
+					$home = $game->homeAbbr;
+					$away = $game->awayAbbr;
+				}
+				?>
 				<span class="game">
 					<i><?php 
 						if (isset($game->details)) echo JText::_('COM_HBMANAGER_PRINTREPORT_MULTIGAMES');
 						echo JHTML::_('date', $game->dateTime , 'H:i', $tz); 
 						echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?>&nbsp;in <?php echo $game->town ?> (<?php echo $game->gymName ?>)</i><br>
 					<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
-					<i> <?php echo $game->home ?> - <?php echo $game->away ?></i><br>
+					<i> <?php echo $home ?> - <?php echo $away ?></i><br>
 					
 				</span>
 			<?php endforeach; ?>
@@ -84,10 +99,17 @@
 			<p><b><?php echo JHTML::_('date', $date , 'l, d.m.Y', $tz); ?></b><br>
 			<?php foreach ($days as $gym) : ?>
 				<i><?php echo $gym[0]->gymName ?>, <?php echo $gym[0]->town ?></i><br>
-				<?php foreach ($gym as $game) : ?>
+				<?php foreach ($gym as $game) : 
+					$home = $game->home;
+					$away = $game->away;  
+					if ($abbreviated) {
+						$home = $game->homeAbbr;
+						$away = $game->awayAbbr;
+					}
+					?>
 					<span class="game">
 						<i><?php echo JHTML::_('date', $game->dateTime , 'H:i', $tz).'&nbsp;'.JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?></i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
-						<i><?php echo $game->home ?> - <?php echo $game->away ?></i><br>
+						<i><?php echo $home ?> - <?php echo $away ?></i><br>
 					</span>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
