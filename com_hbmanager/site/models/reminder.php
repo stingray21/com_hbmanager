@@ -11,6 +11,10 @@ JLoader::register('HBmanagerModelPrintNews', JPATH_COMPONENT_ADMINISTRATOR . '/m
 class HBmanagerModelReminder extends HBmanagerModelPrintNews
 // class HBmanagerModelReminder extends JModelLegacy
 {	
+	private $currentHolidays;
+	private $upcomingHolidays;
+
+
 	public function __construct($config = array())
 	{		
 		parent::__construct($config);
@@ -21,6 +25,9 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 			// echo 'No Future Holidays!';
 			$this->updateHolidayDB();
 		}
+
+		$this->setCurrentHolidays();
+		$this->setUpcomingHolidays();
 		
 		// for testing
 		// $this->dates->today = date_create('2019-10-28', $this->tz);
@@ -33,7 +40,13 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 		return $reports;
 	}
 
-	public function getCurrentHolidays() 
+	public function getReminderFlag()
+	{
+		return (empty($this->currentHolidays) && empty($this->prevGames) && empty($this->nextGames) );
+	}
+			
+
+	public function setCurrentHolidays() 
 	{
 		// $start 	= $this->dates->nextStart->format('Y-m-d');
 		$start = $this->dates->today->format('Y-m-d');
@@ -50,11 +63,16 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 		$holidays = $db->loadObjectList();
 		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $holiday ,1).'</pre>';
 
-		return $holidays;
+		$this->upcomingHolidays = $holidays;
+	}
+	
+	public function getCurrentHolidays() 
+	{
+		return $this->currentHolidays;
 	}
 	
 
-	public function getFutureHolidays() 
+	public function setUpcomingHolidays() 
 	{
 		// $start 	= $this->dates->nextStart->format('Y-m-d');
 		$start = $this->dates->today->format('Y-m-d');
@@ -70,7 +88,23 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 		// echo __FILE__.'('.__LINE__.')<pre>'.$query.'</pre>';
 		$holidays = $db->loadObjectList();
 		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $holidays ,1).'</pre>';
-		return $holidays;
+		
+		$this->upcomingHolidays = $holidays;
+	}
+	
+	public function getUpcomingHolidays() 
+	{
+		return $this->upcomingHolidays;
+	}
+
+	public function getWeeksToNextHoliday() 
+	{
+		$seconds = strtotime($this->upcomingHolidays[0]->date) - time();
+		// $seconds = strtotime($this->upcomingHolidays[0]->date) - strtotime('2019-10-20');
+		$weeks = floor($seconds / 604800); // weeks
+		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $weeks ,1).'</pre>';
+
+		return $weeks;
 	}
 	
 	private function updateHolidayDB() 
@@ -103,7 +137,9 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 	}
 	
 	private function getGermanHolidays($year = null) 
-	{
+	{	
+		// Holiday data from https://feiertage-api.de/
+
 		$year = (is_int($year)) ? $year : date('Y') ;
 
 		$base_url = 'https://feiertage-api.de/api/';

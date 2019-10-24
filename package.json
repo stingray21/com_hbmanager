@@ -1,7 +1,7 @@
 {
 	"name": "com_hbmanager",
-	"version": "2.6.10",
-	"date": "2019-09-02 18:02:02 GMT+0200",
+	"version": "2.6.11",
+	"date": "2019-10-24 16:23:09 MDT",
 	"description": "Joomla! HB Manager extension",
 	"main": "",
 	"scripts": {

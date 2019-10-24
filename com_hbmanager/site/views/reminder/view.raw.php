@@ -39,8 +39,11 @@ class HbManagerViewReminder extends JViewLegacy
 
 		$this->holidays = $model->getCurrentHolidays();
 		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $this->holidays ,1).'</pre>';
-		$this->futureHolidays = $model->getFutureHolidays();
-		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $this->futureHolidays ,1).'</pre>';
+		$this->upcomingHolidays = $model->getUpcomingHolidays();
+		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $this->upcomingHolidays ,1).'</pre>';
+
+		$this->reminderFlag = $model->getReminderFlag();
+		$this->remainingWeeks = $model->getWeeksToNextHoliday();
 			
 		// $time_elapsed = microtime(true) - $start;
 		// $this->assignRef('time_elapsed', $time_elapsed);

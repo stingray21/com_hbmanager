@@ -154,7 +154,7 @@ function copy_to_local_Joomla_site() {
 	return pipeline(gulp.src(src, src_exclude), newer(dest), gulp.dest(dest));
 }
 function copy_to_local_Joomla_site_language() {
-	var src = buildDir + "language/**/*";
+	var src = buildDir + "site/language/**/*";
 	var dest = localJoomla + 'language/';
 	log(src + " --> " + dest);
 

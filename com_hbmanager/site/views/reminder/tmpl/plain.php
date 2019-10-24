@@ -21,12 +21,35 @@ $abbreviated = true;
 	}
 </style>
 
+<?php if ($this->reminderFlag) : ?>
+	<p><?php echo JText::_('COM_HBMANAGER_REMINDER_NO_REMINDER');?></p>
+<?php endif; ?>
+
+
 <?php if (!empty($this->holidays)) : ?>
 	<div id="holiday">
-		<b><?php echo JText::_('COM_HBMANAGER_REMINDER_WARNING');?></b>
+		<h2><b><?php echo JText::_('COM_HBMANAGER_REMINDER_WARNING');?></b></h2>
 		<?php foreach ($this->holidays as $holiday) : ?>
 			<p><b><?php echo $holiday->holiday; ?> am <?php echo JHTML::_('date', $holiday->date , 'l, d.m.Y', $tz); ?></b><br>
 		<?php endforeach; ?>
+	</div>
+<?php endif; ?>
+
+<?php if (!empty($this->upcomingHolidays)) : ?>
+	<div>
+		<h2><i><?php echo JText::_('COM_HBMANAGER_REMINDER_UPCOMING_HOLIDAYS');?></i></h2>
+		<?php if ($this->remainingWeeks >= 1 ):?>
+		<p><?php
+			echo ($this->remainingWeeks < 3) ? '<b>' : '';
+			?><?php echo $this->remainingWeeks.JText::_('COM_HBMANAGER_REMINDER_REMAINING_WEEKS');?><?php
+			echo ($this->remainingWeeks < 3) ? '</b>' : '';
+			?></p>
+		<?php endif; ?>
+		<ul>
+		<?php foreach ($this->upcomingHolidays as $holiday) : ?>
+			<li><?php echo $holiday->holiday; ?> am <?php echo JHTML::_('date', $holiday->date , 'l, d.m.Y', $tz); ?></li>
+		<?php endforeach; ?>
+		</ul>
 	</div>
 <?php endif; ?>
 
