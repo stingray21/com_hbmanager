@@ -61,9 +61,9 @@ class HBmanagerModelReminder extends HBmanagerModelPrintNews
 			. $db->q($start) . ' AND ' . $db->q($end) . ')');
 		$db->setQuery($query);
 		$holidays = $db->loadObjectList();
-		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $holiday ,1).'</pre>';
+		// echo __FILE__ . '(' . __LINE__ . ')<pre>'.print_r( $holidays ,1).'</pre>';
 
-		$this->upcomingHolidays = $holidays;
+		$this->currentHolidays = $holidays;
 	}
 	
 	public function getCurrentHolidays() 
