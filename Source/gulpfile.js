@@ -61,7 +61,7 @@ const paths = {
 	scripts: {
 		watch: srcDir + "js/**/*.js",
 		src: srcDir + "js/**/*.js",
-		dest: buildDir + "assets/"
+		dest: buildDir + "media/js"
 	}
 };
 
@@ -96,10 +96,10 @@ function scripts() {
 		gulp.src(paths.scripts.src),
 		babel(),
 		// uglify(),
-		rename({
-			basename: "site",
-			suffix: ".min"
-		}),
+		// rename({
+		// 	basename: "site",
+		// 	suffix: ".min"
+		// }),
 		gulp.dest(paths.scripts.dest)
 	);
 }
