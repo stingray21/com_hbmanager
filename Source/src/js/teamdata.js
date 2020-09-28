@@ -67,6 +67,7 @@ function updateTeamData(teamkey, callback)
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
 				// console.log(httpRequest.status);
 				if (httpRequest.status === 200) {
+					console.log(httpRequest.responseText);
 					var response = JSON.parse(httpRequest.responseText);
 					console.log(response.teamkey + ': ' + response.date);
 					// console.log(response.result);

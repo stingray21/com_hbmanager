@@ -351,6 +351,7 @@ class HBmanagerModelTeamdata extends JModelList
 
 	protected function formatValue4DB ($value, $int = true)
 	{
+		$db = $this->getDbo();
 		$value = trim($value);
 		if ($value !== '') 
 		{
@@ -359,7 +360,8 @@ class HBmanagerModelTeamdata extends JModelList
 				$value = (int) $value;
 				return $value;
 			} else {
-				$value = "'".stripcslashes($value)."'";
+				// $value = "'".stripcslashes($value)."'";
+				$value = $db->q($value); 
 			}
 			return $value; 
 		}
@@ -509,6 +511,7 @@ class HBmanagerModelTeamdata extends JModelList
 	{
 		$columns = array('season', 'teamkey', 'rank', 'team', 'games', 'gamesH', 'gamesA', 'wins', 'winsHome', 'winsAway', 'ties', 'tiesHome', 'tiesAway', 'losses', 'lossesHome', 'lossesAway', 'goalsPos', 'goalsPosHome', 'goalsPosAway', 'goalsNeg', 'goalsNegHome', 'goalsNegAway', 'goalsDiff', 'goalsDiffHome', 'goalsDiffAway', 'pointsPos', 'pointsPosHome', 'pointsPosAway', 'pointsNeg', 'pointsNegHome', 'pointsNegAway');
 
+		$values = [];
 		foreach($hvwData as $row) {
 			$values[] = implode(', ', 
 			self::formatValues_standings_details($row, $team));
