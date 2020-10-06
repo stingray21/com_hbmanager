@@ -144,7 +144,12 @@ class HbmanagerHelper
 		// $params = JComponentHelper::getParams( 'com_hbmanager' );
 		// $timezone = $params->get( 'timezone' );
 
-		if (empty($timezone)) $gyms = [7003, 7014];
+		// 7003 - Kreissporthalle Balingen
+		// 7004 - Längenfeldhalle Balingen
+		// 7005 - Sporthalle bei der Realschule Balingen
+		// 7014 - Schloßparkhalle Geislingen
+
+		if (empty($timezone)) $gyms = [7003, 7005, 7014];
 
 		return $gyms;
 	}
