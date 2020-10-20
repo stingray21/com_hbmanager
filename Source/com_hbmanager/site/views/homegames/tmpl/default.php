@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php foreach ($gym as $row): ?>
 					<tr class="<?php echo $row->background ?>">
 						<td><?php echo $row->mannschaft ?></td>
-						<td><?php echo JHtml::_('date', $row->datumZeit, 'H:i', $tz) ?> Uhr</td>
+						<td><?php echo HbmanagerHelper::getformatedTime($row->datumZeit, $tz, ' Uhr'); ?></td>
 						<td><?php echo $row->home ?></td>
 						<td>-</td>
 						<td><?php echo $row->away ?></td>

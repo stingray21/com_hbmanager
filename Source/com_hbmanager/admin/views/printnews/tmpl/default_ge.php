@@ -73,7 +73,7 @@
 				<span class="game">
 					<i><?php 
 						if (isset($game->details)) echo JText::_('COM_HBMANAGER_PRINTREPORT_MULTIGAMES');
-						echo JHTML::_('date', $game->dateTime , 'H:i', $tz); 
+						echo HbmanagerHelper::getformatedTime($game->dateTime, $tz); 
 						echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?>&nbsp;in <?php echo $game->town ?> (<?php echo $game->gymName ?>)</i><br>
 					<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
 					<i> <?php echo $home ?> - <?php echo $away ?></i><br>
@@ -108,7 +108,9 @@
 					}
 					?>
 					<span class="game">
-						<i><?php echo JHTML::_('date', $game->dateTime , 'H:i', $tz).'&nbsp;'.JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');?></i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
+						<i><?php 
+						echo HbmanagerHelper::getformatedTime($game->dateTime, $tz, '&nbsp;'.JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK')); ?>
+						?></i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
 						<i><?php echo $home ?> - <?php echo $away ?></i><br>
 					</span>
 				<?php endforeach; ?>

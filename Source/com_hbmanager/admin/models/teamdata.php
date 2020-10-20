@@ -426,6 +426,9 @@ class HBmanagerModelTeamdata extends JModelList
 
 	protected function getDateTime ($date, $time)
 	{
+		if (empty($time)) {
+			$time = '03:21';
+		}
 		$dateStr = $date.'-'.$time;
 		$pattern = '/(?P<d>\d{2})\.(?P<m>\d{2})\.(?P<y>\d{2})-(?P<h>\d{2}):(?P<i>\d{2})/';
 

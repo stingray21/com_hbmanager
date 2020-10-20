@@ -47,7 +47,7 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 	{
 		foreach ($games as &$game) {
 			$game->date = JHtml::_('date', $game->dateTime, 'd.m.y', $this->tz);
-			$game->time = JHtml::_('date', $game->dateTime, 'H:i', $this->tz);
+			$game->time = HbmanagerHelper::getformatedTime($game->dateTime, $this->tz);
 		}
 	}
 
@@ -133,9 +133,9 @@ class HBmanagerModelGamereports extends HBmanagerModelHBmanager
 		$infos['teamkey'] = $data->teamkey;
 		$infos['leagueKey'] = $data->leagueKey;
 		$infos['gameIdHvw'] = intval($data->gameIdHvw);
-		$infos['dateTime'] = JHtml::_('date', $data->dateTime, 'Y-m-d H:i:s', $this->tz);
+		$infos['dateTime'] = JHtml::_('date', $data->dateTime, 'Y-m-d', $this->tz).' '.HbmanagerHelper::getformatedTime($data->dateTime, $this->tz);
 		$infos['date'] = JHtml::_('date', $data->dateTime, 'd.m.y', $this->tz);
-		$infos['time'] = JHtml::_('date', $data->dateTime, 'H:i', $this->tz);
+		$infos['time'] = HbmanagerHelper::getformatedTime($data->dateTime, $this->tz);
 		$infos['home'] = $data->home;
 		$infos['away'] = $data->away;
 		$infos['goalsHome'] = intval($data->goalsHome);

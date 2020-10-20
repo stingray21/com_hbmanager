@@ -140,7 +140,7 @@ class HBmanagerModelGamesAll extends HBmanagerModelGames
 					$row = [
 						$game->team,
 						$game->leagueKey,
-						JHtml::_('date', $game->dateTime, 'H:i', $tz) . ' Uhr',
+						HbmanagerHelper::getformatedTime($game->dateTime, $tz, ' Uhr'),
 						$game->home,
 						'-',
 						$game->away
@@ -202,7 +202,7 @@ class HBmanagerModelGamesAll extends HBmanagerModelGames
 					$row = [
 						JHtml::_('date', $game->dateTime, 'D', $tz),
 						JHtml::_('date', $game->dateTime, 'd.m.Y', $tz),
-						JHtml::_('date', $game->dateTime, 'H:i', $tz) . ' Uhr',
+						HbmanagerHelper::getformatedTime($game->dateTime, $tz, ' Uhr'),
 						$game->home,
 						'-',
 						$game->away

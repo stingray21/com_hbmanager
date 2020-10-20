@@ -78,7 +78,7 @@ $tz = HbmanagerHelper::getHbTimezone();
 				<tr class="">
 					<td class="leftalign"><?php echo JHtml::_('date', $game->dateTime, 'D', $tz); ?></td>
 					<td class="leftalign"><?php echo JHtml::_('date', $game->dateTime, 'd.m.Y', $tz); ?></td>
-					<td class="leftalign"><?php echo JHtml::_('date', $game->dateTime, 'H:i', $tz); ?> Uhr</td>
+					<td class="leftalign"><?php echo HbmanagerHelper::getformatedTime($game->dateTime, $tz, ' Uhr'); ?></td>
 					<!-- <td><?php echo $game->gymId ?></td> -->
 					<td class="rightalign <?php echo ($game->ownTeam === 1) ? ' heim' : '' ?>"><?php echo $game->home ?>
 					</td>

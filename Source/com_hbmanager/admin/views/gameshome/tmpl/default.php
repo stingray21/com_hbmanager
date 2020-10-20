@@ -34,7 +34,7 @@ $tz = HbmanagerHelper::getHbTimezone();
 				<tr>
 					<!-- <td><?php echo $row->team?></td> -->
 					<td><?php echo $row->leagueKey?></td>
-					<td class="wann leftalign"><?php echo JHtml::_('date', $row->dateTime, 'H:i', $tz) ?> Uhr</td>
+					<td class="wann leftalign"><?php echo HbmanagerHelper::getformatedTime($row->dateTime, $tz, ' Uhr'); ?></td>
 					<td class="rightalign"><?php echo $row->home ?></td>
 					<td>-</td>
 					<td class="rightalign"><?php echo $row->away ?></td>

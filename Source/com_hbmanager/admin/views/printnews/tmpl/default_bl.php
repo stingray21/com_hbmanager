@@ -63,7 +63,7 @@
 						?>: 
 					<?php 
 						if (isset($game->details)) echo JText::_('COM_HBMANAGER_PRINTREPORT_MULTIGAMES');
-						echo JHTML::_('date', $game->dateTime , 'H:i', $tz); 
+						echo HbmanagerHelper::getformatedTime($game->dateTime, $tz);
 						echo JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK');
 					?>
 					<?php echo $game->gymName ?>, <?php echo $game->town ?>,

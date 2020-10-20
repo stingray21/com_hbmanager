@@ -145,7 +145,6 @@ class HBmanagerModelGamesPrev extends HBmanagerModelGames
 			$ownAway = ($game->ownTeam === 2) ? ' own' : '';
 			
 			$content .= '<div class="gameInfo'.$ind.'">'."\n";
-			//$content .= '<span class="time">'.JHtml::_('date', $game->zeit, 'H:i', $this->timezone).' Uhr </span>'.
 			$content .= '<span class="team">'.
 					'<span class="home'.$ownHome.'">'.$game->home.'</span> '.
 					'<span class="dash">-</span> <span class="away'.$ownAway.'">'.$game->away.'</span>'.

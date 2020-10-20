@@ -129,7 +129,7 @@ JFactory::getDocument()->addScriptDeclaration("
 											<?php echo HbmanagerHelper::formatInput($form->getInput('season', 'gamesnext', $game->season), $i)?>	
 											<?php echo HbmanagerHelper::formatInput($form->getInput('pregameID', 'gamesnext', $game->pregameID), $i)?>	
 										</td>
-										<td><?php echo JHTML::_('date', $game->dateTime , 'H:i', $tz); ?></td>
+										<td><?php echo HbmanagerHelper::getformatedTime($game->dateTime, $tz); ?></td>
 										<td><?php echo $game->team; ?> <br> (<?php echo $game->teamkey; ?>) <br> <?php echo $game->gameIdHvw ?> <br><br> <?php echo $game->league ?><br><span><?php echo $game->leagueKey ?></span><br>
 											<a href="<?php echo HbmanagerHelper::get_hvw_page_url($game->leagueIdHvw); ?>" title="<?php echo JText::_('COM_HBMANAGER_GAMES_HVWLINK'); ?>" target="_BLANK"><?php echo $game->leagueIdHvw; ?></a>
 										</td>

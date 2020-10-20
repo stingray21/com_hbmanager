@@ -163,4 +163,16 @@ class HbmanagerHelper
 		return $formatedInput;
 	}
 
+
+
+	public static function getformatedTime($dateTime, $tz, $suffix = '')
+	{
+		$fakeTime = '03:21';
+		if (JHtml::_('date', $dateTime, 'H:i', $tz) !== $fakeTime) {
+			return JHtml::_('date', $dateTime, 'H:i', $tz).$suffix;
+		}
+		
+		return '';	
+	}
+
 }

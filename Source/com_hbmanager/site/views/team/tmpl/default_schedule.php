@@ -33,8 +33,8 @@ JHTML::_('bootstrap.tooltip');
 						<tr>
 							<td class="hidden-phone right"><?php echo JHtml::_('date', $row->dateTime, 'D', $this->tz)?></td>
 							<td><span><span class="hidden-phone"><?php echo JHtml::_('date', $row->dateTime, 'j. M.', $this->tz)?></span></span></td>
-							<td><span><span class="hidden-phone"><?php echo JHtml::_('date', $row->dateTime, 'H:i', $this->tz)?> <?php echo JText::_('COM_HBMANAGER_TEAM_CLOCK')?></span>
-							 	<span class="visible-phone"><?php echo JHtml::_('date', $row->dateTime, 'd.m. H:i', $this->tz)?></span></span>
+							<td><span><span class="hidden-phone"><?php echo HbmanagerHelper::getformatedTime($row->dateTime, $this->tz, JText::_('COM_HBMANAGER_TEAM_CLOCK'))?></span>
+							 	<span class="visible-phone"><?php echo JHtml::_('date', $row->dateTime, 'd.m.', $this->tz)?> <?php echo HbmanagerHelper::getformatedTime($row->dateTime, $this->tz)?></span></span>
 							</td>
 							<td><span><?php echo JHTML::tooltip($gymDesc, $row->gymName, '', '<span class="visible-desktop gym">'.$row->gymName.' ('.$row->gymId.')</span>'.'<span class="hidden-desktop">'.$row->gymId.'</span>', $gymLink) ?></span></td>
 							<td class="right <?php echo $row->homegame ? 'ownTeam' : '';?>"><span><span class="hidden-phone"><?php echo $row->home ?></span><span class="visible-phone"><?php echo $row->home_abbr ?></span></span></td>
