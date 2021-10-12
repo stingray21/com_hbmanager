@@ -1,3 +1,5 @@
+"use strict";
+
 var log = console.log.bind(console);
 var gameSelect;
 var tableMode = 'total'; // sofar or total
@@ -19,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       players: gamesJSON[startGame]['players']
     },
     methods: {
-      selectGame: function (i) {
+      selectGame: function selectGame(i) {
         // log(i);
         // log(this.games);
         if (!this.expanded) {
@@ -35,46 +37,46 @@ document.addEventListener("DOMContentLoaded", function (event) {
           showTableMode(tableMode); // log(this.players);
         }
       },
-      showSelection: function () {
+      showSelection: function showSelection() {
         if (!this.expanded) {
           this.showSelectionFlag = true;
         }
       },
-      hideSelection: function () {
+      hideSelection: function hideSelection() {
         if (!this.expanded) {
           this.showSelectionFlag = false;
         }
       },
-      indicateGame: function (i) {
+      indicateGame: function indicateGame(i) {
         //log(this.games[i].show);
         if (this.games[i].show == 1) {
           this.selectedGame = i;
         }
       },
-      removeIndication: function (i) {
+      removeIndication: function removeIndication(i) {
         //log('remove ' + this.tempGame);
         if (this.games[i].show == 1) {
           this.selectedGame = this.tempGame;
         }
       },
-      formatDate: function (date) {
+      formatDate: function formatDate(date) {
         return moment(date, 'YYYY-MM-DD').format('DD.MM.YYYY');
       },
-      checkZero: function (i) {
+      checkZero: function checkZero(i) {
         if (i === 0) {
           return '';
         }
 
         return i;
       },
-      checkGoalie: function (i) {
+      checkGoalie: function checkGoalie(i) {
         if (i !== undefined && i !== '') {
           return ' (' + i + ')';
         }
 
         return '';
       },
-      checkPenalty: function (penalty, played, percent) {
+      checkPenalty: function checkPenalty(penalty, played, percent) {
         if (played == 1 & penalty !== null) {
           if (percent == null) {
             return penalty;
@@ -138,3 +140,4 @@ function resizeChart() {
 
   log(gameSelect.expanded);
 }
+//# sourceMappingURL=goals.js.map

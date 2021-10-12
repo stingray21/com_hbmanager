@@ -1,3 +1,5 @@
+"use strict";
+
 document.addEventListener("DOMContentLoaded", function (event) {
   console.log("DOM fully loaded and parsed");
   console.log(teamkey);
@@ -326,3 +328,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
     return b.measureText(text).width;
   }
 });
+//# sourceMappingURL=goalchart.js.map

@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS `#__hb_gym`;
-CREATE TABLE `#__hb_gym` (
+-- DROP TABLE IF EXISTS `#__hb_gym`;
+CREATE TABLE IF NOT EXISTS `#__hb_gym` (
   `gymId` int(6) NOT NULL DEFAULT '0',
   `shortName` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `gymName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -20,8 +20,8 @@ CREATE TABLE `#__hb_gym` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_team`;
-CREATE TABLE `zhkog_hb_team` (
+-- DROP TABLE IF EXISTS `#__hb_team`;
+CREATE TABLE IF NOT EXISTS `#__hb_team` (
   `teamId` int(11) NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `order` int(3) DEFAULT NULL,
@@ -41,8 +41,8 @@ CREATE TABLE `zhkog_hb_team` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_team_details`;
-CREATE TABLE `#__hb_team_details` (
+-- DROP TABLE IF EXISTS `#__hb_team_details`;
+CREATE TABLE IF NOT EXISTS `#__hb_team_details` (
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `standingsGraph` text COLLATE utf8_unicode_ci,
@@ -51,8 +51,8 @@ CREATE TABLE `#__hb_team_details` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_team_picture`;
-CREATE TABLE `#__hb_team_picture` (
+-- DROP TABLE IF EXISTS `#__hb_team_picture`;
+CREATE TABLE IF NOT EXISTS `#__hb_team_picture` (
   `picId` int(10) NOT NULL AUTO_INCREMENT,
   `season` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `teamkey` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -64,8 +64,8 @@ CREATE TABLE `#__hb_team_picture` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_game`;
-CREATE TABLE `#__hb_game` (
+-- DROP TABLE IF EXISTS `#__hb_game`;
+CREATE TABLE IF NOT EXISTS `#__hb_game` (
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `leagueKey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -88,8 +88,8 @@ CREATE TABLE `#__hb_game` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_gamereport`;
-CREATE TABLE `#__hb_gamereport` (
+-- DROP TABLE IF EXISTS `#__hb_gamereport`;
+CREATE TABLE IF NOT EXISTS `#__hb_gamereport` (
   `reportID` int(6) NOT NULL AUTO_INCREMENT,
   `gameIdHvw` int(6) DEFAULT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -104,8 +104,8 @@ CREATE TABLE `#__hb_gamereport` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_pregame`;
-CREATE TABLE `#__hb_pregame` (
+-- DROP TABLE IF EXISTS `#__hb_pregame`;
+CREATE TABLE IF NOT EXISTS `#__hb_pregame` (
   `pregameID` int(6) NOT NULL AUTO_INCREMENT,
   `gameIdHvw` int(6) NOT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -118,8 +118,8 @@ CREATE TABLE `#__hb_pregame` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_division`;
-CREATE TABLE `#__hb_division` (
+-- DROP TABLE IF EXISTS `#__hb_division`;
+CREATE TABLE IF NOT EXISTS `#__hb_division` (
   `division` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `divisionName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `url` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -133,8 +133,8 @@ CREATE TABLE `#__hb_division` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_standings`;
-CREATE TABLE `#__hb_standings` (
+-- DROP TABLE IF EXISTS `#__hb_standings`;
+CREATE TABLE IF NOT EXISTS `#__hb_standings` (
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `rank` tinyint(2) DEFAULT NULL,
@@ -153,8 +153,8 @@ CREATE TABLE `#__hb_standings` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_standings_details`;
-CREATE TABLE `#__hb_standings_details` (
+-- DROP TABLE IF EXISTS `#__hb_standings_details`;
+CREATE TABLE IF NOT EXISTS `#__hb_standings_details` (
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `rank` tinyint(2) DEFAULT NULL,
@@ -191,9 +191,9 @@ CREATE TABLE `#__hb_standings_details` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_updatelog`;
+-- DROP TABLE IF EXISTS `#__hb_updatelog`;
 
-CREATE TABLE `#__hb_updatelog` (
+CREATE TABLE IF NOT EXISTS `#__hb_updatelog` (
   `updateId` int(10) NOT NULL AUTO_INCREMENT,
   `type` text DEFAULT NULL,
   `teamkey` text DEFAULT NULL,
@@ -207,9 +207,9 @@ CREATE TABLE `#__hb_updatelog` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_player`;
+-- DROP TABLE IF EXISTS `#__hb_player`;
 
-CREATE TABLE `#__hb_player` (
+CREATE TABLE IF NOT EXISTS `#__hb_player` (
   `playerId` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `height` int(5) DEFAULT NULL,
@@ -220,9 +220,9 @@ CREATE TABLE `#__hb_player` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_game_player`;
+-- DROP TABLE IF EXISTS `#__hb_game_player`;
 
-CREATE TABLE `#__hb_game_player` (
+CREATE TABLE IF NOT EXISTS `#__hb_game_player` (
   `season` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `gameIdHvw` int(10) NOT NULL,
   `alias` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -244,9 +244,9 @@ CREATE TABLE `#__hb_game_player` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_team_player`;
+-- DROP TABLE IF EXISTS `#__hb_team_player`;
 
-CREATE TABLE `#__hb_team_player` (
+CREATE TABLE IF NOT EXISTS `#__hb_team_player` (
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `teamkey` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `season` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -264,9 +264,9 @@ CREATE TABLE `#__hb_team_player` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_gamereport_details`;
+-- DROP TABLE IF EXISTS `#__hb_gamereport_details`;
 
-CREATE TABLE `#__hb_gamereport_details` (
+CREATE TABLE IF NOT EXISTS `#__hb_gamereport_details` (
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `gameIdHvw` int(6) NOT NULL DEFAULT '0',
   `actionIndex` int(3) NOT NULL,
@@ -291,9 +291,9 @@ CREATE TABLE `#__hb_gamereport_details` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_training`;
+-- DROP TABLE IF EXISTS `#__hb_training`;
 
-CREATE TABLE `#__hb_training` (
+CREATE TABLE IF NOT EXISTS `#__hb_training` (
   `trainingID` int(3) NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -308,9 +308,9 @@ CREATE TABLE `#__hb_training` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_team_coach`;
+-- DROP TABLE IF EXISTS `#__hb_team_coach`;
 
-CREATE TABLE `#__hb_team_coach` (
+CREATE TABLE IF NOT EXISTS `#__hb_team_coach` (
   `coachID` int(11) NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -322,9 +322,9 @@ CREATE TABLE `#__hb_team_coach` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_spritesheets`;
+-- DROP TABLE IF EXISTS `#__hb_spritesheets`;
 
-CREATE TABLE `#__hb_spritesheets` (
+CREATE TABLE IF NOT EXISTS `#__hb_spritesheets` (
   `spriteID` int(11) NOT NULL,
   `teamkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `season` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -336,9 +336,9 @@ CREATE TABLE `#__hb_spritesheets` (
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_clubteams`;
+-- DROP TABLE IF EXISTS `#__hb_clubteams`;
 
-CREATE TABLE `#__hb_clubteams` (
+CREATE TABLE IF NOT EXISTS `#__hb_clubteams` (
   `clubteamId` int(11) NOT NULL AUTO_INCREMENT,
   `teamname_long` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `teamname_short` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

@@ -1,4 +1,4 @@
-Source/node_modules/
+node_modules
 Releases/
 misc/
 .env

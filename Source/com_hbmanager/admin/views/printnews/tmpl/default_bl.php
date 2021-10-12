@@ -110,3 +110,5 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 </p>
+
+<p><b>Es gelten die 3G Regeln.</b></p>

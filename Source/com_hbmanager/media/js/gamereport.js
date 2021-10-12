@@ -1,3 +1,5 @@
+"use strict";
+
 document.addEventListener("DOMContentLoaded", function (event) {
   //console.log("DOM fully loaded and parsed");
   console.log(teamkey, gameId, season); // ============= definitions =================
@@ -174,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   if (!Array.prototype.findIndex) {
     Object.defineProperty(Array.prototype, 'findIndex', {
-      value: function (predicate) {
+      value: function value(predicate) {
         'use strict';
 
         if (this == null) {
@@ -263,7 +265,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     return min + ":" + sec;
   }
 
-  function getGoalTicks(numGoals = 10, width = 0) {
+  function getGoalTicks() {
+    var numGoals = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+    var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var goalTicks = [];
     var j = 0;
     var d = Math.ceil(2 * numGoals / (width / 20)); // console.log(d);
@@ -697,7 +701,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     updateGraph(gamedata, 3600);
     if (playerdata !== null) addPlayerProfiles(playerdata); // // =========== slider ============
 
-    brushed = function () {
+    brushed = function brushed() {
       var value = brush.extent()[0]; // console.log(value);
 
       if (d3.event.sourceEvent) {
@@ -786,7 +790,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     section_graph.selectAll(".actionTagItem").classed("hideactiontag", true);
   }
 
-  var addActionTags = function (data) {
+  var addActionTags = function addActionTags(data) {
     var widthAnnotations = 200;
     var widthIcon = 8;
     var widthTime = 57;
@@ -860,3 +864,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   d3.select(window).on('resize', resize);
 });
+//# sourceMappingURL=gamereport.js.map

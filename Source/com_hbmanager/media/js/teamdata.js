@@ -1,3 +1,5 @@
+"use strict";
+
 function updateTeams(teams) {
   teams.forEach(function (team) {
     // console.log(element);
@@ -119,3 +121,4 @@ function updateAllTeams() {
 
   return updateTeams(teams);
 }
+//# sourceMappingURL=teamdata.js.map

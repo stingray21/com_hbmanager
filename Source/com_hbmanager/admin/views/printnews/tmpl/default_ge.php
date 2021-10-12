@@ -110,7 +110,7 @@
 					<span class="game">
 						<i><?php 
 						echo HbmanagerHelper::getformatedTime($game->dateTime, $tz, '&nbsp;'.JText::_('COM_HBMANAGER_PRINTREPORT_CLOCK')); ?>
-						?></i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
+						</i>&nbsp;<?php echo $game->teamShort ?> (<?php echo $game->leagueKey ?>): 
 						<i><?php echo $home ?> - <?php echo $away ?></i><br>
 					</span>
 				<?php endforeach; ?>
@@ -146,3 +146,5 @@
 		<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
+
+	<p><b>Es gelten die 3G Regeln.</b></p>

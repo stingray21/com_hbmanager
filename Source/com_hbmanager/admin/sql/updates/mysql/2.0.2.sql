@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `#__hb_clubteams`;
+-- DROP TABLE IF EXISTS `#__hb_clubteams`;
 
-CREATE TABLE `#__hb_clubteams` (
+CREATE TABLE IF NOT EXISTS `#__hb_clubteams` (
   `clubteamId` int(11) NOT NULL AUTO_INCREMENT,
   `teamname_long` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `teamname_short` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

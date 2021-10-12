@@ -15,6 +15,7 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 	public function __construct($config = array())
 	{		
 		self::setShowParams();
+		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->show_params);echo'</pre>';
 		$params = JComponentHelper::getParams( 'com_hbmanager' ); // global config parameter
 		$this->domain = $params->get('emaildomain');
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->show_params);echo'</pre>';
@@ -60,7 +61,6 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 	{
 		
 		$globalParams = JComponentHelper::getParams('com_contact'); // global config parameter
-
 		$items = array('email','mobile','telephone');
 		$global_show = null;
 		foreach ($items as $value){
@@ -126,15 +126,23 @@ class HBmanagerModelTeam extends HBmanagerModelHBmanager
 		$paths = [];
 		$resolutions = [200, 500, 800, 1200];
 		foreach ($resolutions as $res) {
-			$path = './images/handball/teams/'.$this->season.'/'.$res.'px/team_'.$this->teamkey.'_'.$this->season.'_'.$res.'px.png';
-			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($path);echo'</pre>';	
-			if (file_exists($path)) {
-				$paths[$res.'px'] = $path;
+			$path_dir = './images/handball/teams/'.$this->season.'/'.$res.'px/';
+			$path_filename = 'team_'.$this->teamkey.'_'.$this->season.'_'.$res.'px';
+			// $path_ext = '.png';
+
+			$path = $path_dir.$path_filename;
+			// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($path);echo'</pre>';
+
+			if (file_exists($path.'.jpg')) {
+				$paths[$res.'px'] = $path.'.jpg';
+			} elseif (file_exists($path.'.png')) {
+				$paths[$res.'px'] = $path.'.png';
 			}
 		}
 
 		if (count($paths) < 1) {
 			$this->show_params['picture'] = 0;
+			// TODO: error message for dev
 		}
 		$team->paths = $paths;
 		$team->caption = json_decode($team->caption);

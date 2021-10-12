@@ -1,3 +1,5 @@
+"use strict";
+
 function importGamePreview(gameId, date) {
   console.log('Import ' + date + ' - ' + gameId);
   var preview = document.getElementById("import-preview");
@@ -148,3 +150,4 @@ function showAllGames() {
     element.classList.remove("hidden");
   });
 }
+//# sourceMappingURL=gamedetails.js.map

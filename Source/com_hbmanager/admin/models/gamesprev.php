@@ -92,23 +92,25 @@ class HBmanagerModelGamesPrev extends HBmanagerModelGames
 	function writeNews($includedGames)
 	{
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($includedGames);echo'</pre>';
-		$games = self::getPrevGames(false);
+		$games = $this->getPrevGames(false);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($games);echo'</pre>';
 		
 		if (!empty($games))
 		{
 			$alias = JHTML::_('date', time() , 'Ymd-His', $this->timezone)
 				.'-news-gamereport';
-			$title = self::getReportTitle();
-			$content = self::getReportContent($games, $includedGames);
+			$title = $this->getReportTitle();
+			$content = $this->getReportContent($games, $includedGames);
 			HBarticle::writeArticle($this, $alias, $title, $content);
 		}
 	}
 
 	protected function getReportTitle()
 	{
-		$titleDate = self::getTitleDate($this->dates->prevStart->format('Y-m-d'), 
-				$this->dates->prevEnd->format('Y-m-d')	);
+		// $titleDate = $this->getTitleDate($this->dates->prevStart->format('Y-m-d'), 
+		// 		$this->dates->prevEnd->format('Y-m-d')	);
+		$titleDate = $this->getTitleDate($this->dates->prevStart->getTimestamp(), 
+				$this->dates->prevEnd->getTimestamp() );
 		
 		//$title = JText::_('COM_HBMANAGER_PREVGAMES_ARTICLE_TITLE');
 		$title = 'Ergebnisse vom '.$titleDate;

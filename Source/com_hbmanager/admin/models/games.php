@@ -70,7 +70,7 @@ class HBmanagerModelGames extends JModelAdmin
 
 		$this->dates = new stdClass();
 		$this->dates->today = date_create('now', $this->tz);
-		self::setDates($dates);
+		$this->setDates($dates);
 		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($this->dates);echo'</pre>';
 	}
 
@@ -574,15 +574,15 @@ class HBmanagerModelGames extends JModelAdmin
 
 	protected function getTitleDate($minDate, $maxDate)
 	{
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($minDate);echo'</pre>';
-		// echo __FILE__.' ('.__LINE__.'):<pre>';print_r($maxDate);echo'</pre>';
-
+		echo __FILE__.' ('.__LINE__.'):<pre>';print_r($minDate);echo'</pre>';
+		echo __FILE__.' ('.__LINE__.'):<pre>';print_r($maxDate);echo'</pre>';
+		// die();
 		if ($minDate === $maxDate) {
 			$titledate = JHtml::_('date', $minDate, 'D, j. M.', $this->timezone);
 		}
 		// back to back days and weekend
 		elseif (
-			strftime("%j", $minDate) + 1 == strftime("%j", $maxDate) and (strftime("%w", $minDate) == 6 and strftime("%w", $maxDate) == 0)
+			strftime("%j", $minDate) + 1 == strftime("%j", $maxDate) && (strftime("%w", $minDate) == 6 and strftime("%w", $maxDate) == 0)
 		) {
 			// if same month
 			if (strftime("%m", $minDate) == strftime("%m", $maxDate)) {

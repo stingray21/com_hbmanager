@@ -1,3 +1,5 @@
+"use strict";
+
 // ============= definitions =================
 var maxRuns = 250; // safety to not let it run forever
 
@@ -223,12 +225,14 @@ function updateTicker() {
   }
 }
 
-function pauseBtn(final = false) {
+function pauseBtn() {
+  var _final = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
   var btnId = 'updateTickerBtn';
   document.getElementById(btnId).disabled = true;
   document.getElementById(btnId).classList.add('disabled');
 
-  if (!final) {
+  if (!_final) {
     document.getElementById("currentEvent").classList.add('hidden');
     var loaderId = 'eventLoader';
     document.getElementById(loaderId).classList.add('run');
@@ -337,7 +341,7 @@ function getEvent(event) {
 
     playerList[2] = []; // Away team
 
-    eventList.forEach(element => {
+    eventList.forEach(function (element) {
       if (element.status === 0 && element.player !== null && element.valid) {
         addToPlayerList(element);
       }
@@ -359,8 +363,8 @@ function updateHistory() {
   document.getElementById('historyframe').innerHTML = '';
   var table = document.createElement("TABLE");
 
-  for (let i = 0; i < eventList.length; i++) {
-    if (eventList[i].valid) {
+  for (var _i = 0; _i < eventList.length; _i++) {
+    if (eventList[_i].valid) {
       var row = document.createElement("TR");
       var cell;
 
@@ -368,7 +372,7 @@ function updateHistory() {
         cell = document.createElement("TD");
         cell.classList.add('index'); // if (!testMode) cell.classList.add('hidden');
 
-        cell.appendChild(document.createTextNode(eventList[i].index));
+        cell.appendChild(document.createTextNode(eventList[_i].index));
         row.appendChild(cell);
       }
 
@@ -376,31 +380,31 @@ function updateHistory() {
       cell.classList.add('icon'); // console.log(eventList[i].type);
 
       var icon = document.createElement("SPAN");
-      if (eventList[i].type !== '') icon.classList.add(eventList[i].type);
+      if (eventList[_i].type !== '') icon.classList.add(eventList[_i].type);
       cell.appendChild(icon);
       row.appendChild(cell);
       cell = document.createElement("TD");
       cell.classList.add('time');
-      cell.appendChild(document.createTextNode(formatTime(eventList[i].game_time)));
+      cell.appendChild(document.createTextNode(formatTime(eventList[_i].game_time)));
       row.appendChild(cell);
       cell = document.createElement("TD");
       cell.classList.add('message');
-      cell.appendChild(document.createTextNode(eventList[i].editedMessage));
+      cell.appendChild(document.createTextNode(eventList[_i].editedMessage));
       row.appendChild(cell);
       cell = document.createElement("TD");
       cell.classList.add('score');
-      if (eventList[i].goal) cell.classList.add('goal');
-      cell.appendChild(document.createTextNode(eventList[i].home_score));
+      if (eventList[_i].goal) cell.classList.add('goal');
+      cell.appendChild(document.createTextNode(eventList[_i].home_score));
       row.appendChild(cell);
       cell = document.createElement("TD");
       cell.classList.add('colon');
-      if (eventList[i].goal) cell.classList.add('goal');
+      if (eventList[_i].goal) cell.classList.add('goal');
       cell.appendChild(document.createTextNode(':'));
       row.appendChild(cell);
       cell = document.createElement("TD");
       cell.classList.add('score');
-      if (eventList[i].goal) cell.classList.add('goal');
-      cell.appendChild(document.createTextNode(eventList[i].guest_score));
+      if (eventList[_i].goal) cell.classList.add('goal');
+      cell.appendChild(document.createTextNode(eventList[_i].guest_score));
       row.appendChild(cell);
       table.appendChild(row);
     }
@@ -424,7 +428,7 @@ function updatePlayerDisplay(list, team) {
   cell.appendChild(document.createTextNode('7m'));
   row.appendChild(cell);
   table.appendChild(row);
-  list.forEach(d => {
+  list.forEach(function (d) {
     var row = document.createElement("TR");
     var cell = document.createElement("TD");
     cell.appendChild(printPlayer(d));
@@ -687,3 +691,4 @@ function updateScoreBoard(score) {
   scoreboard.select("#scoreAway").text(score.guest_score);
   scoreboard.select("#scoreTime").text(formatTime(score.game_time).replace(':', ' '));
 }
+//# sourceMappingURL=ticker.js.map
